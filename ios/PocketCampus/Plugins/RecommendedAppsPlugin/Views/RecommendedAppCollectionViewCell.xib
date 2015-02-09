@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="RecommendedAppCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="170" height="109"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="170" height="109"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nms-TM-73W">
+                        <rect key="frame" x="10" y="10" width="70" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Nms-TM-73W" secondAttribute="height" multiplier="1:1" id="5Kp-l1-GJa"/>
+                            <constraint firstAttribute="width" constant="70" id="KUW-KB-IJq"/>
+                            <constraint firstAttribute="height" constant="50" id="ppF-lv-h8y"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ppF-lv-h8y"/>
+                            </mask>
+                        </variation>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q92-Xf-eBp" userLabel="App name label">
+                        <rect key="frame" x="10" y="82" width="70" height="15"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j89-e0-HII" userLabel="App description label">
+                        <rect key="frame" x="86" y="10" width="82" height="53"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Qen-gH-o4l">
+                        <rect key="frame" x="75" y="45" width="20" height="20"/>
+                    </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gp0-r1-E9r" userLabel="Center message label">
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Q92-Xf-eBp" firstAttribute="top" secondItem="Nms-TM-73W" secondAttribute="bottom" constant="2" id="6WJ-1b-yjc"/>
+                <constraint firstItem="Nms-TM-73W" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="j89-e0-HII" secondAttribute="bottom" id="7J9-ms-Fdr"/>
+                <constraint firstItem="j89-e0-HII" firstAttribute="leading" secondItem="Nms-TM-73W" secondAttribute="trailing" constant="6" id="C2g-Yb-EyE"/>
+                <constraint firstAttribute="centerY" secondItem="Qen-gH-o4l" secondAttribute="centerY" id="EWG-Og-i04"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Q92-Xf-eBp" secondAttribute="bottom" id="J0d-ky-iom"/>
+                <constraint firstItem="Nms-TM-73W" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="MUE-zs-QxR"/>
+                <constraint firstAttribute="centerY" secondItem="gp0-r1-E9r" secondAttribute="centerY" id="V5d-Ik-UDw"/>
+                <constraint firstAttribute="bottom" secondItem="j89-e0-HII" secondAttribute="bottom" constant="4" id="Z9L-W2-ixt"/>
+                <constraint firstItem="j89-e0-HII" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="aPl-lP-pWD"/>
+                <constraint firstAttribute="centerX" secondItem="Qen-gH-o4l" secondAttribute="centerX" id="cSp-j3-duz"/>
+                <constraint firstItem="Nms-TM-73W" firstAttribute="centerX" secondItem="Q92-Xf-eBp" secondAttribute="centerX" id="cUJ-lA-9IR"/>
+                <constraint firstAttribute="trailing" secondItem="j89-e0-HII" secondAttribute="trailing" constant="2" id="fIp-ZC-6Vv"/>
+                <constraint firstItem="Nms-TM-73W" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="ggR-o0-tp4"/>
+                <constraint firstAttribute="centerX" secondItem="gp0-r1-E9r" secondAttribute="centerX" id="i7J-Nt-zFn"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="j89-e0-HII" secondAttribute="bottom" constant="2" id="isW-55-nk2"/>
+                <constraint firstItem="Nms-TM-73W" firstAttribute="width" secondItem="Q92-Xf-eBp" secondAttribute="width" id="nwC-PE-zDg"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="J0d-ky-iom"/>
+                    <exclude reference="Z9L-W2-ixt"/>
+                    <exclude reference="isW-55-nk2"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="appDescriptionLabel" destination="j89-e0-HII" id="i3X-Am-mfW"/>
+                <outlet property="appNameLabel" destination="Q92-Xf-eBp" id="Ck6-z5-Vym"/>
+                <outlet property="appThumbImageView" destination="Nms-TM-73W" id="VRN-Hf-Vm8"/>
+                <outlet property="centerMessageLabel" destination="gp0-r1-E9r" id="jqY-Pp-3r8"/>
+                <outlet property="loadingIndicator" destination="Qen-gH-o4l" id="jNK-na-xLf"/>
+            </connections>
+            <point key="canvasLocation" x="259.5" y="206.5"/>
+        </collectionViewCell>
+    </objects>
+</document>

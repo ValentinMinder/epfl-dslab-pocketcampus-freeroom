@@ -28,13 +28,13 @@
 
 //  Created by Loïc Gardiol on 05.05.12.
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "news.h"
 
-@protocol NewsServiceDelegate <ServiceDelegate>
+@protocol NewsServiceDelegate <PCServiceDelegate>
 
 @optional
 
@@ -45,7 +45,7 @@
 
 @end
 
-@interface NewsService : Service <ServiceProtocol>
+@interface NewsService : PCService <PCServiceProtocol>
 
 /*
  THRIFT METHODS

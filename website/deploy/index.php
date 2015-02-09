@@ -17,6 +17,7 @@ include_once "vars.php";
 <ul>
 <li><a href="server_status.php">server status</a></li>
 <li><a href="server_logs.php">server logs</a></li>
+<li><a href="tail_log.php">tail -f log</a></li>
 </ul>
 
 

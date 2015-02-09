@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The Main View of the Directory plugin.
@@ -81,8 +81,8 @@ public class DirectoryPersonView extends PluginView implements IDirectoryView {
 	protected void handleIntent(Intent aIntent) {
 		
 		Uri aData = aIntent.getData();
-		if(aData != null && "/search".equals(aData.getPath()) && aData.getQueryParameter("q") != null) {
-			mController.searchUnique(this, aData.getQueryParameter("q"));
+		if(aData != null && "/search".equals(aData.getPath()) && aData.getQueryParameter("sciper") != null) {
+			mController.searchBySciper(this, aData.getQueryParameter("sciper"));
 		} else if(aData != null && "/view".equals(aData.getPath())) {
 			Person p = new Person();
 			if(aData.getQueryParameter("firstName") != null) p.setFirstName(aData.getQueryParameter("firstName"));

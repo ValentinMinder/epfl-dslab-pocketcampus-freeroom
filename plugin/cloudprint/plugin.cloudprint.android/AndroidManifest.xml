@@ -13,7 +13,7 @@
         
 		<activity android:name="org.pocketcampus.plugin.cloudprint.android.CloudPrintMainView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:icon="@drawable/cloudprint_icon"
+			android:icon="@drawable/app_icon"
 			android:screenOrientation="nosensor"
 			android:label="@string/cloudprint_plugin_title"
 			android:launchMode="singleTask"

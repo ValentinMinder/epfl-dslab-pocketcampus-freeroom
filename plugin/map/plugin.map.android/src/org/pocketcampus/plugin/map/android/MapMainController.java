@@ -2,11 +2,9 @@ package org.pocketcampus.plugin.map.android;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
-import org.pocketcampus.plugin.map.android.req.LayerItemsRequest;
-import org.pocketcampus.plugin.map.android.req.LayerRequest;
 import org.pocketcampus.plugin.map.android.req.SearchRequest;
-import org.pocketcampus.plugin.map.shared.MapService.Iface;
 import org.pocketcampus.plugin.map.shared.MapService.Client;
+import org.pocketcampus.plugin.map.shared.MapService.Iface;
 
 /**
  * Map's main controller.
@@ -25,14 +23,6 @@ public class MapMainController extends PluginController {
 	@Override
 	public PluginModel getModel() {
 		return mModel;
-	}
-
-	public void getLayers() {
-		new LayerRequest().start(this,  (Iface) getClient(new Client.Factory(), mPluginName), (Object)null);
-	}
-
-	public void getLayerItems(int layerId) {
-		new LayerItemsRequest().start(this,  (Iface) getClient(new Client.Factory(), mPluginName), layerId);
 	}
 
 	public void search(String query) {

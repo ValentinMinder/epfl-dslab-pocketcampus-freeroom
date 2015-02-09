@@ -37,7 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The Main View of the Directory plugin.
@@ -268,7 +268,7 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 						Object obj = ((Map<?, ?>) o).get(MAP_KEY_PERSON_OBJ);
 						if(obj != null && obj instanceof Person) {
 							Uri.Builder builder = new Uri.Builder();
-							builder.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("q", ((Person) obj).getSciper());
+							builder.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("search").appendQueryParameter("sciper", ((Person) obj).getSciper());
 							Intent i = new Intent(Intent.ACTION_VIEW, builder.build());
 							startActivity(i);
 							trackEvent("ViewPerson", ((Person) obj).getFirstName() + " " + ((Person) obj).getLastName());

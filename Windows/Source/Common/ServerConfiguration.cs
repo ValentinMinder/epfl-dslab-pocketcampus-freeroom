@@ -29,6 +29,9 @@ namespace PocketCampus.Common
         [DataMember( Name = "SERVER_PROTOCOL" )]
         public string Protocol { get; set; }
 
+        /// <summary>
+        /// Gets the address used to access the server.
+        /// </summary>
         [DataMember( Name = "SERVER_ADDRESS" )]
         public string Address { get; set; }
 

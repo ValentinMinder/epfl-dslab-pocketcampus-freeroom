@@ -1,12 +1,13 @@
 package org.pocketcampus.plugin.isacademia.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
- * Simple HTTPS client with support for cookies.
+ * Simple HTTPS client.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public interface HttpsClient {
-	String get(String url, Charset charset) throws Exception;
+	String get(String url, Charset charset) throws IOException;
 }

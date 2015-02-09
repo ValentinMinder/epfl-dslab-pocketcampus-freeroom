@@ -28,7 +28,7 @@
 //  Created by Loïc Gardiol on 04.07.12.
 
 /**
- * You can use this constants for +iconForFileExtension
+ * You can use these constants for +iconForFileExtension
  */
 extern NSString* const kPCUtilsExtensionLink;
 extern NSString* const kPCUtilsExtensionFolder;
@@ -36,9 +36,24 @@ extern NSString* const kPCUtilsExtensionFolder;
 @interface PCUtils : NSObject
 
 + (BOOL)isRetinaDevice;
++ (BOOL)is3_5inchDevice;
 + (BOOL)is4inchDevice;
++ (BOOL)is4_7inchDevice;
++ (BOOL)is5_5inchDevice;
 + (BOOL)isIdiomPad;
+
+/**
+ * Similar to [[NSBundle mainBundle] pathForResource:] but will add retina postfix if necessary
+ */
++ (NSString*)pathForImageResource:(NSString*)resourceName;
+
+/**
+ * @return "@2x", "@3x" or "" (empty string) depending on device's screeen
+ */
++ (NSString*)postfixForResources;
+
 + (BOOL)isOSVersionSmallerThan:(float)version;
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
 + (NSString*)uniqueDeviceIdentifier;
 + (NSString*)appVersion;

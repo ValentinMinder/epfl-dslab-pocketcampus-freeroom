@@ -54,7 +54,7 @@
  * IMPORTANT: plugins MUST override this method and call super. Typically, start request for tequila token on plugin's service.
  * See MoodleController for an example.
  */
-- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock;
+- (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(void (^)(NSError* error))failureBlock;
 
 /*
  * Removes observer.
@@ -69,8 +69,8 @@
  * Protected.
  */
 - (void)cleanAndNotifySuccessToObservers;
-- (void)cleanAndNotifyFailureToObservers;
 - (void)cleanAndNotifyUserCancelledToObservers;
+- (void)cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:(NSInteger)errorCode; //one of the kAuthenticationErrorCode defined in AuthenticationController
 - (void)cleanAndNotifyConnectionToServerTimedOutToObservers;
 
 #pragma mark - Properties

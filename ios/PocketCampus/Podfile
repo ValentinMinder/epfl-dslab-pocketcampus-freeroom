@@ -1,5 +1,7 @@
 platform :ios, '7.0'
+link_with ['PocketCampus', 'CamiproWidget', 'CloudPrintAction']
 pod 'AFNetworking', '~> 2.0'
+pod 'thrift', '~> 0.9.1'
 pod 'GoogleAnalytics-iOS-SDK',  '~> 3.0'
 pod 'CDZQRScanningViewController'
 pod 'SSKeychain', '~> 1.2'
@@ -9,4 +11,4 @@ pod 'MBProgressHUD'
 pod 'JTTargetActionBlock'
 pod 'TTTAttributedLabel'
 pod 'TapkuLibrary', :git => 'git@github.com:loicgardiol/tapkulibrary.git'
-pod 'LGALibrary'
+pod 'LGALibrary', :head

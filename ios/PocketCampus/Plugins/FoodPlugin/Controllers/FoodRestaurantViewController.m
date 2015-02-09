@@ -27,7 +27,6 @@
 
 //  Created by Loïc Gardiol on 30.10.13.
 
-
 #import "FoodRestaurantViewController.h"
 #import "FoodService.h"
 #import "FoodRestaurantInfoCell.h"
@@ -75,9 +74,9 @@ static const NSInteger kMealsSection = 1;
     [super viewDidLoad];
     PCTableViewAdditions* tableViewAdditions = [PCTableViewAdditions new];
     self.tableView = tableViewAdditions;
-    __weak __typeof(self) weakSelf = self;
+    __weak __typeof(self) welf = self;
     tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
-        [weakSelf.cellForMealId removeAllObjects];
+        [welf.cellForMealId removeAllObjects];
     };
     [self refreshFavoriteButton];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFavoriteButton) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
@@ -127,7 +126,6 @@ static const NSInteger kMealsSection = 1;
     [self.navigationController pushViewController:mapViewController animated:YES];
 }
 
-
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -137,7 +135,7 @@ static const NSInteger kMealsSection = 1;
         case kMealsSection:
         {
             EpflMeal* meal = self.restaurant.rUniqueMeals[indexPath.row];
-            return [FoodMealCell preferredHeightForMeal:meal];
+            return [FoodMealCell preferredHeightForMeal:meal inTableView:tableView];
         }
     }
     return 0.0;
@@ -174,6 +172,7 @@ static const NSInteger kMealsSection = 1;
             if (!mealCell) {
                 mealCell = [[FoodMealCell alloc] initWithReuseIdentifier:nil];
                 mealCell.meal = meal;
+                mealCell.screenNameForGoogleAnalytics = self.gaiScreenName;
                 self.cellForMealId[nsMealId] = mealCell;
             }
             cell = mealCell;

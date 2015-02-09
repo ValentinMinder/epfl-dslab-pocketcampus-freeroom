@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 10.03.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface PCValues : NSObject
 
@@ -43,8 +39,9 @@
 
 + (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow;
 
-+ (UIImage*)resizableCellEmptyImage;
++ (UIImage*)imageForPrintBarButtonLandscapePhone:(BOOL)landscapePhone;
 
++ (UIColor*)defaultBlueTintColor;
 + (UIColor*)pocketCampusRed;
 + (UIColor*)backgroundColor1;
 + (UIColor*)textColor1;
@@ -52,8 +49,5 @@
 + (CGSize)shadowOffset1;
 + (UIColor*)shadowColor1;
 + (CGFloat)totalSubviewsHeight:(UIView*)view;
-
-
-+ (CGFloat)tableViewSectionHeaderHeight __attribute__((deprecated));
 
 @end

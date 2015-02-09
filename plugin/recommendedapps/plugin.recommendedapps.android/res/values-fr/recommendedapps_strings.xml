@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="recommendedapps_plugin_title">Applications Recommandées</string>
+    <string name="recommendedapps_error_recommendedapps_down">PocketCampus essayé de se connecter à ses serveurs, mais ils semblent en panne.</string>
+    <string name="recommendedapps_connection_error_happened">Nous ne pouvons pas récupérer les données des applications recommandées en ce moment, parce que vous n\'êtes pas connecté à Internet.</string>
+    <string name="recommendedapps_downloading">Téléchargement des applications recommandées&#8230; Veuillez attendre.</string>
+    <string name="recommendedapps_disclaimer">Voici une liste des applications qui peuvent vous aider à améliorer votre vie sur le campus encore plus. PocketCampus n\'a pas développé ces applications.</string>
+    
+    
+</resources>

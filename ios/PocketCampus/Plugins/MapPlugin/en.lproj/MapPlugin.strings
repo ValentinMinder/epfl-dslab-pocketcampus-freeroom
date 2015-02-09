@@ -1,7 +1,7 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Map";
-"SearchPlaceholder" = "Building, room, person, ...";
+"SearchPlaceholder" = "Building, room, person...";
 "RemoveElements" = "Clean results";
 "ShowBuildingsInterior" = "Show buildings interior";
 "HideBuildingsInterior" = "Hide buildings interior";
@@ -14,6 +14,9 @@
 "Details" = "Details";
 "AllSearchResults" = "All search results";
 "ClearHistory" = "Clear history";
+"MapLayersToDisplay" = "Displayed points of interest";
+"SelectAll" = "Select all";
+"DeselectAll" = "Deselect all";
 
 
 /* Accessibility */
@@ -25,3 +28,4 @@
 "CenterOnEPFL" = "Center on EPFL";
 "CentersMapToSeelWholeEPFLCampus" = "Centers the map to see the whole EPFL campus.";
 "ShowsPersonsDetails" = "Shows more information about this person.";
+"MapLayersAccessibility" = "Points of interests";

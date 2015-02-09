@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.isacademia.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.TreeMap;
 import org.pocketcampus.plugin.isacademia.shared.*;
 import org.pocketcampus.platform.server.XElement;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-
 import org.joda.time.*;
 import org.joda.time.format.*;
 
@@ -72,7 +72,7 @@ public final class ScheduleImpl implements Schedule {
 	}
 
 	@Override
-	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) throws Exception {
+	public ScheduleResponse get(LocalDate weekBeginning, String language, String sciper) {
 		if (sciper == null) {
 			return new ScheduleResponse(IsaStatusCode.INVALID_SESSION);
 		}
@@ -87,7 +87,7 @@ public final class ScheduleImpl implements Schedule {
 		try {
 			String xml = _client.get(url, ISA_CHARSET);
 			rootElem = XElement.parse(xml);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return new ScheduleResponse(IsaStatusCode.NETWORK_ERROR);
 		}
 

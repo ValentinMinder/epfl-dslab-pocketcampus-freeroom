@@ -13,23 +13,25 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events"); // ("Satellite", "Bikes", "Sunrise", "QAforum");
+$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia", "RecommendedApps", "FreeRoom");
 
 $libs_to_export = array(
 		"android-support-v4.jar",
 		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
 		"gcm.jar",
+		"httpclient-4.3.5.jar", "httpcore-4.3.2.jar", "httpmime-4.3.5.jar",
 		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
 		"osmdroid-android-3.0.3.jar",
+		"popup-menu-compat-lib.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
-		"universal-image-loader-1.8.0.jar");
+		"universal-image-loader-1.9.3.jar");
 
 $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
-$path_to_lib_dir = "../../platform/platform.shared/lib";
+$path_to_lib_dir = "../../platform/platform.android/libs";
 
-$versionCode = "26";
-$versionName = "2.1";
+$versionCode = "30";
+$versionName = "2.4";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 	$doc2 = new DOMDocument();

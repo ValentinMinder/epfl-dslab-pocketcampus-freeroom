@@ -1,9 +1,20 @@
 // Created by Loïc Gardiol on 01.03.12.
 
 "PluginName" = "Restaurants";
+"ByRestaurant" = "Par restaurant";
+"ByMealTypes" = "Par type de plat";
+"Menus" = "Menus";
 "MenusTableViewSectionName" = "Menus";
+"AllMenus" = "Tous les menus";
+"Dinner" = "Soir";
+"DinnerMenus" = "Menus du soir";
+"Lunch" = "Midi";
+"LunchMenus" = "Menus de midi";
+"SeeMenusForAnotherDay" = "Voir les menus pour un autre jour";
+"BackToTodayLunchMenus" = "Retour aux menus d'aujourd'hui midi";
+"MenuWithMealTypeWithFormat" = "Menus %@";
 "LoadingMenus" = "Chargement des menus";
-"NoMealsToday" = "Aucun menu aujourd'hui";
+"NoMeals" = "Aucun menu";
 "NoMealsWeekend" = "Aucun menu pendant le weekend.";
 "MenusForTodayWithFormat" = "Menus du jour – %@";
 "Map" = "Plan";
@@ -23,6 +34,19 @@
 "RatingStatusReadyText" = "Avez-vous aimé ce repas ?";
 "RatingStatusRatedText" = "Merci !";
 "UnknownPrice" = "Prix\ninconnu";
+
+// Meal types
+"MealType_UNKNOWN" = "Tout";
+"MealType_FISH" = "Poisson";
+"MealType_MEAT" = "Viande";
+"MealType_POULTRY" = "Volaille";
+"MealType_VEGETARIAN" = "Végétarien";
+"MealType_GREEN_FORK" = "Fourchette verte";
+"MealType_PASTA" = "Pâtes";
+"MealType_PIZZA" = "Pizza";
+"MealType_THAI" = "Thaï";
+"MealType_INDIAN" = "Indien";
+"MealType_LEBANESE" = "Libanais";
 
 
 /* Accessiblity */

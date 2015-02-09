@@ -27,7 +27,7 @@
 
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "moodle.h"
 
@@ -46,7 +46,7 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 
 #pragma mark - MoodleServiceDelegate definition
 
-@protocol MoodleServiceDelegate <ServiceDelegate>
+@protocol MoodleServiceDelegate <PCServiceDelegate>
 
 @optional
 
@@ -54,6 +54,8 @@ typedef void (^MoodleResourceEventBlock)(MoodleResourceEvent event);
 - (void)getCoursesFailedForRequest:(MoodleCoursesRequest2*)request;
 - (void)getSectionsForRequest:(MoodleCourseSectionsRequest2*)request didReturn:(MoodleCourseSectionsResponse2*)response;
 - (void)getSectionsFailedForRequest:(MoodleCourseSectionsRequest2*)request;
+- (void)printFileForRequest:(MoodlePrintFileRequest2*)request didReturn:(MoodlePrintFileResponse2*)response;
+- (void)printFileFailedForRequest:(MoodlePrintFileRequest2*)request;
 
 - (void)downloadOfMoodleFile:(MoodleFile2*)moodleFile didFinish:(NSURL*)localFileURL;
 - (void)downloadFailedForMoodleFile:(MoodleFile2*)moodleFile responseStatusCode:(int)statusCode;
@@ -74,7 +76,7 @@ extern NSString* const kMoodleFavoritesMoodleItemsUpdatedNotification;
  */
 extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 
-@interface MoodleService : Service<ServiceProtocol>
+@interface MoodleService : PCService<PCServiceProtocol>
 
 #pragma mark - Resources favorites and file management
 
@@ -99,10 +101,12 @@ extern NSString* const kMoodleFavoritesStatusMoodleItemUpdatedUserInfoKey;
 /*
  - (MoodleCoursesResponse2 *) getCourses: (MoodleCoursesRequest2 *) request;  // throws TException
  - (MoodleCourseSectionsResponse2 *) getSections: (MoodleCourseSectionsRequest2 *) request;  // throws TException
+ - (MoodlePrintFileResponse2 *) printFile: (MoodlePrintFileRequest2 *) request;  // throws TException
  */
 
 - (void)getCoursesWithRequest:(MoodleCoursesRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
 - (void)getSectionsWithRequest:(MoodleCourseSectionsRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
+- (void)printFileWithRequest:(MoodlePrintFileRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate;
 
 #pragma mark - Cached versions
 

@@ -1,0 +1,3 @@
+// French localized keys of PocketCampus-Info.plist
+
+"NSLocationWhenInUseUsageDescription" = "PocketCampus utilisera votre position pour les fonctionnalités Transport et Plan.";

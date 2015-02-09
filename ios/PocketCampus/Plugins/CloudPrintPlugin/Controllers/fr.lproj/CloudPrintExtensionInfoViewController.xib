@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CloudPrintExtensionInfoViewController"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController automaticallyAdjustsScrollViewInsets="NO" id="65I-bz-JhB" customClass="CloudPrintExtensionInfoViewController">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="SjP-xi-TDb"/>
+                <viewControllerLayoutGuide type="bottom" id="mNo-zA-nfr"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="7Jw-wi-Tkc">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uhx-0z-y13">
+                        <rect key="frame" x="12" y="25" width="303" height="145"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="145" id="kp5-8i-Ozo"/>
+                        </constraints>
+                        <string key="text">Imprimez des PDFs depuis les autres apps en touchant le bouton Partager puis "EPFL Print". Touchez "Autre" si cela n'apparaît pas.
+
+Dans Safari, touchez "Ouvrir dans".</string>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CloudPrintExtensionSafari.png" translatesAutoresizingMaskIntoConstraints="NO" id="7CK-dH-Xo1">
+                        <rect key="frame" x="5" y="180" width="310" height="310"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="7CK-dH-Xo1" secondAttribute="height" multiplier="1:1" id="8ox-d7-X1y"/>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="310" id="IzH-L5-aW6"/>
+                            <constraint firstAttribute="height" constant="310" id="ZMj-PZ-Uwm"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ZMj-PZ-Uwm"/>
+                            </mask>
+                        </variation>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="Uhx-0z-y13" firstAttribute="top" secondItem="SjP-xi-TDb" secondAttribute="bottom" constant="5" id="3w0-Au-eZe"/>
+                    <constraint firstItem="7CK-dH-Xo1" firstAttribute="top" secondItem="Uhx-0z-y13" secondAttribute="bottom" constant="10" id="IRG-4f-mPj"/>
+                    <constraint firstAttribute="centerX" secondItem="7CK-dH-Xo1" secondAttribute="centerX" id="MrS-gE-n6f"/>
+                    <constraint firstItem="mNo-zA-nfr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7CK-dH-Xo1" secondAttribute="bottom" constant="5" id="Oc2-D2-tS6"/>
+                    <constraint firstItem="Uhx-0z-y13" firstAttribute="leading" secondItem="7Jw-wi-Tkc" secondAttribute="leading" constant="12" id="PyN-yU-rsF"/>
+                    <constraint firstAttribute="trailing" secondItem="Uhx-0z-y13" secondAttribute="trailing" constant="5" id="adU-tY-g9z"/>
+                </constraints>
+            </view>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <size key="freeformSize" width="320" height="568"/>
+            <point key="canvasLocation" x="219" y="379"/>
+        </viewController>
+    </objects>
+    <resources>
+        <image name="CloudPrintExtensionSafari.png" width="310" height="310"/>
+    </resources>
+</document>

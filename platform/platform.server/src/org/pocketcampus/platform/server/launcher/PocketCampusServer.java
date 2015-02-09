@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.thrift.TProcessor;
 import org.pocketcampus.platform.server.RawPlugin;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.PCConfig;
+import org.pocketcampus.platform.shared.PCConstants;
 
 public class PocketCampusServer extends ServerBase {
 	public static final PCConfig CONFIG = new PCConfig();
@@ -34,6 +37,36 @@ public class PocketCampusServer extends ServerBase {
 	public static Map<String, String> getRequestHeaders() {
 		return TrackingThriftServlet.receivedRequestHeaders.get();
 	}
+	
+	
+	/**
+	 * @return the ISO language code of the user who generated the request if it is part of the
+	 * PocketCampus supported languages, or the PocketCampus default language code if not.
+	 */
+	public static String getUserLanguageCode() {
+		return getUserLanguageCode(PCConstants.PC_ACCEPTED_LANGUAGES, PCConstants.PC_DEFAULT_LANGUAGE);
+	}
+	
+	private static String getUserLanguageCode(HashSet<String> acceptedCodes, String defaultCode) {
+		if (acceptedCodes == null) {
+			throw new IllegalArgumentException("acceptedCodes cannot be null");
+		}
+		if (defaultCode == null) {
+			throw new IllegalArgumentException("defaultCode cannot be null");
+		}
+		Map<String, String> headers = getRequestHeaders();
+		if (headers == null) {
+			return defaultCode;
+		}
+		String langCode = headers.get(PCConstants.HTTP_HEADER_USER_LANG_CODE);
+		if (langCode == null) {
+			return defaultCode;
+		}
+		if (acceptedCodes.contains(langCode)) {
+			return langCode;
+		}
+		return defaultCode;
+	}
 
 	/** Gets the available services. */
 	@Override
@@ -54,8 +87,9 @@ public class PocketCampusServer extends ServerBase {
 			}
 
 			final HttpServlet rawProcessor = getRawProcessor(pluginService);
+			final StateChecker stateChecker = getStateChecker(pluginService);
 
-			processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor));
+			processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker));
 			plugins.put(pluginName.toLowerCase(), pluginService);
 			System.out.println(pluginName + " plugin started.");
 		}
@@ -75,8 +109,7 @@ public class PocketCampusServer extends ServerBase {
 
 		try {
 			return serviceClass.getConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Error while fetching the " + pluginName + " plugin.", e);
 		}
 	}
@@ -104,8 +137,7 @@ public class PocketCampusServer extends ServerBase {
 			return (TProcessor) processorClass
 					.getConstructor(interfaceClass)
 					.newInstance(pluginService);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Error while creating the Thrift processor for the " + pluginName + " plugin.", e);
 		}
 	}
@@ -113,5 +145,10 @@ public class PocketCampusServer extends ServerBase {
 	/** Gets a raw processor, if any, for the plugin with the specified service. */
 	private HttpServlet getRawProcessor(final Object pluginService) {
 		return pluginService instanceof RawPlugin ? ((RawPlugin) pluginService).getServlet() : null;
+	}
+
+	/** Gets a state checker, if any, for the plugin with the specified service. */
+	private StateChecker getStateChecker(final Object pluginService) {
+		return pluginService instanceof StateChecker ? ((StateChecker) pluginService) : null;
 	}
 }

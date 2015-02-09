@@ -29,12 +29,16 @@
 
 #import "PCDatePickerView.h"
 
-@interface PCDatePickerView ()
+@interface PCDatePickerView ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UINavigationBar* navBar;
 @property (nonatomic, readwrite, strong) IBOutlet UIDatePicker* datePicker;
 
 @property (nonatomic, weak) UITextField* textFieldForInputView; //weak because inputView already retains us (=> prevent retain cycle)
+
+@property (nonatomic, strong) UIPopoverController* popoverController;
+
+@property (nonatomic, strong) UIView* dimmingView;
 
 @end
 
@@ -48,6 +52,7 @@
     self = (PCDatePickerView*)elements[0];
     if (self) {
         self.navBar.topItem.title = NSLocalizedStringFromTable(@"SelectDate", @"PocketCampus", nil);
+        self.showTodayButton = NO; //defaut. Sets the bar items.
     }
     return self;
 }
@@ -56,17 +61,37 @@
     return [self init];
 }
 
+#pragma mark - Bar items
+
+- (void)setShowTodayButton:(BOOL)showTodayButton {
+    _showTodayButton = showTodayButton;
+    UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    if (showTodayButton) {
+        UIBarButtonItem* todayButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayTapped)];
+        self.navBar.topItem.leftBarButtonItems = @[cancelButton, todayButton];
+    } else {
+        self.navBar.topItem.leftBarButtonItem = cancelButton;
+    }
+    self.navBar.topItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
+}
+
 #pragma mark - Buttons actions
 
-- (IBAction)doneTapped {
+- (void)doneTapped {
     if (self.userValidatedDateBlock) {
         self.userValidatedDateBlock(self, self.datePicker.date);
     }
 }
 
-- (IBAction)cancelTapped {
+- (void)cancelTapped {
     if (self.userCancelledBlock) {
         self.userCancelledBlock(self);
+    }
+}
+
+- (void)todayTapped {
+    if (self.userTappedTodayBlock) {
+        self.userTappedTodayBlock(self);
     }
 }
 
@@ -95,16 +120,80 @@
     textField.inputView = self;
     [textField becomeFirstResponder];
     self.textFieldForInputView = textField;
+    [self setDimmingViewHidden:NO inView:view animated:YES];
+}
+
+- (void)presentFromBarButtonItem:(UIBarButtonItem*)barButtonItem {
+    if (![PCUtils isIdiomPad]) {
+        UIView* view = [[[UIApplication sharedApplication] windows] firstObject];
+        [self presentInView:view];
+        return;
+    }
+    [PCUtils throwExceptionIfObject:barButtonItem notKindOfClass:[UIBarButtonItem class]];
+    if (self.popoverController.isPopoverVisible) {
+        //already presented
+        return;
+    }
+    if (!self.popoverController) {
+        UIViewController* viewController = [[UIViewController alloc] init];
+        viewController.view = self;
+        viewController.preferredContentSize = self.bounds.size;
+        self.popoverController = [[UIPopoverController alloc] initWithContentViewController:viewController];
+        self.popoverController.delegate = self;
+    }
+    [self.popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (void)dismiss {
-    if (!self.textFieldForInputView.superview) {
-        //not presented
-        return;
+    if (self.textFieldForInputView.superview) {
+        [self.textFieldForInputView resignFirstResponder];
+        [self.textFieldForInputView removeFromSuperview];
+        self.textFieldForInputView = nil;
+        [self setDimmingViewHidden:YES inView:nil animated:YES];
+    } else if (self.popoverController) {
+        [self.popoverController dismissPopoverAnimated:YES];
+        self.popoverController = nil;
     }
-    [self.textFieldForInputView resignFirstResponder];
-    [self.textFieldForInputView removeFromSuperview];
-    self.textFieldForInputView = nil;
+}
+
+- (void)setDimmingViewHidden:(BOOL)hidden inView:(UIView*)view animated:(BOOL)animated {
+    if (hidden) {
+        [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^{
+            self.dimmingView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [self.dimmingView removeFromSuperview];
+            self.dimmingView = nil;
+        }];
+    } else {
+        if (!self.dimmingView) {
+            self.dimmingView = [[UIView alloc] init];
+            self.dimmingView.userInteractionEnabled = YES; //so that it prevents touches below
+            self.dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.dimmingView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+            self.dimmingView.alpha = 0.0;
+            [self.dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapped)]];
+        }
+        [view addSubview:self.dimmingView];
+        self.dimmingView.frame = view.bounds;
+        [UIView animateWithDuration:animated ? 0.25 : 0.0 animations:^{
+            self.dimmingView.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            //nothing
+        }];
+    }
+}
+
+#pragma mark - UIPopoverControllerDelegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.popoverController = nil;
+}
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [self.dimmingView removeFromSuperview];
 }
 
 @end

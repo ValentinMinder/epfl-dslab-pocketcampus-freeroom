@@ -36,14 +36,18 @@
 
 NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey = @"SaveDocsPositionGeneralSettingBool";
 
+NSString* const kMoodleDocsAutomaticallyHideNavBarSettingBoolKey = @"DocsAutomaticallyHideNavBarSettingBool";
+
+NSString* const kMoodleDocsHideMasterWithNavBarSettingBoolKey = @"DocsHideMasterWithNavBarSettingBool";
+
 @implementation MoodleCourseSection2 (Additions)
 
 - (BOOL)isCurrent {
     if (self.title) {
         return NO;
     }
-    long long currentTimestamp = (long long)[NSDate timeIntervalSinceReferenceDate];
-    if (currentTimestamp < self.startDate || currentTimestamp > self.endDate) {
+    NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+    if (currentTimestamp < self.startDate/1000.0 || currentTimestamp > self.endDate/1000.0) {
         return NO;
     }
     return YES;

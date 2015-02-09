@@ -165,10 +165,12 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [self.searchBar resignFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     [PCPersistenceManager saveObject:self.recentSearches forKey:kRecentSearchesKey pluginName:@"directory" isCache:YES]; //persist recent searches to disk
 }
 
@@ -195,8 +197,8 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
 - (void)showNoResultMessage {
     [self.barActivityIndicator stopAnimating];
     self.tableView.hidden = YES;
-    self.backgroundIcon.hidden = NO;
-    self.messageLabel.text = NSLocalizedStringFromTable(@"SearchNoResult", @"DirectoryPlugin", nil);
+    self.backgroundIcon.hidden = YES;    
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"NoResult", @"DirectoryPlugin", nil) attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
     self.messageLabel.hidden = NO;
 }
 
@@ -386,6 +388,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         }
     } else {
         self.tableView.hidden = YES;
+        self.backgroundIcon.hidden = YES;
         self.messageLabel.text = NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
         self.messageLabel.hidden = NO;
         self.resultsMode = ResultsModeFailed;
@@ -408,6 +411,7 @@ static NSString* const kRecentSearchesKey = @"recentSearches";
         }
     } else {
         self.tableView.hidden = YES;
+        self.backgroundIcon.hidden = YES;
         self.messageLabel.text = NSLocalizedStringFromTable(@"ConnectionToServerTimedOut", @"PocketCampus", @"Message that says that connection to server is impossible and that internet connection must be checked.");
         self.messageLabel.hidden = NO;
         self.resultsMode = ResultsModeFailed;

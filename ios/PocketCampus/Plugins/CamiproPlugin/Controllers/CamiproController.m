@@ -57,16 +57,20 @@ static CamiproController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
+#ifdef TARGET_IS_MAIN_APP
             CamiproViewController* camiproViewController = [[CamiproViewController alloc] init];
             camiproViewController.title = [[self class] localizedName];
             PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:camiproViewController];
             navController.pluginIdentifier = [[self class] identifierName];
             self.mainNavigationController = navController;
             instance = self;
+#endif
         }
         return self;
     }
 }
+
+#pragma mark - PluginController
 
 + (id)sharedInstanceToRetain {
     @synchronized (self) {
@@ -87,7 +91,9 @@ static CamiproController* instance __weak = nil;
             CLSNSLog(@"-> Camipro received %@ notification", kAuthenticationLogoutNotification);
             [[CamiproService sharedInstanceToRetain] deleteCamiproSession]; //removing stored session
             [PCPersistenceManager deleteCacheForPluginName:@"camipro"];
+#ifndef TARGET_IS_EXTENSION
             [[MainController publicController] requestLeavePlugin:@"Camipro"];
+#endif
         }];
     });
 }
@@ -103,7 +109,7 @@ static CamiproController* instance __weak = nil;
 #pragma mark - PluginControllerAuthentified
 
 - (void)addLoginObserver:(id)observer successBlock:(VoidBlock)successBlock
-      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(VoidBlock)failureBlock {
+      userCancelledBlock:(VoidBlock)userCancelledblock failureBlock:(void (^)(NSError* error))failureBlock {
     
     [super addLoginObserver:observer successBlock:successBlock userCancelledBlock:userCancelledblock failureBlock:failureBlock];
     if (!super.authenticationStarted) {
@@ -117,6 +123,7 @@ static CamiproController* instance __weak = nil;
     [super removeLoginObserver:observer];
     if ([self.loginObservers count] == 0) {
         [self.camiproService cancelOperationsForDelegate:self]; //abandon login attempt if no more observer interested
+        self.authenticationStarted = NO;
     }
 }
 
@@ -124,11 +131,11 @@ static CamiproController* instance __weak = nil;
 
 - (void)getTequilaTokenForCamiproDidReturn:(TequilaToken *)tequilaKey {
     self.tequilaToken = tequilaKey;
-    [self.authController authenticateToken:tequilaKey.iTequilaKey delegate:self];
+    [[AuthenticationController sharedInstance] authenticateToken:tequilaKey.iTequilaKey delegate:self];
 }
 
 - (void)getTequilaTokenForCamiproFailed {
-    [self cleanAndNotifyFailureToObservers];
+    [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeOther];
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken *)tequilaKey didReturn:(CamiproSession *)session {
@@ -137,7 +144,7 @@ static CamiproController* instance __weak = nil;
 }
 
 - (void)getSessionIdForServiceFailedForTequilaKey:(TequilaToken *)aTequilaKey {
-    [self cleanAndNotifyFailureToObservers];
+    [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeOther];
 }
 
 - (void)serviceConnectionToServerFailed {
@@ -159,6 +166,10 @@ static CamiproController* instance __weak = nil;
         case AuthenticationFailureReasonUserCancelled:
             [self.camiproService cancelOperationsForDelegate:self];
             [self cleanAndNotifyUserCancelledToObservers];
+            break;
+        case AuthenticationFailureReasonCannotAskForCredentials:
+            [self.camiproService cancelOperationsForDelegate:self];
+            [self cleanAndNotifyFailureToObserversWithAuthenticationErrorCode:kAuthenticationErrorCodeCouldNotAskForCredentials];
             break;
         case AuthenticationFailureReasonInvalidToken:
             [self.camiproService getTequilaTokenForCamiproDelegate:self]; //restart to get new token

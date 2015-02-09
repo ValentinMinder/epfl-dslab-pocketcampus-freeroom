@@ -5,9 +5,15 @@ bin/
 gen/
 target/
 
+# IntelliJ/Android studio
+*.iml
+*.eml
+.idea/
+
 # Merged projects
 /android/PocketCampus
 /server/PocketCampusServer
+/server/PocketCampusServerTests
 
 # OS X
 .DS_Store
@@ -26,6 +32,6 @@ target/
 TestResults/
 [Pp]ackages/
 
-# Windows Phone hidden files
+# Hidden files in the WP build
 Windows/Source/Main.WindowsRuntime/analytics.xml
 Windows/Source/Map.WindowsRuntime/MapToken.txt

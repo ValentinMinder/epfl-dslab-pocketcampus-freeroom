@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 23.10.12.
 
-
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 #import "PCNavigationController.h"
 

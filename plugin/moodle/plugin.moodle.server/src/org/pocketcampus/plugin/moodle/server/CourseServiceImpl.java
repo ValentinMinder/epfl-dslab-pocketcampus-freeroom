@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.moodle.server;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -86,6 +87,24 @@ public final class CourseServiceImpl implements CourseService {
 		this.client = client;
 		this.token = token;
 	}
+	
+	@Override
+	public boolean checkPocketCampusUser() {
+		final String usersQueryParams = new PostDataBuilder()
+				.addParam(FORMAT_KEY, FORMAT_VALUE)
+				.addParam(TOKEN_KEY, token)
+				.addParam(METHOD_KEY, METHOD_VALUE_GET_USER)
+				.addParam(GET_USER_CRITERION_KEY, "username")
+				.addParam(GET_USER_SCIPER_KEY, "pocketcampus").toString();
+		try {
+			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
+			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
+			return (usersResponse.users.length > 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	@Override
 	public MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request) {
@@ -108,11 +127,12 @@ public final class CourseServiceImpl implements CourseService {
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
 
 			if (usersResponse.users.length == 0) {
-				throw new Exception("User not found.");
+				return new MoodleCoursesResponse2(MoodleStatusCode2.OK, new ArrayList<MoodleCourse2>());
 			}
 
 			userId = usersResponse.users[0].id;
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
 		}
 
@@ -127,7 +147,8 @@ public final class CourseServiceImpl implements CourseService {
 		try {
 			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCoursesResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourse2>());
 		}
 
@@ -160,7 +181,8 @@ public final class CourseServiceImpl implements CourseService {
 		try {
 			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);
-		} catch (Exception _) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new MoodleCourseSectionsResponse2(MoodleStatusCode2.NETWORK_ERROR, new ArrayList<MoodleCourseSection2>());
 		}
 
@@ -188,7 +210,7 @@ public final class CourseServiceImpl implements CourseService {
 
 							moodleSection.setStartDate(startDate.getMillis());
 							moodleSection.setEndDate(endDate.getMillis());
-						} catch (IllegalArgumentException _) {
+						} catch (IllegalArgumentException e) {
 							// nothing; fall back to using the entire name
 						}
 					}
@@ -209,14 +231,18 @@ public final class CourseServiceImpl implements CourseService {
 					String moduleName = StringEscapeUtils.unescapeHtml4(module.name);
 
 					// > 0 rather than == 1 for file and URL because Moodle allows multiple files inside a file...
-					if (module.modname.equals(MODULE_FILE) && module.contents.length > 0) {
+					if (module.modname.equals(MODULE_FILE) && module.contents != null && module.contents.length > 0) {
 						final String name = FilenameUtils.removeExtension(moduleName);
 						final String extension = FilenameUtils.getExtension(module.contents[0].filename);
 						final String iconUrl = module.modicon.replace(FILE_ICON_SIZE, FILE_ICON_SIZE_TOKEN);
 
 						final MoodleFile2 file = new MoodleFile2(name, extension, module.contents[0].fileurl).setIcon(iconUrl);
 						moodleSection.addToResources(new MoodleResource2().setFile(file));
-					} else if (module.modname.equals(MODULE_URL) && module.contents.length > 0) {
+					} else if (module.modname.equals(MODULE_URL) && module.contents != null && module.contents.length > 0) {
+						// TODO some legit URL modules don't have the contents field and encode the url in a "url" field
+						// e.g. http://moodle.epfl.ch/mod/url/view.php?id=870185
+						// we should get the actual url from pinging this moodle url
+						// for now, we ignore such urls
 						final MoodleUrl2 url = new MoodleUrl2(moduleName, module.contents[0].fileurl);
 						moodleSection.addToResources(new MoodleResource2().setUrl(url));
 					} else if (module.modname.equals(MODULE_FOLDER) && module.contents != null) {

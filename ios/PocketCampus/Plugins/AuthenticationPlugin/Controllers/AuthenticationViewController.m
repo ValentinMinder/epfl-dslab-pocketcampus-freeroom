@@ -29,10 +29,6 @@
 
 #import "PCEditableTableViewCell.h"
 
-static NSInteger credentialsSectionIndex = 0;
-static NSInteger loginOutButtonSectionIndex = 1;
-static NSInteger savePasswordSwitchSectionIndex = -1;
-
 static NSInteger const kUsernameRowIndex = 0;
 static NSInteger const kPasswordRowIndex = 1;
 
@@ -44,6 +40,10 @@ static NSInteger const kPasswordRowIndex = 1;
 @property (nonatomic, strong) UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, strong) UISwitch* savePasswordSwitch;
 @property (nonatomic, strong) NSMutableDictionary* showDoneButtonBoolForState;
+
+@property (nonatomic) NSInteger credentialsSectionIndex;
+@property (nonatomic) NSInteger loginOutButtonSectionIndex;
+@property (nonatomic) NSInteger savePasswordSwitchSectionIndex;
 
 @end
 
@@ -57,6 +57,9 @@ static NSInteger const kPasswordRowIndex = 1;
         self.gaiScreenName = @"/authentication";
         self.savePasswordSwitchValue = YES; //Default
         self.showDoneButtonBoolForState = [NSMutableDictionary dictionary];
+        self.credentialsSectionIndex = 0; //Default
+        self.loginOutButtonSectionIndex = 1; //Default
+        self.savePasswordSwitchSectionIndex = -1; //Default
     }
     return self;
 }
@@ -183,8 +186,14 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 - (void)savePasswordSwitchValueChanged {
+    UIResponder* firstResponder = nil;
+    if (self.usernameCell.textField.isFirstResponder) {
+        firstResponder = self.usernameCell.textField;
+    } else if (self.passwordCell.textField.isFirstResponder) {
+        firstResponder = self.passwordCell.textField;
+    }
     [self.tableView reloadData];
-    //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.tableView.numberOfSections - 1] withRowAnimation:UITableViewRowAnimationNone];
+    [firstResponder becomeFirstResponder]; //keep first responder after reloadData
 }
 
 - (void)inputsValueChanged {
@@ -223,7 +232,7 @@ static NSInteger const kPasswordRowIndex = 1;
     if (textField == self.usernameCell.textField) {
         [self.passwordCell.textField becomeFirstResponder];
     } else if (textField == self.passwordCell.textField) {
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:loginOutButtonSectionIndex]]; //simulate login cell pressed
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.loginOutButtonSectionIndex]]; //simulate login cell pressed
     } else {
         //nothing, unknown
     }
@@ -234,7 +243,7 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == loginOutButtonSectionIndex) {
+    if (indexPath.section == self.loginOutButtonSectionIndex) {
         if (self.loginCell.textLabel.enabled
             && (self.state == AuthenticationViewControllerStateAskCredentials
             || self.state == AuthenticationViewControllerStateWrongCredentials)) {
@@ -276,14 +285,14 @@ static NSInteger const kPasswordRowIndex = 1;
 #pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.state == AuthenticationViewControllerStateLoggedIn && self.username && section == loginOutButtonSectionIndex) {
+    if (self.state == AuthenticationViewControllerStateLoggedIn && self.username && section == self.loginOutButtonSectionIndex) {
         return [NSString stringWithFormat:NSLocalizedStringFromTable(@"LoggedInAsWithFormat", @"AuthenticationPlugin", nil), self.username];
     }
     return nil;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (section == credentialsSectionIndex && self.state == AuthenticationViewControllerStateWrongCredentials) {
+    if (section == self.credentialsSectionIndex && self.state == AuthenticationViewControllerStateWrongCredentials) {
         return NSLocalizedStringFromTable(@"BadCredentials", @"AuthenticationPlugin", nil);
     }
     if (section == (self.tableView.numberOfSections - 1) && self.bottomMessageBlock) {
@@ -294,7 +303,7 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
-    if (indexPath.section == credentialsSectionIndex) {
+    if (indexPath.section == self.credentialsSectionIndex) {
         switch (indexPath.row) {
             case kUsernameRowIndex:
             {
@@ -329,7 +338,7 @@ static NSInteger const kPasswordRowIndex = 1;
                 break;
             }
         }
-    } else if (indexPath.section == loginOutButtonSectionIndex) {
+    } else if (indexPath.section == self.loginOutButtonSectionIndex) {
         if (self.state == AuthenticationViewControllerStateLoggedIn) {
             PCTableViewCellAdditions* logoutCell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             logoutCell.textLabel.text = NSLocalizedStringFromTable(@"Logout", @"AuthenticationPlugin", nil);
@@ -365,7 +374,7 @@ static NSInteger const kPasswordRowIndex = 1;
             }
             [self inputsValueChanged]; //make it enable or not
         }
-    } else if (indexPath.section == savePasswordSwitchSectionIndex) {
+    } else if (indexPath.section == self.savePasswordSwitchSectionIndex) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.textLabel.text = NSLocalizedStringFromTable(@"SavePassword", @"AuthenticationPlugin", nil);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -384,13 +393,13 @@ static NSInteger const kPasswordRowIndex = 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == credentialsSectionIndex) {
+    if (section == self.credentialsSectionIndex) {
         return 2; //username + password
     }
-    if (section == loginOutButtonSectionIndex) {
+    if (section == self.loginOutButtonSectionIndex) {
         return 1; //login / logout cell
     }
-    if (section == savePasswordSwitchSectionIndex) {
+    if (section == self.savePasswordSwitchSectionIndex) {
         return 1;
     }
     return 0;
@@ -398,13 +407,13 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger nbSections = 0;
-    if (credentialsSectionIndex >= 0) {
+    if (self.credentialsSectionIndex >= 0) {
         nbSections++;
     }
-    if (loginOutButtonSectionIndex >= 0) {
+    if (self.loginOutButtonSectionIndex >= 0) {
         nbSections++;
     }
-    if (savePasswordSwitchSectionIndex >= 0) {
+    if (self.savePasswordSwitchSectionIndex >= 0) {
         nbSections++;
     }
     return nbSections;
@@ -414,13 +423,13 @@ static NSInteger const kPasswordRowIndex = 1;
 
 - (void)recomputeSectionIndices {
     if (self.state == AuthenticationViewControllerStateLoggedIn) {
-        credentialsSectionIndex = -1;
-        loginOutButtonSectionIndex = 0;
-        savePasswordSwitchSectionIndex = -1;
+        self.credentialsSectionIndex = -1;
+        self.loginOutButtonSectionIndex = 0;
+        self.savePasswordSwitchSectionIndex = -1;
     } else {
-        credentialsSectionIndex = 0;
-        loginOutButtonSectionIndex = 1;
-        savePasswordSwitchSectionIndex = self.showSavePasswordSwitch ? 2 : -1;
+        self.credentialsSectionIndex = 0;
+        self.loginOutButtonSectionIndex = 1;
+        self.savePasswordSwitchSectionIndex = self.showSavePasswordSwitch ? 2 : -1;
     }
 }
 

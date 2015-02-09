@@ -39,14 +39,23 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 @implementation PCUtils
 
 + (BOOL)isRetinaDevice{
-    return ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))?1:0;
+    return [UIScreen mainScreen].scale >= 2.0;
+}
+
++ (BOOL)is3_5inchDevice {
+    return ([UIScreen mainScreen].bounds.size.height == 480);
 }
 
 + (BOOL)is4inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 568) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 568);
+}
+
++ (BOOL)is4_7inchDevice {
+    return ([UIScreen mainScreen].bounds.size.height == 667);
+}
+
++ (BOOL)is5_5inchDevice {
+    return ([UIScreen mainScreen].bounds.size.height == 736);
 }
 
 + (BOOL)isIdiomPad {
@@ -57,8 +66,28 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     return pad;
 }
 
++ (NSString*)pathForImageResource:(NSString*)resourceName {
+    [PCUtils throwExceptionIfObject:resourceName notKindOfClass:[NSString class]];
+    return [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@%@", resourceName, [PCUtils postfixForResources]] ofType:@"png"];
+}
+
++ (NSString*)postfixForResources {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    if (scale == 2.0) {
+        return @"@2x";
+    }
+    if (scale == 3.0) {
+        return @"@3x";
+    }
+    return @"";
+}
+
 + (BOOL)isOSVersionSmallerThan:(float)version {
     return [[UIDevice currentDevice].systemVersion floatValue] < version;
+}
+
++ (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version {
+    return [[UIDevice currentDevice].systemVersion floatValue] >= version;
 }
 
 + (float)OSVersion {
@@ -107,6 +136,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     CGFloat topBar = [viewController prefersStatusBarHidden] ? 0.0 : 20.0;
     CGFloat top = viewController.navigationController ? topBar + viewController.navigationController.navigationBar.frame.size.height : topBar;
     CGFloat bottom = viewController.tabBarController ? viewController.tabBarController.tabBarController.tabBar.frame.size.height : 0.0;
+    bottom += viewController.navigationController.toolbarHidden ? 0.0 : viewController.navigationController.toolbar.frame.size.height;
     return UIEdgeInsetsMake(top, 0, bottom, 0);
 }
 
@@ -147,15 +177,21 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (void)showUnknownErrorAlertTryRefresh:(BOOL)tryRefresh {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:tryRefresh ? NSLocalizedStringFromTable(@"UnknownErrorTryRefresh", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"UnknownError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showServerErrorAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ServerError", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (void)showConnectionToServerTimedOutAlert {
+#ifndef TARGET_IS_EXTENSION
     [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil) message:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutAlert", @"PocketCampus", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
 }
 
 + (NSDictionary*)urlStringParameters:(NSString*)urlString {
@@ -179,7 +215,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
         }
     }
     @catch (NSException *exception) {
-        CLSNSLog(@"!! ERROR: wrong URL format");
+        return nil;
     }
     return  [queryStringDictionary copy]; //non-mutable copy
 }
@@ -274,7 +310,16 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (BOOL)hasAppAccessToLocation {
-    return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+#ifndef TARGET_IS_EXTENSION
+        return (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusNotDetermined);
+#else
+        return NO;
+#endif
+    } else {
+        return (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusNotDetermined);
+    }
 }
 
 + (void)throwExceptionIfObject:(id)object notKindOfClass:(Class)class; {

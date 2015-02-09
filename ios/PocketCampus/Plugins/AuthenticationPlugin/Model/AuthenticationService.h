@@ -27,7 +27,7 @@
 
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "authentication.h"
 
@@ -42,7 +42,7 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 #pragma mark - AuthenticationServiceDelegate definition
 
-@protocol AuthenticationServiceDelegate <ServiceDelegate>
+@protocol AuthenticationServiceDelegate <PCServiceDelegate>
 
 @optional
 
@@ -62,7 +62,7 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 #pragma mark - AuthenticationService definition
 
-@interface AuthenticationService : Service<ServiceProtocol>
+@interface AuthenticationService : PCService<PCServiceProtocol>
 
 
 + (BOOL)areCredentialsSaved;

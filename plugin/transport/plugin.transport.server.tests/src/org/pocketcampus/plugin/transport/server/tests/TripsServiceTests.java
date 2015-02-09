@@ -71,12 +71,12 @@ public final class TripsServiceTests {
 				6566143, dep.getLongitude());
 
 		assertEquals("The first part's departure time should be parsed correctly (in the first trip).",
-				now.withTime(12, 53, 00, 00).getMillis(), trip.getParts().get(0).getDepartureTime());
+				new DateTime(2014, 07, 25, 12, 53, 00, 00).getMillis(), trip.getParts().get(0).getDepartureTime());
 		assertEquals("The first trip's departure time should be the same as its first connection's.",
 				trip.getParts().get(0).getDepartureTime(), trip.getDepartureTime());
 
 		assertEquals("The first part's arrival time should be parsed correctly (in the first trip).",
-				now.withTime(12, 56, 00, 00).getMillis(), trip.getParts().get(0).getArrivalTime());
+				new DateTime(2014, 07, 25, 12, 56, 00, 00).getMillis(), trip.getParts().get(0).getArrivalTime());
 		assertEquals("The first trip's arrival time should be the same as its last connection's.",
 				trip.getParts().get(1).getArrivalTime(), trip.getArrivalTime());
 
@@ -92,6 +92,24 @@ public final class TripsServiceTests {
 				trips.get(0).getId(), trips.get(1).getId());
 	}
 
+	// Bug #205: test connections late at night when the returned connections are the next day
+	@Test
+	public void lateConnections() throws IOException {
+		TestHttpClient client = new TestHttpClient("TripsReplyEpflZurichLateAtNight.xml");
+		TripsService service = new TripsServiceImpl(client, "token");
+
+		TransportStation from = new TransportStation(8501214, 46522197, 6566143, "Ecublens VD, EPFL");
+		TransportStation to = new TransportStation(8503000, 47378177, 8540192, "Zürich HB");
+		DateTime now = DateTime.now();
+
+		TransportTrip trip = service.getTrips(from, to, now).get(0);
+
+		assertEquals("The trip's departure time should be correctly parsed.",
+				new DateTime(2014, 9, 25, 05, 25, 00).getMillis(), trip.getDepartureTime());
+		assertEquals("The trip's arrival time should be correctly parsed.",
+				new DateTime(2014, 9, 25, 07, 56, 00).getMillis(), trip.getArrivalTime());
+	}
+
 	// test foot parts and no-number lines
 	@Test
 	public void trainTripLausanneToParis() throws IOException {
@@ -103,7 +121,7 @@ public final class TripsServiceTests {
 		DateTime now = DateTime.now();
 
 		TransportTrip trip = service.getTrips(from, to, now).get(0);
-		TransportConnection walk=trip.getParts().get(0);
+		TransportConnection walk = trip.getParts().get(0);
 
 		// NOTE: This is kind of wrong since it makes no sense to "walk from Lausanne, gare to Lausanne" to take a train, but HAFAS says so
 		assertTrue("The first trip's first part should be a foot path.",
@@ -111,9 +129,9 @@ public final class TripsServiceTests {
 		assertEquals("The foot duration of the first trip's first part should be 4 minutes.",
 				4, walk.getFootDuration());
 		assertEquals("The first trip's first part's departure time should be parsed correctly.",
-				now.withTime(06, 20, 00, 00).getMillis(), walk.getDepartureTime());
+				new DateTime(2014, 07, 25, 06, 20, 00, 00).getMillis(), walk.getDepartureTime());
 		assertEquals("The first trip's first part's arrival time should be parsed correctly.",
-				now.withTime(06, 24, 00, 00).getMillis(), walk.getArrivalTime());
+				new DateTime(2014, 07, 25, 06, 24, 00, 00).getMillis(), walk.getArrivalTime());
 
 		assertEquals("The first trip's second part's line should be parsed and converted correctly.",
 				"TGV", trip.getParts().get(1).getLine().getName());
@@ -126,7 +144,7 @@ public final class TripsServiceTests {
 		TripsService service = new TripsServiceImpl(client, "token");
 
 		TransportStation from = new TransportStation(8592050, 46517594, 6629670, "Lausanne, gare");
-		TransportStation to = new TransportStation(8579254, 46519365, 6633481, "Lausanne, St-Fran�ois");
+		TransportStation to = new TransportStation(8579254, 46519365, 6633481, "Lausanne, St-François");
 		DateTime now = DateTime.now();
 
 		TransportTrip trip = service.getTrips(from, to, now).get(1);
@@ -149,6 +167,22 @@ public final class TripsServiceTests {
 
 		assertEquals("There should be no trips in case of an error.",
 				0, trips.size());
+	}
+
+	// test time parsing on days where the DST changes
+	@Test
+	public void dstChange() throws IOException {
+		TestHttpClient client = new TestHttpClient("TripsReplyEpflFlonOnDstChange.xml");
+		TripsService service = new TripsServiceImpl(client, "token");
+
+		TransportStation from = new TransportStation(8501214, 46522197, 6566143, "EPFL");
+		TransportStation to = new TransportStation(8501181, 46520795, 6630344, "Lausanne-Flon");
+		DateTime now = new DateTime(2014, 10, 26, 13, 56, 00);
+
+		TransportTrip trip = service.getTrips(from, to, now).get(0);
+
+		assertEquals("The first trip's departure time should be correct.",
+				new DateTime(2014, 10, 26, 13, 59, 00).getMillis(), trip.getDepartureTime());
 	}
 
 	private static final class TestHttpClient implements HttpClient {

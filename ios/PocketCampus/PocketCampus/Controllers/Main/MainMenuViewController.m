@@ -25,13 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.10.12.
 
-
 #import "MainMenuViewController.h"
+
+@import QuartzCore;
 
 #import "MainController.h"
 
@@ -39,18 +37,20 @@
 
 #import "MainMenuItemCell.h"
 
-#import "PCValues.h"
+#import "PCAboutViewController.h"
 
-#import "PCUtils.h"
-
-#import <QuartzCore/QuartzCore.h>
+#import "UIBarButtonItem+LGAAdditions.h"
 
 static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
+static CGFloat const kTableViewFooterHeight = 54.0;
+
 static const int kPluginsSection = 0;
 
 @interface MainMenuViewController ()
+
+@property (nonatomic, weak) IBOutlet UIImageView* institutionLogoImageView;
 
 @property (nonatomic, weak) MainController* mainController;
 @property (nonatomic, strong) NSMutableArray* menuItems;
@@ -82,18 +82,43 @@ static const int kPluginsSection = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self trackScreen];
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     self.tableView.scrollsToTop = NO; //if not set to NO, front view controllers cannot be scrolled to top by tapping the status bar
     
-    //self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.settingsButton, self.pocketCampusTitle, nil];
     self.navigationItem.leftBarButtonItem = self.settingsButton;
     self.navigationItem.titleView = self.pocketCampusLabel;
-    CGRect frame = self.navigationController.view.frame;
-    frame.size.width = 320.0;
-    self.navigationController.view.frame = frame;
-    self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(institutionLogoTapped)];
+    self.institutionLogoImageView.userInteractionEnabled = YES;
+    [self.institutionLogoImageView addGestureRecognizer:tapGesture];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kTableViewFooterHeight)];
+
+    self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask, so that when device rotates, main menu keeps its "normal" width
+    if ([PCUtils isIdiomPad]) {
+        CGRect frame = self.navigationController.view.frame;
+        frame.size.width = 320.0;
+        self.navigationController.view.frame = frame;
+    }
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tableView flashScrollIndicators];
+    });
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self adjustInstitutionLogoAlpha];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -171,6 +196,23 @@ static const int kPluginsSection = 0;
     self.menuItems = [menuItems mutableCopy];
 }
 
+- (void)adjustInstitutionLogoAlpha {
+    if (self.tableView.contentOffset.y == 0.0 && self.tableView.contentSize.height < (self.tableView.bounds.size.height - self.tableView.contentInset.top - self.tableView.contentInset.top)) {
+        self.institutionLogoImageView.alpha = 1.0;
+        return;
+    }
+    CGFloat offsetMax = self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.bounds.size.height;
+    CGFloat diff = offsetMax - self.tableView.contentOffset.y;
+    static CGFloat const kOffsetAlphaStart = kTableViewFooterHeight / 2.0;
+    if (diff < 0.0) {
+        diff = 0.0;
+    }
+    if (diff > kOffsetAlphaStart) {
+        diff = kOffsetAlphaStart;
+    }
+    self.institutionLogoImageView.alpha = (kOffsetAlphaStart - diff) / kOffsetAlphaStart;
+}
+
 #pragma mark - Buttons
 
 - (UILabel*)pocketCampusLabel {
@@ -189,30 +231,45 @@ static const int kPluginsSection = 0;
 }
 
 - (UIBarButtonItem*)settingsButton {
-    if (_settingsButton) {
-        return _settingsButton;
+    if (!_settingsButton) {
+        __weak __typeof(self) welf = self;
+        _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered lga_actionBlock:^(UIBarButtonItem* button) {
+            [welf.mainController showGlobalSettings];
+        }];
+        _settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+        
+        // Bar items placement differs depending on device. We shift the settings icon left/right
+        // so that it is aligned with the plugin icons in the menu
+        if ([PCUtils is4inchDevice] || [PCUtils is3_5inchDevice] || [PCUtils is4_7inchDevice]) {
+            _settingsButton.imageInsets = UIEdgeInsetsMake(0.0, 1.0, 0.0, -1.0);
+        } else if ([PCUtils isIdiomPad] || [PCUtils is5_5inchDevice]) {
+            _settingsButton.imageInsets = UIEdgeInsetsMake(0.0, -3.0, 0.0, 3.0);
+        }
     }
-    _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
-    _settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     return _settingsButton;
 }
 
 - (UIBarButtonItem*)doneButton {
-    if (_doneButton) {
-        return _doneButton;
+    if (!_doneButton) {
+        __weak __typeof(self) welf = self;
+        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain lga_actionBlock:^(UIBarButtonItem* button) {
+            [welf setEditing:NO];
+        }];
     }
-    _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
     return _doneButton;
 }
 
 #pragma mark - Actions
 
-- (void)settingsButtonPressed {
-    [self.mainController showGlobalSettings];
-}
-
-- (void)doneButtonPressed {
-    [self setEditing:NO];
+- (void)institutionLogoTapped {
+    PCAboutViewController* aboutViewController = [PCAboutViewController new];
+    __weak __typeof(self) welf = self;
+    aboutViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone lga_actionBlock:^(UIBarButtonItem* button) {
+        [welf dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:aboutViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:NULL];
 }
 
 #pragma mark EyeButtonDelegate (MainMenuItemCell)
@@ -226,6 +283,12 @@ static const int kPluginsSection = 0;
         cell.menuItem.hidden = YES;
         [cell setEyeButtonState:EyeButtonStateDataHidden];
     }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self adjustInstitutionLogoAlpha];
 }
 
 #pragma mark - UITableViewDelegate

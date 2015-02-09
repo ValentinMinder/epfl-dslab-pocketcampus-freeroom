@@ -191,7 +191,8 @@
 }
 
 - (void)_revealAnimationWithDuration:(NSTimeInterval)duration
-{	
+{
+    [self.rearViewController viewWillAppear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewRevealWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
@@ -199,6 +200,7 @@
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidAppear:duration > 0.0];
 		// Dispatch message to delegate, telling it the 'rearView' _DID_ reveal, if appropriate:
 		if ([self.delegate respondsToSelector:@selector(revealController:didRevealRearViewController:)])
 		{
@@ -208,7 +210,8 @@
 }
 
 - (void)_concealAnimationWithDuration:(NSTimeInterval)duration resigningCompletelyFromRearViewPresentationMode:(BOOL)resigning
-{	
+{
+    [self.rearViewController viewWillDisappear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(0.0f, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
@@ -216,6 +219,7 @@
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidDisappear:duration > 0.0];
 		if (resigning)
 		{
 			// Dispatch message to delegate, telling it the 'rearView' _DID_ resign full-screen presentation mode, if appropriate:
@@ -252,12 +256,14 @@
 
 - (void)_revealCompletelyAnimationWithDuration:(NSTimeInterval)duration
 {
+    [self.rearViewController viewWillAppear:duration > 0.0];
 	[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^
 	{
 		self.frontView.frame = CGRectMake(self.rearViewPresentationWidth, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
 	}
 	completion:^(BOOL finished)
 	{
+        [self.rearViewController viewDidAppear:duration > 0.0];
         self.frontView.alpha = 0.0;
 		// Dispatch message to delegate, telling it the 'rearView' _DID_ enter its full-screen presentation mode, if appropriate:
 		if ([self.delegate respondsToSelector:@selector(revealController:didEnterRearViewControllerPresentationMode:)])
@@ -675,32 +681,52 @@
     return NO;
 }
 
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods {
+    return NO;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	[self.frontViewController viewWillAppear:animated];
-	[self.rearViewController viewWillAppear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewWillAppear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewWillAppear:animated];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	[self.frontViewController viewDidAppear:animated];
-	[self.rearViewController viewDidAppear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewDidAppear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewDidAppear:animated];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-	[self.frontViewController viewWillDisappear:animated];
-	[self.rearViewController viewWillDisappear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewWillDisappear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewWillDisappear:animated];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-	[self.frontViewController viewDidDisappear:animated];
-	[self.rearViewController viewDidDisappear:animated];
+    if (self.currentFrontViewPosition != FrontViewPositionRightMost) {
+        [self.frontViewController viewDidDisappear:animated];
+    }
+    if (self.currentFrontViewPosition == FrontViewPositionRight || self.currentFrontViewPosition == FrontViewPositionRightMost) {
+        [self.rearViewController viewDidDisappear:animated];
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -785,7 +811,8 @@
 	 * not notice a difference at first, but the keen eye will (even on an iPhone 4S) observe that 
 	 * the interface rotation _WILL_ lag slightly and feel less fluid than with the path.
 	 */
-	UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.frontView.bounds];
+    CGFloat length = self.frontView.frame.size.width > self.frontView.frame.size.height ? self.frontView.frame.size.width : self.frontView.frame.size.height;  //such that shadow is big enough when devices rotates
+	UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, length, length)];
 	self.frontView.layer.masksToBounds = NO;
 	self.frontView.layer.shadowColor = [UIColor blackColor].CGColor;
 	self.frontView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);

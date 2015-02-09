@@ -26,13 +26,20 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.pocketcampus.platform.server.BackgroundChecker;
 
 public abstract class ServerBase {
+	
+	List<ServiceInfo> plugins; 
+	
 	public void start(String config) throws Exception {
 		System.out.println("Local address is " + InetAddress.getLocalHost().getHostAddress());
 
 		initializeConfig(config);
+		initializePlugins();
 
+		new Thread(BackgroundChecker.getChecker(plugins)).start();
+		
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.setHandlers(new Handler[] { getServicesHandler(), getLogHandler() });
 
@@ -80,11 +87,11 @@ public abstract class ServerBase {
 	}
 
 	private Handler getServicesHandler() {
-		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
 		ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		handler.addLocaleEncoding("en_US", "UTF-8");
-		handler.addServlet(getPingServlet(), "/" + prefix + "/ping"); // or use "/" to catch all unhandled URLs
-		addProcessorServlets(handler);
+		addPingServlet(handler);
+		addProcessorServlets(handler, plugins);
+		addCheckServlet(handler, plugins);
 		return handler;
 	}
 
@@ -99,33 +106,10 @@ public abstract class ServerBase {
 		return handler;
 	}
 
-	private void addProcessorServlets(ServletContextHandler context) {
-		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
-		TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
-
-		for (ServiceInfo service : getServices()) {
-			TrackingThriftServlet binServlet = new TrackingThriftServlet(service.thriftProcessor, binProtocolFactory);
-
-			context.addServlet(new ServletHolder(binServlet), "/" + prefix + "/" + service.name);
-
-			// Special case for plugins that need a "raw" (non-Thrift) servlet
-			if (service.rawProcessor != null) {
-				context.addServlet(new ServletHolder(service.rawProcessor), "/" + prefix + "/raw-" + service.name);
-			}
-		}
-	}
-
-	@SuppressWarnings("serial")
-	private ServletHolder getPingServlet() {
-		return new ServletHolder(new HttpServlet() {
-			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				OutputStream out = response.getOutputStream();
-				out.write("OK".getBytes());
-				out.flush();
-			}
-		});
-	}
-
+	
+	////
+	
+	
 	private void initializeConfig(String config) {
 		try {
 			// First load internal config.
@@ -149,5 +133,71 @@ public abstract class ServerBase {
 			throw new RuntimeException("An error occurred while loading the config", e);
 		}
 	}
+	
+	private void initializePlugins() {
+		plugins = getServices();
+	}
+
+	
+	/////
+	
+
+	private static void addProcessorServlets(ServletContextHandler context, List<ServiceInfo> plugins) {
+		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
+		TProtocolFactory binProtocolFactory = new TBinaryProtocol.Factory();
+
+		for (ServiceInfo service : plugins) {
+			TrackingThriftServlet binServlet = new TrackingThriftServlet(service.thriftProcessor, binProtocolFactory);
+
+			context.addServlet(new ServletHolder(binServlet), "/" + prefix + "/" + service.name);
+
+			// Special case for plugins that need a "raw" (non-Thrift) servlet
+			if (service.rawProcessor != null) {
+				context.addServlet(new ServletHolder(service.rawProcessor), "/" + prefix + "/raw-" + service.name);
+			}
+		}
+	}
+
+	private static void addPingServlet(ServletContextHandler context) {
+		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
+		HttpServlet pingServlet = new HttpServlet() {
+			private static final long serialVersionUID = 5491786666949406938L;
+
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				OutputStream out = response.getOutputStream();
+				out.write("OK".getBytes());
+				out.flush();
+			}
+		};
+		context.addServlet(new ServletHolder(pingServlet), "/" + prefix + "/ping"); // or use "/" to catch all unhandled URLs
+	}
+	
+	private static void addCheckServlet(ServletContextHandler context, final List<ServiceInfo> plugins) {
+		String prefix = PocketCampusServer.CONFIG.getString("SERVER_URI_PREFIX");
+		HttpServlet checkServlet = new HttpServlet() {
+			private static final long serialVersionUID = 5491786666949406938L;
+
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				OutputStream out = response.getOutputStream();
+
+				for (ServiceInfo service : plugins) {
+					// plugins that have a state checker
+					if (service.stateChecker != null) {
+						int status = service.stateChecker.checkState();
+						if (status != 200) {
+							response.setStatus(status);
+							out.write(("plugin " + service.name + " returned status code " + status + "... aborting").getBytes());
+							out.flush();
+							return;
+						}
+					}
+				}
+				out.write("OK".getBytes());
+				out.flush();
+			}
+		};
+		context.addServlet(new ServletHolder(checkServlet), "/" + prefix + "/check");
+	}
+
 
 }

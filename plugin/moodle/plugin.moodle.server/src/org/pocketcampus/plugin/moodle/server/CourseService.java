@@ -11,4 +11,6 @@ public interface CourseService {
 	MoodleCoursesResponse2 getCourses(final MoodleCoursesRequest2 request);
 
 	MoodleCourseSectionsResponse2 getSections(final MoodleCourseSectionsRequest2 request);
+
+	boolean checkPocketCampusUser();
 }

@@ -29,11 +29,6 @@
 
 #import "DirectoryService.h"
 
-NSString* const kDirectoryURLActionSearch = @"search";
-NSString* const kDirectoryURLActionView = @"view";
-
-NSString* const kDirectoryURLParameterQuery = @"q";
-
 @implementation DirectoryService
 
 static DirectoryService* instance __weak = nil;
@@ -72,7 +67,7 @@ static DirectoryService* instance __weak = nil;
 
 - (void)searchForRequest:(DirectoryRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[DirectoryRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         DirectoryResponse* response = (__bridge id)result;
@@ -84,36 +79,6 @@ static DirectoryService* instance __weak = nil;
     operation.delegateDidReturnSelector = @selector(searchForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(searchFailedForRequest:);
     [operation addObjectArgument:request];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-#pragma mark - Deprecated service methods
-
-- (void)searchPersons:(NSString *)nameOrSciper delegate:(id)delegate {
-    if (![nameOrSciper isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad nameOrSciper" reason:@"nameOrSciper is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.keepInCache = YES;
-    operation.cacheValidityInterval = 60; //1 min
-    operation.serviceClientSelector = @selector(searchPersons:);
-    operation.delegateDidReturnSelector = @selector(searchDirectoryFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(searchDirectoryFailedFor:);
-    [operation addObjectArgument:nameOrSciper];
-    operation.returnType = ReturnTypeObject;
-    [self.operationQueue addOperation:operation];
-}
-
-- (void)autocomplete:(NSString *)constraint delegate:(id)delegate {
-    if (![constraint isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
-    }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
-    operation.serviceClientSelector = @selector(autocomplete:);
-    operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
-    operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
-    [operation addObjectArgument:constraint];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
 }

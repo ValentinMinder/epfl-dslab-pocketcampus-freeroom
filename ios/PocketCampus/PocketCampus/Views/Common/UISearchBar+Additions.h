@@ -25,16 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 09.01.14.
 
-
-
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface UISearchBar (Additions)
 

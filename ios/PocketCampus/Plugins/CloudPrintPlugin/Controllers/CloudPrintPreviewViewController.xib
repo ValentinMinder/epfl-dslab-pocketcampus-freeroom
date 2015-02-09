@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="dIU-dd-xtj" customClass="CloudPrintPreviewViewController">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="Mdr-Iw-THi"/>
+                <viewControllerLayoutGuide type="bottom" id="csM-02-qts"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="jnQ-C3-eXB">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aB6-ek-ZFg">
+                        <rect key="frame" x="5" y="25" width="310" height="410"/>
+                    </imageView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SAA-Ta-RHo">
+                        <rect key="frame" x="142" y="218" width="37" height="37"/>
+                        <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEP-Xx-MCa" userLabel="Center message label">
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page 1/2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PF7-XQ-Ski">
+                        <rect key="frame" x="131" y="449" width="58" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JP0-2e-iFd">
+                        <rect key="frame" x="59" y="443" width="56" height="29"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="Previous"/>
+                        <connections>
+                            <action selector="prevPageTapped" destination="dIU-dd-xtj" eventType="touchUpInside" id="86r-8n-nKK"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3C-jO-vgQ">
+                        <rect key="frame" x="205" y="443" width="31" height="29"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="Next">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="nextPageTapped" destination="dIU-dd-xtj" eventType="touchUpInside" id="f6M-RH-zpD"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" id="32S-LM-IEH"/>
+                    <constraint firstItem="N3C-jO-vgQ" firstAttribute="leading" secondItem="PF7-XQ-Ski" secondAttribute="trailing" constant="16" id="BXd-vI-wce"/>
+                    <constraint firstAttribute="centerY" secondItem="dEP-Xx-MCa" secondAttribute="centerY" id="DKy-cW-D6V"/>
+                    <constraint firstItem="PF7-XQ-Ski" firstAttribute="leading" secondItem="JP0-2e-iFd" secondAttribute="trailing" constant="16" id="DsS-DK-uBK"/>
+                    <constraint firstItem="aB6-ek-ZFg" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="5" id="LpE-5X-5Sw"/>
+                    <constraint firstItem="SAA-Ta-RHo" firstAttribute="top" secondItem="dEP-Xx-MCa" secondAttribute="bottom" constant="10" id="T8M-do-NsE"/>
+                    <constraint firstAttribute="centerX" secondItem="SAA-Ta-RHo" secondAttribute="centerX" id="XnE-ci-5N1"/>
+                    <constraint firstAttribute="centerY" secondItem="SAA-Ta-RHo" secondAttribute="centerY" constant="8" id="aOG-QW-6IE"/>
+                    <constraint firstItem="dEP-Xx-MCa" firstAttribute="leading" secondItem="jnQ-C3-eXB" secondAttribute="leading" constant="10" id="bT5-YG-YAg"/>
+                    <constraint firstAttribute="trailing" secondItem="dEP-Xx-MCa" secondAttribute="trailing" constant="10" id="bgH-4f-oaW"/>
+                    <constraint firstItem="dEP-Xx-MCa" firstAttribute="top" secondItem="SAA-Ta-RHo" secondAttribute="bottom" constant="15" id="eDK-f6-1F6"/>
+                    <constraint firstAttribute="trailing" secondItem="aB6-ek-ZFg" secondAttribute="trailing" constant="5" id="hMz-wH-9jK"/>
+                    <constraint firstAttribute="centerY" secondItem="dEP-Xx-MCa" secondAttribute="centerY" constant="-30" id="hlV-ds-I8f"/>
+                    <constraint firstItem="JP0-2e-iFd" firstAttribute="centerY" secondItem="PF7-XQ-Ski" secondAttribute="centerY" id="iRk-eA-P4O"/>
+                    <constraint firstAttribute="centerX" secondItem="PF7-XQ-Ski" secondAttribute="centerX" id="qGf-mX-J6i"/>
+                    <constraint firstItem="aB6-ek-ZFg" firstAttribute="top" secondItem="Mdr-Iw-THi" secondAttribute="bottom" constant="5" id="ti3-LR-i0B"/>
+                    <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="PF7-XQ-Ski" secondAttribute="bottom" constant="14" id="xVT-Xl-LRf"/>
+                    <constraint firstItem="csM-02-qts" firstAttribute="top" secondItem="aB6-ek-ZFg" secondAttribute="bottom" constant="45" id="y8x-uh-7EO"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="T8M-do-NsE"/>
+                        <exclude reference="aOG-QW-6IE"/>
+                        <exclude reference="DKy-cW-D6V"/>
+                    </mask>
+                </variation>
+            </view>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="centerMessageLabel" destination="dEP-Xx-MCa" id="O2j-40-KDN"/>
+                <outlet property="imageView" destination="aB6-ek-ZFg" id="Yof-5x-lGj"/>
+                <outlet property="loadingIndicator" destination="SAA-Ta-RHo" id="NdP-F9-ZVg"/>
+                <outlet property="nextPageButton" destination="N3C-jO-vgQ" id="ZbP-zY-9Bl"/>
+                <outlet property="pageLabel" destination="PF7-XQ-Ski" id="nmF-oC-XaG"/>
+                <outlet property="prevPageButton" destination="JP0-2e-iFd" id="tw7-2Q-9v2"/>
+            </connections>
+            <point key="canvasLocation" x="180" y="281"/>
+        </viewController>
+    </objects>
+</document>

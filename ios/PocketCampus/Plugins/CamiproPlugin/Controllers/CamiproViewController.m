@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 17.05.12.
-
 
 #import "CamiproViewController.h"
 
@@ -41,9 +37,14 @@
 
 #import "CamiproController.h"
 
+#import "CamiproInfoWidgetCell.h"
+
 #import "CamiproTransactionCell.h"
 
 #import <QuartzCore/QuartzCore.h>
+
+static NSInteger const kBalanceSection = 0;
+static NSInteger const kHistorySection = 1;
 
 @interface CamiproViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, CamiproServiceDelegate>
 
@@ -53,7 +54,9 @@
 @property (nonatomic, weak) IBOutlet UIToolbar* toolbar;
 
 @property (nonatomic, strong) UITableViewController* tableViewController;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
+
+@property (nonatomic, strong, readonly) CamiproInfoWidgetCell* infoWidgetCell;
 
 // iPad only
 @property (nonatomic, strong) IBOutlet UILabel* statsLabel;
@@ -97,7 +100,7 @@
     
     self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
     [self addChildViewController:self.tableViewController];
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self.tableViewController refreshedDataIdentifier:nil];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     self.tableViewController.tableView = self.tableView;
     
@@ -166,7 +169,8 @@
     } else {
         [[CamiproController sharedInstanceToRetain] addLoginObserver:self successBlock:successBlock userCancelledBlock:^{
             [self.centerActivityIndicator stopAnimating];
-        } failureBlock:^{
+            [[MainController publicController] requestLeavePlugin:[CamiproController identifierName]];
+        } failureBlock:^(NSError *error) {
             [self getBalanceAndTransactionsFailedForCamiproRequest:nil];
         }];
     }
@@ -185,7 +189,7 @@
                 return;
             }
             [self.statsAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        } failureBlock:^{
+        } failureBlock:^(NSError *error) {
             [self getStatsAndLoadingInfoFailedForCamiproRequest:nil];
         }];
     }
@@ -444,27 +448,33 @@ static const CGFloat kBalanceCellHeightPhone = 70.0;
 static const CGFloat kBalanceCellHeightPad = 120.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        if ([PCUtils isIdiomPad]) {
-            return kBalanceCellHeightPad;
-        } else {
-            return kBalanceCellHeightPhone;
-        }
+    switch (indexPath.section) {
+        case kBalanceSection:
+            if (indexPath.row == [self balanceCellIndex]) {
+                return [PCUtils isIdiomPad] ? kBalanceCellHeightPad : kBalanceCellHeightPhone;
+            }
+            if (indexPath.row == [self infoWidgetCellIndex]) {
+                return [self.infoWidgetCell preferredHeightInTableView:self.tableView];
+            }
+            break;
+        case kHistorySection:
+            return 50.0;
+            break;
     }
-    return 50.0;
+    return 0.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [PCTableViewSectionHeader preferredHeight];
 }
 
-- (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     PCTableViewSectionHeader* headerView = nil;
     switch (section) {
-        case 0:
+        case kBalanceSection:
             headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"CamiproBalance", @"CamiproPlugin", nil) tableView:self.tableView];
             break;
-        case 1:
+        case kHistorySection:
             headerView = [[PCTableViewSectionHeader alloc] initWithSectionTitle:NSLocalizedStringFromTable(@"TransactionsHistory", @"CamiproPlugin", nil) tableView:self.tableView];
             break;
         default:
@@ -479,39 +489,55 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PCTableViewCellAdditions* cell = nil;
-    if (indexPath.section == 0) { //balance cell
-        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UILabel* balanceLabel = nil;
-        if ([PCUtils isIdiomPad]) {
-            balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPad)];
-            balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:48.0];
-        } else {
-            balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPhone)];
-            balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:34.0];
+    switch (indexPath.section) {
+        case kBalanceSection:
+        {
+            if (indexPath.row == [self balanceCellIndex]) {
+                cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                UILabel* balanceLabel = nil;
+                if ([PCUtils isIdiomPad]) {
+                    balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPad)];
+                    balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:48.0];
+                } else {
+                    balanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, kBalanceCellHeightPhone)];
+                    balanceLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:34.0];
+                }
+                balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", self.balanceAndTransactions.iBalance];
+                balanceLabel.textAlignment = NSTextAlignmentCenter;
+                balanceLabel.backgroundColor = [UIColor clearColor];
+                //balanceLabel.textColor = [UIColor darkGrayColor];
+                balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                balanceLabel.isAccessibilityElement = NO;
+                [cell setAccessibilityLabelBlock:^NSString* {
+                    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"CamiproBalanceWithFormat", @"CamiproPlugin", nil), balanceLabel.text];
+                }];
+                [cell.contentView addSubview:balanceLabel];
+            } else if (indexPath.row == [self infoWidgetCellIndex]) {
+                cell = self.infoWidgetCell;
+                __weak __typeof(self) welf = self;
+                [(CamiproInfoWidgetCell*)cell setCloseButtonTapped:^{
+                    [welf saveWidgetInfoHidden:YES];
+                    [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kBalanceSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }];
+            }
+            break;
         }
-        balanceLabel.text = [NSString stringWithFormat:@"CHF %.2lf", self.balanceAndTransactions.iBalance];
-        balanceLabel.textAlignment = NSTextAlignmentCenter;
-        balanceLabel.backgroundColor = [UIColor clearColor];
-        //balanceLabel.textColor = [UIColor darkGrayColor];
-        balanceLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        balanceLabel.isAccessibilityElement = NO;
-        [cell setAccessibilityLabelBlock:^NSString* {
-            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"CamiproBalanceWithFormat", @"CamiproPlugin", nil), balanceLabel.text];
-        }];
-        [cell.contentView addSubview:balanceLabel];
-        
-        return cell;
+        case kHistorySection:
+        {
+            NSString* identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CamiproHistoryCell"];
+            //transactions cells
+            Transaction* transaction = self.balanceAndTransactions.iTransactions[indexPath.row];
+            cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[CamiproTransactionCell alloc] initWithReuseIdentifier:identifier];
+            }
+            ((CamiproTransactionCell*)cell).transaction = transaction;
+            break;
+        }
+        default:
+            break;
     }
-    
-    NSString* identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"CamiproHistoryCell"];
-    //transactions cells
-    Transaction* transaction = self.balanceAndTransactions.iTransactions[indexPath.row];
-    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[CamiproTransactionCell alloc] initWithReuseIdentifier:identifier];
-    }
-    ((CamiproTransactionCell*)cell).transaction = transaction;
     return cell;
 }
 
@@ -520,9 +546,12 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         return 0;
     }
     switch (section) {
-        case 0:
-            return 1; //balance
-        case 1:
+        case kBalanceSection:
+            if ([self infoWidgetCellIndex] >= 0) {
+                return 2;
+            }
+            return 1;
+        case kHistorySection:
             return self.balanceAndTransactions.iTransactions.count;
     }
     return 0;
@@ -533,6 +562,45 @@ static const CGFloat kBalanceCellHeightPad = 120.0;
         return 0;
     }
     return 2; //balance and history sections
+}
+
+#pragma mark - Private
+
+@synthesize infoWidgetCell = _infoWidgetCell;
+
+- (CamiproInfoWidgetCell*)infoWidgetCell {
+    if (!_infoWidgetCell) {
+        _infoWidgetCell = [CamiproInfoWidgetCell new];
+    }
+    return _infoWidgetCell;
+}
+
+static NSString* const kHideWidgetInfoBoolKey = @"HideWidgetInfoBool";
+
+- (void)saveWidgetInfoHidden:(BOOL)hidden {
+    [[PCPersistenceManager userDefaultsForPluginName:@"camipro"] setBool:hidden forKey:kHideWidgetInfoBoolKey];
+}
+
+- (BOOL)shouldHideWidgetInfo {
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+        //Widgets only available on iOS 8
+        return YES;
+    }
+    return [[PCPersistenceManager userDefaultsForPluginName:@"camipro"] boolForKey:kHideWidgetInfoBoolKey];
+}
+
+- (NSInteger)infoWidgetCellIndex {
+    if ([self shouldHideWidgetInfo]) {
+        return -1;
+    }
+    return 0;
+}
+
+- (NSInteger)balanceCellIndex {
+    if ([self infoWidgetCellIndex] >= 0) {
+        return 1;
+    }
+    return 0;
 }
 
 #pragma mark - Dealloc

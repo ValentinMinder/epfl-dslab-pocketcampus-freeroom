@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 12.04.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import <MapKit/MapKit.h>
 

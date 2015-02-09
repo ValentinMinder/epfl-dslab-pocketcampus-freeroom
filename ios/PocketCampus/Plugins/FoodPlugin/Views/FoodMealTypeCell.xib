@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="02e-g9-323" customClass="FoodMealTypeCell">
+            <rect key="frame" x="0.0" y="0.0" width="70" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="70" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fur-ck-htN">
+                        <rect key="frame" x="10" y="0.0" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Fur-ck-htN" secondAttribute="height" multiplier="1:1" id="xfh-St-8Mt"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tWM-gY-F7j">
+                        <rect key="frame" x="5" y="50" width="60" height="15"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Fur-ck-htN" firstAttribute="leading" secondItem="02e-g9-323" secondAttribute="leading" constant="10" id="9s0-av-9E3"/>
+                <constraint firstItem="Fur-ck-htN" firstAttribute="top" secondItem="02e-g9-323" secondAttribute="top" id="RzZ-u7-vsw"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tWM-gY-F7j" secondAttribute="bottom" id="V6Z-wk-a5s"/>
+                <constraint firstAttribute="trailing" secondItem="Fur-ck-htN" secondAttribute="trailing" constant="10" id="WM0-TH-9jq"/>
+                <constraint firstItem="tWM-gY-F7j" firstAttribute="leading" secondItem="02e-g9-323" secondAttribute="leading" constant="5" id="qOi-p8-czn"/>
+                <constraint firstItem="tWM-gY-F7j" firstAttribute="top" secondItem="Fur-ck-htN" secondAttribute="bottom" id="sBd-sp-tWe"/>
+                <constraint firstAttribute="trailing" secondItem="tWM-gY-F7j" secondAttribute="trailing" constant="5" id="wCS-OE-0en"/>
+            </constraints>
+            <size key="customSize" width="100" height="108"/>
+            <connections>
+                <outlet property="imageView" destination="Fur-ck-htN" id="qeE-FJ-9JI"/>
+                <outlet property="titleLabel" destination="tWM-gY-F7j" id="UKx-3j-Am0"/>
+            </connections>
+            <point key="canvasLocation" x="362" y="322"/>
+        </collectionViewCell>
+    </objects>
+</document>

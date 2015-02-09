@@ -25,15 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 23.10.12.
 
-
 #import "PluginNavigationController.h"
-
-#import "PCValues.h"
 
 @interface PluginNavigationController ()
 

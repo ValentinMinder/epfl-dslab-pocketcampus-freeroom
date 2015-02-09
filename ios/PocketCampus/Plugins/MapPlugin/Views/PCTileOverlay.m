@@ -63,10 +63,12 @@
     if (!cachedData || ![cachedData isKindOfClass:[NSData class]]) {
         __weak __typeof(self) welf = self;
         [super loadTileAtPath:path result:^void(NSData* data, NSError* error) {
-            if (data && !error) {
+            if (welf && data && !error) {
                 [welf saveTileData:data forTileOverlayPath:path floorLevel:floorLevel];
             }
-            result(data, error);
+            if (welf) {
+                result(data, error);
+            }
         }];
         return;
     }

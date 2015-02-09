@@ -1,3 +1,5 @@
 
 "PluginName" = "Push notifications";
-"PushNotifsAlertTitleWithFormat" = "Push notifications for %@";
+"PushNotifsAlertTitleWithFormat" = "Enable Push Notifications for %@ ?";
+"PushNotifsAlertAcceptButtonTitle" = "Yes";
+"PushNotifsAlertRejectButtonTitle" = "No";

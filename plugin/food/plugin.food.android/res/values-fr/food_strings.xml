@@ -30,7 +30,8 @@
 	<string name="food_button_send">Soumettre</string>
 	<string name="food_button_googletranslate">Traduire avec Google Translate</string>
 	<string name="food_button_copytext">Copier texte</string>
-						
+	<string name="food_button_showprices">Afficher prix</string>
+							
 	<string name="food_toast_nogoogletranslate">Veuillez installer Google Translate</string>
 	<string name="food_toast_vote_noselection">Veuillez sélectionner un smiley</string>
 	<string name="food_toast_copied">Copié</string>
@@ -38,7 +39,9 @@
 	<string name="food_toast_tooearly">Trop tôt</string>
 	<string name="food_toast_toolate">Trop tard</string>		
 	<string name="food_toast_thanksforvote">Merci pour votre vote</string>
-							
+
+	<string name="food_pricetag_auto">&lt;i&gt;Sélection automatique&lt;/i&gt;</string>							
+	
 	<string name="food_enum_STUDENT">Étudiant</string>
 	<string name="food_enum_PHD_STUDENT">Doctorant</string>
 	<string name="food_enum_STAFF">Personnel</string>

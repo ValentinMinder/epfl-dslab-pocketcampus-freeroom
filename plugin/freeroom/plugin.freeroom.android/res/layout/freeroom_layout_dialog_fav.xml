@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the favorites dialog window. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="5dp" >
+    
+    <!-- TextView to summarize the number of favorites -->
+    
+    <TextView
+        android:id="@+id/freeroom_layout_dialog_fav_status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/freeroom_dialog_fav_status_no"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="visible" />
+
+    <!-- ListView that contains all the favorites by buildings -->
+
+    <ExpandableListView
+        android:id="@+id/freeroom_layout_dialog_fav_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

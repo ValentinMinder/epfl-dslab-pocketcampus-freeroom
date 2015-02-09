@@ -42,7 +42,7 @@
 @implementation PCValues
 
 + (void)applyAppearenceProxy {
-    //nothing for now
+    [[UICollectionView appearanceWhenContainedIn:[UIAlertController class], nil] setTintColor:[self defaultBlueTintColor]];
 }
 
 + (UIImage*)imageForFavoriteNavBarButtonLandscapePhone:(BOOL)landscapePhone glow:(BOOL)glow {
@@ -50,9 +50,12 @@
     return [UIImage imageNamed:imageName];
 }
 
-+ (UIImage*)resizableCellEmptyImage {
-    UIImage* image = [UIImage imageNamed:@"CellEmptyPicture"];
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
++ (UIImage*)imageForPrintBarButtonLandscapePhone:(BOOL)landscapePhone {
+    return [UIImage imageNamed:landscapePhone ? @"PrintBarButtonLandscape" : @"PrintBarButton"];
+}
+
++ (UIColor*)defaultBlueTintColor {
+    return [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
 }
 
 + (UIColor*)pocketCampusRed {
@@ -89,10 +92,6 @@
         height += subview.frame.size.height;
     }
     return height;
-}
-
-+ (CGFloat)tableViewSectionHeaderHeight {
-    return [PCTableViewSectionHeader preferredHeight];
 }
 
 @end

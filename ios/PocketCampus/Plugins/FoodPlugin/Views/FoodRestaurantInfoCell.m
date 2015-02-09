@@ -69,9 +69,6 @@ static const CGFloat kTopBarHeight = 30.0;
         //self.separatorInset = UIEdgeInsetsMake(0, 1000, 0, 0);
         [self.showOnMapButton setTitle:[NSString stringWithFormat:@"  %@  ", NSLocalizedStringFromTable(@"ShowOnMap", @"FoodPlugin", nil)] forState:UIControlStateNormal];
         _showRating = YES; //Default
-        //[self.backgroundImageView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:self.backgroundImageView edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, 0.0, kNoInsetConstraint, 0.0)]];
-        //self.backgroundImageViewHeightConstraint = [NSLayoutConstraint heightConstraint:[self.class preferredHeightForRestaurant:_restaurant] - kTopBarHeight forView:self.backgroundImageView];
-        //[self.backgroundImageView addConstraint:self.backgroundImageViewHeightConstraint];
         
         self.restaurant = restaurant;
     }
@@ -85,37 +82,42 @@ static const CGFloat kTopBarHeight = 30.0;
     if (!restaurant.rPictureUrl) {
         return kTopBarHeight + 0.5; //just top bar for satRateLabel and showOnMapButton. 0.5 (room for separator)
     }
-    return [PCUtils isIdiomPad] ? 240.0 : ([PCUtils is4inchDevice] ? 170.0 : 150.0);
+    return [PCUtils isIdiomPad] ? 240.0 : 0.3 * [UIScreen mainScreen].bounds.size.height;
 }
 
 - (void)setRestaurant:(EpflRestaurant *)restaurant {
     _restaurant = restaurant;
     self.backgroundImageView.hidden = (self.restaurant.rPictureUrl == nil);
     if (self.restaurant.rPictureUrl) {
-        FoodRestaurantInfoCell* weakSelf __weak = self;
+        FoodRestaurantInfoCell* welf __weak = self;
+        
+        
+/*#warning REMOVE
+         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
+         
+         id<AFImageCache> cache = [UIImageView sharedImageCache];
+         UIImage* cachedImage __block = [cache cachedImageForRequest:request];
+         cachedImage = nil;
+#warning END OF REMOVE*/
+        
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.restaurant.rPictureUrl]];
         id<AFImageCache> cache = [UIImageView sharedImageCache];
         UIImage* cachedImage __block = [cache cachedImageForRequest:request];
+         
         if (cachedImage) {
             [NSTimer scheduledTimerWithTimeInterval:0.0 block:^{
-                if (!weakSelf.backgroundImageView) {
+                if (!welf.backgroundImageView) {
                     return;
                 }
-                CGFloat width = weakSelf.backgroundImageView.frame.size.width;
-                CGFloat height = weakSelf.backgroundImageView.frame.size.height;
-                [weakSelf.backgroundImageView addConstraints:[NSLayoutConstraint width:width height:height constraintsForView:weakSelf.backgroundImageView]];
-                weakSelf.backgroundImageView.image = cachedImage;
+                welf.backgroundImageView.image = cachedImage;
             } repeats:NO];
             
         } else {
             [self.backgroundImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                if (!weakSelf.backgroundImageView) {
+                if (!welf.backgroundImageView) {
                     return;
                 }
-                CGFloat width = weakSelf.backgroundImageView.frame.size.width;
-                CGFloat height = weakSelf.backgroundImageView.frame.size.height;
-                [weakSelf.backgroundImageView addConstraints:[NSLayoutConstraint width:width height:height constraintsForView:weakSelf.backgroundImageView]];
-                weakSelf.backgroundImageView.image = image;
+                welf.backgroundImageView.image = image;
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 //nothing to do
             }];

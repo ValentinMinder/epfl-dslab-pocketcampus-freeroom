@@ -1,16 +1,20 @@
 package org.pocketcampus.plugin.food.server;
 
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.food.shared.*;
-
 import org.apache.thrift.TException;
 import org.joda.time.*;
 
+import com.google.gson.JsonParseException;
 import com.unboundid.ldap.sdk.*;
 
 /**
@@ -26,20 +30,28 @@ public class FoodServiceImpl implements FoodService.Iface {
 	private final Menu _menu;
 	private final PictureSource _pictureSource;
 	private final RestaurantLocator _locator;
+	private final Authenticator _authenticator;
+	private final LDAPInterface _ldap;
 
 	public FoodServiceImpl(RatingDatabase ratingDatabase, Menu menu,
-			PictureSource pictureSource, RestaurantLocator locator) {
+			PictureSource pictureSource, RestaurantLocator locator,
+			Authenticator authenticator,
+			LDAPInterface ldap) {
 		_ratingDatabase = ratingDatabase;
 		_menu = menu;
 		_pictureSource = pictureSource;
 		_locator = locator;
+		_authenticator = authenticator;
+		_ldap = ldap;
 	}
 
 	public FoodServiceImpl() {
 		this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
 				CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
 				CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
-				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false));
+				CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
+				new AuthenticatorImpl(),
+				getLdapObject());
 	}
 
 	@Override
@@ -56,13 +68,13 @@ public class FoodServiceImpl implements FoodService.Iface {
 		FoodResponse response = null;
 		try {
 			response = _menu.get(time, date);
-		} catch (Exception e) {
+		} catch (JsonParseException e) {
 			throw new TException("An exception occurred while getting the menu", e);
 		}
 		try {
 			_ratingDatabase.insertMenu(response.getMenu(), date, time);
 			_ratingDatabase.setRatings(response.getMenu());
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new TException("An exception occurred while inserting and fetching the ratings", e);
 		}
 
@@ -71,9 +83,8 @@ public class FoodServiceImpl implements FoodService.Iface {
 			restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
 		}
 
-		if (foodReq.isSetUserGaspar()) {
-			response.setUserStatus(getPriceTarget(foodReq.getUserGaspar()));
-		}
+		String gaspar = foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : _authenticator.getGaspar();
+		response.setUserStatus(getPriceTarget(gaspar));
 
 		return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
 	}
@@ -82,11 +93,11 @@ public class FoodServiceImpl implements FoodService.Iface {
 	public VoteResponse vote(VoteRequest voteReq) throws TException {
 		try {
 			if (voteReq.getRating() < 0 || voteReq.getRating() > 5) {
-				throw new Exception("Invalid rating.");
+				throw new TException("Invalid rating.");
 			}
 
-			return new VoteResponse( _ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
-		} catch (Exception e) {
+			return new VoteResponse(_ratingDatabase.vote(voteReq.getDeviceId(), voteReq.getMealId(), voteReq.getRating()));
+		} catch (SQLException e) {
 			throw new TException("An error occurred during a vote", e);
 		}
 	}
@@ -100,13 +111,24 @@ public class FoodServiceImpl implements FoodService.Iface {
 	}
 
 	// TODO extract this to a common LDAP service used everytime we need it, not just in food
-	private static PriceTarget getPriceTarget(String sciper) {
+	private static LDAPInterface getLdapObject() {
+		try {
+			return new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 5);
+		} catch (LDAPException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private PriceTarget getPriceTarget(String username) {
+		if (username == null)
+			return null;
+		if (_ldap == null)
+			throw new RuntimeException("What the heck, dude, _ldap is null");
 		List<PriceTarget> classes = new LinkedList<PriceTarget>();
 		try {
-			LDAPConnection ldap = new LDAPConnection();
-			ldap.connect("ldap.epfl.ch", 389);
-			SearchResult searchResult = ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + sciper + ")(uniqueidentifier=" + sciper
-					+ "))", (String[]) null);
+			SearchResult searchResult = _ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier="
+					+ username + "))", (String[]) null);
 			for (SearchResultEntry e : searchResult.getSearchEntries()) {
 				String os = e.getAttributeValue("organizationalStatus");
 				if ("Etudiant".equals(os)) {
@@ -118,8 +140,10 @@ public class FoodServiceImpl implements FoodService.Iface {
 					}
 				} else if ("Personnel".equals(os)) {
 					classes.add(PriceTarget.STAFF);
-				} else {
-					classes.add(PriceTarget.VISITOR);
+				} else { // Hôte, etc.
+					// classes.add(PriceTarget.VISITOR);
+					// It seems if the person has _any_ entry in LDAP, they are considered staff...
+					classes.add(PriceTarget.STAFF);
 				}
 			}
 		} catch (LDAPException e) {
@@ -134,35 +158,30 @@ public class FoodServiceImpl implements FoodService.Iface {
 		return PriceTarget.VISITOR;
 	}
 
-	// OLD STUFF - DO NOT TOUCH
-
-	private org.pocketcampus.plugin.food.server.old.OldFoodService _oldService;
-
-	/**
-	 * OBSOLETE.
-	 * Gets the old version of this service, using lazy initialization
-	 * to avoid initializing it during unit tests since it does stuff with databases.
-	 */
-	private org.pocketcampus.plugin.food.server.old.OldFoodService getOldService() {
-		if (_oldService == null) {
-			_oldService = new org.pocketcampus.plugin.food.server.old.OldFoodService();
-		}
-		return _oldService;
-	}
+	// OLD STUFF
 
 	/**
 	 * OBSOLETE. Gets all menus for today.
 	 */
 	@Override
 	public List<Meal> getMeals() throws TException {
-		return getOldService().getMeals();
-	}
-
-	/**
-	 * OBSOLETE. Checks whether the user has already voted today
-	 */
-	public boolean hasVoted(String deviceId) throws TException {
-		return getOldService().hasVoted(deviceId);
+		FoodResponse resp = getFood(new FoodRequest());
+		if (resp.getStatusCode() == FoodStatusCode.OK) {
+			List<Meal> mealList = new LinkedList<Meal>();
+			for (EpflRestaurant resto : resp.getMenu()) {
+				for (EpflMeal meal : resto.getRMeals()) {
+					mealList.add(new Meal(meal.getMId(), meal.getMName(), meal
+							.getMDescription(), new Restaurant(resto.getRId(),
+							resto.getRName()), new Rating(meal.getMRating()
+							.getRatingValue() * 5, meal.getMRating()
+							.getVoteCount(), meal.getMRating().getRatingValue()
+							* 5 * meal.getMRating().getVoteCount())));
+				}
+			}
+			return mealList;
+		}
+		throw new TException("getFood returned status "
+				+ resp.getStatusCode().getValue());
 	}
 
 	/**
@@ -170,7 +189,21 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public Map<Long, Rating> getRatings() throws TException {
-		return getOldService().getRatings();
+		FoodResponse resp = getFood(new FoodRequest());
+		if (resp.getStatusCode() == FoodStatusCode.OK) {
+			Map<Long, Rating> ratings = new HashMap<Long, Rating>();
+			for (EpflRestaurant resto : resp.getMenu()) {
+				for (EpflMeal meal : resto.getRMeals()) {
+					ratings.put(meal.getMId(), new Rating(meal.getMRating()
+							.getRatingValue() * 5, meal.getMRating()
+							.getVoteCount(), meal.getMRating().getRatingValue()
+							* 5 * meal.getMRating().getVoteCount()));
+				}
+			}
+			return ratings;
+		}
+		throw new TException("getFood returned status "
+				+ resp.getStatusCode().getValue());
 	}
 
 	/**
@@ -178,6 +211,6 @@ public class FoodServiceImpl implements FoodService.Iface {
 	 */
 	@Override
 	public SubmitStatus setRating(long mealId, double rating, String deviceId) throws TException {
-		return getOldService().setRating(mealId, rating, deviceId);
+		return vote(new VoteRequest(mealId, rating / 5.0, deviceId)).getSubmitStatus();
 	}
 }

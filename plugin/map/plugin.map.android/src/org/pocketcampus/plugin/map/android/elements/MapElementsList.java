@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.map.android.elements;
 import java.util.ArrayList;
 
 import org.pocketcampus.plugin.map.common.MapLayerBean;
-import org.pocketcampus.plugin.map.shared.MapLayer;
 
 /**
  * Custom List class for <code>MapElement</code>s.
@@ -37,14 +36,6 @@ public class MapElementsList extends ArrayList<MapElement> {
 		isDisplayable_ = mlb.isDisplayable();
 	}
 	
-	public MapElementsList(MapLayer mlb) {
-		layerTitle_ = mlb.getName();
-		cacheTimeInSeconds_ = mlb.getCacheInSeconds();
-		layerId_ = mlb.getLayerId();
-		iconUrl_ = mlb.getDrawableUrl();
-		isDisplayable_ = mlb.isDisplayable();
-	}
-
 	public MapElement getItemFromId(int id) {
 		for(MapElement me : this) {
 			if(me.getItemId() == id) {

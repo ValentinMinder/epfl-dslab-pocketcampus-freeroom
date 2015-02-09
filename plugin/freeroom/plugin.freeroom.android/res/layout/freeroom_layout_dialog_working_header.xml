@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the working there popup header (list header) -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <!-- HEADER is added there programmatically -->
+    <!-- Title (working there...) and exact time -->
+
+    <TextView
+        android:id="@+id/freeroom_layout_dialog_working_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/freeroom_whoIsWorking_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/freeroom_layout_dialog_working_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="MOCK Today 14:00 PM - 15:00 PM"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>

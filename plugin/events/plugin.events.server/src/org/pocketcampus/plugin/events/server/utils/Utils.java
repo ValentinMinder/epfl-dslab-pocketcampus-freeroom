@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jsoup.nodes.Element;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.pushnotif.server.PushNotifServiceImpl;
 
@@ -99,15 +98,7 @@ public class Utils {
 			}
 		} catch (MalformedURLException e) {
 		}
-		return null;
-	}
-
-	public static String removeFirstStrong(Element t) {
-		for (Element e : t.getElementsByTag("strong")) {
-			e.html("");
-			break;
-		}
-		return t.text().trim();
+		return mapUrl;
 	}
 
 	public static void registerForPush(List<String> tokens) {

@@ -37,6 +37,7 @@
 typedef enum {
     AuthenticationFailureReasonInvalidToken,
     AuthenticationFailureReasonUserCancelled,
+    AuthenticationFailureReasonCannotAskForCredentials, //typically when authentication would require (non-saved) credentials but those cannot be asked to the user because target is running in an extension that does not support user input.
     AuthenticationFailureReasonInternalError
 } AuthenticationFailureReason;
 
@@ -48,19 +49,26 @@ typedef enum {
 
 @end
 
+/**
+ * Domain and codes used for NSError in addLoginObserver:... failure block
+ */
+extern NSString* kAuthenticationErrorDomain;
+extern NSInteger kAuthenticationErrorCodeCouldNotAskForCredentials; //login was required but crendentials could not asked to the user (for e.g. in extension that does not support user input)
+extern NSInteger kAuthenticationErrorCodeOther;
+
 @interface PCLoginObserver : NSObject
 
 @property (nonatomic, weak) id observer;
 @property (nonatomic, copy) NSString* operationIdentifier;
 @property (nonatomic, copy) VoidBlock successBlock;
 @property (nonatomic, copy) VoidBlock userCancelledBlock;
-@property (nonatomic, copy) VoidBlock failureBlock;
+@property (nonatomic, copy) void (^failureBlock)(NSError* error);
 
 @end
 
 @interface AuthenticationController : PluginController<PluginControllerProtocol>
 
-/*
+/**
  * Same as sharedInstanceToRetain
  * Only indicates that sharedInstanceToRetain actually does not
  * need to be retained (singleton).
@@ -68,7 +76,7 @@ typedef enum {
 + (instancetype)sharedInstance;
 
 /**
- * Returns the view controller that shows which user is connected if so,
+ * @return the view controller that shows which user is connected if so,
  * and allows to login/logout without the goal of authenticating a token.
  */
 - (AuthenticationViewController*)statusViewController;
@@ -80,7 +88,7 @@ typedef enum {
  */
 - (NSString*)loggedInUsername;
 
-/*
+/**
  * ######### Standard authentication #########
  * (for plugins that do NOT authenticate using PocketCampus server.
  *  The plugin controller of these plugins can subclass PluginControllerAuthentified
@@ -94,7 +102,7 @@ typedef enum {
  */
 - (void)authenticateToken:(NSString*)token delegate:(id<AuthenticationControllerDelegate>)delegate;
 
-/*
+/**
  * ######### New-style authentication #########
  * (for services that authenticate using PocketCampus server).
  *
@@ -108,20 +116,26 @@ typedef enum {
  * This method ALWAYS starts the authentication process for the first observer,
  * i.e. that does check whether a PocketCampus session already exists. It is
  * responsability of plugins to call it only when necessary.
+ * 
+ * @param observer is unified by address. Meaning that if you already have registered observer with this method,
+ * calling it again with the same observer will not do anything. You have to call removeLoginObserver: first
+ * if you want to change the success/userCancelled/failure blocks.
+ *
+ * @param failure error is one of the kAuthenticationErrorCode
  */
-- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(VoidBlock)failure;
+- (void)addLoginObserver:(id)observer success:(VoidBlock)success userCancelled:(VoidBlock)userCancelled failure:(void (^)(NSError* error))failure;
 
-/*
+/**
  * Removes observer from list of observers.
  * Does NOT cancel the authentication if currently in progress.
  * (finishes silently).
  */
 - (void)removeLoginObserver:(id)observer;
 
-/*
+/**
  * Renewed when addLoginObserver:... authentication succeeds.
  * You should though typically NOT access this property directly.
- * ServiceRequest automatically attaches this session to all requests.
+ * PCServiceRequest (thrift calls) automatically attaches this session to all requests.
  */
 @property (nonatomic, readonly) NSString* pocketCampusAuthSessionId;
 

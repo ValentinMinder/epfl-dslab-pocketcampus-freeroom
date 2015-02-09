@@ -25,17 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol (loic.gardiol@gmail.com)
 
+@import Foundation;
 
-#import <Foundation/Foundation.h>
-
-#import "Service.h"
+#import "PCService.h"
 
 #import "isacademia.h"
 
@@ -43,7 +37,7 @@
 
 @protocol IsAcademiaServiceDelegate;
 
-@interface IsAcademiaService : Service <ServiceProtocol>
+@interface IsAcademiaService : PCService <PCServiceProtocol>
 
 /*
 - (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
@@ -53,7 +47,7 @@
 
 @end
 
-@protocol IsAcademiaServiceDelegate <ServiceDelegate>
+@protocol IsAcademiaServiceDelegate <PCServiceDelegate>
 
 @optional
 - (void)getScheduleForRequest:(ScheduleRequest*)request didReturn:(ScheduleResponse*)scheduleResponse;

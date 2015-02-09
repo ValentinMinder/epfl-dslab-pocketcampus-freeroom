@@ -25,17 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 23.03.12.
-
 
 #import "TransportController.h"
 
 #import "TransportNextDeparturesViewController.h"
-
-#import "PCPersistenceManager.h"
 
 @implementation TransportController
 

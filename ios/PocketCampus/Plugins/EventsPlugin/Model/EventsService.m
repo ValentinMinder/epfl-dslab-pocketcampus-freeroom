@@ -213,7 +213,7 @@ static NSString* const kUserTokenOldKey = @"userToken";
 
 - (void)getEventItemForRequest:(EventItemRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventItemRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         EventItemReply* reply = (__bridge id)result;
@@ -231,7 +231,7 @@ static NSString* const kUserTokenOldKey = @"userToken";
 
 - (void)getEventPoolForRequest:(EventPoolRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         EventPoolReply* reply = (__bridge id)result;
@@ -248,7 +248,7 @@ static NSString* const kUserTokenOldKey = @"userToken";
 
 - (void)exchangeContactsForRequest:(ExchangeRequest*)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[ExchangeRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(exchangeContacts:);
     operation.delegateDidReturnSelector = @selector(exchangeContactsForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(exchangeContactsFailedForRequest:);
@@ -259,7 +259,7 @@ static NSString* const kUserTokenOldKey = @"userToken";
 
 - (void)sendStarredItemsByEmail:(SendEmailRequest *)request delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[SendEmailRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(sendStarredItemsByEmail:);
     operation.delegateDidReturnSelector = @selector(sendStarredItemsByEmailForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(sendStarredItemsByEmailFailedForRequest:);
@@ -272,7 +272,7 @@ static NSString* const kUserTokenOldKey = @"userToken";
 
 - (EventPoolReply*)getFromCacheEventPoolForRequest:(EventPoolRequest*)request {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[EventPoolRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.serviceClientSelector = @selector(getEventPool:);
     operation.delegateDidReturnSelector = @selector(getEventPoolForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getEventPoolFailedForRequest:);

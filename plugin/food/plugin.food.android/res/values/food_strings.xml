@@ -31,7 +31,8 @@
 	<string name="food_button_send">Send</string>
 	<string name="food_button_googletranslate">Send to Google Translate</string>
 	<string name="food_button_copytext">Copy text to clipboard</string>
-						
+	<string name="food_button_showprices">Show prices</string>
+							
 	<string name="food_toast_nogoogletranslate">Please install Google Translate</string>
 	<string name="food_toast_vote_noselection">Please select one of the smileys</string>
 	<string name="food_toast_copied">Copied to clipboard</string>
@@ -39,7 +40,9 @@
 	<string name="food_toast_tooearly">Too early</string>
 	<string name="food_toast_toolate">Too late</string>	
 	<string name="food_toast_thanksforvote">Thanks for your vote</string>
-							
+
+	<string name="food_pricetag_auto">&lt;i&gt;Select automatically&lt;/i&gt;</string>
+									
 	<string name="food_enum_STUDENT">Student</string>
 	<string name="food_enum_PHD_STUDENT">PhD student</string>
 	<string name="food_enum_STAFF">Staff</string>

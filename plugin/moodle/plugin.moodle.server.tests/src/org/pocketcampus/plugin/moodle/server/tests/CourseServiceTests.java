@@ -298,7 +298,7 @@ public final class CourseServiceTests {
 		public String get(String url, Charset charset) throws IOException {
 			return getFileContents(returnValues[index++]);
 		}
-		
+
 		@Override
 		public String post(String url, byte[] body, Charset charset) throws IOException {
 			throw new RuntimeException("post(String, byte[], Charset) should not be called.");
@@ -330,6 +330,11 @@ public final class CourseServiceTests {
 		@Override
 		public String getSciper() {
 			return sciper;
+		}
+
+		@Override
+		public String getGaspar() {
+			return null;
 		}
 	}
 }

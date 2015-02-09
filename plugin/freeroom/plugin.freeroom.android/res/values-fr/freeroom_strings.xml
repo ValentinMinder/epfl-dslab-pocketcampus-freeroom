@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- \&#8230; is the replacement char for [...] (triple dot) -->
+    <!-- &#8211; is the replacement unicode char for [-] (dash) -->
+
+    <string name="freeroom_plugin_title">"FreeRoom"</string>
+
+    <!-- HOME TITLES -->
+    <string name="freeroom_title_main_title">"FreeRoom: Home"</string>
+    <string name="freeroom_title_main_title_error">"FreeRoom: Erreur :/"</string>
+    <string name="freeroom_title_main_title_updating">"FreeRoom: actualisation\&#8230;"</string>
+    <string name="freeroom_title_main_title_no_result">"FreeRoom: pas de résultat :/"</string>
+    <string name="freeroom_home_info_rooms">"Occupations "</string>
+    <string name="freeroom_home_info_free_rooms">"Salles libres "</string>
+
+    <!-- HOME SUBTITLES -->
+    <string name="freeroom_please_wait">"Veuillez attendre s.v.p, les résultats sont en cours de chargement"</string>
+    <string name="freeroom_home_please_wait">"Veuillez attendre s.v.p les résultats sont actualisés"</string>
+    <string name="freeroom_home_init_please_wait">"Initialisation, veuillez attendre s.v.p"</string>
+    <string name="freeroom_home_error_sorry">"Une erreur est survenue, pas de résultats à afficher, désolé ;-)"</string>
+    <string name="freeroom_home_error_no_results">"Pas de résultats, aucune salle ne semble être libre avec votre sélection"</string>
+
+    <!-- HOME results -->
+    <plurals name="freeroom_results_room_header">
+        <item quantity="one">"%d salle"</item>
+        <item quantity="other">"%d salles"</item>
+    </plurals>
+
+    <string name="freeroom_results_room_header_reduce">"réduire"</string>
+    <string name="freeroom_results_room_header_more">"plus"</string>
+    <string name="freeroom_result_group_favorites">"Favoris"</string>
+
+    <!-- HOME menus -->
+    <string name="freeroom_refresh">Actualiser</string>
+    <string name="freeroom_about">A propos</string>
+    <string name="freeroom_help">Aide</string>
+
+    <!-- ERRORS -->
+    <string name="freeroom_error_bad_request">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais la requête envoyée est invalide (400 BAD REQUEST)."</string>
+    <string name="freeroom_error_internal_error">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais le server a eu une erreur interne (500 INTERNAL ERROR)."</string>
+    <string name="freeroom_error_unknown_error">"PocketCampus a essayé de se connecter au serveur FreeRoom, mais le serveur a répondu avec un code d\'erreur inconnu."</string>
+    <string name="freeroom_error_please_report">"Ce comportement n\'est PAS normal, veuillez s.v.p reporter le bug à freeroom.epfl@gmail.com en incluant une description des étapes menants au bug. Merci d'avance :)"</string>
+    <string name="freeroom_error_please_try_again">"Veuillez essayer à nouveau. Notez que la version beta ne fonctionne que sur le réseau de l\'epfl (wifi, VPN ou cablé). Si cela persiste, merci de nous contacter à freeroom.epfl@gmail.com. Merci d'avance :)"</string>
+    <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données maintenant, dû à une erreur de réseau. Vous n\'êtes pas connecté, ou alors le serveur PocketCampus est hors-service / inatteignable."</string>
+    <!-- <string name="freeroom_connection_error_happened">"Nous ne pouvons pas récupérer les données FreeRoom maintenant, car vous n\'êtes pas connecté à Internet."</string> -->
+
+
+    <!-- SEARCH dialog -->
+    <string name="freeroom_search_title">"Nouvelle recherche"</string>
+    <string name="freeroom_dialog_search_footer_home">"Haut"</string>
+
+    <!-- SEARCH: TIMES -->
+    <string name="freeroom_search_today">"Aujourd\'hui"</string>
+    <string name="freeroom_search_yesterday">"Hier"</string>
+    <string name="freeroom_search_tomorrow">"Demain"</string>
+    <string name="freeroom_selectstartHour">"Début"</string>
+    <string name="freeroom_selectendHour">"Fin"</string>
+    <string name="freeroom_now">"maintenant"</string>
+
+    <!-- SEARCH: buttons/checkbox/radio -->
+    <string name="freeroom_search_search">"Rechercher"</string>
+    <string name="freeroom_search_reset">"Réinitialiser"</string>
+    <string name="freeroom_search_cancel">"Annuler"</string>
+    <string name="freeroom_search_any">"Toutes les salles libres"</string>
+    <string name="freeroom_search_spec">"Choisir les salles"</string>
+    <string name="freeroom_search_only_free">"Salles libres uniquement"</string>
+    <string name="freeroom_search_only_free_short">"libres"</string>
+    <string name="freeroom_search_favorites">"Favoris"</string>
+    <string name="freeroom_search_userdef">"Liste choisie"</string>
+    <string name="freeroom_search_userdef_reset">"Effacer"</string>
+    <string name="freeroom_search_userdef_add">"Ajouter"</string>
+    <string name="freeroom_search_userdef_edit">"Editer"</string>
+    <string name="freeroom_search_time_summary">"Période sélectionnée: "</string>
+
+    <!-- PREVIOUS SEARCHES -->
+    <string name="freeroom_search_previous_search">"Recherches précédentes: "</string>
+
+    <!-- SEARCH: request validation -->
+    <string name="freeroom_search_invalid_time_basic">"\nLa période sélectionnée est invalide: uniquement les heures académiques (%1$d-%2$d) sont valides. La période doit être d\'au moins %3$d minutes."</string>
+    <string name="freeroom_search_invalid_time_advanced">"\nLa période sélectionnée est invalide. Uniquement les jours de la semaine (LUN-VEN) et les heures académiques (%1$d-%2$d) sont valides. La période doit être d\'au moins %3$d minutes. Vous ne pouvez pas rechercher plus de %4$d semaines dans le passé, et %5$d semaines dans le futur."</string>
+    <string name="freeroom_search_invalid_request">"Requête invalide: "</string>
+    <string name="freeroom_search_valid_request">"Requête valide."</string>
+    <string name="freeroom_search_check_empty_select">"\nLa liste des salles sélectionnées est vide, veuillez s.v.p en ajouter ou sélectionner d'autres options."</string>
+    <string name="freeroom_search_check_any_incompat">"\nN\'importe quelle salle libre est incompatible avec les favoris ou la liste des salles choisies."</string>
+    <string name="freeroom_search_check_at_least">"\nAu moins une des options suivantes doit être choisi : N\'importe quelle salle libre, favoris ou liste choisie."</string>
+    <string name="freeroom_search_check_empty_fav">"\nVous n\'avez pas de favoris: le bouton favoris ne fonctionne pas, vous ne pouvez pas sélectionner uniquement cette option."</string>
+    <string name="freeroom_search_check_any_must_be_free">"\nN\'importe quelle salle libre doit être utilisé avec l'option salles libres uniquement."</string>
+
+    <!-- SHARE -->
+    <!-- SHARE: dialog -->
+    <string name="freeroom_dialog_share_title">"Partagez votre position\&#8230;"</string>
+    <string name="freeroom_dialog_share_textedit_hint">"votre activité (optionnel)"</string>
+    <string name="freeroom_dialog_share_checkbox_msg">"partager l'activité avec le serveur"</string>
+    <string name="freeroom_dialog_share_button_friends">"avec vos amis"</string>
+    <string name="freeroom_dialog_share_button_server">"avec le serveur"</string>
+    <string name="freeroom_dialog_share_disclaimer">"Votre position est partagée anonymement avec le serveur dans les deux cas. C'est utilisé pour savoir combien de personnes se trouvent dans la salle pour pouvoir afficher de meilleurs résultats."</string>
+    <string name="freeroom_share_others_activity">"Activités d'utilisateurs"</string>
+
+    <!-- SHARE: text construction -->
+    <string name="freeroom_share_intent_title">"Partagez votre position\&#8230;"</string>
+    <string name="freeroom_share_iwillbe">"Je serai"</string>
+    <string name="freeroom_share_in_room">"dans la salle"</string>
+    <string name="freeroom_share_please_come">"Rejoignez-moi. "</string>
+    <string name="freeroom_share_working_on">"Je travaillerai sur "</string>
+    <string name="freeroom_share_ref_pocket">"(Envoyé depuis l'application mobile PocketCampus.org)"</string>
+
+    <!-- SHARE: copy to clipboard -->
+    <string name="freeroom_share_CopyClipBoard">"Copier"</string>
+    <string name="freeroom_share_copied_ClipBoard">"Copié dans le presse-papier"</string>
+    <string name="freeroom_share_copied_ClipBoard_error">"Erreur pendant la copie dans le presse-papier"</string>
+
+    <!-- SHARE: server interaction -->
+    <string name="freeroom_share_server_basis">"L'activité a bien été "</string>
+    <string name="freeroom_share_server_submitted">"enregistrée !"</string>
+    <string name="freeroom_share_server_updated">"mise à jour !"</string>
+    <string name="freeroom_share_server_conflict">"Un conflit est survenue et l'activité n\'a pas été prise en compte, désolé :/"</string>
+
+    <!-- INFO about a ROOM -->
+    <string name="freeroom_dialog_info_type">"Type"</string>
+    <string name="freeroom_dialog_info_capacity">"Capacité"</string>
+    <string name="freeroom_dialog_info_capacity_unknown">"inconnue"</string>
+
+    <plurals name="freeroom_dialog_info_places">
+        <item quantity="one">"%d place"</item>
+        <item quantity="other">"%d places"</item>
+    </plurals>
+
+    <string name="freeroom_dialog_info_surface">"Surface"</string>
+    <string name="freeroom_dialog_info_sqm">"m2"</string>
+    <string name="freeroom_dialog_info_uniqID">"Identifiant unique"</string>
+    <string name="freeroom_dialog_info_share">"Partager"</string>
+
+    <!-- FAVORITES -->
+    <string name="freeroom_dialog_fav_title">"Favoris"</string>
+    <string name="freeroom_dialog_fav_add">"Ajouter"</string>
+    <string name="freeroom_dialog_fav_close">"Fermer"</string>
+    <string name="freeroom_dialog_fav_reset">"Effacer"</string>
+    <string name="freeroom_dialog_fav_status_fav">"Favoris: "</string>
+    <string name="freeroom_dialog_fav_status_no">"Aucune salle n'a été marquée favorite"</string>
+    <string name="freeroom_dialog_warn_title">"Attention"</string>
+    <string name="freeroom_dialog_warn_delete_fav_text">"Etes-vous sur de vouloir supprimer tous vos favoris ? Cette action est irréversible."</string>
+    <string name="freeroom_dialog_warn_cancel">"Annuler"</string>
+    <string name="freeroom_dialog_warn_confirm">"Confirmer"</string>
+    <string name="freeroom_dialog_error_title">"Erreur"</string>
+    <string name="freeroom_dialog_error_dismiss">"Fermer"</string>
+
+    <!-- Add favorites -->
+    <string name="freeroom_dialog_add_favorites_title">"Ajouter favoris"</string>
+    <string name="freeroom_dialog_add_autocomplete_typein">"Entrer au moins 2 lettres&#8230;"</string>
+    <string name="freeroom_dialog_add_autocomplete_updating">"Actualisation&#8230;"</string>
+    <string name="freeroom_dialog_add_autocomplete_uptodate">"A jour!"</string>
+    <string name="freeroom_dialog_add_autocomplete_noresult">"Pas de résultat, désolé :p"</string>
+    <string name="freeroom_dialog_add_autocomplete_nomore">"Plus d'autres résultats"</string>
+
+    <!-- ADD ROOM -->
+    <string name="freeroom_dialog_add_room_title">"Ajouter des salles"</string>
+    <string name="freeroom_add_rooms_empty">"Salles sélectionnées : vide"</string>
+    <string name="freeroom_dialog_add_room_add">"Ajouter"</string>
+    <string name="freeroom_dialog_add_room_init">"Sélectionnez les salles en tapant les premiers caractères."</string>
+    <string name="freeroom_check_occupancy_search_text_no_selected_rooms">"Pas de salles sélectionnées."</string>
+    <string name="freeroom_check_occupancy_search_text_selected_rooms">"salle(s) sélect.: "</string>
+    <string name="freeroom_check_occupancy_search_inputbarhint">"Nom de salle"</string>
+
+    <!-- edit room -->
+    <string name="freeroom_dialog_edit_room_title">"Editer"</string>
+    <string name="freeroom_dialog_edit_room_add_other">"Ajouter"</string>
+    <string name="freeroom_dialog_edit_room_done">"Terminer"</string>
+
+    <!-- BY URI SEARCH -->
+    <string name="freeroom_urisearch_error_basis">"L\'URL suivie n'a pas été traitée."</string>
+    <string name="freeroom_urisearch_error_URINotUnderstood">"L\'URL ne produit aucun résultat."</string>
+    <string name="freeroom_urisearch_error_URINotSupported">"Le format de l\'URL a pu être corrompu ou n\'est pas supporté par cette version."</string>
+    <string name="freeroom_urisearch_error_AutoComplete_error">"L\'autocomplétion a échouée."</string>
+    <string name="freeroom_urisearch_error_AutoComplete_precond">"Le serveur n\'a pas reçu assez d\'information pour traiter cette recherche."</string>
+    <string name="freeroom_urisearch_error_AutoComplete_noMatch">"Aucun résultat pour cette recherche."</string>
+    <string name="freeroom_urisearch_error_end">"Appuyez sur fermer et effectuez une nouvelle recherche pour n\'importe quelle salle libre."</string>
+
+    <!-- SETTINGS -->
+    <string name="freeroom_dialog_settings_title">Paramètres</string>
+    <string name="freeroom_settings_title">"Paramètres"</string>
+    <string name="freeroom_settings_home_screen">"Comportement du menu principal"</string>
+    <string name="freeroom_settings_automatic">"Recherche automatique au lancement"</string>
+    <string name="freeroom_settings_room_range">"Salles à prendre en compte"</string>
+    <string name="freeroom_settings_all_fav">"Toutes les salles favorites"</string>
+    <string name="freeroom_settings_free_fav">"Les salles favorites libres"</string>
+    <string name="freeroom_settings_any_free">"Toutes les salles libres (par défaut)"</string>
+    <string name="freeroom_settings_last_req">"Utiliser la recherche précédente"</string>
+    <string name="freeroom_settings_time_range">"Période sélectionnée"</string>
+    <string name="freeroom_settings_current">"Heure courante (par défaut)"</string>
+    <string name="freeroom_settings_end_day">"Jusqu\'à la fin de la journée"</string>
+    <string name="freeroom_settings_whole_day">"Toute la journée"</string>
+
+    <!-- Color-blind mode -->
+    <string name="freeroom_settings_userpref">"Préférences utilisateur"</string>
+    <string name="freeroom_settings_color">"Apparence des couleurs"</string>
+    <string name="freeroom_settings_colorblindcheck">"Mode daltonien (de base)"</string>
+    <string name="freeroom_settings_color_advanced">"Modes avancés"</string>
+    <string name="freeroom_settings_color_mode_default">"Feux de signalisation (défaut)"</string>
+    <string name="freeroom_settings_color_mode_dots_discolored">"Feux pour daltoniens"</string>
+    <string name="freeroom_settings_color_mode_symbolic">"Symboles sans couleurs"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines">"Symboles avec lignes colorées"</string>
+    <string name="freeroom_settings_color_mode_symbolic_lines_disc">"Symboles avec lignes pour daltoniens"</string>
+    <string name="freeroom_settings_color_exemple_free">"LIBRE"</string>
+    <string name="freeroom_settings_color_exemple_partoccupied">"PART. OCCUPE"</string>
+    <string name="freeroom_settings_color_exemple_occupied">"OCCUPE"</string>
+    <string name="freeroom_settings_color_exemple_error">"ERREUR"</string>
+
+    <!-- Settings: date formatting -->
+    <string name="freeroom_settings_format">"Formats et options locales"</string>
+    <string name="freeroom_settings_date">"Format des dates"</string>
+    <string name="freeroom_settings_date_default">"Règlage par défaut"</string>
+    <string name="freeroom_settings_date_US">"format anglais/américain"</string>
+    <string name="freeroom_settings_date_EU">"format français/européen"</string>
+
+    <!-- WELCOME: beta-only -->
+    <string name="freeroom_authors">"Ce plugin dans PocketCampus est le résultat d\'un projet de semestre dans le labo DSLAB au printemps 2014.\nAuteurs: Julien WEBER, Valentin MINDER\nMerci à Silviu ANDRICA, Loïc GARDIOL, Amer CHAMSEDDINE pour leurs précieux conseils."</string>
+    <string name="freeroom_welcome_title">"Bienvenue !"</string>
+    <string name="freeroom_welcome_subtitle">"Merci de tester FreeRoom!"</string>
+    <string name="freeroom_welcome_expl">"Pour que cette beta fonctionne, nous avons besoin de votre email epfl, UNE seule fois."</string>
+    <string name="freeroom_welcome_expl_further">"Cette pop-up ne va s\'afficher qu\'une seule fois. Si elle s\'affiche à nouveau, merci de nous contacter à freeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_email_pattern">"prénom.nom@epfl.ch"</string>
+    <string name="freeroom_welcome_email_contact">"freeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_register">"S\'enregistrer !"</string>
+    <string name="freeroom_welcome_disclaimer">"En cliquant sur s\'enregistrer (uniquement pour la beta!), nous allons envoyer des informations sur votre configuration (voir ci-après) pour nous aider à résoudre les problèmes que vous pourriez nous soumettre. L\'utilisation de l\'application est complètement ANONYME et ne dépend pas de votre adresse email."</string>
+    <string name="freeroom_welcome_success">"Vous avez bien été enregistré !"</string>
+    <string name="freeroom_welcome_welcome">"Vous pouvez maintenant utiliser FreeRoom. Si vous rencontrez un problème, y compris un crash, bug, comportement anormal ou peu clair, erreurs de traduction ou autre, n\'hésitez pas à nous contacter via le formulaire google envoyé par email, ou écrivez-nous à:"</string>
+    <string name="freeroom_welcome_dismiss">"OK, je veux essayer !"</string>
+    <string name="freeroom_welcome_submitting">"Transmission en cours, veuillez patienter !"</string>
+    <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email EPFL pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com. Pour fermer l'app presser deux fois le bouton retour."</string>
+    <string name="freeroom_welcome_invalid_mail">"Email invalide !\nMerci d\'utiliser votre email epfl ayant pour format \nprénom.nom@epfl.ch\n sans espace ou caractère spécial.\nSi vous pensez que c'est une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire un email à \nfreeroom.epfl@gmail.com"</string>
+    <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connection internet."</string>
+    <string name="freeroom_welcome_validate_reject">"Le serveur a rejeté votre enregistrement !Merci de réessayer.\nSi cela persiste, merci de nous contacter à\nfreeroom.epfl@gmail.com !"</string>
+
+    <!-- Welcome: reused for normal usage -->
+
+    <string name="freeroom_welcome_explanations_first">"FreeRoom permet à quiconque de trouver une salle libre à l'EPFL. De la même manière, il est possible de consulter l'horaire d'une salle spécifique."</string>
+    <string name="freeroom_welcome_explanations_second">"Merci de laisser les salles dans un état acceptable. Pensez donc à mettre vos déchets à la poubelle et à remettre le mobilier en place. Merci également de quitter la salle 15 minutes avant toute réservation officielle."</string>
+    <string name="freeroom_welcome_explanations_third">"FreeRoom a encore d'autres fonctions: il est possible de partager votre position avec vos amis, d'indiquer anonymement votre position pour prévoir l'occupation future des salles, de visualiser les salles sur la carte&#8230; Veuillez noter que certaines salles ne sont affichées qu'à un certain cercle de personnes, vous aurez peut-être plus de résultas en étant connecté."</string>
+    
+    <!-- No need to translate these layout img identificators -->
+    <string name="freeroom_layout_roomslist_img_fav">fav icon</string>
+    <string name="freeroom_layout_roomslist_img_map">map icon</string>
+    <string name="freeroom_layout_roomslist_img_info">info icon</string>
+    <string name="freeroom_layout_roomslist_img_share">share icon</string>
+    <string name="freeroom_layout_roomslist_img_people">people icon</string>
+    <string name="freeroom_layout_roomslist_img_triangle">triangle icon</string>
+    <string name="freeroom_layout_building_header_show_more_img">show more icon</string>
+    <string name="freeroom_layout_search_first_hour_img">first</string>
+    <string name="freeroom_layout_search_prev_hour_img">prev</string>
+    <string name="freeroom_layout_search_expand_collapse_hour_img">first/last</string>
+    <string name="freeroom_layout_search_next_hour_img">next</string>
+    <string name="freeroom_layout_search_last_hour_img">last</string>
+    <string name="freeroom_layout_prev_req_replay_img">replay</string>
+    <string name="freeroom_layout_prev_req_edit_img">edit</string>
+    <string name="freeroom_layout_prev_req_delete_img">delete</string>
+
+    <!-- Working there dialog -->
+    <string name="freeroom_share_server_bad_words">"Requête rejetée: le message contient des mots interdits."</string>
+    <string name="freeroom_whoIsWorking_title">"Travaillant ici &#8230;"</string>
+    <string name="freeroom_whoIsWorking_disclaimer">"Note: Ces indications proviennent des utilisateurs. Les auteurs, PocketCampus, DSLAB et l'EPFL ne sont pas responsables des actions des utilisateurs."</string>
+    <string name="freeroom_whoIsWorking_wait">"Veuillez attendre, les résultats sont mis à jour &#8230;"</string>
+    <string name="freeroom_whoIsWorking_unknown">"Non indiqué"</string>
+
+    <!-- NEW: add there -->
+    <string name="freeroom_konami_start">Start</string>
+    <string name="freeroom_konami_typein">Entrer du texte&#8230;</string>
+    <string name="freeroom_error_map_plugin_missing">"Plugin Plan pas installé! Vérifier l'installation de l'application PocketCampus ou du plugin Plan"</string>
+
+</resources>

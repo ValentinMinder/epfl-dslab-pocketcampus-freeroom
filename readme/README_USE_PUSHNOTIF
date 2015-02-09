@@ -111,16 +111,16 @@ Then to make sure the phone is registered, use
 
 On the server, after successful login, call
 
-	PocketCampusServer.pushNotifMap(firstArg, pluginName, userId);
+	PushNotifServiceImpl.pushNotifMap(firstArg, pluginName, userId);
 
 	where firstArg is the first argument in the thrift request, pluginName is the name of the plugin, and userId is the ID of the user who has just logged in
 
 
 On the server, when you want to send a message, use
 
-	PocketCampusServer.pushNotifSend(pluginName, userIdList, msgMap);
+	PushNotifServiceImpl.pushNotifSend(pluginName, userIdList, msgMap);
 
-	where pluginName is the name of the plugin, userIdList is the list od IDs of users to send the msg to, and msgMap is the dict to be pushed (cannot contain key pluginName)
+	where pluginName is the name of the plugin, userIdList is the list of IDs of users to send the msg to, and msgMap is the dict to be pushed (cannot contain key pluginName)
 
 And finally on the server implement the following function if you want to know which devices failed
 
@@ -137,10 +137,8 @@ The first time you start your plugin, you need to make sure the notifications ha
 
 
 To register, use the PushNotifController class.
-
-self.pushController = [PushNotifController sharedInstanceToRetain];
     
-[self.pushController registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>" reason:@"<notifications_are_used_for_this_and_that_bla_bla" success:^{
+[[PushNotifController sharedInstance] registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"<your_plugin_name_in_lowercase>" reason:@"<notifications_are_used_for_this_and_that_bla_bla" success:^(BOOL alertAllowed, BOOL badgeAllowed, BOOL soundAllowed) {
         
         //from this point, all requests to your thrift backend will include the device token
         
@@ -170,4 +168,4 @@ VERY IMPORTANT: each class that called the addPushNotificationObserver:self meth
 
 Otherwise, the app will crash the next time a notification arrives with this class not being present in memory anymore.
 
-Finally, you need to copy the file etc/pocketcampus-pushnotif-dev.p12 in /etc on your server
+Finally, set the path and password of the Apple push notifications certificate (p12 file) in the server config file.

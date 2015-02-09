@@ -88,9 +88,15 @@ $resp["SERVER_PORT"] = "14611";
 //$resp["GA_TRACKING_CODE"] = "UA-22135241-3"; //Old Google Analytics
 //$resp["GA_TRACKING_CODE"] = "UA-22135241-5"; //New Google Universal Analytics
 $resp["SERVER_ADDRESS"] = "pocketcampus.epfl.ch";
-$resp["ENABLED_PLUGINS"] = array("Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "MyEdu", "Events", "Authentication", "PushNotif", "IsAcademia", "FreeRoom");
+$resp["ENABLED_PLUGINS"] = array("Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "MyEdu", "Events", "Authentication", "PushNotif", "IsAcademia", "FreeRoom", "CloudPrint", "RecommendedApps", "Alumni");
 //$resp["SERVER_URI"] = "v3r1";
 $resp["FOOD_RATINGS_ENABLED"] = 1; //0 = disabled, 1 = enabled
+
+// iOS6 does not support https
+if($platform == "ios" && comparble_version($app_version) < comparble_version("2.0")) {
+	$resp["SERVER_PROTOCOL"] = "http";
+	$resp["SERVER_PORT"] = "14610";
+}
 
 echo echo_compatible($resp);
 

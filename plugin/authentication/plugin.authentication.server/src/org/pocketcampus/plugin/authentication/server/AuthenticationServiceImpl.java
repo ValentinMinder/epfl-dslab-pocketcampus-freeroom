@@ -45,6 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public AuthTokenResponse getAuthTequilaToken() throws TException {
+		System.out.println("getAuthTequilaToken");
 		String token = authGetTequilaToken("authentication");
 		if(token == null)
 			return new AuthTokenResponse(AuthStatusCode.NETWORK_ERROR);
@@ -53,6 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public AuthSessionResponse getAuthSession(AuthSessionRequest req) throws TException {
+		System.out.println("getAuthSession");
 		try {
 			TequilaPrincipal principal = authGetTequilaPrincipal(req.getTequilaToken());
 			if(principal == null)
@@ -67,6 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public LogoutResponse destroyAllUserSessions(LogoutRequest req) throws TException {
+		System.out.println("destroyAllUserSessions");
 		String sciper = getSciperFromSession(req.getSessionId());
 		if(sciper == null)
 			return new LogoutResponse(AuthStatusCode.INVALID_SESSION);
@@ -80,6 +83,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public UserAttributesResponse getUserAttributes(UserAttributesRequest req) throws TException {
+		System.out.println("getUserAttributes");
 		List<String> fields = new LinkedList<String>();
 		for(String s : req.getAttributeNames())
 			fields.add("`" + s + "`");
@@ -134,8 +138,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		// config.setOrg("PocketCampusOrg");
 		config.setService(plugin + "@pocketcampus");
 		config.setRequest("name firstname email title unit office phone username uniqueid unixid groupid where categorie");
-		config.setAllows("categorie=epfl-guests");
-		config.setAllows("categorie=Shibboleth");
+		config.setAllows("categorie=Shibboleth|categorie=epfl-guests");
 		// config.setAuthstrength("2");
 
 		try {

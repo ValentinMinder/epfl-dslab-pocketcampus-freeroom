@@ -32,6 +32,10 @@
 
 #import "MainController.h"
 
+#import "NSUserDefaults+Additions.h"
+
+static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcampus";
+
 @interface PCUserDefaults : NSUserDefaults
 
 @property (nonatomic, strong) NSString* pluginName;
@@ -40,6 +44,21 @@
 @end
 
 @implementation PCUserDefaults
+
++ (NSUserDefaults*)sharedDefaults {
+    static NSUserDefaults* defaults = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if ([PCUtils isOSVersionSmallerThan:8.0]) {
+            defaults = [NSUserDefaults standardUserDefaults];
+            [defaults addSuiteNamed:kPCUserDefaultsSharedAppGroupName];
+        } else {
+            defaults = [[NSUserDefaults alloc] initWithSuiteName:kPCUserDefaultsSharedAppGroupName];
+        }
+        [defaults synchronize];
+    });
+    return defaults;
+}
 
 + (instancetype)userDefaultsForPluginName:(NSString*)pluginName isCache:(BOOL)cache {
     PCUserDefaults* instance = [self new];
@@ -50,16 +69,16 @@
 
 - (id)objectForKey:(NSString*)key {
     [PCUtils throwExceptionIfObject:key notKindOfClass:[NSString class]];
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* pluginDic = [standardDefaults objectForKey:[self pluginDicKey]];
+    NSUserDefaults* sharedDefaults = [self.class sharedDefaults];
+    NSDictionary* pluginDic = [sharedDefaults objectForKey:[self pluginDicKey]];
     return pluginDic[key];
 }
 
 - (void)setObject:(id)value forKey:(NSString*)key {
     [PCUtils throwExceptionIfObject:key notKindOfClass:[NSString class]];
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* sharedDefaults = [self.class sharedDefaults];
     NSString* pluginDicKey = [self pluginDicKey];
-    NSMutableDictionary* pluginDic = [[standardDefaults objectForKey:pluginDicKey] mutableCopy];
+    NSMutableDictionary* pluginDic = [[sharedDefaults objectForKey:pluginDicKey] mutableCopy];
     if (!pluginDic) {
         pluginDic = [NSMutableDictionary dictionary];
     }
@@ -68,7 +87,7 @@
     } else {
         [pluginDic removeObjectForKey:key];
     }
-    [standardDefaults setObject:pluginDic forKey:pluginDicKey];
+    [sharedDefaults setObject:pluginDic forKey:pluginDicKey];
 }
 
 - (void)removeObjectForKey:(NSString *)key {
@@ -77,8 +96,7 @@
 }
 
 - (void)removeAllObjects {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    [standardDefaults removeObjectForKey:[self pluginDicKey]];
+    [[self.class sharedDefaults] removeObjectForKey:[self pluginDicKey]];
 }
 
 - (NSString*)pluginDicKey {
@@ -90,7 +108,84 @@
 
 @implementation PCPersistenceManager
 
+#pragma mark - Persistence migration
+
++ (void)migrateDataOnceToSharedAppGroupPersistence {
+#ifdef TARGET_IS_MAIN_APP
+    static NSString* const kDefaultsMigrationDoneBoolKey = @"PCPersistenceManagerDefaultsMigrationToAppGroupPersistenceDoneBool";
+    static NSString* const kBundleIdentifierMigrationDoneBoolKey = @"PCPersistenceManagerBundleIdentifierMigrationToAppGroupPersistenceDoneBool";
+    // Ok, not in extension, so let's migrate containing (main) app standardDefaults
+    // to share defaults. TARGET_IS_EXENSION is defined in preprocessor macros of the extensions targets.
+    // http://stackoverflow.com/a/25048440/1423774
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSUserDefaults* defaults = [PCUserDefaults sharedDefaults];
+        
+        // Step 1: migrating standardUserDefaults to app group user defaults
+        
+        CLSNSLog(@"-> Migration to app group persistence...");
+        if ([PCUtils isOSVersionGreaterThanOrEqualTo:8.0]) {
+            if (![defaults boolForKey:kDefaultsMigrationDoneBoolKey]) {
+                // copying data from standardUserDefaults to shared user defaults
+                @try {
+                    NSUserDefaults* oldStandardDefaults = [NSUserDefaults standardUserDefaults];
+                    [defaults replaceKeyValuesWithOnesFromDictionary:oldStandardDefaults.dictionaryRepresentation];
+                    [defaults setBool:YES forKey:kDefaultsMigrationDoneBoolKey];
+                    [defaults synchronize];
+                    CLSNSLog(@"   1. Standard defaults successfully migrated to app group defaults.");
+                }
+                @catch (NSException *exception) {
+                    [defaults setBool:NO forKey:kDefaultsMigrationDoneBoolKey];
+                    [defaults synchronize];
+                    CLSNSLog(@"   1. EXCEPTION while migrating defaults from standard defaults to app group defaults: %@", exception);
+                }
+            } else {
+                CLSNSLog(@"   1. (ALREADY DONE) Standard defaults migration to app group defaults.");
+            }
+        } else {
+            CLSNSLog(@"   1. Will NOT migrate standard defaults to app group defaults because still iOS 7 (only required for iOS 8).");
+        }
+        
+        
+        // Step 2: migrating files
+        
+        NSString* oldBundleIdentifierPath = [self classicBundleIdentifierPersistencePath];
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        if (![fileManager fileExistsAtPath:oldBundleIdentifierPath]) {
+            CLSNSLog(@"   2. No old bundle identifier folder to migrate to app group container folder.");
+            [defaults setBool:YES forKey:kBundleIdentifierMigrationDoneBoolKey];
+            [defaults synchronize];
+        } else if (![defaults boolForKey:kBundleIdentifierMigrationDoneBoolKey]) {
+            NSString* newBundleIdentifierPath = [self appGroupBundleIdentifierPersistencePath];
+            
+            [self createComponentsForPath:oldBundleIdentifierPath];
+            [self createComponentsForPath:newBundleIdentifierPath];
+            
+            NSError* error = nil;
+            
+            [fileManager moveItemAtPath:oldBundleIdentifierPath toPath:newBundleIdentifierPath error:&error];
+            if (!error) {
+                [defaults setBool:YES forKey:kBundleIdentifierMigrationDoneBoolKey];
+                [defaults synchronize];
+                CLSNSLog(@"   2. Old bundle identifier folder successfully moved to new app group container folder.");
+            } else {
+                [defaults setBool:NO forKey:kBundleIdentifierMigrationDoneBoolKey];
+                [defaults synchronize];
+                CLSNSLog(@"   2. ERROR while migrating old bundle identifier folder to new app group container folder: %@", error);
+            }
+        } else {
+            CLSNSLog(@"   2. (ALREADY DONE) Old bundle identifier folder move to new app group container folder.");
+        }
+    });
+#endif
+}
+
 #pragma mark - Standard persistence
+
++ (NSUserDefaults*)sharedDefaults {
+    return [PCUserDefaults sharedDefaults];
+}
 
 + (NSUserDefaults*)userDefaultsForPluginName:(NSString*)pluginName {
     return [self _userDefaultsForPluginName:pluginName];
@@ -114,6 +209,31 @@
 
 #pragma mark - Complex objects persistence
 
+static NSString* const kBundleIdentifier = @"org.pocketcampus";
+
++ (NSString*)appGroupBundleIdentifierPersistencePath {
+    static NSString* appSupportBundlePath = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* path = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kPCUserDefaultsSharedAppGroupName].path;
+        path = [path stringByAppendingPathComponent:@"Library"];
+        path = [path stringByAppendingPathComponent:@"Application Support"];
+        path = [path stringByAppendingPathComponent:kBundleIdentifier];
+        appSupportBundlePath = path;
+    });
+    return appSupportBundlePath;
+}
+
++ (NSString*)classicBundleIdentifierPersistencePath {
+    static NSString* appSupportBundlePath = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        appSupportBundlePath = [dir stringByAppendingPathComponent:kBundleIdentifier];
+    });
+    return appSupportBundlePath;
+}
+
 + (BOOL)saveObject:(id<NSCoding>)object forKey:(NSString*)key pluginName:(NSString*)pluginName {
     return [self saveObject:object forKey:key pluginName:pluginName isCache:NO];
 }
@@ -127,7 +247,7 @@
             NSString* path = [self pathForKey:key pluginName:pluginName customFileExtension:nil isCache:isCache];
             if (object == nil) {
                 NSError* error = NULL;
-                NSFileManager* fileManager = [[NSFileManager alloc] init];
+                NSFileManager* fileManager = [NSFileManager defaultManager];
                 [fileManager removeItemAtPath:path error:&error];
                 
                 if (error && ![fileManager fileExistsAtPath:path]) { //then error is that file is already deleted
@@ -178,7 +298,7 @@
         CLSNSLog(@"!! ERROR in objectForKey:pluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
         return nil;
     }
-    NSDate* modifDate = fileAttributes[@"NSFileModificationDate"];
+    NSDate* modifDate = fileAttributes[NSFileModificationDate];
     if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
         return nil;
     }
@@ -194,13 +314,13 @@
         // Cache defaults deletion
         PCUserDefaults* cacheDefaults = [self _cacheUserDefaultsForPluginName:pluginName];
         [cacheDefaults removeAllObjects];
+        [cacheDefaults synchronize];
         
         // Complex objects deletion
-        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-        NSString* path = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+        NSString* path = [self appGroupBundleIdentifierPersistencePath];
         path = [path stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
         path = [path stringByAppendingPathComponent:@"cache"];
-        NSFileManager* fileManager = [[NSFileManager alloc] init];
+        NSFileManager* fileManager = [NSFileManager defaultManager];
         NSError* error = nil;
         [fileManager removeItemAtPath:path error:&error];
         if (error) {
@@ -218,7 +338,12 @@
         if (![path isKindOfClass:[NSString class]]) {
             @throw [NSException exceptionWithName:@"bad path" reason:@"bad path argument" userInfo:nil];
         }
-        NSFileManager* fileManager = [[NSFileManager alloc] init];
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        /*BOOL isDirectory = NO;
+        [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
+        if (isDirectory) {
+            [path stringByAppendingPathComponent:@"dummy"];
+        }*/
         NSString* directoryPath = [path stringByDeletingLastPathComponent];
         if (![fileManager fileExistsAtPath:directoryPath]) {
             [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
@@ -257,8 +382,7 @@
     static NSString* appSupportBundlePath = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString* dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-        appSupportBundlePath = [dir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+        appSupportBundlePath = [self appGroupBundleIdentifierPersistencePath];
     });
     
     NSString* path = [appSupportBundlePath stringByAppendingPathComponent:[self standardizedNameForPluginName:pluginName]];
@@ -277,9 +401,21 @@
 #pragma mark - Private
 
 + (void)checkPluginName:(NSString*)pluginName {
+#ifdef TARGET_IS_MAIN_APP
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginName]) {
         [NSException raise:@"Illegal argument" format:@"pluginName '%@' is not valid", pluginName];
     }
+#else
+#warning this is ugly, pluginName validity not checked when in extension.
+    //pluginsList is not initialized if not main app.
+    /*NSArray* pluginIdentifiersFromConfig = [[PCConfig defaults] objectForKey:PC_CONFIG_ENABLED_PLUGINS_ARRAY_KEY];
+    for (NSString* pluginIdentifier in pluginIdentifiersFromConfig) {
+        if ([[pluginIdentifier lowercaseString] isEqualToString:[pluginName lowercaseString]]) {
+            return;
+        }
+    }
+    [NSException raise:@"Illegal argument" format:@"pluginName '%@' is not valid", pluginName];*/
+#endif
 }
 
 + (NSString*)standardizedNameForPluginName:(NSString*)name {

@@ -20,8 +20,7 @@ if(!empty($_GET["key"])) {
 	$oClient->SetApplicationName($_GET["app_name"]);
 	$oClient->SetApplicationURL($_GET["app_url"]);
 	$oClient->SetWantedAttributes(array('uniqueid','name','firstname','unit', 'unitid', 'where', 'group', 'email', 'title'));
-	//$oClient->SetAllowsFilter("categorie=Shibboleth");
-	$oClient->SetAllowsFilter("categorie=epfl-guests");
+	$oClient->SetAllowsFilter("categorie=Shibboleth|categorie=epfl-guests");
 
 	$oClient->createRequest();
 	$key = $oClient->GetKey();

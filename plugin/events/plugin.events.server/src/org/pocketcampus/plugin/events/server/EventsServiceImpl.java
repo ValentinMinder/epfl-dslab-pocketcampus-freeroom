@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.events.server;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,15 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.EmailSender;
+import org.pocketcampus.platform.server.StateChecker;
+import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
+import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.events.server.decoders.EventItemDecoder;
 import org.pocketcampus.plugin.events.server.decoders.EventPoolDecoder;
 import org.pocketcampus.plugin.events.server.importers.MementoImporter;
 import org.pocketcampus.plugin.events.server.utils.DBUtils;
-import org.pocketcampus.plugin.events.server.utils.EmailSender;
-import org.pocketcampus.plugin.events.server.utils.EmailSender.EmailTemplateInfo;
-import org.pocketcampus.plugin.events.server.utils.EmailSender.SendEmailInfo;
 import org.pocketcampus.plugin.events.server.utils.Utils;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
 import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
@@ -45,7 +47,7 @@ import org.pocketcampus.plugin.events.shared.SendEmailRequest;
  * @author Amer C <amer.chamseddine@epfl.ch>
  * 
  */
-public class EventsServiceImpl implements EventsService.Iface {
+public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	private ConnectionManager connMgr;
 	
@@ -55,6 +57,17 @@ public class EventsServiceImpl implements EventsService.Iface {
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
 
+	@Override
+	public int checkState() throws IOException {
+		try {
+			EventPool root = EventPoolDecoder.eventPoolFromDb(connMgr.getConnection(), Constants.CONTAINER_EVENT_ID);
+			return (root != null ? 200 : 550);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 500;
+		}
+	}
+	
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
 		System.out.println("getEventItem id=" + req.getEventItemId());

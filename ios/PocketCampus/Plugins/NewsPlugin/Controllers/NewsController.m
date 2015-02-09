@@ -25,19 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 05.05.12.
-
 
 #import "NewsController.h"
 
 #import "NewsListViewController.h"
 
 #import "NewsSplashViewController.h"
-
-#import "PCUtils.h"
 
 static NewsController* instance __weak = nil;
 
@@ -58,6 +52,7 @@ static NewsController* instance __weak = nil;
                 PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:newsListViewController];
                 NewsSplashViewController* splashViewController = [[NewsSplashViewController alloc] init];
                 self.mainSplitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                self.mainSplitViewController.gaiScreenName = @"/news";
                 self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
                 self.mainSplitViewController.delegate = self;
                 
@@ -88,12 +83,27 @@ static NewsController* instance __weak = nil;
     }
 }
 
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    return [self.class viewControllerForURLQueryAction:action parameters:parameters];
+}
+
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"NewsPlugin", @"");
 }
 
 + (NSString*)identifierName {
     return @"News";
+}
+
+#pragma mark - Private
+
++ (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    if (action.length == 0) {
+        NewsListViewController* newsListViewController = [[NewsListViewController alloc] init];
+        newsListViewController.title = [[self class] localizedName];
+        return newsListViewController;
+    }
+    return nil;
 }
 
 #pragma mark - UISplitViewControllerDelegate

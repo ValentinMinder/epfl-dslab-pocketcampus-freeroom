@@ -135,6 +135,19 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     [self updateDetailTextLabelHighlighting];
 }
 
+- (void)setAccessoryViewViaContentView:(UIView *)view {
+    if (view && view == _accessoryViewViaContentView && self.contentView == _accessoryViewViaContentView.superview) {
+        return;
+    }
+    [_accessoryViewViaContentView removeFromSuperview];
+    _accessoryViewViaContentView = view;
+    if (view) {
+        [self.contentView addSubview:view];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsToSuperview:self.contentView forView:view edgeInsets:UIEdgeInsetsMake(kNoInsetConstraint, kNoInsetConstraint, kNoInsetConstraint, -15.0)]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintForCenterYtoSuperview:self.contentView forView:view constant:0.0]];
+    }
+}
+
 #pragma mark - Public methods
 
 + (CGFloat)preferredHeightForStyle:(UITableViewCellStyle)style textLabelTextStyle:(NSString*)textLabelTextStyle detailTextLabelTextStyle:(NSString*)detailTextLabelTextStyle {
@@ -305,6 +318,9 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
     });
     if (height == 0.0) {
         CGFloat coefficient;
+#ifdef TARGET_IS_EXTENSION
+        coefficient = 1.0;
+#else
         NSString* contentSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
         if ([contentSize isEqualToString:UIContentSizeCategoryLarge]) { //Default => common case first
             coefficient = 1.0;
@@ -323,6 +339,7 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
         } else {
             coefficient = 1.0; //Default
         }
+#endif
         height = floorf(kCellHeightForDefaultPreferredContentSizeCategory * coefficient);
     }
     return height;

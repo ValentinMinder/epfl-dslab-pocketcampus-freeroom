@@ -29,6 +29,8 @@
 
 @interface PCDatePickerView : UIView
 
+- (instancetype)init;
+
 @property (nonatomic, readonly, strong) IBOutlet UIDatePicker* datePicker;
 
 /**
@@ -36,6 +38,13 @@
  * Default: localized "Select a date"
  */
 @property (nonatomic, copy) NSString* title;
+
+/**
+ * If YES, a Today button is displayed. Action can be handled
+ * by setting userTappedTodayBlock.
+ * Default: NO
+ */
+@property (nonatomic) BOOL showTodayButton;
 
 /**
  * Executed when user taps on the Done button.
@@ -49,8 +58,15 @@
  */
 @property (nonatomic, copy) void (^userCancelledBlock)(PCDatePickerView* view);
 
+/**
+ * Executed when user taps on the Today button.
+ */
+@property (nonatomic, copy) void (^userTappedTodayBlock)(PCDatePickerView* view);
+
 
 - (void)presentInView:(UIView*)view;
+
+- (void)presentFromBarButtonItem:(UIBarButtonItem*)barButtonItem;
 
 - (void)dismiss;
 

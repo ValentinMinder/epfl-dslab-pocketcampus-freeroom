@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 05.03.12.
-
 
 #import "FoodService.h"
 
@@ -136,14 +132,14 @@ static FoodService* instance __weak = nil;
 #pragma mark - Service methods
 
 - (void)getFoodForRequest:(FoodRequest*)request delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
-    __weak __typeof(self) weakSelf = self;
+    __weak __typeof(self) welf = self;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         FoodResponse* response = (__bridge id)result;
         if (response.statusCode == FoodStatusCode_OK) {
-            weakSelf.userPriceTarget = response.userStatus;
-            weakSelf.pictureUrlForMealType = response.mealTypePictureUrls;
+            welf.userPriceTarget = response.userStatus;
+            welf.pictureUrlForMealType = response.mealTypePictureUrls;
             return YES;
         }
         return NO;
@@ -159,7 +155,7 @@ static FoodService* instance __weak = nil;
 }
 
 - (void)voteForRequest:(VoteRequest*)request delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = NO;
     operation.serviceClientSelector = @selector(vote:);
     operation.delegateDidReturnSelector = @selector(voteForRequest:didReturn:);
@@ -172,7 +168,7 @@ static FoodService* instance __weak = nil;
 #pragma Cached versions
 
 - (FoodResponse*)getFoodFromCacheForRequest:(FoodRequest*)request {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.cacheValidityInterval = kFoodRequestCacheValidity;
     operation.serviceClientSelector = @selector(getFood:);
     operation.delegateDidReturnSelector = @selector(getFoodForRequest:didReturn:);

@@ -30,6 +30,18 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
+			<string>CloudPrint</string>
+			<key>enabled</key>
+			<true/>
+			<key>hiddenByDefault</key>
+			<false/>
+			<key>logicOnly</key>
+			<true/>
+			<key>supportedIdioms</key>
+			<string>phone+pad</string>
+		</dict>
+		<dict>
+			<key>identifierName</key>
 			<string>Directory</string>
 			<key>enabled</key>
 			<true/>
@@ -120,27 +132,13 @@
 		</dict>
 		<dict>
 			<key>identifierName</key>
-			<string>MyEdu</string>
+			<string>RecommendedApps</string>
 			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<true/>
-			<key>supportedIdioms</key>
-			<string></string>
-		</dict>
-		<dict>
-			<key>identifierName</key>
-			<string>QAForum</string>
-			<key>enabled</key>
-			<true/>
+			<false/>
 			<key>hiddenByDefault</key>
 			<false/>
 			<key>supportedIdioms</key>
-			<string></string>
-			<key>devTeam</key>
-			<string>Artificial Intelligence Lab (LIA)</string>
-			<key>minOSVersion</key>
-			<string>6.0</string>
+			<string>phone+pad</string>
 		</dict>
 	</array>
 </dict>

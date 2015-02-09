@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014-15
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -17,8 +17,6 @@ namespace PocketCampus.Common
 {
     public static class RichTextBlockEx
     {
-
-
         public static string GetHtml( DependencyObject obj )
         {
             return (string) obj.GetValue( HtmlProperty );

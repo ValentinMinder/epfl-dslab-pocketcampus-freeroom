@@ -31,7 +31,7 @@
 //  Created by Loïc Gardiol on 09.03.12.
 
 
-#import "Service.h"
+#import "PCService.h"
 
 #import "transport.h"
 
@@ -39,7 +39,7 @@
 
 extern NSString* const kTransportUserTransportStationsModifiedNotification;
 
-@interface TransportService : Service<ServiceProtocol>
+@interface TransportService : PCService<PCServiceProtocol>
 
 /*
  
@@ -81,12 +81,13 @@ extern NSString* const kTransportUserTransportStationsModifiedNotification;
 
 typedef enum {
     LocationFailureReasonUnset = 0,
-    LocationFailureReasonUserDenied,
+    LocationFailureReasonUserDeniedBufferAlert,
+    LocationFailureReasonUserDeniedSystem,
     LocationFailureReasonTimeout,
     LocationFailureReasonUnknown,
 } LocationFailureReason;
 
-@protocol TransportServiceDelegate <ServiceDelegate>
+@protocol TransportServiceDelegate <PCServiceDelegate>
 
 @optional
 /* delegation for default transport service requests */

@@ -25,15 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 13.04.12.
 
+@import Foundation;
 
-#import <Foundation/Foundation.h>
-
-#import <MapKit/MapKit.h>
+@import MapKit;
 
 #import "map.h"
 
@@ -55,7 +51,6 @@ typedef struct {
 + (UIImage*)mapControlOverylabBoxImage;
 + (NSArray*)mapItemsThatShouldBeDisplayed:(NSArray*)allMapItems forQuery:(NSString*)query;
 + (id<MKAnnotation>)annotationThatShouldBeSelectedOnMapView:(MKMapView*)mapView forQuery:(NSString*)query;
-+ (NSInteger)levelToSelectForRoomName:(NSString*)roomName __attribute__((deprecated)); //returns INT_MAX if level cannot be determined
 + (NSArray*)mapItemAnnotations:(NSArray*)annotations;
 + (BOOL)mapViewHasMapItemAnnotations:(MKMapView*)mapView;
 + (void)removeMapItemAnnotationsOnMapView:(MKMapView*)mapView;

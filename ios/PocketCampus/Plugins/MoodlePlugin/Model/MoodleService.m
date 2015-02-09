@@ -208,10 +208,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
         nsr = [urlString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     }
     NSString* nss = [urlString substringFromIndex:(nsr.location + nsr.length)];
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* cachePath = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    NSString* cacheMoodlePath = [cachePath stringByAppendingPathComponent:@"moodle"];
-    cacheMoodlePath = [cacheMoodlePath stringByAppendingPathComponent:@"downloads"];
+    NSString* cacheMoodlePath = [self pathForResourcesDownloadFolder];
     NSString* filePath = [cacheMoodlePath stringByAppendingPathComponent:nss];
     
     if (createIntermediateDirectories) {
@@ -278,8 +275,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 #pragma mark Private
 
 - (NSString*)pathForResourcesDownloadFolder {
-    NSArray* cachePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString* path = [[cachePathArray lastObject] stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString* path = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
     path = [path stringByAppendingPathComponent:@"moodle"];
     path = [path stringByAppendingPathComponent:@"downloads"];
     return path;
@@ -288,7 +284,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 #pragma mark - Service methods
 
 - (void)getCoursesWithRequest:(MoodleCoursesRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         MoodleCoursesResponse2* response = (__bridge id)result;
@@ -304,7 +300,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 }
 
 - (void)getSectionsWithRequest:(MoodleCourseSectionsRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* result) {
         MoodleCourseSectionsResponse2* response = (__bridge id)result;
@@ -319,10 +315,20 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
     [self.operationQueue addOperation:operation];
 }
 
+- (void)printFileWithRequest:(MoodlePrintFileRequest2*)request delegate:(id<MoodleServiceDelegate>)delegate {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(printFile:);
+    operation.delegateDidReturnSelector = @selector(printFileForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(printFileFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark - Cached versions
 
 - (MoodleCoursesResponse2*)getFromCacheCoursesWithRequest:(MoodleCoursesRequest2*)request {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.serviceClientSelector = @selector(getCourses:);
     operation.delegateDidReturnSelector = @selector(getCoursesForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getCoursesFailedForRequest:);
@@ -332,7 +338,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 }
 
 - (MoodleCourseSectionsResponse2*)getFromCacheSectionsWithRequest:(MoodleCourseSectionsRequest2*)request {
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.serviceClientSelector = @selector(getSections:);
     operation.delegateDidReturnSelector = @selector(getSectionsForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getSectionsFailedForRequest:);
@@ -502,7 +508,7 @@ static NSString* const kFavoriteMoodleResourcesURLs = @"favoriteMoodleResourcesU
 
 #pragma mark - Service overrides
 
-- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+- (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate {
     [super cancelOperationsForDelegate:delegate];
     [self cancelDownloadOfMoodleFilesForDelegate:delegate];
 }

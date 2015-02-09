@@ -65,7 +65,7 @@ static PushNotifService* instance __weak = nil;
 #pragma Thrift
 
 - (void)deleteMappingWithDummy:(NSString*)dummy delegate:(id)delegate; {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(deleteMapping:);
     operation.delegateDidReturnSelector = @selector(deleteMappingForDummy:didReturn:);
     operation.delegateDidFailSelector = @selector(deleteMappingFailedForDummy:);

@@ -59,7 +59,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-thrift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TUSafariActivity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -67,62 +77,72 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>11AFD68CFEEC4752822EA333</key>
+		<key>136FEE184171AD2E31814E64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>24FD02E0589B40E9A79B4081</key>
+		<key>2A1843AB856148CC78DC7AF9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2D604E1FE39545EB97BBAF99</key>
+		<key>2A80604A9DA816DB60990604</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>36F3F045EFE14E4BBFCA01CB</key>
+		<key>2CBB0A870A7CEAA1F95767A3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>52BBAF6206FF437881F2B9B3</key>
+		<key>4450EC33490D98C9E1DE15D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>62DFAF815A4A4B648C133E47</key>
+		<key>5EDD9F6F01F026CFFFD7162C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B18E7C0DEF74FF680885D0E</key>
+		<key>A63760FA0A7F1137C2DAE898</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B75B83BF84442B59B9F4BD1</key>
+		<key>B5777AA7ECE6E6914EAD80D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BEFE3E15B1F34D8C98C1CFA9</key>
+		<key>BE8BA3DC4365DFBB6EAC1DB3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D553781E008F47C6BDFCB39A</key>
+		<key>CB33A16E6A2632D9EB9501D9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DBB09D0ADFBA41B4A52256A3</key>
+		<key>D2605D6E45CE2B8DF561BB94</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F36BF65425E941BD99930E60</key>
+		<key>E28A46238F5EC0218F12BBDF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFA438F9F66D68AC630BDD24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FF76C034249DF40788FD457C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

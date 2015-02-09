@@ -204,6 +204,9 @@
     }
     
     
+    UIView* daySymbolsBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20.0)];
+    daySymbolsBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
 	CGFloat wid = CGRectGetWidth(self.frame);
 	CGFloat xmargin = 20;
 	wid -= 8;
@@ -220,9 +223,11 @@
 		label.textAlignment = NSTextAlignmentCenter;
 		[label sizeToFit];
 		label.userInteractionEnabled = NO;
-		[self.daysBackgroundView addSubview:label];
+        [daySymbolsBackgroundView addSubview:label];
+		//[self.daysBackgroundView addSubview:label];
 		cnt++;
 	}
+    [self.daysBackgroundView addSubview:daySymbolsBackgroundView];
     
 	[self.daysBackgroundView addSubviewToBack:self.daysScrollView];
 	
@@ -959,16 +964,19 @@
 	if(_daysBackgroundView) return _daysBackgroundView;
     
 	_daysBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), TOP_BAR_HEIGHT)];
+    _daysBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_daysBackgroundView.backgroundColor = [UIColor colorWithHex:0xf7f7f7];
 	_daysBackgroundView.layer.shadowColor = [UIColor blackColor].CGColor;
 	_daysBackgroundView.layer.shadowOffset = CGSizeZero;
-	_daysBackgroundView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_daysBackgroundView.bounds].CGPath;
 	_daysBackgroundView.layer.shadowRadius = 1;
 	_daysBackgroundView.layer.shadowOpacity = 0.2;
+    
 	
 	UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, TOP_BAR_HEIGHT - [UIScreen mainScreen].onePixelSize, CGRectGetWidth(self.frame),[UIScreen mainScreen].onePixelSize)];
+    div.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	div.backgroundColor = [UIColor colorWithHex:0xd7d7d7];
 	[_daysBackgroundView addSubview:div];
+    
 	return _daysBackgroundView;
 }
 - (BOOL) is24hClock{
@@ -1018,6 +1026,7 @@
 	if(_horizontalScrollView) return _horizontalScrollView;
 	CGRect r = CGRectInset(CGRectMake(0, TOP_BAR_HEIGHT, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - TOP_BAR_HEIGHT), -HORIZONTAL_PAD, 0);
 	_horizontalScrollView = [[UIScrollView alloc] initWithFrame:r];
+    _horizontalScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_horizontalScrollView.pagingEnabled = YES;
 	_horizontalScrollView.delegate = self;
 	_horizontalScrollView.contentSize = CGSizeMake(CGRectGetWidth(r)*3.0, 0);
@@ -1027,7 +1036,8 @@
 }
 - (UIScrollView*) daysScrollView{
 	if(_daysScrollView) return _daysScrollView;
-	_daysScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetMinY(self.monthYearLabel.frame))];
+	_daysScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320.0, CGRectGetMinY(self.monthYearLabel.frame))];
+    _daysScrollView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	_daysScrollView.pagingEnabled = YES;
 	_daysScrollView.delegate = self;
 	_daysScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.daysScrollView.frame)*3.0, 0);

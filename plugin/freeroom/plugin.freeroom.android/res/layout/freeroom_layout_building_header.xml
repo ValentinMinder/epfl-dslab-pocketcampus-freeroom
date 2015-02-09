@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for header (building names) in home view, with collapse/extend/reduce capabilities. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_roomslist"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="2dip" >
+
+    <LinearLayout
+        android:id="@+id/freeroom_layout_building_header_title_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <!-- Text to display the name of the room -->
+
+        <TextView
+            android:id="@+id/freeroom_layout_building_header_title"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="35dip"
+            android:text="XXXXX"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/freeroom_layout_building_header_separator"
+        style="@style/Vertical_Divider" />
+
+    <RelativeLayout
+        android:id="@+id/freeroom_layout_building_header_show_more_header"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <!-- Image to display less/more results (extend/reduce) -->
+
+        <ImageView
+            android:id="@+id/freeroom_layout_building_header_show_more"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/freeroom_layout_building_header_show_more_img"
+            android:src="@drawable/freeroom_ic_action_expand" />
+
+        <!-- Text to display the number of rooms available, or how many are left to display (reduce/extend) -->
+
+        <TextView
+            android:id="@+id/freeroom_layout_building_header_show_more_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center_vertical"
+            android:layout_toLeftOf="@+id/freeroom_layout_building_header_show_more"
+            android:text="expand"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black" />
+    </RelativeLayout>
+
+</LinearLayout>

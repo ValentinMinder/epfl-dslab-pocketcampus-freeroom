@@ -56,7 +56,8 @@ static const CGFloat kMinHeight = 110.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPhone = 10.0;
 static const CGFloat kmealTypeImageViewLeftConstraintPad = 25.0;
 static const CGFloat kmealTypeImageViewDefaultHeightConstraint = 50.0;
-static const CGFloat kTextViewWidth = 252.0;
+static const CGFloat kTextViewLeftConstraintPhone = 68.0;
+static const CGFloat kTextViewLeftConstraintPad = 83.0;
 static const CGFloat kRatingsEnabledHorizontalLineHeight = 0.5;
 static const CGFloat kRatingsDisabledHorizontalLineHeight = 0.0;
 static const CGFloat kRatingsEnabledBottomZoneHeight = 30.0;
@@ -123,7 +124,6 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         self.pricesLabel.isAccessibilityElement = NO;
         self.satRateButton.isAccessibilityElement = NO;
         self.mealTypeImageViewLeftConstraint.constant = [PCUtils isIdiomPad] ? kmealTypeImageViewLeftConstraintPad : kmealTypeImageViewLeftConstraintPhone;
-        self.textViewWidthConstraint.constant = kTextViewWidth;
         self.textViewBottomConstraint.constant = [self.class bottomZoneHeight];
         self.horizontalLineHeightConstraint.constant = ratingsEnabled ? kRatingsEnabledHorizontalLineHeight : kRatingsDisabledHorizontalLineHeight;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -160,6 +160,13 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [self setRateModeEnabled:self.rateModeEnabled animated:NO postNotif:NO force:YES];
 }
 
+#pragma mark - UITableViewCell overrides
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self setRateModeEnabled:NO animated:NO postNotif:NO force:NO]; //if cell being reused, back to not rating mode
+}
+
 #pragma mark - Notifications listening
 
 - (void)rateModeEnabledNotification:(NSNotification*)notif {
@@ -183,13 +190,13 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     NSString* urlString = [[FoodService sharedInstanceToRetain] pictureUrlForMealType][primaryType];
     if (urlString) {
         NSURLRequest* req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         [self.mealTypeImageView setImageWithURLRequest:req placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            weakSelf.mealTypeImageView.image = image;
-            weakSelf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
+            welf.mealTypeImageView.image = image;
+            welf.mealTypeImageViewHeightConstraint.constant = kmealTypeImageViewDefaultHeightConstraint;
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            weakSelf.mealTypeImageView.image = nil;
-            weakSelf.mealTypeImageViewHeightConstraint.constant = 3.0;
+            welf.mealTypeImageView.image = nil;
+            welf.mealTypeImageViewHeightConstraint.constant = 3.0;
         }];
     } else {
         self.mealTypeImageView.image = nil;
@@ -267,11 +274,11 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     [self.satRateButton setAttributedTitle:satRateAttrString forState:UIControlStateNormal];
 }
 
-+ (CGFloat)preferredHeightForMeal:(EpflMeal*)meal {
++ (CGFloat)preferredHeightForMeal:(EpflMeal*)meal inTableView:(UITableView*)tableView {
     [PCUtils throwExceptionIfObject:meal notKindOfClass:[EpflMeal class]];
     NSAttributedString* attrString = [self attributedStringForMeal:meal];
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-    CGSize targetSize = CGSizeMake(kTextViewWidth-10.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize targetSize = CGSizeMake(tableView.bounds.size.width - ([PCUtils isIdiomPad] ? kTextViewLeftConstraintPad : kTextViewLeftConstraintPhone), CGFLOAT_MAX); //account for text left and right insets of the text view
     CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
     CFRelease(framesetter);
     CGFloat finalHeight = size.height + [self bottomZoneHeight] + (ratingsEnabled ? 22.0 : 0.0); //give some margin so that text is not too tight between top and bottom lines
@@ -349,18 +356,11 @@ static const CGFloat kRateControlsViewWidth = 248.0;
     self.satRateButton.enabled = !rateModeEnabled;
     self.satRateButton.alpha = rateModeEnabled ? 0.5 : 1.0;
     
-    if ([PCUtils isIdiomPad] &&  !UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-        self.rateControlsViewLeftConstraint.constant = rateModeEnabled ? kRateControlsViewWidth : 0.0;
-        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
-        self.infoContentViewLeftConstraint.constant = 0.0;
-        self.infoContentViewRightConstraint.constant = 0.0;
-    } else {
-        CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
-        self.rateControlsViewLeftConstraint.constant = 0.0;
-        //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
-        self.infoContentViewLeftConstraint.constant = -offset;
-        self.infoContentViewRightConstraint.constant = offset;
-    }
+    CGFloat offset = rateModeEnabled ? kRateControlsViewWidth : 0.0;
+    self.rateControlsViewLeftConstraint.constant = 0.0;
+    //self.separatorInset = rateModeEnabled ? UIEdgeInsetsZero : self.originalSeparatorInsets;
+    self.infoContentViewLeftConstraint.constant = -offset;
+    self.infoContentViewRightConstraint.constant = offset;
     
     [UIView animateWithDuration:animated ? 0.3 : 0.0 animations:^{
         [self layoutIfNeeded];
@@ -386,7 +386,7 @@ static const CGFloat kRateControlsViewWidth = 248.0;
         //should not happen
         return;
     }
-    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:@"/food/restaurant" contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
+    [[PCGAITracker sharedTracker] trackAction:@"RateMeal" inScreenWithName:self.screenNameForGoogleAnalytics contentInfo:[NSString stringWithFormat:@"%lld-%@", self.meal.mId, self.meal.mName]];
     self.ratingStatus = RatingStatusLoading;
     NSString* identifier = [PCUtils uniqueDeviceIdentifier];
     VoteRequest* req = [[VoteRequest alloc] initWithMealId:self.meal.mId rating:ratingValue deviceId:identifier];
@@ -410,10 +410,12 @@ static const CGFloat kRateControlsViewWidth = 248.0;
             break;
         }
         case SubmitStatus_ALREADY_VOTED:
+        {
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingAlreadyDone", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             [self infoContentViewTapped]; //hide rating controls, not longer need them
             break;
+        }
         case SubmitStatus_TOO_EARLY:
             self.ratingStatus = RatingStatusReady;
             [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"RatingTooEarly", @"FoodPlugin", nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];

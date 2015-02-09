@@ -9,6 +9,15 @@
 "Need2StationsClickPlusToAdd" = "At least two stations are required\nto show the schedules.\n\nTap + to add a station.";
 
 //////////////////////////////////////////
+// TransportService
+//////////////////////////////////////////
+
+"LocationBufferAlertTitle" = "Automatically select your closest station as departure ?";
+"LocationBufferAlertMessage" = "PocketCampus can use your location to automatically set your closest station as departure.\nYou can change this setting\nanytime later.\n\nTry it, you will love it 😉.\n\nYou location is never sent to a server.";
+"LocationBufferAlertAcceptButtonTitle" = "Yes";
+"LocationBufferAlertRejectButtonTitle" = "Nope";
+
+//////////////////////////////////////////
 // TransportNextDeparturesViewController
 //////////////////////////////////////////
 

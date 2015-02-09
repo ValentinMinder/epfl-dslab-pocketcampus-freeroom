@@ -105,7 +105,7 @@ static NSCache* shortNameForTransportStationName;
 
 - (BOOL)isFeetConnection {
     int64_t duration = (self.arrivalTime/1000) - (self.departureTime/1000);
-    return ( (duration <= (3*60)) && !self.line.name); //feet connections are generally 3min longs (or less) and have nil line name
+    return ( (duration <= (6.0 * 60.0)) && !self.line.name); //feet connections are generally 3min longs (or less) and have nil line name
 }
 
 - (BOOL)hasLeft {

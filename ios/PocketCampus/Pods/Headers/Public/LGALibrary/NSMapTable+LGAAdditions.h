@@ -1,0 +1,1 @@
+../../../LGALibrary/Pod/Classes/NSMapTable+LGAAdditions.h

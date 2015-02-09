@@ -4,7 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>CamiproWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>CloudPrintAction.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>PocketCampus (NSZombie).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>PocketCampus (en).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
@@ -19,6 +34,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PocketCampusAutomatedTesting.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -27,7 +47,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>32136E87193F6934002905A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>32136EB8193FAF91002905A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>32136F32193FBCFF002905A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3219EF4B14FCDE4900A271CD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>322AC9A619C3AF3500BADA69</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -43,6 +83,11 @@
 			<true/>
 		</dict>
 		<key>32E28092156E52ED00B74825</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>32FF91D519C62F7A00559E1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

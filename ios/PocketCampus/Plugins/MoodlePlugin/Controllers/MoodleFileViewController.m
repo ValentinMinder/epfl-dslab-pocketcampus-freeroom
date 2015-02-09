@@ -41,9 +41,15 @@
 
 #import "NSTimer+Blocks.h"
 
-static NSTimeInterval kHideNavbarSeconds = 5.0;
+#import "CloudPrintController.h"
 
-@interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
+#import "MBProgressHUD.h"
+
+#import "UIApplication+LGAAdditions.h"
+
+static NSTimeInterval kHideNavbarSeconds = 6.0;
+
+@interface MoodleFileViewController ()<UIGestureRecognizerDelegate, UIWebViewDelegate, UIPopoverControllerDelegate, UIDocumentInteractionControllerDelegate, UIActionSheetDelegate, MoodleServiceDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView* webView;
 @property (nonatomic, weak) IBOutlet UILabel* centerMessageLabel;
@@ -53,10 +59,12 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 @property (nonatomic, strong) MoodleFile2* moodleFile;
 @property (nonatomic, strong) UIActionSheet* deleteActionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* docController;
+@property (nonatomic, strong) UIPopoverController* printPopoverController;
 @property (nonatomic, strong) UITapGestureRecognizer* tapGestureReco;
 @property (nonatomic) CGFloat navbarOriginalAlpha;
 @property (nonatomic, strong) NSTimer* hideNavbarTimer;
 @property (nonatomic) BOOL isShowingActionMenu;
+@property (nonatomic) BOOL printFileOperationInProgress;
 
 @property (nonatomic) CGSize lastKnownContentSize;
 
@@ -73,7 +81,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     if (self) {
         self.gaiScreenName = @"/moodle/course/document";
         self.moodleFile = moodleFile;
-        self.title = moodleFile.name; //enough space to display title if iPad
+        self.title = moodleFile.name;
         self.moodleService = [MoodleService sharedInstanceToRetain];
         self.lastKnownContentSize = CGSizeZero;
     }
@@ -93,15 +101,15 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     self.webView.scalesPageToFit = YES; //otherwise, pinch-to-zoom is disabled
     
-    if ([PCUtils isIdiomPad]) {
-        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
-    }
-    
-    NSMutableArray* rightButtons = [NSMutableArray arrayWithCapacity:2];
+    [self updateMasterToggleBarButtonItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMasterToggleBarButtonItem) name:NSUserDefaultsDidChangeNotification object:nil];
     
     UIBarButtonItem* actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
     actionButton.enabled = NO;
-    [rightButtons addObject:actionButton];
+    
+    UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
+    printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
+    printButton.enabled = NO;
     
     BOOL isFavorite = [self.moodleService isFavoriteMoodleItem:self.moodleFile];
     UIImage* favoriteImage = [PCValues imageForFavoriteNavBarButtonLandscapePhone:NO glow:isFavorite];
@@ -109,23 +117,23 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     
     UIBarButtonItem* favoriteButton = [[UIBarButtonItem alloc] initWithImage:favoriteImage landscapeImagePhone:favoriteImageLandscape style:UIBarButtonItemStylePlain target:self action:@selector(favoriteButtonPressed)];
     favoriteButton.accessibilityLabel = isFavorite ? NSLocalizedStringFromTable(@"RemoveDocumentFromFavorites", @"MoodlePlugin", nil) : NSLocalizedStringFromTable(@"AddDocumentToFavorites", @"MoodlePlugin", nil);
-    [rightButtons addObject:favoriteButton];
     
     UIBarButtonItem* deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed)];
     deleteButton.enabled = NO;
     deleteButton.accessibilityHint = NSLocalizedStringFromTable(@"DeleteDocumentFromLocalStorage", @"MoodlePlugin", nil);
-    [rightButtons addObject:deleteButton];
     
-    self.navigationItem.rightBarButtonItems = rightButtons;
+    self.navigationItem.rightBarButtonItems = @[actionButton, printButton, favoriteButton, deleteButton];
     
     if ([self.moodleService isMoodleFileDownloaded:self.moodleFile]) {
         self.centerMessageLabel.hidden = YES;
         self.progressView.hidden = YES;
         [self deleteButton].enabled = YES;
+        [self printButton].enabled = [self isPrintAvailable];
         [self actionButton].enabled = YES;
         [self loadDownloadedMoodleResourceInWebView];
     } else {
         [self deleteButton].enabled = NO;
+        [self printButton].enabled = NO;
         [self actionButton].enabled = NO;
         [self startMoodleResourceDownload];
     }
@@ -228,23 +236,49 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 
 #pragma mark - Navbar visibility
 
+- (void)updateMasterToggleBarButtonItem {
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        self.navigationItem.leftBarButtonItem = nil;
+        if (self.navigationController.navigationBarHidden) {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
+        } else {
+            [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:YES];
+        }
+    } else {
+        self.navigationItem.leftBarButtonItem = [(PluginSplitViewController*)(self.splitViewController) toggleMasterViewBarButtonItem];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
 - (void)rescheduleHideNavbarTimer {
     [self.hideNavbarTimer invalidate];
-    MoodleFileViewController* weakSelf __weak = self;
+    __weak __typeof(self) welf = self;
     self.hideNavbarTimer = [NSTimer scheduledTimerWithTimeInterval:kHideNavbarSeconds block:^{
-        [weakSelf hideNavbar];
+        if (![[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+            return;
+        }
+        NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+        NSTimeInterval lastTouchTimestamp = [UIApplication sharedApplication].lga_lastTouchTimestamp;
+        if (currentTimestamp - lastTouchTimestamp < kHideNavbarSeconds) {
+            return;
+        }
+        [welf hideNavbar];
     } repeats:YES];
+
 }
 
 - (void)hideNavbar {
     if (self.navigationController.navigationBarHidden) {
         return;
     }
-    if (self.deleteActionSheet.isVisible || self.docController) {
+    if (self.deleteActionSheet.isVisible || self.docController || self.printPopoverController.isPopoverVisible || self.printFileOperationInProgress) {
         return;
     }
-    if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
+    /*if ([PCUtils isIdiomPad] && ![(PluginSplitViewController*)(self.splitViewController) isMasterViewControllerHidden]) {
         return; //on iPad only hide nav bar when in full screen mode (master hidden)
+    }*/
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:YES animated:YES];
     }
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
@@ -253,10 +287,17 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 }
 
 - (void)showNavbar {
+    [self showNavbarAnimated:YES];
+}
+
+- (void)showNavbarAnimated:(BOOL)animated {
     if (!self.navigationController.navigationBarHidden) {
         return;
     }
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    if ([[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey]) {
+        [(PluginSplitViewController*)(self.splitViewController) setMasterViewControllerHidden:NO animated:animated];
+    }
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.navigationController setNeedsStatusBarAppearanceUpdate];
     [self.navigationController.navigationBar layoutSubviews]; //workaround for API bug: otherwise, bar button items landscape image is not used, even in landscape
     self.webView.scrollView.contentInset = [PCUtils edgeInsetsForViewController:self];
@@ -283,18 +324,37 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     return self.navigationItem.rightBarButtonItems[0];
 }
 
-- (UIBarButtonItem*)favoriteButton {
+- (UIBarButtonItem*)printButton {
     if (self.navigationItem.rightBarButtonItems.count < 2) {
         return nil;
     }
     return self.navigationItem.rightBarButtonItems[1];
 }
 
-- (UIBarButtonItem*)deleteButton {
+- (BOOL)isPrintAvailable {
+    static BOOL printEnabledInConfig = YES;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSNumber* nsEnabled = [[PCConfig defaults] objectForKey:PC_CONFIG_CLOUDPRINT_ENABLED];
+        if (nsEnabled) {
+            printEnabledInConfig = [nsEnabled boolValue];
+        }
+    });
+    return printEnabledInConfig && [CloudPrintController isSupportedFileWithLocalURL:[NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]]];
+}
+
+- (UIBarButtonItem*)favoriteButton {
     if (self.navigationItem.rightBarButtonItems.count < 3) {
         return nil;
     }
     return self.navigationItem.rightBarButtonItems[2];
+}
+
+- (UIBarButtonItem*)deleteButton {
+    if (self.navigationItem.rightBarButtonItems.count < 4) {
+        return nil;
+    }
+    return self.navigationItem.rightBarButtonItems[3];
 }
 
 #pragma mark - Buttons actions
@@ -311,8 +371,56 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
         NSURL* resourceLocalURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
         self.docController = [UIDocumentInteractionController interactionControllerWithURL:resourceLocalURL];
         self.docController.delegate = self;
-        [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
+        if ([PCUtils isOSVersionGreaterThanOrEqualTo:8.0]) {
+            [self.docController presentOpenInMenuFromBarButtonItem:[self actionButton] animated:YES];
+        } else {
+            [self.docController presentOptionsMenuFromBarButtonItem:[self actionButton] animated:YES];
+        }
     }
+}
+
+- (void)printButtonTapped {
+    
+    /*#warning REMOVE
+    __weak __typeof(self) welf = self;
+    NSURL* localFileURL = [NSURL fileURLWithPath:[self.moodleService localPathForMoodleFile:self.moodleFile]];
+    UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintDocumentWithLocalURL:localFileURL docName:self.moodleFile.filename printDocumentRequestOrNil:nil completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+    if (welf.printPopoverController) {
+    [welf.printPopoverController dismissPopoverAnimated:YES];
+    } else {
+    [welf dismissViewControllerAnimated:YES completion:NULL];
+    }
+    [welf showNavbarAnimated:NO];
+    }];
+    
+    if ([PCUtils isIdiomPad]) {
+        self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
+        [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:printViewController animated:YES completion:NULL];
+    }
+    return;
+#warning END OF REMOVE*/
+    
+    
+    [self trackAction:@"Print"];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.opacity = 0.6;
+    hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"MoodlePlugin", nil);
+    hud.detailsLabelText = NSLocalizedStringFromTable(@"TapToCancel", @"MoodlePlugin", nil);
+    UITapGestureRecognizer* cancelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPrintTapped)];
+    [hud addGestureRecognizer:cancelGesture];
+    
+    [self printButton].enabled = NO;
+    self.printFileOperationInProgress = YES;
+    MoodlePrintFileRequest2* request = [[MoodlePrintFileRequest2 alloc] initWithFileUrl:self.moodleFile.url];
+    [self.moodleService printFileWithRequest:request delegate:self];
+}
+
+- (void)cancelPrintTapped {
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self.moodleService cancelOperationsForDelegate:self];
 }
 
 - (void)favoriteButtonPressed {
@@ -340,7 +448,6 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
 #pragma mark - Moodle Resource loading
 
 - (void)startMoodleResourceDownload {
-
     self.centerMessageLabel.text = NSLocalizedStringFromTable(@"DownloadingFile", @"MoodlePlugin", nil);
     self.centerMessageLabel.hidden = NO;
     self.progressView.hidden = NO;
@@ -386,6 +493,7 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     self.centerMessageLabel.hidden = YES;
     self.progressView.hidden = YES;
     [self deleteButton].enabled = YES;
+    [self printButton].enabled = [self isPrintAvailable];
     [self actionButton].enabled = YES;
     [self loadDownloadedMoodleResourceInWebView];
 }
@@ -398,18 +506,18 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     } else if (statusCode == 303 || statusCode == 407) {
         //mans not logged in
         self.progressView.progress = 0.0;
-        __weak __typeof(self) weakSelf = self;
+        __weak __typeof(self) welf = self;
         [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-            [weakSelf startMoodleResourceDownload];
+            [welf startMoodleResourceDownload];
         } userCancelled:^{
-            if (weakSelf.splitViewController) {
+            if (welf.splitViewController) {
                 MoodleSplashDetailViewController* splashViewController = [[MoodleSplashDetailViewController alloc] init];
-                weakSelf.splitViewController.viewControllers = @[weakSelf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                welf.splitViewController.viewControllers = @[welf.splitViewController.viewControllers[0], [[PCNavigationController alloc] initWithRootViewController:splashViewController]];
             } else {
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [welf.navigationController popViewControllerAnimated:YES];
             }
-        } failure:^{
-            [weakSelf serviceConnectionToServerFailed];
+        } failure:^(NSError *error) {
+            [welf serviceConnectionToServerFailed];
         }];
         
     } else { //other unkown error
@@ -417,11 +525,81 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
+- (void)printFileForRequest:(MoodlePrintFileRequest2 *)request didReturn:(MoodlePrintFileResponse2 *)response {
+    self.printFileOperationInProgress = NO;
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+    switch (response.statusCode) {
+        case MoodleStatusCode2_OK:
+        {
+            PrintDocumentRequest* printRequest = [PrintDocumentRequest createDefaultRequest];
+            printRequest.documentId = response.printJobId;
+            __weak __typeof(self) welf = self;
+            UIViewController* printViewController = [[CloudPrintController sharedInstance] viewControllerForPrintWithDocumentName:self.moodleFile.filename printDocumentRequest:printRequest completion:^(CloudPrintCompletionStatusCode printStatusCode) {
+                if (welf.printPopoverController) {
+                    [welf.printPopoverController dismissPopoverAnimated:YES];
+                    welf.printPopoverController = nil;
+                } else {
+                    [welf dismissViewControllerAnimated:YES completion:NULL];
+                }
+                [welf showNavbarAnimated:NO];
+            }];
+            
+            if ([PCUtils isIdiomPad]) {
+                if (self.printPopoverController.isPopoverVisible) {
+                    [[CloudPrintController sharedInstance] cancelPrintWithViewController:self.printPopoverController.contentViewController];
+                    [self.printPopoverController dismissPopoverAnimated:NO];
+                    self.printPopoverController = nil;
+                }
+                self.printPopoverController = [[UIPopoverController alloc] initWithContentViewController:printViewController];
+                self.printPopoverController.delegate = self;
+                [self.printPopoverController presentPopoverFromBarButtonItem:[self printButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            } else {
+                [self presentViewController:printViewController animated:YES completion:NULL];
+            }
+            break;
+        }
+        case MoodleStatusCode2_AUTHENTICATION_ERROR:
+        {
+            __weak __typeof(self) welf = self;
+            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                [welf printButtonTapped];
+            } userCancelled:^{
+                // nothing to do
+            } failure:^(NSError *error) {
+                [PCUtils showServerErrorAlert];
+            }];
+            break;
+        }
+        case MoodleStatusCode2_NETWORK_ERROR:
+        {
+            [PCUtils showServerErrorAlert];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)printFileFailedForRequest:(MoodlePrintFileRequest2 *)request {
+    self.printFileOperationInProgress = NO;
+    [self printButton].enabled = YES;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+    [PCUtils showServerErrorAlert];
+}
+
 - (void)serviceConnectionToServerFailed {
-    self.webView.hidden = YES;
-    self.progressView.hidden = YES;
-    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
-    self.centerMessageLabel.hidden = NO;
+    if (self.printFileOperationInProgress) {
+        self.printFileOperationInProgress = NO;
+        [self printButton].enabled = YES;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
+        [PCUtils showConnectionToServerTimedOutAlert];
+    } else {
+        self.webView.hidden = YES;
+        self.progressView.hidden = YES;
+        self.centerMessageLabel.text = NSLocalizedStringFromTable(@"ErrorWhileDownloadingFile", @"MoodlePlugin", nil);
+        self.centerMessageLabel.hidden = NO;
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -464,9 +642,22 @@ static NSTimeInterval kHideNavbarSeconds = 5.0;
     }
 }
 
+#pragma mark - UIPopoverControllerDelegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    if (popoverController == self.printPopoverController) {
+        [[CloudPrintController sharedInstance] cancelPrintWithViewController:self.printPopoverController.contentViewController];
+        self.printPopoverController = nil;
+    }
+}
+
 #pragma mark - UIDocumentInteractionControllerDelegate
 
 - (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller {
+    self.docController = nil;
+}
+
+- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
     self.docController = nil;
 }
 

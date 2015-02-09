@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5037.2" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DirectorySearchViewController">
@@ -23,7 +23,6 @@
             <subviews>
                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7" customClass="PCTableViewAdditions">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
@@ -31,16 +30,14 @@
                         <outlet property="delegate" destination="-1" id="14"/>
                     </connections>
                 </tableView>
-                <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" image="DirectoryLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="22">
+                <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" image="DirectoryLarge.png" translatesAutoresizingMaskIntoConstraints="NO" id="22">
                     <rect key="frame" x="95" y="154" width="130" height="130"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="130" id="J73-5k-gHf"/>
                     </constraints>
                 </imageView>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="6">
                     <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="7NB-b0-3ZE"/>
                     </constraints>
@@ -55,11 +52,8 @@
                 </searchBar>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="18">
                     <rect key="frame" x="258" y="76" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.70000000000000018" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="15" userLabel="Center Message Label">
-                    <rect key="frame" x="10" y="219" width="300" height="0.0"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -77,9 +71,10 @@
                 <constraint firstAttribute="trailing" secondItem="15" secondAttribute="trailing" constant="10" id="5Ba-st-oaJ"/>
                 <constraint firstItem="6" firstAttribute="top" secondItem="1" secondAttribute="top" constant="64" id="93S-lr-wyA"/>
                 <constraint firstItem="15" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ERk-ly-9Pa"/>
+                <constraint firstItem="15" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6" secondAttribute="bottom" constant="20" id="Emb-xK-Jak"/>
                 <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="Ixk-rS-ZI1"/>
+                <constraint firstAttribute="centerY" secondItem="15" secondAttribute="centerY" priority="750" constant="120" id="RaE-vb-yHR"/>
                 <constraint firstAttribute="centerX" secondItem="22" secondAttribute="centerX" id="VXG-Fu-NAf"/>
-                <constraint firstItem="15" firstAttribute="centerY" secondItem="22" secondAttribute="centerY" id="YYV-MZ-cYx"/>
                 <constraint firstItem="6" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="awp-4B-Di0"/>
                 <constraint firstItem="6" firstAttribute="trailing" secondItem="18" secondAttribute="trailing" constant="42" id="c8p-2P-GeD"/>
                 <constraint firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="gQ8-Df-ui2"/>
@@ -88,12 +83,16 @@
                 <constraint firstAttribute="bottom" secondItem="7" secondAttribute="bottom" id="qyf-Ia-pzM"/>
                 <constraint firstItem="6" firstAttribute="centerY" secondItem="18" secondAttribute="centerY" id="uBm-gO-Yb0"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="113" y="253"/>
         </view>
     </objects>
     <resources>
         <image name="DirectoryLarge.png" width="130" height="130"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

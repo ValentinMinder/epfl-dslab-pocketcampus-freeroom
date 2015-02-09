@@ -1,40 +1,36 @@
 package org.pocketcampus.plugin.isacademia.server;
 
-import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.isacademia.shared.*;
-
 import org.apache.thrift.TException;
-
 import org.joda.time.*;
 
 /**
  * Implementation of IsAcademiaService.
  * 
- * @author Solal Pirelli <solal.pirelli@epfl.ch>
+ * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class IsAcademiaServiceImpl implements IsAcademiaService.Iface {
 	private final Schedule _schedule;
+	private final Authenticator _authenticator;
 
-	public IsAcademiaServiceImpl(Schedule schedule) {
+	public IsAcademiaServiceImpl(Schedule schedule, Authenticator authenticator) {
 		_schedule = schedule;
+		_authenticator = authenticator;
 	}
 
 	public IsAcademiaServiceImpl() {
-		this(new ScheduleImpl(new HttpsClientImpl()));
+		this(new ScheduleImpl(new HttpsClientImpl()), new AuthenticatorImpl());
 	}
 
 	@Override
 	public ScheduleResponse getSchedule(ScheduleRequest req) throws TException {
-		String sciper = AuthenticationServiceImpl.authGetUserSciper();
-
+		String sciper = _authenticator.getSciper();
 		LocalDate date = req.isSetWeekStart() ? new LocalDate(req.getWeekStart()) : getCurrentWeekStart();
 		String lang = req.isSetLanguage() ? req.getLanguage() : "fr";
 
-		try {
-			return _schedule.get(date, lang, sciper);
-		} catch (Exception e) {
-			throw new TException(e);
-		}
+		return _schedule.get(date, lang, sciper);
 	}
 
 	private static LocalDate getCurrentWeekStart() {

@@ -18,7 +18,7 @@
 "FilterByTagsWithFormat" = "Filtrer par tags (%d sel.)";
 "SelectAtLeastOneTag" = "Séléctionnez au moins un tag";
 "SelectAll" = "Tout sélect.";
-"DeselectAll" = "Tout désélect.";
+"DeselectAll" = "Ne rien sélect.";
 "SelectCategory" = "Aller à la catégorie";
 "Categories" = "Catégories";
 "NoCategory" = "Aucune catégorie";
@@ -38,7 +38,13 @@
 "BackToUpcomingEvents" = "Retour aux évenements à venir";
 "PastEvents" = "Événements passés";
 "PastEventsShort" = "Évén. passés";
+"ResetFilter" = "Annuler le filtrage";
 "ShowPastEventsFor..." = "Voir les événements passés jusqu'à";
+"EventsRightNow" = "En ce moment à l'EPFL";
+"PeriodWithFormat(Past,FilteredByTag)" = "%@ (passé, filtré)";
+"PeriodWithFormat(Past)" = "%@ (passé)";
+"PeriodWithFormat(FilteredByTag)" = "%@ (filtré par tag)";
+"RightNow" = "En ce moment";
 
 //Accessibility
 "AddEventToFavorites" = "Ajouter cet événement aux favoris";

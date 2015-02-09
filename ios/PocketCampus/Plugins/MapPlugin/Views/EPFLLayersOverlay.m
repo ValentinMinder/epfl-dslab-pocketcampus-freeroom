@@ -38,6 +38,8 @@ static NSInteger const kMaxFloorLevel = 8;
 static NSInteger const kMinFloorLevel = -4;
 static double const kFloorLevelsMaxAltitude = 1200.0;
 
+static NSString* kFloorMapLayerNameForQueryKey = @"{floor}";
+
 @interface EPFLLayersOverlay ()
 
 @property (nonatomic, weak, readwrite) MKMapView* mapView;
@@ -229,7 +231,13 @@ static double const kFloorLevelsMaxAltitude = 1200.0;
             languageCode = @"en";
         }
     });
-    return [NSString stringWithFormat:@"locaux_labels_%@%d,batiments_routes_labels,parkings_publicsall,informationall", languageCode, (int)self.floorLevel];
+    
+    NSString* layersString = [NSString stringWithFormat:@"locaux_labels_%@%d,batiments_routes_labels", languageCode, (int)self.floorLevel];
+    for (NSString* nameForQuery in self.mapLayersNamesForQueryToDisplay) {
+        NSString* layerFinalName = [nameForQuery stringByReplacingOccurrencesOfString:kFloorMapLayerNameForQueryKey withString:[NSString stringWithFormat:@"%d", (int)self.floorLevel]];
+        layersString = [layersString stringByAppendingFormat:@",%@", layerFinalName];
+    }
+    return layersString;
 }
 
 - (UIImage*)blankImageOfSize:(CGSize)size {

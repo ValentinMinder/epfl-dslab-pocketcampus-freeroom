@@ -31,7 +31,15 @@
 
 #import "NSDate+Addtions.h"
 
+NSNumber* kEventItemCategoryFavorite;
+NSNumber* kEventItemCategoryFeatured;
+
 @implementation EventItem (Additions)
+
++ (void)initialize {
+    kEventItemCategoryFavorite = [NSNumber numberWithInt:-2];
+    kEventItemCategoryFeatured = [NSNumber numberWithInt:-1];
+}
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {
@@ -57,16 +65,7 @@
     if (![object isKindOfClass:[self class]]) {
         @throw [NSException exceptionWithName:@"Illegal argument" reason:[NSString stringWithFormat:@"cannot compare EventItem with %@", [object class]] userInfo:nil];
     }
-    
-    if (self.endDate) {
-        if (self.endDate < object.endDate) {
-            return NSOrderedAscending;
-        } else if (self.endDate > object.endDate) {
-            return NSOrderedDescending;
-        } else {
-            return NSOrderedSame;
-        }
-    } else if (self.startDate) {
+    if (self.startDate) {
         if (self.startDate < object.startDate) {
             return NSOrderedAscending;
         } else if (self.startDate > object.startDate) {
@@ -107,12 +106,13 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = [NSDateFormatter new];
+        formatter.doesRelativeDateFormatting = YES;
     });
     
     NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:self.startDate/1000];
-    NSDate* endDate = [NSDate dateWithTimeIntervalSince1970:self.endDate/1000];
+    NSDate* endDate = [NSDate dateWithTimeIntervalSince1970:self.realEndDate/1000];
     
-    BOOL oneDayEvent = [startDate isSameDayAsDate:endDate countMidnightAsSameDay:YES];
+    BOOL oneDayEvent = [startDate isSameDayAsDate:endDate];
     
     formatter.dateStyle = NSDateFormatterShortStyle;
     formatter.timeStyle = self.fullDay || (!oneDayEvent && shortBool) ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
@@ -120,7 +120,7 @@
     NSString* startDateString = [formatter stringFromDate:startDate];
     
     formatter.dateStyle = oneDayEvent ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
-    formatter.timeStyle = self.fullDay || (!oneDayEvent && shortBool) ? NSDateFormatterNoStyle : formatter.dateStyle;
+    formatter.timeStyle = self.fullDay || shortBool || self.startDate == self.realEndDate ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
     
     NSString* endDateString = [formatter stringFromDate:endDate];
     
@@ -131,9 +131,9 @@
 
 - (BOOL)isNow {
     NSDate* startDate = [NSDate dateWithTimestampInt64_t:self.startDate];
-    NSDate* endDate = [NSDate dateWithTimestampInt64_t:self.endDate];
+    NSDate* endDate = [NSDate dateWithTimestampInt64_t:self.realEndDate];
     NSDate* now = [NSDate date];
-    if (self.startDate && self.endDate) {
+    if (self.startDate && self.realEndDate) {
         return [now isBetweenEarlyDate:startDate andLateDate:endDate];
     }
     if (self.startDate) {
@@ -143,5 +143,14 @@
     return NO;
 }
 
+- (int64_t)realEndDate {
+    if (!self.fullDay) {
+        return self.endDate;
+    }
+    if (self.endDate == 0) {
+        return 0;
+    }
+    return self.endDate - (24*3600*1000);
+}
 
 @end

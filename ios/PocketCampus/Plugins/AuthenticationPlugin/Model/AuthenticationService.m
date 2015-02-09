@@ -104,6 +104,15 @@ static AuthenticationService* instance __weak = nil;
 }
 
 + (BOOL)savePassword:(NSString*)password forUsername:(NSString*)username {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // Fixes an iOS 7 and 8 bug that makes keychain elements sometimes not accessible
+        // in background/from extensions even after the device has been unlocked once.
+        // With this accessibility value, the elements are always accessible after the user has
+        // unlocked his phone once after restart. This is recommended value for background apps / extensions.
+        // see http://stackoverflow.com/questions/10536859/ios-keychain-not-retrieving-values-from-background?answertab=votes#tab-top
+        [SSKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlock];
+    });
     return [SSKeychain setPassword:password forService:kKeychainServiceKey account:username];
 }
 
@@ -223,7 +232,7 @@ static AuthenticationService* instance __weak = nil;
 #pragma mark - Service methods
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthTequilaToken);
     operation.delegateDidReturnSelector = @selector(getAuthTequilaTokenDidReturn:);
     operation.delegateDidFailSelector = @selector(getAuthTequilaTokenFailed);
@@ -232,7 +241,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 - (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthSession:);
     operation.delegateDidReturnSelector = @selector(getAuthSessionForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getAuthSessionFailedForRequest:);
@@ -243,7 +252,7 @@ static AuthenticationService* instance __weak = nil;
 
 #pragma mark - Service overrides
 
-- (void)cancelOperationsForDelegate:(id<ServiceDelegate>)delegate {
+- (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate {
     for (NSOperation* operation in self.operationQueue.operations) {
         if ([operation isKindOfClass:[AFHTTPRequestOperation class]]) {
             [(AFHTTPRequestOperation*)operation setCompletionBlockWithSuccess:NULL failure:NULL];

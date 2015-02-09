@@ -13,10 +13,10 @@
         
 		<activity android:name="org.pocketcampus.plugin.authentication.android.AuthenticationView"
 			xmlns:android="http://schemas.android.com/apk/res/android"
-			android:icon="@drawable/authentication_icon"
+			android:icon="@drawable/app_icon"
 			android:label="@string/authentication_plugin_title"
 			android:screenOrientation="nosensor"
-			android:windowSoftInputMode="adjustResize|stateHidden"
+			android:windowSoftInputMode="adjustResize|stateVisible"
 			android:launchMode="singleTask"
 			 android:theme="@android:style/Theme.Dialog"
 			 android:excludeFromRecents="true">

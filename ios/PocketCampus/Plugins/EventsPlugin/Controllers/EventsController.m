@@ -38,6 +38,8 @@
 
 #import "EventsService.h"
 
+#import "PushNotifController.h"
+
 static EventsController* instance __weak = nil;
 
 @interface EventsController ()<UISplitViewControllerDelegate>
@@ -72,11 +74,27 @@ static EventsController* instance __weak = nil;
             }
             
             self.eventsService = [EventsService sharedInstanceToRetain];
+            
+//#warning REMOVE
+            //[self.eventsService addUserTicket:@"amer"];
+            
             /*#warning TO REMOVE
             [self.eventsService addUserTicket:@"d3f760d257605db44b40ea81fb69040e"]; //Loïc Privacy Congress 2013
-            [self.eventsService addUserTicket:@"amer"]; //Loïc Privacy Congress 2013
             [self.eventsService addUserTicket:@"2c79be552072699bd4abac2af98efeac"]; //Loïc EDIC Open House 2014
             [self.eventsService addUserTicket:@"6298eb264f3cb42f6faa7b6a7f5c5482"]; //Loïc IC Reasearch Day 2013*/
+            
+            /*#warning REMOVE
+            [self.eventsService addUserTicket:@"test_push_notif"];
+            
+            [[PushNotifController sharedInstance] registerDeviceForPushNotificationsWithPluginLowerIdentifier:@"events" reason:@"Test push notif" success:^(BOOL alertAllowed, BOOL badgeAllowed, BOOL soundAllowed) {
+                NSLog(@"Success: %d %d %d", alertAllowed, badgeAllowed, soundAllowed);
+            } failure:^(PushNotifDeviceRegistrationError error) {
+                NSLog(@"Failure: %d", error);
+            }];
+            
+            [[PushNotifController sharedInstance] addPushNotificationObserver:self forPluginLowerIdentifier:@"events" newNotificationBlock:^(NSString *notifMessage, NSDictionary *notifFullDictionary) {
+                NSLog(@"new notif: %@, %@", notifMessage, notifFullDictionary);
+            }];*/
             
             instance = self;
         }
@@ -95,6 +113,10 @@ static EventsController* instance __weak = nil;
         return [[[[self class] alloc] init] autorelease];
 #endif
     }
+}
+
+- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
+    return [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:YES];
 }
 
 - (BOOL)handleURLQueryAction:(NSString *)action parameters:(NSDictionary *)parameters {
@@ -156,11 +178,6 @@ static EventsController* instance __weak = nil;
     return YES;
 }
 
-- (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters {
-    return [self viewControllerForURLQueryAction:action parameters:parameters handleSilent:YES];
-}
-
-
 + (NSString*)localizedName {
     return NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", @"");
 }
@@ -215,8 +232,8 @@ static EventsController* instance __weak = nil;
         if (eventId) {
             viewController = [[EventItemViewController alloc] initAndLoadEventItemWithId:[eventId longLongValue]];
         }
-    } else {
-        //no other supported actions
+    } else if (action.length == 0) {
+        viewController = [[EventPoolViewController alloc] initAndLoadRootPool];
     }
     
     NSString* eventItemIdToMarkFavorite = parameters[kEventsURLParameterMarkFavoriteEventItemId];
@@ -242,7 +259,7 @@ static EventsController* instance __weak = nil;
     NSString* exchangeToken = parameters[kEventsURLParameterExchangeToken];
     if (exchangeToken) {
         found = YES;
-        ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[self.eventsService allUserTickets]];
+        ExchangeRequest* req = [[ExchangeRequest alloc] initWithExchangeToken:exchangeToken userToken:nil userTickets:[[self.eventsService allUserTickets] mutableCopy]];
         [self.eventsService exchangeContactsForRequest:req delegate:self];
     }
     

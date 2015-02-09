@@ -19,6 +19,7 @@
     #import "PCPersistenceManager.h"
     #import "PCGAITracker.h"
     #import "PCNavigationController.h"
+    #import "PCTabBarController.h"
 
     #import "AuthenticationController.h"
 
@@ -30,7 +31,7 @@
     #import "UIActionSheet+Additions.h"
     #import "UIPopoverController+Additions.h"
     #import "UILabel+Additions.h"
-    #import "LGRefreshControl+PCAdditions.h"
+    #import "LGARefreshControl+PCAdditions.h"
     #import "UIImage+LGAAdditions.h"
     #import "NSTimer+Blocks.h"
     #import "MKMapView+LGAAdditions.h"

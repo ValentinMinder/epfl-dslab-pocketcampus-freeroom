@@ -10,31 +10,43 @@
 	<string>PocketCampus</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>000201C5-FDEF-4E56-8D20-C5CA4C9068D3</key>
+		<key>2F588F688C5A830993D54AFEB3A718DD51064B81</key>
 		<string>ssh://github.com/dslab-epfl/pocketcampus.git</string>
+		<key>EE5017F42780957232AFF14DD75D9A51833942BE</key>
+		<string>/Users/loicgardiol/Library/Caches/CocoaPods/GitHub/5f226bddb315c8386072078acf631f7bbb665b2a</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ios/PocketCampus/PocketCampus.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>000201C5-FDEF-4E56-8D20-C5CA4C9068D3</key>
+		<key>2F588F688C5A830993D54AFEB3A718DD51064B81</key>
 		<string>../../..</string>
+		<key>EE5017F42780957232AFF14DD75D9A51833942BE</key>
+		<string>../../../ios/PocketCampus/Pods/TapkuLibrary</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/dslab-epfl/pocketcampus.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>000201C5-FDEF-4E56-8D20-C5CA4C9068D3</string>
+	<string>2F588F688C5A830993D54AFEB3A718DD51064B81</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>000201C5-FDEF-4E56-8D20-C5CA4C9068D3</string>
+			<string>2F588F688C5A830993D54AFEB3A718DD51064B81</string>
 			<key>IDESourceControlWCCName</key>
 			<string>PocketCampus-private</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EE5017F42780957232AFF14DD75D9A51833942BE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TapkuLibrary</string>
 		</dict>
 	</array>
 </dict>

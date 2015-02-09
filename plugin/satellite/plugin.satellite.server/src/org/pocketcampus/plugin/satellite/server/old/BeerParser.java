@@ -16,7 +16,7 @@ import org.pocketcampus.plugin.satellite.shared.Beer;
  */
 public class BeerParser {
 	/** The URL of the web site page we want to parse. */
-	private String BEER_URL = "http://sat.epfl.ch/pocket/flux.xml";
+	private String BEER_URL = "http://satellite.bar/pocket/flux.xml";
 	/** The document we get from the web site and that will be parsed. */
 	private Document mDoc;
 	/** The beer name. */

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObA-dk-sSI">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <scenes>
+        <!--CloudPrintActionViewController-->
+        <scene sceneID="7MM-of-jgj">
+            <objects>
+                <viewController title="Image" id="ObA-dk-sSI" userLabel="CloudPrintActionViewController" customClass="CloudPrintActionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qkL-Od-lgU"/>
+                        <viewControllerLayoutGuide type="bottom" id="n38-gi-rB5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EPFL Print" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lBg-7o-pag" userLabel="CloudPrint">
+                                <rect key="frame" x="103" y="207" width="115" height="32"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="27"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2jD-sO-Xg4">
+                                <rect key="frame" x="142" y="246" width="37" height="37"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSs-2I-cgl" userLabel="Center message label">
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTE-0M-pyC">
+                                <rect key="frame" x="139" y="289" width="42" height="32"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTapped:" destination="ObA-dk-sSI" eventType="touchUpInside" id="UoE-W1-4ry"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="hTE-0M-pyC" secondAttribute="centerX" id="A4O-4o-gYP"/>
+                            <constraint firstItem="hTE-0M-pyC" firstAttribute="top" secondItem="fSs-2I-cgl" secondAttribute="bottom" constant="25" id="Ay9-Jf-Jtv"/>
+                            <constraint firstAttribute="trailing" secondItem="fSs-2I-cgl" secondAttribute="trailing" constant="10" id="Dx7-IW-170"/>
+                            <constraint firstAttribute="centerX" secondItem="lBg-7o-pag" secondAttribute="centerX" id="Pn1-Zy-3Ct"/>
+                            <constraint firstAttribute="centerY" secondItem="fSs-2I-cgl" secondAttribute="centerY" id="bNq-NB-D3y"/>
+                            <constraint firstItem="fSs-2I-cgl" firstAttribute="top" secondItem="lBg-7o-pag" secondAttribute="bottom" constant="25" id="dFh-CG-cbj"/>
+                            <constraint firstItem="fSs-2I-cgl" firstAttribute="leading" secondItem="zMn-AG-sqS" secondAttribute="leading" constant="10" id="lEq-gD-C66"/>
+                            <constraint firstAttribute="centerY" secondItem="2jD-sO-Xg4" secondAttribute="centerY" id="s6p-cL-aoY"/>
+                            <constraint firstAttribute="centerX" secondItem="2jD-sO-Xg4" secondAttribute="centerX" constant="-0.5" id="slG-do-Zim"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="hTE-0M-pyC" id="d8O-lW-ND0"/>
+                        <outlet property="centerMessageLabel" destination="fSs-2I-cgl" id="u1e-4A-pda"/>
+                        <outlet property="loadingIndicator" destination="2jD-sO-Xg4" id="L6y-t4-cpj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="252" y="-124"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

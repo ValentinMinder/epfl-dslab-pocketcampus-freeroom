@@ -35,24 +35,24 @@ public class DialogUtils {
 		void gotText(String s);
 	}
 	
-	public static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, String> map, String title, T selected, final SingleChoiceHandler<T> handler) {
+	public static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler) {
 		List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
-		List<String> valuesList = MapUtils.extractValuesInOrder(map, keysList);
-		showSingleChoiceDialog(context, map, title, selected, handler, keysList, valuesList);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	public static <T extends Comparable<? super T>> void showSingleChoiceDialogSbN(Context context, Map<T, String> map, String title, T selected, final SingleChoiceHandler<T> handler) {
+	public static <T extends Comparable<? super T>> void showSingleChoiceDialogSbN(Context context, Map<T, String> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler) {
 		Result<T> res = sortByName(map);
 		List<T> keysList = res.t;
 		List<String> valuesList = res.s;
-		showSingleChoiceDialog(context, map, title, selected, handler, keysList, valuesList);
+		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, String> map, String title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<String> valuesList) {
+	private static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		int selPos = keysList.indexOf(selected);
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setCustomTitle(buildDialogTitle(context, title))
 				.setSingleChoiceItems(
-						valuesList.toArray(new String[]{}), selPos, 
+						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								handler.saveSelection(keysList.get(which));
@@ -64,19 +64,19 @@ public class DialogUtils {
 		dialog.show();
 	}
 	
-	public static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, String> map, String title, Set<T> selected, final MultiChoiceHandler<T> handler) {
+	public static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
-		List<String> valuesList = MapUtils.extractValuesInOrder(map, keysList);
-		showMultiChoiceDialog(context, map, title, selected, handler, keysList, valuesList);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	public static <T extends Comparable<? super T>> void showMultiChoiceDialogSbN(Context context, Map<T, String> map, String title, Set<T> selected, final MultiChoiceHandler<T> handler) {
+	public static <T extends Comparable<? super T>> void showMultiChoiceDialogSbN(Context context, Map<T, String> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler) {
 		Result<T> res = sortByName(map);
 		List<T> keysList = res.t;
 		List<String> valuesList = res.s;
-		showMultiChoiceDialog(context, map, title, selected, handler, keysList, valuesList);
+		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, String> map, String title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<String> valuesList) {
+	private static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		boolean[] selPos = new boolean[keysList.size()];
 		for(int i = 0; i < keysList.size(); i++) {
 			selPos[i] = selected.contains(keysList.get(i));
@@ -84,7 +84,7 @@ public class DialogUtils {
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setCustomTitle(buildDialogTitle(context, title))
 				.setMultiChoiceItems(
-						valuesList.toArray(new String[]{}), selPos, 
+						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new OnMultiChoiceClickListener() {
 							public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 								handler.saveSelection(keysList.get(which), isChecked);
@@ -97,13 +97,13 @@ public class DialogUtils {
 
 	public static View buildDialogTitle(Context con, CharSequence title) {
 		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, null);
+		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(con));
 		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
 		tv.setText(title);
 		return v;
 	}
 
-	public static void showInputDialog(Context context, String title, String message, String buttonText, final TextInputHandler handler) {
+	public static void showInputDialog(Context context, CharSequence title, CharSequence message, String buttonText, final TextInputHandler handler) {
 		final EditText input = new EditText(context);
         TextView tv = new TextView(context);
         tv.setText(message);
@@ -125,7 +125,7 @@ public class DialogUtils {
         sdb.create().show();
 	}
 	
-	public static void alert(Context c, String title, String message) {
+	public static void alert(Context c, CharSequence title, CharSequence message) {
         StyledDialog.Builder sdb = new StyledDialog.Builder(c);
         sdb.setTitle(title);
         sdb.setMessage(message);

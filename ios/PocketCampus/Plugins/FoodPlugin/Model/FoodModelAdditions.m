@@ -98,6 +98,103 @@
 
 @implementation EpflMeal (Additions)
 
++ (NSArray*)allMealTypes {
+    static NSArray* mealTypes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mealTypes = @[@(MealType_UNKNOWN), @(MealType_FISH), @(MealType_MEAT), @(MealType_POULTRY), @(MealType_VEGETARIAN), @(MealType_GREEN_FORK), @(MealType_PASTA), @(MealType_PIZZA), @(MealType_THAI), @(MealType_INDIAN), @(MealType_LEBANESE)];
+    });
+    return mealTypes;
+}
+
++ (NSString*)localizedNameForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return NSLocalizedStringFromTable(@"MealType_UNKNOWN", @"FoodPlugin", nil);
+        case MealType_FISH:
+            return NSLocalizedStringFromTable(@"MealType_FISH", @"FoodPlugin", nil);
+        case MealType_MEAT:
+            return NSLocalizedStringFromTable(@"MealType_MEAT", @"FoodPlugin", nil);
+        case MealType_POULTRY:
+            return NSLocalizedStringFromTable(@"MealType_POULTRY", @"FoodPlugin", nil);
+        case MealType_VEGETARIAN:
+            return NSLocalizedStringFromTable(@"MealType_VEGETARIAN", @"FoodPlugin", nil);
+        case MealType_GREEN_FORK:
+            return NSLocalizedStringFromTable(@"MealType_GREEN_FORK", @"FoodPlugin", nil);
+        case MealType_PASTA:
+            return NSLocalizedStringFromTable(@"MealType_PASTA", @"FoodPlugin", nil);
+        case MealType_PIZZA:
+            return NSLocalizedStringFromTable(@"MealType_PIZZA", @"FoodPlugin", nil);
+        case MealType_THAI:
+            return NSLocalizedStringFromTable(@"MealType_THAI", @"FoodPlugin", nil);
+        case MealType_INDIAN:
+            return NSLocalizedStringFromTable(@"MealType_INDIAN", @"FoodPlugin", nil);
+        case MealType_LEBANESE:
+            return NSLocalizedStringFromTable(@"MealType_LEBANESE", @"FoodPlugin", nil);
+        default:
+            return NSLocalizedStringFromTable(@"Unknown", @"PocketCampus", nil);
+    }
+}
+
+
++ (NSString*)enumNameForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return @"UNKNOWN";
+        case MealType_FISH:
+            return @"FISH";
+        case MealType_MEAT:
+            return @"MEAT";
+        case MealType_POULTRY:
+            return @"POULTRY";
+        case MealType_VEGETARIAN:
+            return @"VEGETARIAN";
+        case MealType_GREEN_FORK:
+            return @"GREEN_FORK";
+        case MealType_PASTA:
+            return @"PASTA";
+        case MealType_PIZZA:
+            return @"PIZZA";
+        case MealType_THAI:
+            return @"THAI";
+        case MealType_INDIAN:
+            return @"INDIAN";
+        case MealType_LEBANESE:
+            return @"LEBANESE";
+        default:
+            return @"UNKNOWN";
+    }
+}
+
++ (UIImage*)imageForMealType:(NSInteger)mealType {
+    switch (mealType) {
+        case MealType_UNKNOWN:
+            return [UIImage imageNamed:@"MealType_UNKNOWN"];
+        case MealType_FISH:
+            return [UIImage imageNamed:@"MealType_FISH"];
+        case MealType_MEAT:
+            return [UIImage imageNamed:@"MealType_MEAT"];
+        case MealType_POULTRY:
+            return [UIImage imageNamed:@"MealType_POULTRY"];
+        case MealType_VEGETARIAN:
+            return [UIImage imageNamed:@"MealType_VEGETARIAN"];
+        case MealType_GREEN_FORK:
+            return [UIImage imageNamed:@"MealType_GREEN_FORK"];
+        case MealType_PASTA:
+            return [UIImage imageNamed:@"MealType_PASTA"];
+        case MealType_PIZZA:
+            return [UIImage imageNamed:@"MealType_PIZZA"];
+        case MealType_THAI:
+            return [UIImage imageNamed:@"MealType_THAI"];
+        case MealType_INDIAN:
+            return [UIImage imageNamed:@"MealType_INDIAN"];
+        case MealType_LEBANESE:
+            return [UIImage imageNamed:@"MealType_LEBANESE"];
+        default:
+            return nil;
+    }
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;

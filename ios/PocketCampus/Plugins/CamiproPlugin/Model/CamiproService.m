@@ -103,7 +103,7 @@ static NSString* const kCamiproSession = @"camiproSession";
 #pragma mark - Service methods
 
 - (void)getTequilaTokenForCamiproDelegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getTequilaTokenForCamipro);
     operation.delegateDidReturnSelector = @selector(getTequilaTokenForCamiproDidReturn:);
     operation.delegateDidFailSelector = @selector(getTequilaTokenForCamiproFailed);
@@ -112,7 +112,7 @@ static NSString* const kCamiproSession = @"camiproSession";
 }
 
 - (void)getSessionIdForServiceWithTequilaKey:(TequilaToken*)tequilaKey delegate:(id)delegate {
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getCamiproSession:);
     operation.delegateDidReturnSelector = @selector(getSessionIdForServiceWithTequilaKey:didReturn:);
     operation.delegateDidFailSelector = @selector(getSessionIdForServiceFailedForTequilaKey:);
@@ -125,7 +125,7 @@ static NSString* const kCamiproSession = @"camiproSession";
     if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
         @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getBalanceAndTransactions:);
     operation.delegateDidReturnSelector = @selector(getBalanceAndTransactionsForCamiproRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getBalanceAndTransactionsFailedForCamiproRequest:);
@@ -138,7 +138,7 @@ static NSString* const kCamiproSession = @"camiproSession";
     if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
         @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getStatsAndLoadingInfo:);
     operation.delegateDidReturnSelector = @selector(getStatsAndLoadingInfoForCamiproRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getStatsAndLoadingInfoFailedForCamiproRequest:);
@@ -151,7 +151,7 @@ static NSString* const kCamiproSession = @"camiproSession";
     if (![camiproRequest isKindOfClass:[CamiproRequest class]]) {
         @throw [NSException exceptionWithName:@"bad camiproRequest" reason:@"camiproRequest is either nil or not of class CamiproRequest" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(sendLoadingInfoByEmail:);
     operation.delegateDidReturnSelector = @selector(sendLoadingInfoByEmailForCamiproRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(sendLoadingInfoByEmailFailedForCamiproRequest:);

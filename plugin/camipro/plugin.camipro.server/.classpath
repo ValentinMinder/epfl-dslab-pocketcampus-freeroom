@@ -4,7 +4,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.camipro.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/jetty-util-8.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/gson-1.7.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -16,5 +15,6 @@
 	<classpathentry kind="lib" path="/platform.shared/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/slf4j-simple-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.9.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

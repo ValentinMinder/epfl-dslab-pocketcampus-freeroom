@@ -43,6 +43,8 @@
 
 #import "PCURLSchemeHandler.h"
 
+#import "PCWebViewController.h"
+
 @interface EventItemViewController ()<EventsServiceDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) int64_t eventId;
@@ -149,7 +151,7 @@
 }
 
 - (void)startGetEventItemRequest {    
-    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[self.eventsService allUserTickets] lang:[PCUtils userLanguageCode]];
+    EventItemRequest* req = [[EventItemRequest alloc] initWithEventItemId:self.eventId userToken:nil userTickets:[[self.eventsService allUserTickets] mutableCopy] lang:[PCUtils userLanguageCode]];
     [self.eventsService getEventItemForRequest:req delegate:self];
     [self.loadingIndicator startAnimating];
     self.tableView.hidden = YES;
@@ -231,7 +233,11 @@
     
     if (self.eventItem.eventThumbnail && !self.eventItem.hideThumbnail) {
         replacements[@"$EVENT_ITEM_THUMBNAIL$"] = [NSString stringWithFormat:@"<img src='%@'>", self.eventItem.eventThumbnail];
-        replacements[@"$PADDING_LEFT_TITLE_PX$"] = @"6";
+        replacements[@"$PADDING_LEFT_TITLE$"] = @"6px";
+        replacements[@"$WIDTH_TITLE$"] = @"63%";
+    } else {
+        replacements[@"$PADDING_LEFT_TITLE$"] = @"0px";
+        replacements[@"$WIDTH_TITLE$"] = @"100%";
     }
     
     if (self.eventItem.eventTitle && !self.eventItem.hideTitle) {
@@ -318,7 +324,8 @@
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
-            [[UIApplication sharedApplication] openURL:request.URL];
+            PCWebViewController* webViewController = [[PCWebViewController alloc] initWithURL:request.URL title:nil];
+            [self.navigationController pushViewController:webViewController animated:YES];
         }
         return NO;
     }
@@ -375,17 +382,14 @@
     }
     EventPool* eventPool = self.childrenPools[indexPath.row];
     
-    UIViewController* viewController;
+    UIViewController* viewController = nil;
     
     if (eventPool.overrideLink) {
         NSURL* url = [NSURL URLWithString:eventPool.overrideLink];
         id<MainControllerPublic> mainController = [MainController publicController];
-        UIViewController* viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:url];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
-        } else {
-            [[UIApplication sharedApplication] openURL:url];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        viewController = [[mainController urlSchemeHandlerSharedInstance] viewControllerForPocketCampusURL:url];
+        if (!viewController) {
+            viewController = [[PCWebViewController alloc] initWithURL:url title:nil];
         }
     } else {
         viewController = [[EventPoolViewController alloc] initWithEventPool:eventPool];

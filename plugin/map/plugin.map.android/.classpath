@@ -6,7 +6,5 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="src" path="/plugin.map.shared"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/libthrift-0.7.0.jar"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/osmdroid-android-3.0.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

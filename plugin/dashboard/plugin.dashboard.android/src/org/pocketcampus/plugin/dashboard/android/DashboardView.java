@@ -15,8 +15,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -33,7 +35,6 @@ import com.markupartist.android.widget.ActionBar.Action;
  */
 public class DashboardView extends PluginView {
 
-	private PluginDashboard	mDashboard;
 	private DashboardController	mController;
 	
 	@Override
@@ -44,11 +45,7 @@ public class DashboardView extends PluginView {
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		mController = (DashboardController) controller;
-		
-		setContentView(R.layout.dashboard_main);
-		
-		displayPlugins();
-		
+				
 		mController.registerPushNotif();
 		mController.fetchDynamicConfig(this);
 		
@@ -63,16 +60,26 @@ public class DashboardView extends PluginView {
 		});
 	}
 	
+	@Override
+	protected void onResume() {
+		displayPlugins();
+		
+		super.onResume();
+	}
+	
 	public void displayPlugins() {
+		
+		setContentView(R.layout.dashboard_main);
+		
 		// Creates and fills in the <code>PluginDashboard</code>.
-		mDashboard = new PluginDashboard(this);
+		PluginDashboard dash = new PluginDashboard(this);
 		ArrayList<PluginInfo> pluginManifests = ((GlobalContext) getApplication()).getAllPluginInfos();
-		mDashboard.addPlugins(pluginManifests);
+		dash.addPlugins(pluginManifests);
 
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.dashboard_main);
 		mainLayout.removeAllViews();
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		mainLayout.addView(mDashboard.getView(), layoutParams);
+		mainLayout.addView(dash.getView(), layoutParams);
 	}
 
 	@Override
@@ -80,10 +87,6 @@ public class DashboardView extends PluginView {
 		return "/dashboard";
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
 	
 	
 	
@@ -129,15 +132,31 @@ public class DashboardView extends PluginView {
 		 */
 		public void addPlugin(final PluginInfo pluginInfo) {
 			// fills in and adds the launcher view
-			View launcherView = mInflater.inflate(R.layout.dashboard_plugin_button, null);
+			final View launcherView = mInflater.inflate(R.layout.dashboard_plugin_button, null);
 
-			ImageView launcherImage = (ImageView) launcherView.findViewById(R.id.launcher_image);
+			final ImageView launcherImage = (ImageView) launcherView.findViewById(R.id.launcher_image);
 			launcherImage.setImageDrawable(pluginInfo.getIcon());
+			launcherImage.setAlpha(0xff);
 
-			TextView launcherText = (TextView) launcherView.findViewById(R.id.launcher_text);
+			final TextView launcherText = (TextView) launcherView.findViewById(R.id.launcher_text);
 			launcherText.setText(pluginInfo.getLabel());
-
+			launcherText.setBackgroundColor(0x00ffffff);
+			
 			mDashboard.addView(launcherView);
+			
+			launcherView.setOnTouchListener(new OnTouchListener() {
+				public boolean onTouch(View v, MotionEvent event) {
+					if(event.getAction() == MotionEvent.ACTION_DOWN) {
+						launcherText.setTextColor(0x80808080);
+						launcherImage.setAlpha(0x80);
+					} else if(event.getAction() == MotionEvent.ACTION_UP) {
+						launcherText.setTextColor(0xff000000);
+						launcherImage.setAlpha(0xff);
+					}
+					launcherView.invalidate();
+					return false;
+				}
+			});
 			
 			// adds the click listener
 			launcherView.setOnClickListener(new OnClickListener() {
@@ -145,6 +164,8 @@ public class DashboardView extends PluginView {
 				public void onClick(View v) {
 					trackEvent("OpenPlugin", pluginInfo.getId());
 					((GlobalContext) mContext.getApplicationContext()).displayPlugin(mContext, pluginInfo);
+					launcherView.setBackgroundColor(0x80808080);
+					setContentView(R.layout.dashboard_plugin_button); // HACK clear the screen
 				}
 			});
 		}

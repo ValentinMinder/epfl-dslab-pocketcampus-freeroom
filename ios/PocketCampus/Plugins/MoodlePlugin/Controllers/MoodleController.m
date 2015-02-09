@@ -25,8 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
 #import "MoodleController.h"
 
 #import "MoodleCoursesListViewController.h"
@@ -53,7 +51,10 @@ static MoodleController* instance __weak = nil;
     //initializing default settings
     NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
     if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
-        [defaults setObject:@YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+        [defaults setBool:YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+    }
+    if (![defaults objectForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+        [defaults setBool:YES forKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
     }
 }
 
@@ -70,6 +71,7 @@ static MoodleController* instance __weak = nil;
                 PCNavigationController* navController =  [[PCNavigationController alloc] initWithRootViewController:coursesListViewController];
                 UIViewController* emptyDetailViewController = [[UIViewController alloc] init]; //splash view controller will be returned by coursesListViewController as PluginSplitViewControllerDelegate
                 PluginSplitViewController* splitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:emptyDetailViewController];
+                splitViewController.gaiScreenName = @"/moodle";
                 splitViewController.pluginIdentifier = [[self class] identifierName];
                 splitViewController.delegate = self;
                 self.mainSplitViewController = splitViewController;
@@ -124,9 +126,6 @@ static MoodleController* instance __weak = nil;
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
-    /*if (orientation == UIInterfaceOrientationMaskPortrait) {
-     return YES;
-     }*/
     return NO;
 }
 

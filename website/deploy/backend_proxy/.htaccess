@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^/?14610/(.*)$ http://localhost:14610/v3r1/$1 [L,P]
+

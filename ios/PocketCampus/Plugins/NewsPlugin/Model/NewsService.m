@@ -71,7 +71,7 @@ static NewsService* instance __weak = nil;
 
 - (void)getAllFeedsForRequest:(NewsFeedsRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedsRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.skipCache = YES;
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
@@ -88,7 +88,7 @@ static NewsService* instance __weak = nil;
 
 - (void)getFeedItemContentForRequest:(NewsFeedItemContentRequest*)request delegate:(id<NewsServiceDelegate>)delegate {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedItemContentRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.keepInCache = YES;
     operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
         NewsFeedItemContentResponse* response = (__bridge id)returnedValue;
@@ -108,7 +108,7 @@ static NewsService* instance __weak = nil;
 
 - (NSArray*)getFromCacheAllFeedsForRequest:(NewsFeedsRequest*)request {
     [PCUtils throwExceptionIfObject:request notKindOfClass:[NewsFeedsRequest class]];
-    ServiceRequest* operation = [[ServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
     operation.serviceClientSelector = @selector(getAllFeeds:);
     operation.delegateDidReturnSelector = @selector(getAllFeedsForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getAllFeedsFailedForRequest:);

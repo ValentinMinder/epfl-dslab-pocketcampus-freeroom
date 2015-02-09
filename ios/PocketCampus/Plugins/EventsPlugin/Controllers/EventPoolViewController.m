@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, PocketCampus.Org
  * All rights reserved.
  *
@@ -53,13 +53,31 @@
 
 #import "EventsShareFavoriteItemsViewController.h"
 
+static NSInteger const kSegmentIndexAll = 0;
+static NSInteger const kSegmentIndexRightNow = 1;
 
-@interface EventPoolViewController ()<UIActionSheetDelegate, EventsServiceDelegate>
+static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
 
-@property (nonatomic) int64_t poolId;
+static const NSInteger kOneWeekPeriodIndex = 0;
+static const NSInteger kOneMonthPeriodIndex = 1;
+static const NSInteger kSixMonthsPeriodIndex = 2;
+static const NSInteger kOneYearPeriodIndex = 3;
+
+static NSInteger const kDefaultEventsPeriod = EventsPeriods_ONE_MONTH;
+
+static NSInteger const kRightNowEventsPeriodProxyValue = -5; //set self.selectedPeriod to this value to indicate that you want events right now (translated by createEventPoolRequest)
+
+static NSInteger const kRightNowEventsPeriod = 1;
+
+static const UISearchBarStyle kSearchBarDefaultStyle = UISearchBarStyleDefault;
+static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
+
+@interface EventPoolViewController ()<UIActionSheetDelegate, UISearchDisplayDelegate, EventsServiceDelegate>
+
+@property (nonatomic, readwrite) int64_t poolId;
 @property (nonatomic, strong) EventPool* eventPool;
 @property (nonatomic, strong) EventPoolReply* poolReply;
-@property (nonatomic, strong) LGRefreshControl* lgRefreshControl;
+@property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) EventsService* eventsService;
 
 @property (nonatomic) int32_t selectedPeriod; //see enum EventsPeriod in events.h
@@ -71,8 +89,13 @@
 @property (nonatomic, strong) NSDictionary* tagsInPresentItems; //tags that are present in items of poolReply. key = tag short name, value = tag full name
 
 @property (nonatomic, strong) NSArray* itemsForSection; //array of arrays of EventItem
+@property (nonatomic, strong) NSArray* searchFilteredItemsForSection; //for search
 
+@property (nonatomic, strong) UISearchDisplayController* searchController;
 @property (nonatomic, strong) UISearchBar* searchBar;
+@property (nonatomic, strong) NSOperationQueue* searchQueue;
+@property (nonatomic, strong) NSTimer* typingTimer;
+@property (nonatomic, strong) NSRegularExpression* currentSearchRegex;
 
 @property (nonatomic, strong) UIActionSheet* filterSelectionActionSheet;
 @property (nonatomic, strong) UIActionSheet* periodsSelectionActionSheet;
@@ -81,22 +104,23 @@
 @property (nonatomic, strong) UIBarButtonItem* filterButton;
 @property (nonatomic, strong) UIBarButtonItem* scanButton;
 
+@property (nonatomic, strong) UISegmentedControl* segmentedControl;
+
 @property (nonatomic, strong) EventItem* selectedItem;
 
-@property (nonatomic, copy) NSString* normalTitle;
+@property (nonatomic, readonly, getter=isFilterByTagActive) BOOL filterByTagActive;
 
 @property (nonatomic) BOOL pastMode;
 
 @property (nonatomic) BOOL highlightNowCells;
 
+//Following are used to keep state when switching to Right Now mode
+@property (nonatomic) int32_t prevSelectedPeriod;
+@property (nonatomic, strong) NSMutableDictionary* prevSelectedCategories;
+@property (nonatomic, strong) NSMutableDictionary* prevSelectedTags;
+@property (nonatomic) BOOL prevPastMode;
+
 @end
-
-static const NSTimeInterval kRefreshValiditySeconds = 1800; //30 min
-
-static const NSInteger kOneWeekPeriodIndex = 0;
-static const NSInteger kOneMonthPeriodIndex = 1;
-static const NSInteger kSixMonthsPeriodIndex = 2;
-static const NSInteger kOneYearPeriodIndex = 3;
 
 @implementation EventPoolViewController
 
@@ -111,7 +135,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         self.eventsService = [EventsService sharedInstanceToRetain];
         self.selectedPeriod = [self.eventsService lastSelectedPoolPeriod];
         if (self.selectedPeriod == 0) {
-            self.selectedPeriod = EventsPeriods_ONE_MONTH; //default
+            self.selectedPeriod = kDefaultEventsPeriod;
         }
     }
     return self;
@@ -123,8 +147,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.eventPool = pool;
         self.poolId = pool.poolId;
-        self.title = pool.poolTitle;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -134,7 +158,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.poolId = [eventsConstants CONTAINER_EVENT_ID];
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
-        self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -144,9 +168,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self) {
         self.poolId = poolId;
         self.poolReply = [self.eventsService getFromCacheEventPoolForRequest:[self createEventPoolRequest]];
-        if (self.eventPool) {
-            self.title = self.eventPool.poolTitle;
-        }
+        [self updateTitleForCurrentParameters];
     }
     return self;
 }
@@ -157,7 +179,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
     return _poolId;
 }
 
-#pragma mark - View load and visibility
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -168,22 +190,66 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return [image imageByScalingAndCroppingForSize:[EventItemCell preferredImageSize] applyDeviceScreenMultiplyingFactor:YES];
     };
     tableViewAdditions.reprocessesImagesWhenContentSizeCategoryChanges = YES;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
+
+    RowHeightBlock rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
         return [EventItemCell preferredHeight];
     };
+    tableViewAdditions.rowHeightBlock = rowHeightBlock;
     
-    self.lgRefreshControl = [[LGRefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGRefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        //show [All | Right Now] toggle only in root pool
+        NSArray* segmentedControlItems = @[NSLocalizedStringFromTable(@"All", @"PocketCampus", nil), NSLocalizedStringFromTable(@"RightNow", @"EventsPlugin", nil)];
+        self.segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
+        
+        self.segmentedControl.tintColor = [PCValues pocketCampusRed];
+        self.segmentedControl.selectedSegmentIndex = kSegmentIndexAll;
+        [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
+        UIBarButtonItem* segmentedControlBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+        
+        [self.segmentedControl addObserver:self forKeyPath:NSStringFromSelector(@selector(frame)) options:0 context:NULL];
+        
+        UIBarButtonItem* flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem* flexibleSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.toolbarItems = @[flexibleSpaceLeft, segmentedControlBarItem, flexibleSpaceRight];
+    }
+    
+    self.searchQueue = [NSOperationQueue new];
+    self.searchQueue.maxConcurrentOperationCount = 1;
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1.0)];
+    [self.searchBar sizeToFit];
+    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //self.searchBar.placeholder = NSLocalizedStringFromTable(@"Search", @"PocketCampus", nil);
+    self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    
+    self.tableView.tableHeaderView = self.searchBar;
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    self.searchController.searchResultsTableView.rowHeight = rowHeightBlock(tableViewAdditions);
+    self.searchController.searchResultsTableView.allowsMultipleSelection = NO;
+    
+    self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"events" dataName:[NSString stringWithFormat:@"eventPool-%lld", self.poolId]]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
-    [self updateButtonsConditionally];
+    [self updateUI];
     [self fillCollectionsFromReplyAndSelection];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (!self.searchController.isActive) {
+        [self.navigationController setToolbarHidden:(self.poolId != [eventsConstants CONTAINER_EVENT_ID]) animated:animated];
+    }
     [self trackScreen];
     if (!self.poolReply || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds] || self.eventPool.sendStarredItems) { //if sendStarredItems then list can change anytime and should be refreshed
         [self refresh];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -214,7 +280,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 #pragma mark - Refresh control
 
 - (void)refreshFromCurrentData {
-    [self updateButtonsConditionally];
+    [self updateUI];
     [self fillCollectionsFromReplyAndSelection];
     [self.tableView reloadData];
     [self reselectLastSelectedItem];
@@ -231,7 +297,16 @@ static const NSInteger kOneYearPeriodIndex = 3;
     if (self.eventPool.sendStarredItems) {
         starredItems = [self.eventsService allFavoriteEventItemIds];
     }
-    return [[EventPoolRequest alloc] initWithEventPoolId:self.poolId userToken:nil userTickets:[self.eventsService allUserTickets] starredEventItems:starredItems lang:[PCUtils userLanguageCode] period:self.selectedPeriod fetchPast:self.pastMode];
+    
+    EventPoolRequest* poolRequest = [EventPoolRequest new];
+    poolRequest.eventPoolId = self.poolId;
+    poolRequest.userTickets = [[self.eventsService allUserTickets] mutableCopy];
+    poolRequest.starredEventItems = [starredItems mutableCopy];
+    poolRequest.lang = [PCUtils userLanguageCode];
+    poolRequest.periodInHours = self.selectedPeriod == kRightNowEventsPeriodProxyValue ? kRightNowEventsPeriod : self.selectedPeriod * 24;
+    poolRequest.fetchPast = self.pastMode;
+    
+    return poolRequest;
 }
 
 - (void)startGetEventPoolRequest {
@@ -244,10 +319,12 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return;
     }
     BOOL found __block = NO;
-    [self.itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
+    UITableView* tableView = self.searchController.isActive ? self.searchController.searchResultsTableView : self.tableView;
+    NSArray* itemsForSection = self.searchController.isActive ? self.searchFilteredItemsForSection : self.itemsForSection;
+    [itemsForSection enumerateObjectsUsingBlock:^(NSArray* items, NSUInteger section, BOOL *stop1) {
         [items enumerateObjectsUsingBlock:^(EventItem* item, NSUInteger row, BOOL *stop2) {
             if ([item isEqual:self.selectedItem]) {
-                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:NO scrollPosition:UITableViewScrollPositionNone];
                 self.selectedItem = item;
                 *stop1 = YES;
                 *stop2 = YES;
@@ -255,14 +332,157 @@ static const NSInteger kOneYearPeriodIndex = 3;
             }
         }];
     }];
-    if (!found) {
-        self.selectedItem = nil;
+}
+
+#pragma mark - Data fill and utils
+
+/**
+ * Add categs and tags from reply into selectedCategories and selectedTags,
+ * to ensure "selected" by default behavior (if categ/tag was not available before)
+ * IMPORTANT: call this *before* updating self.poolReply
+ */
+- (void)addMissingCategsAndTagsFromReply:(EventPoolReply*)reply {
+    
+    //on purpose using self.poolReply
+    NSSet* categIdsSet = [NSSet setWithArray:self.poolReply.categs.allKeys];
+    NSSet* shortTagNamesSet = [NSSet setWithArray:self.poolReply.tags.allKeys];
+    
+    //now comparing on reply parameter
+    for (NSNumber* categId in reply.categs) {
+        if (![categIdsSet containsObject:categId]) {
+            self.selectedCategories[categId] = reply.categs[categId];
+        }
+    }
+    
+    for (NSString* shortTagName in reply.tags) {
+        if (![shortTagNamesSet containsObject:shortTagName]) {
+            self.selectedTags[shortTagName] = reply.tags[shortTagName];
+        }
     }
 }
 
-#pragma mark - Buttons preparation and actions
+- (void)fillCollectionsFromReplyAndSelection {
+    if (!self.poolReply) {
+        return;
+    }
+    
+    if (!self.selectedCategories) { //select all categories (available in reply) by default
+        self.selectedCategories = [self.poolReply.categs mutableCopy];
+    }
+    
+    if (!self.selectedTags) { //select all tags (available in reply) by default
+        self.selectedTags = [self.poolReply.tags mutableCopy];
+    }
+    
+    NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
+    for (EventItem* item in [self.poolReply.childrenItems allValues]) {
+        for (NSString* tagKey in item.eventTags) {
+            if (!tmpTagsInPresentItems[tagKey] && self.poolReply.tags[tagKey]) {
+                tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
+            }
+        }
+    }
+    
+    self.tagsInPresentItems = tmpTagsInPresentItems;
+    
+    //Force Favorites and Features to be always selected
+    self.selectedCategories[kEventItemCategoryFavorite] = self.poolReply.categs[kEventItemCategoryFavorite];
+    self.selectedCategories[kEventItemCategoryFeatured] = self.poolReply.categs[kEventItemCategoryFeatured];
+    
+    NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags inverseSort:self.pastMode]; //if pastMode, show older events at bottom (=> inverse sort)
+    
+    
+    NSArray* sortedCategNumbers = [[itemsForCategNumber allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    
+    NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
+    
+    BOOL foundFavorite = NO;
+    
+    for (NSNumber* categNumber in sortedCategNumbers) {
+        if (!foundFavorite && [categNumber isEqualToNumber:kEventItemCategoryFavorite]) {
+            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
+            foundFavorite = YES;
+        } else {
+            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
+        }
+        [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
+    }
+    self.sectionsNames = tmpSectionsNames;
+    
+    /*
+#warning REMOVE
+    
+    NSMutableSet* allSet =  [NSMutableSet setWithArray:self.poolReply.childrenItems.allValues];
+    NSMutableSet* afterSet = [NSMutableSet set];
+    for (NSArray* items in tmpItemsForSection) {
+        [afterSet addObjectsFromArray:items];
+    }
+    
+    NSMutableSet* minusSet = [allSet mutableCopy];
+    [minusSet minusSet:afterSet];
+    
+#warning END OF REMOVE
+    */
+    self.itemsForSection = tmpItemsForSection;
+}
 
-- (void)updateButtonsConditionally {
+- (BOOL)isFilterByTagActive {
+    if (!self.selectedTags) {
+        return NO;
+    }
+    NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
+    NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
+    BOOL filterByTagActive = !(self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]);
+    return filterByTagActive;
+}
+
+- (NSArray*)searchFilteredItemsForSectionFromPattern:(NSString*)pattern {
+    static NSUInteger const options = NSDiacriticInsensitiveSearch | NSCaseInsensitiveSearch;
+    NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(EventItem* eventItem, NSDictionary *bindings) {
+        if (eventItem.eventTitle && [eventItem.eventTitle rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventPlace && [eventItem.eventPlace rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventSpeaker && [eventItem.eventSpeaker rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        if (eventItem.eventDetails && [eventItem.eventDetails rangeOfString:pattern options:options].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+    }];
+    
+    NSMutableArray* searchFilteredItemsForSection = [NSMutableArray arrayWithCapacity:self.itemsForSection.count];
+    for (NSArray* items in self.itemsForSection) {
+        NSArray* filteredItems = [items filteredArrayUsingPredicate:predicate];
+        [searchFilteredItemsForSection addObject:filteredItems];
+    }
+    return searchFilteredItemsForSection;
+}
+
+#pragma mark - UI update
+
+- (void)updateTitleForCurrentParameters {
+    if (self.poolId == [eventsConstants CONTAINER_EVENT_ID]) {
+        if (self.pastMode) {
+            self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
+        } else if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexRightNow) {
+            self.title = NSLocalizedStringFromTable(@"EventsRightNow", @"EventsPlugin", nil);
+        } else {
+            self.title = NSLocalizedStringFromTable(@"PluginName", @"EventsPlugin", nil);
+        }
+    } else if (self.eventPool.poolTitle) {
+        self.title = self.eventPool.poolTitle;
+    }
+}
+
+- (void)updateUI {
+    
+    [self updateTitleForCurrentParameters];
+    
     if (!self.poolReply) {
         return;
     }
@@ -275,20 +495,33 @@ static const NSInteger kOneYearPeriodIndex = 3;
         [rightElements addObject:self.scanButton];
     }
     
-    if (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags) { //will also disable period filtering
+    BOOL filterByTagActive = self.isFilterByTagActive;
+    if (!(self.segmentedControl && self.segmentedControl.selectedSegmentIndex != kSegmentIndexAll)
+        && (!self.eventPool.disableFilterByCateg || !self.eventPool.disableFilterByTags)) { //will also disable period filtering
         
-        NSSet* selectedTagsSet = [NSSet setWithArray:[self.selectedTags allKeys]];
-        NSSet* selectableTagsSet = [NSSet setWithArray:[self.tagsInPresentItems allKeys]];
-        NSString* filterButtonImageName = nil;
-        if (self.poolReply.tags.count == 0 || [selectedTagsSet isEqualToSet:selectableTagsSet] || [selectableTagsSet isSubsetOfSet:selectedTagsSet]) {
-            filterButtonImageName = @"FilterBarButton";
-        } else {
-            filterButtonImageName = @"FilterBarButtonSelected";
-        }
+        NSString* filterButtonImageName = filterByTagActive || self.pastMode ? @"FilterBarButtonSelected" : @"FilterBarButton";
         
         self.filterButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:filterButtonImageName] style:UIBarButtonItemStylePlain target:self action:@selector(filterButtonPressed)];
         self.filterButton.accessibilityLabel = NSLocalizedStringFromTable(@"PresentationOptions", @"EventsPlugin", nil);
         [rightElements addObject:self.filterButton];
+    }
+    
+    if (self.segmentedControl && self.segmentedControl.selectedSegmentIndex == kSegmentIndexAll) {
+        
+        NSString* periodString = [EventsUtils periodStringForEventsPeriod:self.selectedPeriod selected:NO];
+        
+        NSString* segmentAllTitle = nil;
+        if (self.pastMode && filterByTagActive) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(Past,FilteredByTag)", @"EventsPlugin", nil), periodString];
+        } else if (self.pastMode) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(Past)", @"EventsPlugin", nil), periodString];
+        } else if (filterByTagActive) {
+            segmentAllTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"PeriodWithFormat(FilteredByTag)", @"EventsPlugin", nil), periodString];
+        } else {
+            segmentAllTitle = periodString;
+        }
+        
+        [self.segmentedControl setTitle:segmentAllTitle forSegmentAtIndex:kSegmentIndexAll];
     }
     
     if (self.eventPool.sendStarredItems) {
@@ -301,6 +534,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
     
     self.navigationItem.rightBarButtonItems = rightElements;
 }
+
+#pragma mark - Actions
 
 - (void)actionButtonPressed {
     if (!self.eventPool) {
@@ -354,12 +589,22 @@ static const NSInteger kOneYearPeriodIndex = 3;
             [buttonTitles addObject:periodString];
         }
         
+        BOOL showResetFilterButton = self.isFilterByTagActive || self.pastMode;
+        
+        if (showResetFilterButton) {
+            [buttonTitles addObject:NSLocalizedStringFromTable(@"ResetFilter", @"EventsPlugin", nil)];
+        }
+        
         [buttonTitles addObject:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil)];
         
         self.filterSelectionActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         
         for (NSString* title in buttonTitles) {
             [self.filterSelectionActionSheet addButtonWithTitle:title];
+        }
+        
+        if (showResetFilterButton) {
+            self.filterSelectionActionSheet.destructiveButtonIndex = self.filterSelectionActionSheet.numberOfButtons-2;
         }
         
         self.filterSelectionActionSheet.cancelButtonIndex = self.filterSelectionActionSheet.numberOfButtons-1;
@@ -412,6 +657,14 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return 2;
     }
     return 3;
+}
+
+- (NSInteger)resetFilterButtonIndex {
+    NSInteger periodButtonIndex = [self periodButtonIndex];
+    if (periodButtonIndex >= 0 && (self.isFilterByTagActive || self.pastMode)) {
+        return periodButtonIndex + 1;
+    }
+    return -1;
 }
 
 - (void)cameraButtonPressed {
@@ -549,7 +802,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
 }
 
 - (void)presentPeriodSelectionActionSheet {
-    if (!self.periodsSelectionActionSheet) {
+    if (self.periodsSelectionActionSheet) {
         [self.periodsSelectionActionSheet dismissWithClickedButtonIndex:self.periodsSelectionActionSheet.cancelButtonIndex animated:NO];
     }
     NSString* title = nil;
@@ -568,143 +821,178 @@ static const NSInteger kOneYearPeriodIndex = 3;
     [self.periodsSelectionActionSheet showFromBarButtonItem:self.filterButton animated:YES];
 }
 
+- (void)segmentedControlValueChanged {
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case kSegmentIndexAll:
+            [self trackAction:@"SwitchBackToAllEvents"];
+            self.tableView.tableHeaderView = self.searchBar;
+            self.selectedCategories = self.prevSelectedCategories ?: self.selectedCategories;
+            self.selectedTags = self.prevSelectedTags ?: self.selectedTags;
+            self.pastMode = self.prevPastMode;
+            self.selectedPeriod = self.prevSelectedPeriod != 0 ? self.prevSelectedPeriod : [self.eventsService lastSelectedPoolPeriod];
+            break;
+        case kSegmentIndexRightNow:
+            [self trackAction:@"SwitchToHapenningNowEvents"];
+            self.tableView.tableHeaderView = nil;
+            //Saving filter state for All tab
+            self.prevSelectedCategories = self.selectedCategories;
+            self.prevSelectedTags = self.selectedTags;
+            self.prevPastMode = self.pastMode;
+            self.prevSelectedPeriod = self.selectedPeriod;
+            
+            //Now setting filter for Right Now tab
+            self.selectedCategories = nil;
+            self.selectedTags = nil;
+            self.pastMode = NO;
+            self.selectedPeriod = kRightNowEventsPeriodProxyValue;
+        default:
+            break;
+    }
+    self.itemsForSection = @[];
+    [self.tableView reloadData];
+    [self updateUI];
+    [self refresh];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.segmentedControl && [keyPath isEqualToString:NSStringFromSelector(@selector(frame))]) {
+        if (!self.segmentedControl.superview) {
+            return;
+        }
+        CGFloat width = self.segmentedControl.superview.frame.size.width-18.0;
+        if (width > 350.0) {
+            width = 350.0;
+        }
+        CGFloat height = self.segmentedControl.superview.frame.size.height-16.0;
+        if (height < 20.0) {
+            height = 20.0;
+        }
+        self.segmentedControl.bounds = CGRectMake(0, 0, width, height);
+    }
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.filterSelectionActionSheet) {
-        
-        if (buttonIndex == [self goToCategoryButtonIndex]) {
-            [self trackAction:@"ShowCategories"];
-            [self presentCategoriesController];
-        } else if (buttonIndex == [self filterByTagsButtonIndex]) {
-            [self trackAction:@"ShowTags"];
-            [self presentTagsController];
-        } else if (buttonIndex == [self  pastModeButtonIndex]) {
-            if (self.pastMode) {
-                [self trackAction:@"SwitchBackToUpcomingEvents"];
+#warning ugly, see if updates of iOS 8 solve this problem
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (actionSheet == self.filterSelectionActionSheet) {
+            if (buttonIndex == [self goToCategoryButtonIndex]) {
+                [self trackAction:@"ShowCategories"];
+                [self presentCategoriesController];
+            } else if (buttonIndex == [self filterByTagsButtonIndex]) {
+                [self trackAction:@"ShowTags"];
+                [self presentTagsController];
+            } else if (buttonIndex == [self  pastModeButtonIndex]) {
+                if (self.pastMode) {
+                    [self trackAction:@"SwitchBackToUpcomingEvents"];
+                    self.pastMode = NO;
+                } else {
+                    [self trackAction:@"SwitchToPastEvents"];
+                    self.pastMode = YES;
+                }
+                [self refresh];
+            } else if (buttonIndex == [self periodButtonIndex]) {
+                [self presentPeriodSelectionActionSheet];
+            } else if (buttonIndex == [self resetFilterButtonIndex]) {
+                [self trackAction:@"ResetFilter"];
+                self.selectedCategories = nil;
+                self.selectedTags = nil;
                 self.pastMode = NO;
-                self.title = self.normalTitle;
+                [self refresh];
             } else {
-                [self trackAction:@"SwitchToPastEvents"];
-                self.pastMode = YES;
-                self.normalTitle = self.title;
-                self.title = NSLocalizedStringFromTable(@"PastEventsShort", @"EventsPlugin", nil);
+                //ignore
             }
-            [self refresh];
-        } else if (buttonIndex == [self periodButtonIndex]) {
-            [self presentPeriodSelectionActionSheet];
-        } else {
-            //ignore
-        }
-        self.filterSelectionActionSheet = nil;
-    } else if (actionSheet == self.periodsSelectionActionSheet) {
-        NSInteger nbDays = 0;
-        switch (buttonIndex) {
-            case kOneWeekPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_WEEK;
-                nbDays = 7;
-                break;
-            case kOneMonthPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_MONTH;
-                nbDays = 31;
-                break;
-            case kSixMonthsPeriodIndex:
-                self.selectedPeriod = EventsPeriods_SIX_MONTHS;
-                nbDays = 6 * 31;
-                break;
-            case kOneYearPeriodIndex:
-                self.selectedPeriod = EventsPeriods_ONE_YEAR;
-                nbDays = 365;
-                break;
-        }
-        [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)nbDays]];
-        
-        [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
-        if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
-            [self.tableView scrollsToTop];
-            [self refresh];
-        }
-        self.periodsSelectionActionSheet = nil;
-    }
-}
-
-#pragma mark - Data fill
-
-/**
- * Add categs and tags from reply into selectedCategories and selectedTags,
- * to ensure "selected" by default behavior (if categ/tag was not available before)
- * IMPORTANT: call this *before* updating self.poolReply
- */
-- (void)addMissingCategsAndTagsFromReply:(EventPoolReply*)reply {
-    
-    //on purpose using self.poolReply
-    NSSet* categIdsSet = [NSSet setWithArray:self.poolReply.categs.allKeys];
-    NSSet* shortTagNamesSet = [NSSet setWithArray:self.poolReply.tags.allKeys];
-    
-    //now comparing on reply parameter
-    for (NSNumber* categId in reply.categs) {
-        if (![categIdsSet containsObject:categId]) {
-            self.selectedCategories[categId] = reply.categs[categId];
-        }
-    }
-    
-    for (NSString* shortTagName in reply.tags) {
-        if (![shortTagNamesSet containsObject:shortTagName]) {
-            self.selectedTags[shortTagName] = reply.tags[shortTagName];
-        }
-    }
-}
-
-- (void)fillCollectionsFromReplyAndSelection {
-    if (!self.poolReply) {
-        return;
-    }
-    
-    if (!self.selectedCategories) { //select all categories (available in reply) by default
-        self.selectedCategories = [self.poolReply.categs mutableCopy];
-    }
-    
-    if (!self.selectedTags) { //select all tags (available in reply) by default
-        self.selectedTags = [self.poolReply.tags mutableCopy];
-    }
-    
-    NSMutableDictionary* tmpTagsInPresentItems = [NSMutableDictionary dictionary];
-    for (EventItem* item in [self.poolReply.childrenItems allValues]) {
-        for (NSString* tagKey in item.eventTags) {
-            if (!tmpTagsInPresentItems[tagKey] && self.poolReply.tags[tagKey]) {
-                tmpTagsInPresentItems[tagKey] = self.poolReply.tags[tagKey];
+            self.filterSelectionActionSheet = nil;
+        } else if (actionSheet == self.periodsSelectionActionSheet) {
+            switch (buttonIndex) {
+                case kOneWeekPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_WEEK;
+                    break;
+                case kOneMonthPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_MONTH;
+                    break;
+                case kSixMonthsPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_SIX_MONTHS;
+                    break;
+                case kOneYearPeriodIndex:
+                    self.selectedPeriod = EventsPeriods_ONE_YEAR;
+                    break;
             }
+            [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)self.selectedPeriod]];
+            [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
+            if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
+                [self.tableView scrollsToTop];
+                [self refresh];
+            }
+            self.periodsSelectionActionSheet = nil;
         }
-    }
-    
-    self.tagsInPresentItems = tmpTagsInPresentItems;
-    
-    //Force Favorites and Features to be always selected
-    self.selectedCategories[[EventsUtils favoriteCategory]] = self.poolReply.categs[[EventsUtils favoriteCategory]];
-    self.selectedCategories[[EventsUtils featuredCategory]] = self.poolReply.categs[[EventsUtils featuredCategory]];
-    
-    NSDictionary* itemsForCategNumber = [EventsUtils sectionsOfEventItem:[self.poolReply.childrenItems allValues] forCategories:self.selectedCategories andTags:self.selectedTags inverseSort:self.pastMode]; //if pastMode, show older events at bottom (=> inverse sort)
-    
-    
-    NSArray* sortedCategNumbers = [[itemsForCategNumber allKeys] sortedArrayUsingSelector:@selector(compare:)];
-    
-    NSMutableArray* tmpSectionsNames = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
-    NSMutableArray* tmpItemsForSection = [NSMutableArray arrayWithCapacity:[sortedCategNumbers count]];
-    
-    BOOL foundFavorite = NO;
-    
-    for (NSNumber* categNumber in sortedCategNumbers) {
-        if (!foundFavorite && [categNumber isEqualToNumber:[EventsUtils favoriteCategory]]) {
-            [tmpSectionsNames addObject:NSLocalizedStringFromTable(@"Favorites", @"EventsPlugin", nil)];
-            foundFavorite = YES;
-        } else {
-            [tmpSectionsNames addObject:self.poolReply.categs[categNumber]];
-        }
-        [tmpItemsForSection addObject:itemsForCategNumber[categNumber]];
-    }
-    self.sectionsNames = tmpSectionsNames;
-    self.itemsForSection = tmpItemsForSection;
+
+    });
 }
+
+#pragma mark - UISearchDisplayDelegate
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    [self.typingTimer invalidate];
+    [self.searchQueue cancelAllOperations];
+    if (searchString.length == 0) {
+        self.searchFilteredItemsForSection = nil;
+        self.currentSearchRegex = nil;
+        return YES;
+    } else {
+        //perform search in background
+        typeof(self) welf __weak = self;
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchFilteredItemsForSection.count ? 0.2 : 0.0 block:^{ //interval: so that first search is not delayed (would display "No results" otherwise)
+            [welf.searchQueue addOperationWithBlock:^{
+                if (!welf) {
+                    return;
+                }
+                __strong __typeof(welf) strongSelf = welf;
+                NSArray* filteredSections = [strongSelf searchFilteredItemsForSectionFromPattern:searchString]; //heavy-computation line
+                if (!welf) {
+                    return;
+                }
+                NSRegularExpression* currentSearchRegex = [NSRegularExpression regularExpressionWithPattern:searchString options:NSRegularExpressionCaseInsensitive error:NULL];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    welf.searchFilteredItemsForSection = filteredSections;
+                    welf.currentSearchRegex = currentSearchRegex;
+                    [welf.searchController.searchResultsTableView reloadData];
+                    [welf reselectLastSelectedItem];
+                }];
+            }];
+        } repeats:NO];
+        self.typingTimer.tolerance = 0.05;
+        return NO;
+    }
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self.typingTimer invalidate];
+    [self.searchQueue cancelAllOperations];
+    [self.tableView reloadData];
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+    [self trackAction:PCGAITrackerActionSearch];
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarActiveStyle;
+    }
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.eventsService cancelOperationsForDelegate:self];
+    [self.lgRefreshControl endRefreshing];
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    if ([PCUtils isIdiomPad]) {
+        self.searchBar.searchBarStyle = kSearchBarDefaultStyle;
+    }
+    [self reselectLastSelectedItem];
+    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
 
 #pragma mark - EventsServiceDelegate
 
@@ -713,10 +1001,7 @@ static const NSInteger kOneYearPeriodIndex = 3;
         case 200:
             [self addMissingCategsAndTagsFromReply:reply];
             self.poolReply = reply;
-            if (self.eventPool.poolTitle) {
-                self.title = self.eventPool.poolTitle;
-            }
-            [self updateButtonsConditionally];
+            [self updateUI];
             [self fillCollectionsFromReplyAndSelection];
             [self.tableView reloadData];
             [self reselectLastSelectedItem];
@@ -749,15 +1034,28 @@ static const NSInteger kOneYearPeriodIndex = 3;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([self.itemsForSection count] == 0 || [(NSArray*)(self.itemsForSection[section]) count] == 0) {
-        return 0.0;
+    if (tableView == self.tableView) {
+        if ([self.itemsForSection count] == 0 || [(NSArray*)(self.itemsForSection[section]) count] == 0) {
+            return 0.0;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if ([self.searchFilteredItemsForSection count] == 0 || [(NSArray*)(self.searchFilteredItemsForSection[section]) count] == 0) {
+            return 0.0;
+        }
     }
-    return [PCTableViewSectionHeader preferredHeight];
+    
+    return [PCTableViewSectionHeader preferredHeightWithInfoButton:YES]; //even without info button, want to make it higher
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if ([(NSArray*)(self.itemsForSection[section]) count] == 0) {
-        return nil;
+    if (tableView == self.tableView) {
+        if ([(NSArray*)(self.itemsForSection[section]) count] == 0) {
+            return nil;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if ([(NSArray*)(self.searchFilteredItemsForSection[section]) count] == 0) {
+            return nil;
+        }
     }
     
     NSString* title = self.sectionsNames[section];
@@ -765,10 +1063,20 @@ static const NSInteger kOneYearPeriodIndex = 3;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.itemsForSection.count) {
-        return;
+    
+    EventItem* eventItem = nil;
+    if (tableView == self.tableView) {
+        if (!self.itemsForSection.count) {
+            return;
+        }
+        eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if (!self.searchFilteredItemsForSection.count) {
+            return;
+        }
+        eventItem = self.searchFilteredItemsForSection[indexPath.section][indexPath.row];
+        [self.searchController.searchBar resignFirstResponder];
     }
-    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
     
     EventItemViewController* eventItemViewController = [[EventItemViewController alloc] initWithEventItem:eventItem];
     
@@ -786,9 +1094,8 @@ static const NSInteger kOneYearPeriodIndex = 3;
 
 #pragma mark - UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.poolReply && [self.poolReply.childrenItems count] == 0) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.tableView && self.poolReply && [self.poolReply.childrenItems count] == 0) {
         if (indexPath.row == 1) {
             NSString* message = self.eventPool.noResultText;
             if (!message) {
@@ -801,8 +1108,22 @@ static const NSInteger kOneYearPeriodIndex = 3;
             return cell;
         }
     }
-    NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"EventCell"];
-    EventItem* eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    
+    if (tableView == self.searchController.searchResultsTableView) {
+        //UISearchDisplayController takes care itself to show a "No result" message when
+        //filteredSections is empty
+    }
+    
+    static NSString* const kIdentifierName = @"EventCell";
+    NSString* identifier = nil;
+    EventItem* eventItem = nil;
+    if (tableView == self.tableView) {
+        identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:kIdentifierName];
+        eventItem = self.itemsForSection[indexPath.section][indexPath.row];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        identifier = kIdentifierName;
+        eventItem = self.searchFilteredItemsForSection[indexPath.section][indexPath.row];
+    }
     EventItemCell *cell = (EventItemCell*)[tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
@@ -816,40 +1137,57 @@ static const NSInteger kOneYearPeriodIndex = 3;
         return UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     }];
     
-    cell.imageView.image = nil;
-    [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    cell.imageView.image = nil; // as said in PCTableViewAdditions doc for setImageURL:forCell:atIndexPath:
+    if (tableView == self.tableView) {
+        [(PCTableViewAdditions*)(self.tableView) setImageURL:[NSURL URLWithString:eventItem.eventThumbnail] forCell:cell atIndexPath:indexPath];
+    }
     
     return cell;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
-        return 2; //first empty cell, second cell says no content
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.tableView) {
+        if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
+            return 2; //first empty cell, second cell says no content
+        }
+        return [(NSArray*)(self.itemsForSection[section]) count];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if (!self.searchFilteredItemsForSection) {
+            return 0;
+        }
+        NSArray* items = self.searchFilteredItemsForSection[section];
+        return items.count;
     }
-    return [(NSArray*)(self.itemsForSection[section]) count];
+    return 0;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    if (!self.poolReply) {
-        return 0;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (tableView == self.tableView) {
+        if (!self.poolReply) {
+            return 0;
+        }
+        
+        if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
+            return 1;
+        }
+        return [self.itemsForSection count];
     }
-    
-    if ([self.poolReply.childrenItems count] == 0 && self.eventPool.noResultText) {
-        return 1;
+    if (tableView == self.searchController.searchResultsTableView) {
+        return self.searchFilteredItemsForSection.count;
     }
-    return [self.itemsForSection count];
+    return 0;
 }
 
-#pragma mark - dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc {
     [self.eventsService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    @try {
+        [self.segmentedControl removeObserver:self forKeyPath:NSStringFromSelector(@selector(frame))];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end

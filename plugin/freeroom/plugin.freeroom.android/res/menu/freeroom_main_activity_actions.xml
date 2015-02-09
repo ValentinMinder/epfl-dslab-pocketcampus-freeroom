@@ -1,0 +1,25 @@
+<!-- Layout for actions definitions -->
+<!--
+IMPORTANT: these actions are ALL in overflow button in action bar 
+plus ALL in menu options (for device with a menu button)
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/freeroom_action_favorites"
+        android:icon="@drawable/freeroom_ic_action_important"
+        android:title="@string/freeroom_dialog_fav_title"/>
+    <item
+        android:id="@+id/freeroom_action_settings"
+        android:icon="@drawable/freeroom_ic_action_settings"
+        android:title="@string/freeroom_dialog_settings_title"/>
+    <item
+        android:id="@+id/freeroom_action_refresh"
+        android:icon="@drawable/freeroom_ic_action_refresh"
+        android:title="@string/freeroom_refresh"/>
+    <item
+        android:id="@+id/freeroom_action_about"
+        android:icon="@drawable/freeroom_ic_action_about"
+        android:title="@string/freeroom_about"/>
+
+</menu>

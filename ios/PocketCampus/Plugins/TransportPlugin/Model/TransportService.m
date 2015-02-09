@@ -45,28 +45,18 @@
 
 NSString* const kTransportUserTransportStationsModifiedNotification = @"kTransportUserTransportStationsModifiedNotification";
 
+@interface NearestUserTransportStationRequest : NSOperationWithDelegate
+
+- (id)initWithTransportStations:(NSOrderedSet*)sations delegate:(id)delegate;
+
+@end
+
 @interface TransportService ()
 
 @property (nonatomic, strong) NSOrderedSet* privateUserTransportStations;
 @property (nonatomic, strong) TransportStation* privateUserManualDepartureTransportStation;
 
 @end
-
-#pragma mark - NearestUserTransportStationRequest interface
-
-@interface NearestUserTransportStationRequest : NSOperationWithDelegate<CLLocationManagerDelegate>
-
-- (id)initWithTransportStations:(NSOrderedSet*)sations delegate:(id)delegate;
-
-@property (nonatomic, strong) NSOrderedSet* stations;
-@property (nonatomic, strong) NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
-@property (nonatomic, strong) CLLocationManager* locationManager;
-@property (nonatomic) BOOL blockedByAuthStatus;
-@property (nonatomic) BOOL delegateCallScheduled;
-@property (nonatomic) int nbRounds;
-
-@end
-
 
 @implementation TransportService
 
@@ -108,7 +98,7 @@ static TransportService* instance __weak = nil;
     if (![constraint isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad constraint" reason:@"constraint is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(autocomplete:);
     operation.delegateDidReturnSelector = @selector(autocompleteFor:didReturn:);
     operation.delegateDidFailSelector = @selector(autocompleteFailedFor:);
@@ -121,7 +111,7 @@ static TransportService* instance __weak = nil;
     if (![names isKindOfClass:[NSArray class]]) {
         @throw [NSException exceptionWithName:@"bad names" reason:@"names is either nil or not of class NSArray" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getLocationsFromNames:);
     operation.delegateDidReturnSelector = @selector(locationsForNames:didReturn:);
     operation.delegateDidFailSelector = @selector(locationsFailedForNames:);
@@ -137,9 +127,9 @@ static TransportService* instance __weak = nil;
     if (![to isKindOfClass:[NSString class]]) {
         @throw [NSException exceptionWithName:@"bad 'to' argument" reason:@"'to' argument is either nil or not of class NSString" userInfo:nil];
     }
-    ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     [operation setQueuePriority:priority];
-    operation.serviceClientSelector = @selector(getTrips::);
+    operation.serviceClientSelector = @selector(getTrips:to:);
     operation.delegateDidReturnSelector = @selector(tripsFrom:to:didReturn:);
     operation.delegateDidFailSelector = @selector(tripsFailedFrom:to:);
     [operation addObjectArgument:from];
@@ -225,13 +215,28 @@ static NSString* const kManualDepartureStationKey = @"manualDepartureStation";
 
 @end
 
-/*---------------------------------------------------*/
+@interface NearestUserTransportStationRequest ()<CLLocationManagerDelegate, UIAlertViewDelegate>
 
+- (id)initWithTransportStations:(NSOrderedSet*)sations delegate:(id)delegate;
+
+@property (nonatomic, strong) NSOrderedSet* stations;
+@property (nonatomic, strong) NSTimer* checkCancellationAndAdaptDesiredAccuracyTimer;
+@property (nonatomic, strong) CLLocationManager* locationManager;
+@property (nonatomic, strong) UIAlertView* authorizationBufferAlertView;
+@property (nonatomic, copy) void (^authorizationBufferAlertViewCompletionBlock)(BOOL userAccepted);
+@property (nonatomic) BOOL blockedByAuthStatus;
+@property (nonatomic) BOOL delegateCallScheduled;
+@property (nonatomic) int nbRounds;
+
+@end
 
 @implementation NearestUserTransportStationRequest
 
 static NSTimeInterval const kLocationValidityInterval = 60.0; //nb seconds a cached location can be used / is considered that user has not moved
 static NSString* const kLastLocationKey = @"lastLocation";
+
+static NSInteger const kAuthorizationErrorCodeDeniedBufferAlert = 20;
+static NSInteger const kAuthorizationErrorCodeDeniedSystem = 21;
 
 - (id)initWithTransportStations:(NSOrderedSet*)stations delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:stations notKindOfClass:[NSOrderedSet class]];
@@ -256,19 +261,38 @@ static NSString* const kLastLocationKey = @"lastLocation";
     self.executing = YES;
     
     self.locationManager.delegate = self;
-    [self.locationManager startUpdatingLocation];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        CLSNSLog(@"-> User has denied access to location, will return error to delegate.");
-        [self locationManager:self.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kCLErrorDenied userInfo:nil]];
+        CLSNSLog(@"-> User has denied system access to location, will return error to delegate.");
+        [self locationManager:self.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kAuthorizationErrorCodeDeniedSystem userInfo:nil]];
         return;
     }
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        CLSNSLog(@"-> Waiting for user to accept access to location...");
-        self.blockedByAuthStatus = YES;
+        CLSNSLog(@"-> Showing location authorization buffer alert...");
+        
+        __weak __typeof(self) welf = self;
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self showLocationBufferAlertWithCompletion:^(BOOL userAccepted) {
+                if (userAccepted) {
+                    CLSNSLog(@"-> User accepted buffert alert! Waiting for user to accept access to location...");
+                    welf.blockedByAuthStatus = YES;
+                    [welf.locationManager startUpdatingLocation];
+                    if ([welf.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+                        //required in iOS 8 and above
+                        [welf.locationManager requestWhenInUseAuthorization];
+                    }
+                } else {
+                    CLSNSLog(@"-> User denied buffert alert. Will return LocationFailureReasonUserDeniedBufferAlert to delegate.");
+                    [welf locationManager:welf.locationManager didFailWithError:[NSError errorWithDomain:@"" code:kAuthorizationErrorCodeDeniedBufferAlert userInfo:nil]];
+                }
+            }];
+        });
         return; //self will be called (see delegate method) by CLLocationManager when user has accepted or rejected access to location
     }
+    
+    [self.locationManager startUpdatingLocation];
     
     CLLocation* lastLocation = (CLLocation*)[PCPersistenceManager objectForKey:kLastLocationKey pluginName:@"transport"];
     if ([self locationIsStillValid:lastLocation] && [self locationEnglobesOnlyOneStation:lastLocation]) {
@@ -289,6 +313,27 @@ static NSString* const kLastLocationKey = @"lastLocation";
 
 - (BOOL)isConcurrent {
     return YES;
+}
+
+#pragma mark - Location buffer alert
+
+- (void)showLocationBufferAlertWithCompletion:(void (^)(BOOL userAccepted))completion {
+    self.authorizationBufferAlertViewCompletionBlock = completion;
+    if (self.authorizationBufferAlertView) {
+        return;
+    }
+    self.authorizationBufferAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"LocationBufferAlertTitle", @"TransportPlugin", nil) message:NSLocalizedStringFromTable(@"LocationBufferAlertMessage", @"TransportPlugin", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"LocationBufferAlertRejectButtonTitle", @"TransportPlugin", nil) otherButtonTitles:NSLocalizedStringFromTable(@"LocationBufferAlertAcceptButtonTitle", @"TransportPlugin", nil), nil];
+    [self.authorizationBufferAlertView show];
+}
+
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (self.authorizationBufferAlertViewCompletionBlock) {
+        self.authorizationBufferAlertViewCompletionBlock(buttonIndex != alertView.cancelButtonIndex);
+    }
+    self.authorizationBufferAlertView = nil;
+    self.authorizationBufferAlertViewCompletionBlock = nil;
 }
 
 #pragma mark - Timer call handling
@@ -328,6 +373,8 @@ static NSString* const kLastLocationKey = @"lastLocation";
     if (self.checkCancellationAndAdaptDesiredAccuracyTimer) {
         [self.checkCancellationAndAdaptDesiredAccuracyTimer invalidate];
     }
+    self.authorizationBufferAlertViewCompletionBlock = nil;
+    [self.authorizationBufferAlertView dismissWithClickedButtonIndex:self.authorizationBufferAlertView.cancelButtonIndex animated:NO];
     self.locationManager.delegate = nil;
     [self.locationManager stopUpdatingLocation];
     self.delegate = nil;
@@ -339,7 +386,7 @@ static NSString* const kLastLocationKey = @"lastLocation";
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (self.blockedByAuthStatus) {
-        CLSNSLog(@"-> User has made a decision for location access. Restarting the request.");
+        CLSNSLog(@"-> User has made a decision for location access (new CLAuthorizationStatus: %d). Restarting the request.", status);
         [self main];
     }
 }
@@ -360,30 +407,29 @@ static NSString* const kLastLocationKey = @"lastLocation";
         return;
     }
     self.locationManager.delegate = nil;
+
+    LocationFailureReason failureReason = 0;
     switch (error.code) {
-        case kCLErrorDenied:
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationFailed:)]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate nearestUserTransportStationFailed:LocationFailureReasonUserDenied];
-                    [self cancelAll];
-                });
-            } else {
-                [self cancelAll];
-            }
-            self.delegateCallScheduled = YES;
+        case kAuthorizationErrorCodeDeniedBufferAlert:
+            failureReason = LocationFailureReasonUserDeniedBufferAlert;
+            break;
+        case kAuthorizationErrorCodeDeniedSystem:
+            failureReason = LocationFailureReasonUserDeniedSystem;
             break;
         default:
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationFailed:)]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate nearestUserTransportStationFailed:LocationFailureReasonUnknown];
-                    [self cancelAll];
-                });
-            } else {
-                [self cancelAll];
-            }
-            self.delegateCallScheduled = YES;
+            failureReason = LocationFailureReasonUnknown;
             break;
     }
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(nearestUserTransportStationFailed:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate nearestUserTransportStationFailed:failureReason];
+            [self cancelAll];
+        });
+    } else {
+        [self cancelAll];
+    }
+    self.delegateCallScheduled = YES;
 }
 
 #pragma mark - Location and delegate handling
@@ -399,8 +445,17 @@ static NSString* const kLastLocationKey = @"lastLocation";
         return;
     }
     
-    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        return;
+    CLAuthorizationStatus authStatus = [CLLocationManager authorizationStatus];
+    if ([PCUtils isOSVersionSmallerThan:8.0]) {
+        if (authStatus != kCLAuthorizationStatusAuthorized) {
+            CLSLog(@"-> Will not handle location update because status is not authorized.");
+            return;
+        }
+    } else {
+        if (authStatus != kCLAuthorizationStatusAuthorizedWhenInUse && authStatus != kCLAuthorizationStatusAuthorizedAlways) {
+            CLSLog(@"-> Will not handle location update because status is not authorized.");
+            return;
+        }
     }
     
     CLSLog(@"-> Handling location with accuracy : %lf | desired accuarcy : %lf", newLocation.horizontalAccuracy, self.locationManager.desiredAccuracy);

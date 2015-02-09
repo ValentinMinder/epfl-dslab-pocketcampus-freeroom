@@ -25,14 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
-
-
 //  Created by Loïc Gardiol on 19.11.13.
-
-
 
 #import "food.h"
 
@@ -41,14 +34,14 @@
 @interface EpflRestaurant (Additions)
 
 - (BOOL)isEqual:(id)object;
-/*
- * YES if self and otherRestaurant have same rId
- * NO otherwise
+
+/**
+ * @return YES if self and otherRestaurant have same rId, NO otherwise
  */
 - (BOOL)isEqualToEpflRestaurant:(EpflRestaurant*)otherRestaurant;
 - (NSUInteger)hash;
 
-/*
+/**
  * Sorted on favorite first (according to FoodService) then rName
  */
 - (NSComparisonResult)compareToEpflRestaurant:(EpflRestaurant*)otherRestaurant;
@@ -61,10 +54,30 @@
 
 @interface EpflMeal (Additions)
 
+/**
+ * @return NSArray of NSNumber representing all existing meal types
+ */
++ (NSArray*)allMealTypes;
+
+/**
+ * @return localized name for mealType if known, "Unknown" otherwise
+ */
++ (NSString*)localizedNameForMealType:(NSInteger)mealType;
+
+/**
+ * @return name derived from the enum name for mealType (e.g. MEAT), "UNKNOWN" otherwise
+ */
++ (NSString*)enumNameForMealType:(NSInteger)mealType;
+
+/**
+ * @return a 80x80 points image for the meal type, nil if mealType is unknown
+ */
++ (UIImage*)imageForMealType:(NSInteger)mealType;
+
 - (BOOL)isEqual:(id)object;
-/*
- * YES if self and otherMeal have same rId
- * NO otherwise
+
+/**
+ * @return YES if self and otherMeal have same rId, NO otherwise
  */
 - (BOOL)isEqualToEpflMeal:(EpflMeal*)otherMeal;
 - (NSUInteger)hash;

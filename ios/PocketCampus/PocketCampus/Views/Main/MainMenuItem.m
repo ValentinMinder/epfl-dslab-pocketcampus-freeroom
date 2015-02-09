@@ -39,10 +39,6 @@
 
 @implementation MainMenuItem
 
-+ (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image identifier:(NSString*)identifier __attribute__ ((deprecated)) {
-    return [self menuItemButtonWithTitle:title leftImage:image highlightedLeftImage:nil identifier:identifier];
-}
-
 + (MainMenuItem*)menuItemButtonWithTitle:(NSString*)title leftImage:(UIImage*)image highlightedLeftImage:(UIImage*)highlightedImage identifier:(NSString*)identifier; {
     MainMenuItem* instance = [[[self class] alloc] init];
     instance.title = title;

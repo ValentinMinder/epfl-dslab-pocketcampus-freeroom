@@ -64,6 +64,8 @@
 #import "TKShapeView.h"
 #import "TKTextView.h"
 #import "TKSlideToUnlockView.h"
+#import "TKMultiSwitch.h"
+#import "TKPegSlider.h"
 
 
 // Network
@@ -98,6 +100,7 @@
 #import "TKProgressCircleView.h"
 #import "TKLoadingView.h"
 
+
 // Calendar
 #import "TKCalendarMonthViewController.h"
 #import "TKCalendarMonthTableViewController.h"
@@ -106,7 +109,6 @@
 
 // Coverflow
 #import "TKCoverflowView.h"
-
 
 // Keyboards
 #import "TKInputView.h"

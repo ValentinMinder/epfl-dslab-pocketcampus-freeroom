@@ -3,12 +3,10 @@ package org.pocketcampus.plugin.food.android;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.platform.android.core.PluginModel;
-import org.pocketcampus.plugin.food.android.FoodController.AMeal;
 import org.pocketcampus.plugin.food.android.iface.IFoodModel;
 import org.pocketcampus.plugin.food.android.iface.IFoodView;
 import org.pocketcampus.plugin.food.shared.MealType;
@@ -46,11 +44,6 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	IFoodView mListeners = (IFoodView) getListeners();
 	
 	/**
-	 * Member variables containing required data for the plugin.
-	 */
-	private Map<Long, AMeal> iMeals;
-	
-	/**
 	 * Member variables that need to be persistent
 	 */
 	private Set<Long> dislikedRestos = new HashSet<Long>();
@@ -76,18 +69,6 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		
 	}
 	
-	
-	/**
-	 * Setter and getter for iMenus;
-	 */
-	public Map<Long, AMeal> getMeals() {
-		return iMeals;
-	}
-	public void setMeals(Map<Long, AMeal> obj) {
-		iMeals = obj;
-		mListeners.foodUpdated();
-	}
-
 	
 	/**
 	 * Setter and getter for persistent stuff;

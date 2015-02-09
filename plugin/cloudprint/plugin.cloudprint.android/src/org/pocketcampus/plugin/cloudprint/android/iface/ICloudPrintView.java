@@ -29,6 +29,7 @@ public interface ICloudPrintView extends IView {
 	void printServerError();
 	void uploadComplete(long jobId);	
 	void printedSuccessfully();
+	void printPreviewReady(int pageCount);
 
 
 	/**

@@ -29,7 +29,11 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _courses, value ); }
         }
 
-
+        /// <summary>
+        /// Gets the command executed to view a course.
+        /// </summary>
+        [LogId( "ViewCourse" )]
+        [LogParameter( "$Param.LogId" )]
         public Command<Course> ViewCourseCommand
         {
             get { return this.GetCommand<Course>( _navigationService.NavigateTo<CourseViewModel, Course> ); }

@@ -43,7 +43,6 @@
 
 @implementation PluginSplitViewController
 
-
 - (id)initWithMasterViewController:(UIViewController*)masterViewController detailViewController:(UIViewController*)detailViewController {
     self = [super init];
     if (self) {
@@ -52,13 +51,9 @@
             _masterNavigationController.delegate = self;
         }
         self.viewControllers = @[masterViewController, detailViewController];
-        
+        self.presentsWithGesture = NO;
     }
     return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
 }
 
 - (NSUInteger)supportedInterfaceOrientations //iOS 6
@@ -85,18 +80,19 @@
     self.viewControllers = @[self.masterViewController, detailViewController];
 }
 
-#pragma mark - Toggle button generation
+#pragma mark - Toggle buttons generation
 
 - (UIBarButtonItem*)toggleMasterViewBarButtonItem {
     UIImage* image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterHidden" : @"MasterVisible"];
-    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterVideoControllerHidden:)];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toggleMasterViewControllerHidden:)];
     button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil);
     return button;
 }
 
 #pragma mark - Master view controller visibility management
 
-- (void)toggleMasterVideoControllerHidden:(UIBarButtonItem*)button {
+- (void)toggleMasterViewControllerHidden:(UIBarButtonItem*)button {
+    [self trackAction:@"ToggleMasterViewControllerHidden"];
     button.image = [UIImage imageNamed:self.isMasterViewControllerHidden ? @"MasterVisible" : @"MasterHidden"];
     button.accessibilityLabel = self.isMasterViewControllerHidden ? NSLocalizedStringFromTable(@"HideMaster", @"PocketCampus", nil) : NSLocalizedStringFromTable(@"ShowMaster", @"PocketCampus", nil);
     [self setMasterViewControllerHidden:!self.isMasterViewControllerHidden animated:YES];
@@ -106,7 +102,6 @@
     [self setMasterViewControllerHidden:hidden animated:NO];
 }
 
-
 - (void)setMasterViewControllerHidden:(BOOL)hidden animated:(BOOL)animated {
     if ((_masterViewControllerHidden && hidden) || (!_masterViewControllerHidden && !hidden)) {
         return;
@@ -114,44 +109,68 @@
     [self willChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
     _masterViewControllerHidden = hidden;
     [self didChangeValueForKey:NSStringFromSelector(@selector(isMasterViewControllerHidden))];
-    CGRect newFrame = self.view.frame;
-    UIViewController* masterViewController = self.viewControllers[0];
-    UIViewController* detailViewControler = self.viewControllers[1];
-    CGRect masterFrame = masterViewController.view.frame;
-    CGRect detailFrame = detailViewControler.view.frame;
-    
-    CGFloat newFrameX;
-    CGFloat newFrameY;
-    CGFloat newFrameWidth;
-    CGFloat newFrameHeight;
-    
-    CGFloat detailNewWidth;
     
     if (hidden) {
-        newFrameX = -masterFrame.size.width;
-        newFrameY = 0.0;
-        newFrameWidth = newFrame.size.width + masterFrame.size.width;
-        newFrameHeight = newFrame.size.height;
-        detailNewWidth = detailFrame.size.width + masterFrame.size.width;
+        [[MainController publicController] beginIgnoringRevealMainMenuGesture];
     } else {
-        newFrameX = 0.0;
-        newFrameY = 0.0;
-        newFrameWidth = newFrame.size.width - masterFrame.size.width;
-        newFrameHeight = newFrame.size.height;
-        detailNewWidth = detailFrame.size.width - masterFrame.size.width;
+        [[MainController publicController] endIgnoringRevealMainMenuGesture];
     }
     
-    CGFloat duration = 0.0;
+    CGFloat duration = animated ? 0.3 : 0.0;
     
-    if (animated) {
-        duration = 0.3;
+    if ([self respondsToSelector:@selector(setPreferredDisplayMode:)]) {
+        // >= iOS 8.0
+        [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            // Doc says it animates by default, but not it is not verfied in practice
+            self.preferredDisplayMode = hidden ? UISplitViewControllerDisplayModePrimaryHidden : UISplitViewControllerDisplayModeAllVisible;
+        } completion:NULL];
+        return;
+    } else {
+        CGRect newFrame = self.view.frame;
+        UIViewController* masterViewController = self.viewControllers[0];
+        UIViewController* detailViewControler = self.viewControllers[1];
+        CGRect masterFrame = masterViewController.view.frame;
+        CGRect detailFrame = detailViewControler.view.frame;
+        
+        CGFloat newFrameX;
+        CGFloat newFrameY;
+        CGFloat newFrameWidth;
+        CGFloat newFrameHeight;
+        
+        CGFloat detailNewWidth;
+        
+        if (hidden) {
+            newFrameX = -masterFrame.size.width;
+            newFrameY = 0.0;
+            newFrameWidth = newFrame.size.width + masterFrame.size.width;
+            newFrameHeight = newFrame.size.height;
+            detailNewWidth = detailFrame.size.width + masterFrame.size.width;
+        } else {
+            newFrameX = 0.0;
+            newFrameY = 0.0;
+            newFrameWidth = newFrame.size.width - masterFrame.size.width;
+            newFrameHeight = newFrame.size.height;
+            detailNewWidth = detailFrame.size.width - masterFrame.size.width;
+        }
+        
+        [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
+            detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
+        } completion:NULL];
     }
-    
-    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.view.frame = CGRectMake(newFrameX, newFrameY, newFrameWidth, newFrameHeight);
-        detailViewControler.view.frame = CGRectMake(detailFrame.origin.x, detailFrame.origin.y, detailNewWidth, detailFrame.size.height);
+}
+
+- (void)showMasterViewControllerAsOverlay {
+    if (![self respondsToSelector:@selector(preferredDisplayMode)]) {
+        return;
+    }
+    if (!self.isMasterViewControllerHidden) {
+        return;
+    }
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        // Doc says it animates by default, but not it is not verfied in practice
+        self.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     } completion:NULL];
-    
 }
 
 - (BOOL)prefersStatusBarHidden {

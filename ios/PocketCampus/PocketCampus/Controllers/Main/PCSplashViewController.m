@@ -79,6 +79,7 @@
 
 - (void)willMoveToRightWithDuration:(NSTimeInterval)duration hideDrawingOnIdiomPhone:(BOOL)hideDrawingOnIdiomPhone {
     if ([PCUtils isIdiomPad]) { //adapt drawing's position
+        [self.view layoutIfNeeded];
         [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.view.frame = CGRectMake(0, 0, self.view.frame.size.width - self.rightHiddenOffset, self.view.frame.size.height);
             [self.view layoutIfNeeded];

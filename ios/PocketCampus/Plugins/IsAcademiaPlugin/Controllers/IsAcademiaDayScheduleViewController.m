@@ -168,7 +168,7 @@
     [self.progressHUD show:NO];
     [self.isaService cancelOperationsForDelegate:self];
     ScheduleRequest* req = [ScheduleRequest new];
-    NSDate* monday8am = [self mondayReferenceDateForDate:self.dayView.date];
+    NSDate* monday8am = [IsAcademiaModelAdditions mondayReferenceDateForDate:self.dayView.date];
     req.weekStart = [monday8am timeIntervalSince1970]*1000;
     req.language = [PCUtils userLanguageCode];
     [self.isaService getScheduleWithRequest:req skipCache:skipCache delegate:self];
@@ -201,33 +201,9 @@
         [view dismiss];
         welf.datePickerView = nil;
     }];
-    [pcDatePicker presentInView:self.view];
+    [pcDatePicker presentFromBarButtonItem:[self.toolbarItems lastObject]];
     self.datePickerView = pcDatePicker;
     [self trackAction:@"GoToDate"];
-}
-
-#pragma mark - Date utils
-
-- (NSDate*)mondayReferenceDateForDate:(NSDate*)date {
-    [PCUtils throwExceptionIfObject:date notKindOfClass:[NSDate class]];
-    NSCalendar* gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    gregorianCalendar.locale = [NSLocale currentLocale];
-    NSDateComponents* comps = [gregorianCalendar components:NSYearCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
-    [comps setYear:comps.year];
-    [comps setWeekday:2]; //Monday
-    [comps setWeek:comps.week];
-    [comps setHour:0]; //8a.m.
-    [comps setMinute:0];
-    [comps setSecond:0];
-    NSDate* monday8am = [gregorianCalendar dateFromComponents:comps];
-    if ([date compare:monday8am] == NSOrderedAscending) {
-        //means monday8am is after date, meaning coming Monday was computed,
-        //instead of previous one. => need to decrement 1 week
-        NSDateComponents* minusOneWeekComps = [NSDateComponents new];
-        [minusOneWeekComps setWeek:-1];
-        monday8am = [gregorianCalendar dateByAddingComponents:minusOneWeekComps toDate:monday8am options:0];
-    }
-    return monday8am;
 }
 
 #pragma mark - IsAcademiaService
@@ -237,7 +213,7 @@
     switch (scheduleResponse.statusCode) {
         case IsaStatusCode_OK:
         {
-            NSDate* date = request.weekStart ? [self mondayReferenceDateForDate:[NSDate dateWithTimeIntervalSince1970:request.weekStart/1000]] : [self mondayReferenceDateForDate:[NSDate date]];
+            NSDate* date = [IsAcademiaModelAdditions mondayReferenceDateForDate:request.weekStart ? [NSDate dateWithTimeIntervalSince1970:request.weekStart/1000] : [NSDate date]];
             self.responseForReferenceDate[date] = scheduleResponse;
             [self.dayView reloadData];
             [self calendarDayTimelineView:self.dayView didMoveToDate:self.dayView.date];
@@ -249,8 +225,10 @@
             [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
                 [welf refreshForDisplayedDaySkipCache:YES];
             } userCancelled:^{
-                //nothing to do
-            } failure:^{
+                welf.messageHUD.labelText = NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil);
+                welf.messageHUD.detailsLabelText = NSLocalizedStringFromTable(@"LoginRequired", @"PocketCampus", nil);
+                [welf.messageHUD show:NO];
+            } failure:^(NSError *error) {
                 [welf getScheduleFailedForRequest:request];
             }];
             break;
@@ -306,7 +284,7 @@
 #pragma mark - TKCalendarDayViewDelegate
 
 - (void)calendarDayTimelineView:(TKCalendarDayView *)calendarDay didMoveToDate:(NSDate *)date {
-    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[IsAcademiaModelAdditions mondayReferenceDateForDate:date]];
     if (scheduleResponse) {
         [self.isaService cancelOperationsForDelegate:self];
         [self.progressHUD hide:NO];
@@ -347,7 +325,7 @@
 #pragma mark - TKCalendarDayViewDataSource
 
 - (NSArray *)calendarDayTimelineView:(TKCalendarDayView *)calendarDay eventsForDate:(NSDate *)date {
-    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[self mondayReferenceDateForDate:date]];
+    ScheduleResponse* scheduleResponse = self.responseForReferenceDate[[IsAcademiaModelAdditions mondayReferenceDateForDate:date]];
     StudyDay* studyDay = [scheduleResponse studyDayForDate:date];
     if (!studyDay.periods.count) {
         return @[];

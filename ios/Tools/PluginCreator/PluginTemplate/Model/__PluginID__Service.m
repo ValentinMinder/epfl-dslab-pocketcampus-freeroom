@@ -73,7 +73,7 @@ static __PluginID__Service* instance __weak = nil;
 //
 // 1) Method with 0 argument:
 //  - (void)getMealsWithDelegate:(id)delegate {    
-//      ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+//      ServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
 //      operation.serviceClientSelector = @selector(getMeals); //corresponds to Thrift method definition
 //      operation.delegateDidReturnSelector = @selector(getMealsDidReturn:); //corresponding *didReturn* definition
 //      operation.delegateDidFailSelector = @selector(getMealsFailed); //corresponding *Failed* definition
@@ -84,7 +84,7 @@ static __PluginID__Service* instance __weak = nil;
 //
 // 2) Method with arguments:
 //  - (void)setRatingForMeal:(Id)mealId rating:(double)rating delegate:(id)delegate {
-//      ServiceRequest* operation = [[ServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+//      ServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
 //      operation.serviceClientSelector = @selector(setRating::); //notice double columns, because Thrift setRating has 2 arguments
 //      operation.delegateDidReturnSelector = @selector(setRatingForMeal:rating:didReturn:);
 //      operation.delegateDidFailSelector = @selector(setRatingFailedForMeal:rating:);

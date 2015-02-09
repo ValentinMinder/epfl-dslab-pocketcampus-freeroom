@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,11 +16,9 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4NI-e9-UFL" userLabel="Infos content view">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="145"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-2T-OCE" userLabel="Meal Type Image View">
                                 <rect key="frame" x="10" y="5" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="bMH-hU-cin"/>
                                     <constraint firstAttribute="height" constant="50" id="oYG-Vq-rfU"/>
@@ -27,33 +26,26 @@
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vt7-Ga-tJo">
                                 <rect key="frame" x="68" y="0.0" width="252" height="115"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="252" id="1dy-qC-WiP"/>
-                                </constraints>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vCg-Ih-5U6" userLabel="Horizontal Line">
                                 <rect key="frame" x="68" y="115" width="252" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.84740423389999997" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="ped-h9-NTD"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V5e-gG-xtp" userLabel="Sat Rate Button">
-                                <rect key="frame" x="73" y="116" width="41" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V5e-gG-xtp" userLabel="Sat Rate Button">
+                                <rect key="frame" x="73" y="115" width="41" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7.-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsD-q2-2Fb" userLabel="Prices label">
-                                <rect key="frame" x="24" y="55" width="21" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="23" y="55" width="24" height="24"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -64,7 +56,8 @@
                             <constraint firstItem="V5e-gG-xtp" firstAttribute="leading" secondItem="vt7-Ga-tJo" secondAttribute="leading" constant="5" id="3Mq-fg-ylI"/>
                             <constraint firstItem="vCg-Ih-5U6" firstAttribute="top" secondItem="vt7-Ga-tJo" secondAttribute="bottom" id="FfM-cq-5wC"/>
                             <constraint firstItem="V5e-gG-xtp" firstAttribute="top" secondItem="vCg-Ih-5U6" secondAttribute="bottom" id="MnS-bj-kbF"/>
-                            <constraint firstItem="vt7-Ga-tJo" firstAttribute="leading" secondItem="8CO-2T-OCE" secondAttribute="trailing" constant="8" id="Q4Z-Bq-qa8"/>
+                            <constraint firstAttribute="trailing" secondItem="vt7-Ga-tJo" secondAttribute="trailing" id="Ncs-un-rAu"/>
+                            <constraint firstItem="vt7-Ga-tJo" firstAttribute="leading" secondItem="8CO-2T-OCE" secondAttribute="trailing" constant="8" id="RLk-0B-x6N"/>
                             <constraint firstItem="vt7-Ga-tJo" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" id="Svm-Rn-K4M"/>
                             <constraint firstAttribute="bottom" secondItem="V5e-gG-xtp" secondAttribute="bottom" id="Tmb-Tt-b9F"/>
                             <constraint firstItem="8CO-2T-OCE" firstAttribute="top" secondItem="4NI-e9-UFL" secondAttribute="top" constant="5" id="bqd-Ua-vsT"/>
@@ -101,8 +94,8 @@
                 <outlet property="satRateButton" destination="V5e-gG-xtp" id="EJ3-iF-cva"/>
                 <outlet property="textView" destination="vt7-Ga-tJo" id="88s-K8-4H9"/>
                 <outlet property="textViewBottomConstraint" destination="gWP-BJ-UKe" id="6UY-5C-wV1"/>
-                <outlet property="textViewWidthConstraint" destination="1dy-qC-WiP" id="xyR-bR-0Nh"/>
             </connections>
+            <point key="canvasLocation" x="203" y="242"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="N0r-hK-E6s" userLabel="Rate controls view">
             <rect key="frame" x="0.0" y="0.0" width="247" height="110"/>
@@ -110,14 +103,12 @@
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How did you like this meal ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000000000000009" translatesAutoresizingMaskIntoConstraints="NO" id="ibB-oa-Rpg">
                     <rect key="frame" x="10" y="14" width="227" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYb-Ii-zrA" userLabel="Happy button">
                     <rect key="frame" x="170" y="42" width="60" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="d6y-1F-TXa"/>
                         <constraint firstAttribute="width" constant="60" id="pZP-lr-z3o"/>
@@ -132,7 +123,6 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWG-Ud-PsJ" userLabel="Meh Button">
                     <rect key="frame" x="94" y="42" width="60" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="5d4-OP-bEW"/>
                         <constraint firstAttribute="height" constant="60" id="ypz-fP-lMe"/>
@@ -147,7 +137,6 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uff-ag-V1r" userLabel="Sad Button">
                     <rect key="frame" x="18" y="42" width="60" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="ZOv-MT-AGu"/>
                         <constraint firstAttribute="width" constant="60" id="sIs-Ow-Mdw"/>
@@ -160,9 +149,8 @@
                         <action selector="smileyButtonTapped:" destination="BPJ-Vf-ZpH" eventType="touchUpInside" id="r9N-2n-d2m"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-8O-czx" userLabel="Vertical line">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-8O-czx" userLabel="Vertical line">
                     <rect key="frame" x="0.0" y="0.0" width="1" height="110"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.85247605846774199" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="0.5" id="zfL-yw-NGJ"/>
@@ -185,6 +173,7 @@
                 <constraint firstItem="aYb-Ii-zrA" firstAttribute="leading" secondItem="WWG-Ud-PsJ" secondAttribute="trailing" constant="16" id="qlL-tX-g86"/>
                 <constraint firstItem="aYb-Ii-zrA" firstAttribute="top" secondItem="ibB-oa-Rpg" secondAttribute="bottom" constant="10" id="zeU-V1-Nko"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
@@ -193,4 +182,9 @@
         <image name="FoodSmileyMeh.png" width="60" height="60"/>
         <image name="FoodSmileySad.png" width="60" height="60"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

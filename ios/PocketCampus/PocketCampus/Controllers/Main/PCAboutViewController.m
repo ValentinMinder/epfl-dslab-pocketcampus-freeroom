@@ -25,36 +25,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 07.08.12.
-
-
 
 #import "PCAboutViewController.h"
 
-#import "PCConfig.h"
 
 @interface PCAboutViewController() <UIWebViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
 
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint* webViewCenterYConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint* webViewHeightConstraint;
-
 @end
 
 @implementation PCAboutViewController
 
-- (id)init
+#pragma mark - Init
+
+- (instancetype)init
 {
     self = [super initWithNibName:@"PCAboutView" bundle:nil];
     if (self) {
         self.gaiScreenName = @"/dashboard/settings/about";
+        self.automaticallyAdjustsScrollViewInsets = YES;
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -62,13 +58,15 @@
 	// Do any additional setup after loading the view.
 	self.title = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
     self.webView.delegate = self;
-    self.webView.scrollView.scrollEnabled = NO;
+    //self.webView.scrollView.scrollEnabled = NO;
     self.webView.alpha = 0.0;
     NSString* htmlPath = [[NSBundle mainBundle] pathForResource:@"PCAbout" ofType:@"html"];
     NSError* error = nil;
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
     
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:[PCUtils appVersion]];
+    
+    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$INSTITUTION_LOGO_PATH$" withString:[PCUtils pathForImageResource:@"InstitutionLogo"]];
     
     if (!error) {
         [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
@@ -90,6 +88,8 @@
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Private
+
 - (void)showInfos {
     NSString* build = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     BOOL loadedFromBundle = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
@@ -106,12 +106,9 @@
     [alert show];
 }
 
-/* UIWebViewDelegate delegation */
+#pragma mark - UIWebViewDelegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
-    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-    self.webViewHeightConstraint.constant = height+50.0;
-    self.webViewCenterYConstraint.constant = [PCUtils is4inchDevice] ? 15.0 : 5.0;
     [UIView animateWithDuration:0.3 animations:^{
         self.webView.alpha = 1.0;
     }];
@@ -119,11 +116,18 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        [[UIApplication sharedApplication] openURL:request.URL];
+        UIViewController* viewController = [[MainController publicController] viewControllerForWebURL:request.URL];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+        } else {
+            [[UIApplication sharedApplication] openURL:request.URL];
+        }
         return NO;
     }
     return YES;
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

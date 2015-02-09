@@ -72,7 +72,7 @@ public class EventItemDecoder {
 			ei.setVcalUid(rs.getString(12));
 
 			ei.setEventTags(Utils.split(rs.getString(14), "[,]"));
-			ei.setLocationHref(rs.getString(15));
+			ei.setLocationHref(Utils.convertMapUrl(rs.getString(15)));
 			ei.setDetailsLink(rs.getString(16));
 			ei.setSecondLine(rs.getString(17));
 			ei.setTimeSnippet(rs.getString(18));

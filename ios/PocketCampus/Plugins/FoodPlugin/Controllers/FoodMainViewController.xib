@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="rcZ-8D-pGf" customClass="FoodMainViewController">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="RHd-rY-xJM"/>
+                <viewControllerLayoutGuide type="bottom" id="DXr-56-hG1"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="wBG-XX-kW7">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wlN-uQ-gfZ" customClass="PCTableViewAdditions">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="rcZ-8D-pGf" id="z0R-Sg-goR"/>
+                            <outlet property="delegate" destination="rcZ-8D-pGf" id="JLi-Hl-eRU"/>
+                        </connections>
+                    </tableView>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kIP-w7-Ob9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ggd-QD-7fR">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="8" minY="10" maxX="8" maxY="6"/>
+                        </collectionViewFlowLayout>
+                        <connections>
+                            <outlet property="dataSource" destination="rcZ-8D-pGf" id="3ys-17-xq7"/>
+                            <outlet property="delegate" destination="rcZ-8D-pGf" id="B17-wQ-eZs"/>
+                        </connections>
+                    </collectionView>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="wlN-uQ-gfZ" secondAttribute="bottom" id="19s-hT-nW7"/>
+                    <constraint firstItem="kIP-w7-Ob9" firstAttribute="leading" secondItem="wBG-XX-kW7" secondAttribute="leading" id="5AJ-Gf-hLa"/>
+                    <constraint firstItem="kIP-w7-Ob9" firstAttribute="top" secondItem="wBG-XX-kW7" secondAttribute="top" id="DkX-6Z-SMY"/>
+                    <constraint firstAttribute="trailing" secondItem="wlN-uQ-gfZ" secondAttribute="trailing" id="SwT-uV-Qq0"/>
+                    <constraint firstAttribute="trailing" secondItem="kIP-w7-Ob9" secondAttribute="trailing" id="Xc5-sa-5U7"/>
+                    <constraint firstItem="wlN-uQ-gfZ" firstAttribute="leading" secondItem="wBG-XX-kW7" secondAttribute="leading" id="n76-PE-bPf"/>
+                    <constraint firstItem="wlN-uQ-gfZ" firstAttribute="top" secondItem="wBG-XX-kW7" secondAttribute="top" id="oqS-9c-OfD"/>
+                    <constraint firstAttribute="bottom" secondItem="kIP-w7-Ob9" secondAttribute="bottom" id="s3L-XF-2oi"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="mealTypesCollectionView" destination="kIP-w7-Ob9" id="Jqb-7k-1ZK"/>
+                <outlet property="restaurantsTableView" destination="wlN-uQ-gfZ" id="cTo-Z5-OJ8"/>
+            </connections>
+            <point key="canvasLocation" x="228" y="377"/>
+        </viewController>
+    </objects>
+</document>

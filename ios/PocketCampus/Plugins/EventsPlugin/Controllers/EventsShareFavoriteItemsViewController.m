@@ -103,7 +103,7 @@
 
 - (void)sendPressed {
     [self.emailCell.textField resignFirstResponder];
-    SendEmailRequest* req = [[SendEmailRequest alloc] initWithEventPoolId:self.relatedEventPool.poolId starredEventItems:[self.eventsService allFavoriteEventItemIds] userTickets:[self.eventsService allUserTickets] emailAddress:self.emailCell.textField.text lang:[PCUtils userLanguageCode]];
+    SendEmailRequest* req = [[SendEmailRequest alloc] initWithEventPoolId:self.relatedEventPool.poolId starredEventItems:[[self.eventsService allFavoriteEventItemIds] mutableCopy] userTickets:[[self.eventsService allUserTickets] mutableCopy] emailAddress:self.emailCell.textField.text lang:[PCUtils userLanguageCode]];
     [self.eventsService sendStarredItemsByEmail:req delegate:self];
     self.operationInProgress = YES;
 }

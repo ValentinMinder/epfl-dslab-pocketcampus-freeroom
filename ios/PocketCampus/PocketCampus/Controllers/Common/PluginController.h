@@ -25,26 +25,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 01.03.12.
 
-
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 #import "MainController.h"
 
 #import "PluginNavigationController.h"
+#import "PluginTabBarController.h"
 #import "PluginSplitViewController.h"
 
 /*Each plugin must have a controller named <plugin_name>Controller, and that subclasses PluginController. Is it NOT an instance of UIViewController*/
 
 @interface PluginController : NSObject
 
-/* Either mainNavigationController or mainSplitViewController can be instantiated. Not both. */
+/*
+ * Either mainNavigationController, mainTabBarController, or mainSplitViewController can be instantiated.
+ */
 @property (strong) PluginNavigationController* mainNavigationController;
+@property (strong) PluginTabBarController* mainTabBarController;
 @property (strong) PluginSplitViewController* mainSplitViewController;
 
 @property (strong) NSArray* menuRevealingGesureRecognizers;
@@ -104,7 +104,9 @@
  * Should return nil if the action/the parameters are not supported.
  *
  * handleURLQueryAction:parameters:
- * Implement this method to support being (the plugin) opened from a call external to the app.
+ * Implement this method to support getting actions and parameters being passed to the plugin
+ * controller when the app is opened with a URL.
+ * You can assume that your plugin is already getting foreground (no need to request it).
  * Should return YES if action was successfully handled, NO otherwise.
  */
 - (UIViewController*)viewControllerForURLQueryAction:(NSString*)action parameters:(NSDictionary*)parameters;
