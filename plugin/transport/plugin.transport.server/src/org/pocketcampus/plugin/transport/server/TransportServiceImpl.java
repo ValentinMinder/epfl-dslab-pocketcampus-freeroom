@@ -30,14 +30,7 @@ public class TransportServiceImpl implements TransportService.Iface {
     }
 
     /**
-     * Used by getTrips
-     * Number of milliseconds that should be deduced from current timestamp when requesting schedules,
-     * so that results can contain departures that just left or are leaving.
-     */
-    private final long NUMBER_MS_IN_PAST_GET_TRIPS_REQUEST = 3 * 60 * 1000; // 3 min
-
-    /**
-     * Constructor. Initializes the provider with the api key.
+     * Constructor.
      */
     public TransportServiceImpl() {
         this(new StationServiceImpl(new HttpClientImpl(), PocketCampusServer.CONFIG.getString("TRANSPORT_HAFAS_TOKEN")),
@@ -96,6 +89,7 @@ public class TransportServiceImpl implements TransportService.Iface {
      * @return A list of TransportStation composed only of LocationType.STATION and no POI or else
      */
     @Override
+    @Deprecated
     public List<TransportStation> autocomplete(String constraint)
             throws TException {
         try {
@@ -113,6 +107,7 @@ public class TransportServiceImpl implements TransportService.Iface {
      * @return List of TransportStations
      */
     @Override
+    @Deprecated
     public List<TransportStation> getLocationsFromNames(List<String> names)
             throws TException {
         final List<TransportStation> stations = new ArrayList<TransportStation>();
@@ -126,6 +121,7 @@ public class TransportServiceImpl implements TransportService.Iface {
      * Asks the provider how to get from A to B at present time.
      */
     @Override
+    @Deprecated
     public QueryTripsResult getTrips(String from, String to) throws TException {
         final TransportStation departure = getStationFromName(from);
         final TransportStation arrival = getStationFromName(to);
