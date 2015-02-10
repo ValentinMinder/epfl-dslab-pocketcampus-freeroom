@@ -17,7 +17,7 @@ import java.util.*;
 public class PocketCampusServer extends ServerBase {
     public static final PCConfig CONFIG = new PCConfig();
 
-    private static final Map<String, Object> plugins = new HashMap<String, Object>();
+    private static final Map<String, Object> plugins = new HashMap<>();
 
     /**
      * Basic Messenger-like functionality.
@@ -75,7 +75,7 @@ public class PocketCampusServer extends ServerBase {
      */
     @Override
     protected List<ServiceInfo> getServices() {
-        final List<ServiceInfo> processors = new ArrayList<ServiceInfo>();
+        final List<ServiceInfo> processors = new ArrayList<>();
 
         for (final String pluginName : CONFIG.getString("ENABLED_PLUGINS").split(",")) {
             final Object pluginService = getPluginService(pluginName);

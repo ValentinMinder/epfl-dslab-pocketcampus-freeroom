@@ -34,13 +34,13 @@ public final class NewsServiceImpl implements NewsService.Iface {
             return new NewsFeedsResponse(NewsStatusCode.NETWORK_ERROR, new ArrayList<NewsFeed>());
         }
 
-        List<NewsFeed> returnedFeeds = new ArrayList<NewsFeed>();
+        List<NewsFeed> returnedFeeds = new ArrayList<>();
         for (NewsSource.Feed feed : feeds) {
             if (feed.isMain && !request.isGeneralFeedIncluded()) {
                 continue;
             }
 
-            List<NewsFeedItem> returnedItems = new ArrayList<NewsFeedItem>();
+            List<NewsFeedItem> returnedItems = new ArrayList<>();
             for (NewsSource.FeedItem item : feed.items.values()) {
                 NewsFeedItem returnedItem = new NewsFeedItem(item.id, item.title, item.publishDate.getMillis());
                 if (item.imageUrl != null) {

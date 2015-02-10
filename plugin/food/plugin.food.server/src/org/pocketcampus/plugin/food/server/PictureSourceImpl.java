@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class PictureSourceImpl implements PictureSource {
-	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
+	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<>();
 
 	private static final String MEAL_PICS_FOLDER_URI = "backend/meal-pics";
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URI = "backend/restaurant-pics";
@@ -45,7 +45,6 @@ public final class PictureSourceImpl implements PictureSource {
 	}
 
 	/**
-	 * @param restaurantName
 	 * @return restaurantName that is accents-freed, lower-cased,
 	 *         and apostrophes and spaces replaced by _
 	 *         Examples:

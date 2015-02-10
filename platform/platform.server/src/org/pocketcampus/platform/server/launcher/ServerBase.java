@@ -52,7 +52,7 @@ public abstract class ServerBase {
 	protected abstract List<ServiceInfo> getServices();
 
 	private Connector[] getConnectors() {
-		ArrayList<Connector> conns = new ArrayList<Connector>();
+		ArrayList<Connector> conns = new ArrayList<>();
 
 		// Default (HTTP) connector
 		SelectChannelConnector connector = new SelectChannelConnector();
@@ -82,7 +82,7 @@ public abstract class ServerBase {
 			conns.add(sslConnector);
 		}
 
-		return (Connector[]) conns.toArray(new Connector[conns.size()]);
+		return conns.toArray(new Connector[conns.size()]);
 	}
 
 	private Handler getServicesHandler() {

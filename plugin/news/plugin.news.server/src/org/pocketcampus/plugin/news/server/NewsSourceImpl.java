@@ -25,9 +25,9 @@ public final class NewsSourceImpl implements NewsSource {
 	// All feed IDs. If you add any, make sure you update FEED_NAMES as well.
 	private static final String[] FEED_IDS = { "mediacom", "enac", "sb", "ic", "cdh", "sti", "sv", "cdm" };
 	// The feed names, per language
-	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<String, Map<String, String>>();
+	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<>();
 	// All supported languages
-	private static final Set<String> AVAILABLE_LANGUAGES = new HashSet<String>();
+	private static final Set<String> AVAILABLE_LANGUAGES = new HashSet<>();
 	// The default language
 	private static final String DEFAULT_LANGUAGE = "en";
 	// Charset used by RSS feeds
@@ -84,7 +84,7 @@ public final class NewsSourceImpl implements NewsSource {
 			language = DEFAULT_LANGUAGE;
 		}
 
-		List<Feed> feeds = new ArrayList<Feed>();
+		List<Feed> feeds = new ArrayList<>();
 		for (String feedId : FEED_IDS) {
 			String url = String.format(FEED_URL_FORMAT, feedId, language);
 
@@ -101,7 +101,7 @@ public final class NewsSourceImpl implements NewsSource {
 			String feedName = FEED_NAMES.get(language).get(feedId);
 			boolean isMain = feedId.equals(MAIN_FEED_ID);
 
-			Map<Integer, FeedItem> items = new LinkedHashMap<Integer, FeedItem>(); // LinkedHashMap keeps insertion order
+			Map<Integer, FeedItem> items = new LinkedHashMap<>(); // LinkedHashMap keeps insertion order
 			for (XElement itemElement : channelElem.children(RSS_FEED_ITEM_ELEMENT)) {
 				String title = itemElement.child(RSS_FEED_ITEM_TITLE_ELEMENT).text();
 				int id = getFeedItemId(title, feedId);

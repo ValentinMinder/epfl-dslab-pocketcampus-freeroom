@@ -32,7 +32,7 @@ public final class BeerMenuImpl implements BeerMenu {
 	private static final String ALCOHOL_RATE_SUFFIX = "°";
 	private static final String PRICE_SUFFIX = "CHF";
 
-	private static final Map<String, SatelliteBeerContainer> CONTAINERS = new HashMap<String, SatelliteBeerContainer>();
+	private static final Map<String, SatelliteBeerContainer> CONTAINERS = new HashMap<>();
 
 	static {
 		CONTAINERS.put("pression", SatelliteBeerContainer.DRAFT);
@@ -57,7 +57,7 @@ public final class BeerMenuImpl implements BeerMenu {
 
 		XElement root = XElement.parse(xml);
 
-		Map<SatelliteBeerContainer, SatelliteMenuPart> menu = new HashMap<SatelliteBeerContainer, SatelliteMenuPart>();
+		Map<SatelliteBeerContainer, SatelliteMenuPart> menu = new HashMap<>();
 
 		for (XElement beerElem : root.children(BEER_ELEMENT)) {
 			SatelliteBeer beer = new SatelliteBeer();
@@ -102,10 +102,10 @@ public final class BeerMenuImpl implements BeerMenu {
 	private static String prettify(String s) {
 		String[] split = s.split(" ");
 		String result = "";
-		for (int n = 0; n < split.length; n++) {
-			result += Character.toUpperCase(split[n].charAt(0)) + split[n].substring(1).toLowerCase();
-			result += " ";
-		}
+        for (String part : split) {
+            result += Character.toUpperCase(part.charAt(0)) + part.substring(1).toLowerCase();
+            result += " ";
+        }
 		return result.trim();
 	}
 }

@@ -120,7 +120,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_USER_SCIPER_KEY, sciper)
 				.toString();
 
-		int userId = -1;
+		int userId;
 		try {
 			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
@@ -142,7 +142,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_COURSES_USERID_KEY, Integer.toString(userId))
 				.toString();
 
-		JsonCourse[] courses = null;
+		JsonCourse[] courses;
 		try {
 			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
@@ -176,7 +176,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_SECTIONS_COURSEID_KEY, Integer.toString(request.getCourseId()))
 				.toString();
 
-		JsonSection[] sections = null;
+		JsonSection[] sections;
 		try {
 			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);

@@ -66,7 +66,7 @@ public class FoodServiceImpl implements FoodService.Iface {
             time = foodReq.getMealTime();
         }
 
-        FoodResponse response = null;
+        FoodResponse response;
         try {
             response = _menu.get(time, date);
         } catch (JsonParseException e) {
@@ -126,7 +126,7 @@ public class FoodServiceImpl implements FoodService.Iface {
             return null;
         if (_ldap == null)
             throw new RuntimeException("What the heck, dude, _ldap is null");
-        List<PriceTarget> classes = new LinkedList<PriceTarget>();
+        List<PriceTarget> classes = new LinkedList<>();
         try {
             SearchResult searchResult = _ldap.search("o=epfl,c=ch", SearchScope.SUB, DereferencePolicy.FINDING, 10, 0, false, "(|(uid=" + username + "@*)(uniqueidentifier="
                     + username + "))", (String[]) null);
@@ -194,7 +194,7 @@ public class FoodServiceImpl implements FoodService.Iface {
     public Map<Long, Rating> getRatings() throws TException {
         FoodResponse resp = getFood(new FoodRequest());
         if (resp.getStatusCode() == FoodStatusCode.OK) {
-            Map<Long, Rating> ratings = new HashMap<Long, Rating>();
+            Map<Long, Rating> ratings = new HashMap<>();
             for (EpflRestaurant resto : resp.getMenu()) {
                 for (EpflMeal meal : resto.getRMeals()) {
                     ratings.put(meal.getMId(), new Rating(meal.getMRating()

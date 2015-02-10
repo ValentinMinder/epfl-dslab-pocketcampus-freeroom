@@ -53,7 +53,7 @@ public class TransportServiceImpl implements TransportService.Iface {
     @Override
     public TransportDefaultStationsResponse getDefaultStations() throws TException {
         if (defaultStations == null) {
-            defaultStations = new ArrayList<TransportStation>();
+            defaultStations = new ArrayList<>();
             for (String name : DEFAULT_STATION_NAMES) {
                 try {
                     defaultStations.add(stationService.getStation(name));
@@ -110,7 +110,7 @@ public class TransportServiceImpl implements TransportService.Iface {
     @Deprecated
     public List<TransportStation> getLocationsFromNames(List<String> names)
             throws TException {
-        final List<TransportStation> stations = new ArrayList<TransportStation>();
+        final List<TransportStation> stations = new ArrayList<>();
         for (final String name : names) {
             stations.add(getStationFromName(name));
         }

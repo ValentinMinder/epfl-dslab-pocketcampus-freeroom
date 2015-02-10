@@ -19,8 +19,8 @@ import java.util.Map;
 public final class CachingProxy {
 	@SuppressWarnings("unchecked")
 	public static <T> T create(final T instance, final CacheValidator validator) {
-		Class<T> iface = (Class<T>) getInterface(instance);
-		final Map<Method, SoftMap<Integer, GeneratedValue>> cache = new HashMap<Method, SoftMap<Integer, GeneratedValue>>();
+		final Class<T> iface = (Class<T>) getInterface(instance);
+		final Map<Method, SoftMap<Integer, GeneratedValue>> cache = new HashMap<>();
 		return (T) Proxy.newProxyInstance(iface.getClassLoader(), new Class[] { iface },
 				new InvocationHandler() {
 					@Override

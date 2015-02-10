@@ -54,7 +54,7 @@ public final class ScheduleImpl implements Schedule {
 	private static final String ROOM_ELEMENT = "room";
 
 	// Maps study period type names (in the default language) from IS-Academia's XML to the types.
-	private static final Map<String, StudyPeriodType> STUDY_PERIOD_TYPES = new HashMap<String, StudyPeriodType>();
+	private static final Map<String, StudyPeriodType> STUDY_PERIOD_TYPES = new HashMap<>();
 
 	static {
 		STUDY_PERIOD_TYPES.put("Lecture", StudyPeriodType.LECTURE);
@@ -81,7 +81,7 @@ public final class ScheduleImpl implements Schedule {
 				+ "&" + URL_TO_PARAMETER + "=" + weekEnd.toString(URL_PARAMETER_FORMAT)
 				+ "&" + URL_SCIPER_PARAMETER + "=" + sciper;
 
-		XElement rootElem = null;
+		XElement rootElem;
 		try {
 			String xml = _client.get(url, ISA_CHARSET);
 			rootElem = XElement.parse(xml);
@@ -93,7 +93,7 @@ public final class ScheduleImpl implements Schedule {
 			return new ScheduleResponse(IsaStatusCode.ISA_ERROR);
 		}
 
-		List<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+		List<StudyPeriod> periods = new ArrayList<>();
 
 		for (XElement periodElem : rootElem.children(STUDY_PERIOD_TAG)) {
 			StudyPeriod period = new StudyPeriod();
@@ -108,12 +108,10 @@ public final class ScheduleImpl implements Schedule {
 
 			period.setName(getLocalizedText(periodElem.child(COURSE_ELEMENT).child(NAME_ELEMENT), language));
 
-			List<String> rooms = new ArrayList<String>();
+			List<String> rooms = new ArrayList<>();
 			for (XElement roomElem : periodElem.children(ROOM_ELEMENT)) {
 				String roomNames = getLocalizedText(roomElem, ROOM_NAME_LANGUAGE);
-				for (String actualName : RoomUtil.parseRoomNames(roomNames)) {
-					rooms.add(actualName);
-				}
+                Collections.addAll(rooms, RoomUtil.parseRoomNames(roomNames));
 			}
 			period.setRooms(rooms);
 
@@ -124,7 +122,7 @@ public final class ScheduleImpl implements Schedule {
 	}
 
 	private static List<StudyDay> groupPeriodsByDay(LocalDate weekBegin, List<StudyPeriod> periods) {
-		SortedMap<LocalDate, StudyDay> days = new TreeMap<LocalDate, StudyDay>();
+		SortedMap<LocalDate, StudyDay> days = new TreeMap<>();
 		// First, add all days of the working week; we want to display them even if they're empty
 		for (int n = 0; n < 5; n++) {
 			LocalDate date = weekBegin.plusDays(n);
@@ -140,7 +138,7 @@ public final class ScheduleImpl implements Schedule {
 			days.get(date).addToPeriods(period);
 		}
 
-		return new ArrayList<StudyDay>(days.values());
+		return new ArrayList<>(days.values());
 	}
 
 	/** Gets the text from the specified XML node containing text nodes tagged with languages. */

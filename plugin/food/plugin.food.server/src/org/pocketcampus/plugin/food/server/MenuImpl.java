@@ -38,8 +38,8 @@ public final class MenuImpl implements Menu {
 	// Constants related to meals
 	private static final String APPETIZER_PREFIX = "Entrée : ";
 	private static final String HALF_PORTION_PRICE_TARGET = "demi Portion";
-	private static final Map<String, PriceTarget> PRICE_TARGETS = new HashMap<String, PriceTarget>();
-	private static final Map<String, MealType> MEAL_TYPES = new HashMap<String, MealType>();
+	private static final Map<String, PriceTarget> PRICE_TARGETS = new HashMap<>();
+	private static final Map<String, MealType> MEAL_TYPES = new HashMap<>();
 
 	// The HTTP client used to get the HTML data.
 	private final HttpClient _client;
@@ -78,15 +78,15 @@ public final class MenuImpl implements Menu {
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
 
-		String json = null;
+		String json;
 		try {
 			json = _client.get(url, MEAL_LIST_CHARSET);
 		} catch (IOException e) {
 			return new FoodResponse().setStatusCode(FoodStatusCode.NETWORK_ERROR);
 		}
 
-		List<EpflRestaurant> restaurants = new ArrayList<EpflRestaurant>();
-		JsonMenu jmenu = (JsonMenu) new GsonBuilder().create().fromJson(json, JsonMenu.class);
+		List<EpflRestaurant> restaurants = new ArrayList<>();
+		JsonMenu jmenu = new GsonBuilder().create().fromJson(json, JsonMenu.class);
 
 		for (JsonMeal jmeal : jmenu.menus) {
 			EpflMeal meal = new EpflMeal();
@@ -106,7 +106,7 @@ public final class MenuImpl implements Menu {
 			}
 			meal.setMDescription(description.trim());
 
-			List<MealType> types = new ArrayList<MealType>();
+			List<MealType> types = new ArrayList<>();
 			for (String type : jmeal.menuTags.split(",")) {
 				if (MEAL_TYPES.containsKey(type)) {
 					types.add(MEAL_TYPES.get(type));
@@ -114,7 +114,7 @@ public final class MenuImpl implements Menu {
 			}
 			meal.setMTypes(types);
 
-			Map<PriceTarget, Double> prices = new HashMap<PriceTarget, Double>();
+			Map<PriceTarget, Double> prices = new HashMap<>();
 			for (Map<String, Double> priceContainer : jmeal.prix) {
 				// there's only one
 				for (Entry<String, Double> price : priceContainer.entrySet()) {

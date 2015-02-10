@@ -120,15 +120,15 @@ public final class StationServiceImpl implements StationService {
 
 		// haven't seen it in the wild, but the XSD allows it
 		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportStation>();
+			return new ArrayList<>();
 		}
 
 		final XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
 		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportStation>();
+			return new ArrayList<>();
 		}
 
-		final List<TransportStation> result = new ArrayList<TransportStation>();
+		final List<TransportStation> result = new ArrayList<>();
 		for (XElement stationElem : containerElem.children(RESPONSE_STATION_ELEMENT)) {
 			result.add(HafasUtil.parseStation(stationElem));
 		}

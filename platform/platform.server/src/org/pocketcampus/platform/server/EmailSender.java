@@ -143,8 +143,7 @@ public class EmailSender {
 			multipart.addBodyPart(messageBodyPart);
 			// Create the html part
 			messageBodyPart = new MimeBodyPart();
-			String htmlMessage = htmlBody;
-			messageBodyPart.setContent(htmlMessage, "text/html");
+			messageBodyPart.setContent(htmlBody, "text/html");
 			// Add html part to multi part
 			multipart.addBodyPart(messageBodyPart);
 			// Associate multi-part with message
@@ -153,9 +152,7 @@ public class EmailSender {
 			Transport.send(message);
 
 			return true;
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (MessagingException | IOException e) {
 			e.printStackTrace();
 		}
 		return false;

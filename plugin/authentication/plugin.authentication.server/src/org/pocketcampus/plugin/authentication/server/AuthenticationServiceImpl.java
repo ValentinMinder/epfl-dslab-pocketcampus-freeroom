@@ -189,8 +189,8 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	public static class AuthUserDetailsReq {
-		public String sessionId;
-		public List<String> requestedFields;
+		public final String sessionId;
+		public final List<String> requestedFields;
 
 		public AuthUserDetailsReq(String sessionId, List<String> requestedFields) {
 			this.sessionId = sessionId;
@@ -199,7 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	public static class AuthUserDetailsResp {
-		public List<String> fieldValues;
+		public final List<String> fieldValues;
 
 		public AuthUserDetailsResp(List<String> fieldValues) {
 			this.fieldValues = fieldValues;
@@ -216,7 +216,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	private String getFieldFromSession(String sess, String field) {
-		List<String> list = _manager.getFields(sess, Arrays.asList(new String[]{field}));
+		List<String> list = _manager.getFields(sess, Arrays.asList(field));
 		return (list == null ? null : firstValue(list.get(0)));
 	}
 
