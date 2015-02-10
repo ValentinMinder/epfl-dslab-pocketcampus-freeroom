@@ -3,7 +3,7 @@ package org.pocketcampus.plugin.freeroom.android.adapter;
 import java.util.List;
 
 import org.pocketcampus.plugin.freeroom.R;
-import org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView;
+import org.pocketcampus.plugin.freeroom.android.FreeRoomFavoritesActivity;
 import org.pocketcampus.plugin.freeroom.android.FreeRoomModel;
 import org.pocketcampus.plugin.freeroom.android.utils.OrderMapList;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
@@ -30,18 +30,16 @@ import android.widget.TextView;
  * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */
-public class ExpandableListViewFavoriteAdapter<T> extends
-		BaseExpandableListAdapter {
+public class ExpandableListViewFavoriteAdapter<T> extends BaseExpandableListAdapter {
 
-	FreeRoomHomeView home;
+	FreeRoomFavoritesActivity home;
 	protected Context context;
 	protected OrderMapList<String, List<FRRoom>, FRRoom> data;
 	// hold the caller view for colors updates.
 	protected FreeRoomModel mModel;
 
-	public ExpandableListViewFavoriteAdapter(Context c,
-			OrderMapList<String, List<FRRoom>, FRRoom> data,
-			FreeRoomModel model, FreeRoomHomeView home) {
+	public ExpandableListViewFavoriteAdapter(Context c, OrderMapList<String, List<FRRoom>, FRRoom> data,
+			FreeRoomModel model, FreeRoomFavoritesActivity home) {
 		this.context = c;
 		this.data = data;
 		this.mModel = model;
@@ -84,8 +82,8 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 		return groupList.get(childPosition);
 	}
 
-	public View getChildView(int groupPosition, int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
+			ViewGroup parent) {
 
 		if (groupPosition >= data.size()) {
 			return null;
@@ -93,15 +91,11 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 
 		ViewHolderChild vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_room_favorites, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.freeroom_layout_room_favorites, null);
 			vholder = new ViewHolderChild();
-			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_favlist_text));
-			vholder.setImageViewMap((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_favlist_map));
-			vholder.setImageViewStar((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_favlist_fav));
+			vholder.setTextView((TextView) convertView.findViewById(R.id.freeroom_layout_favlist_text));
+			vholder.setImageViewMap((ImageView) convertView.findViewById(R.id.freeroom_layout_favlist_map));
+			vholder.setImageViewStar((ImageView) convertView.findViewById(R.id.freeroom_layout_favlist_fav));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderChild) convertView.getTag();
@@ -119,10 +113,8 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 
 			@Override
 			public void onClick(View v) {
-				Uri mUri = Uri
-						.parse("pocketcampus://map.plugin.pocketcampus.org/search");
-				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q",
-						room.getDoorCode());
+				Uri mUri = Uri.parse("pocketcampus://map.plugin.pocketcampus.org/search");
+				Uri.Builder mbuild = mUri.buildUpon().appendQueryParameter("q", room.getDoorCode());
 				Intent i = new Intent(Intent.ACTION_VIEW, mbuild.build());
 				context.startActivity(i);
 
@@ -132,7 +124,7 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 		final boolean isFav = mModel.isFavorite(room);
 
 		if (isFav) {
-			star.setImageResource(R.drawable.freeroom_ic_action_remove);
+			star.setImageResource(R.drawable.sdk_remove);
 		} else {
 			star.setImageResource(R.drawable.freeroom_ic_action_favorite_disabled);
 		}
@@ -157,19 +149,16 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 	}
 
 	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		if (groupPosition >= data.size()) {
 			return null;
 		}
 
 		ViewHolderGroup vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_building_header_fav, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.freeroom_layout_building_header_fav, null);
 			vholder = new ViewHolderGroup();
-			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_building_header_fav_title));
+			vholder.setTextView((TextView) convertView.findViewById(R.id.freeroom_layout_building_header_fav_title));
 			vholder.setTextViewExpand((TextView) convertView
 					.findViewById(R.id.freeroom_layout_building_header_fav_show_more_txt));
 			vholder.setImageViewExpand((ImageView) convertView
@@ -199,8 +188,7 @@ public class ExpandableListViewFavoriteAdapter<T> extends
 
 		TextView tv_expand = vholder.getTextViewExpand();
 		int size = data.get(text).size();
-		tv_expand.setText(home.getResources().getQuantityString(
-				R.plurals.freeroom_results_room_header, size, size));
+		tv_expand.setText(home.getResources().getQuantityString(R.plurals.freeroom_results_room_header, size, size));
 
 		ImageView iv_expand = vholder.getImageViewExpand();
 		if (isExpanded) {

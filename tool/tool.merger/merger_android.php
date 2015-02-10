@@ -13,7 +13,7 @@
 
 chdir(dirname(__FILE__));
 
-$plugins_to_merge = array("Dashboard", "Camipro", "Moodle", "Authentication", "Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia", "RecommendedApps"/*, "FreeRoom"*/);
+$plugins_to_merge = array("Dashboard", /*"Camipro", "Moodle", */"Authentication", /*"Food", "Transport", "News", "Map", "Directory", "PushNotif", "Events", "CloudPrint", "IsAcademia", "RecommendedApps",*/ "FreeRoom");
 
 $libs_to_export = array(
 		"android-support-v4.jar",

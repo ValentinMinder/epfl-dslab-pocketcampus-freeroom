@@ -93,7 +93,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">3dp</item>
-        <item name="android:background">@color/epfl_corrected_red</item>
+        <item name="android:background">@drawable/background_button_selector</item>
         <item name="android:enabled">true</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">22sp</item>
@@ -104,7 +104,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">3dp</item>
-        <item name="android:background">@color/epfl_corrected_red</item>
+        <item name="android:background">@drawable/background_button_selector</item>
         <item name="android:enabled">true</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">18sp</item>

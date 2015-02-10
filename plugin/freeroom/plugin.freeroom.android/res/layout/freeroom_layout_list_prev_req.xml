@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
     android:orientation="horizontal" >
 
-    <ImageView
+    <!--
+         <ImageView
         android:id="@+id/freeroom_layout_prev_req_remove"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -13,7 +13,7 @@
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/freeroom_layout_prev_req_delete_img"
         android:padding="2dp"
-        android:src="@drawable/freeroom_ic_action_remove"
+        android:src="@drawable/sdk_remove"
         android:visibility="visible" >
     </ImageView>
 
@@ -23,36 +23,31 @@
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_remove"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageView
-        android:id="@+id/freeroom_layout_prev_req_edit"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_1"
-        android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
-        android:padding="2dp"
-        android:src="@drawable/freeroom_ic_action_edit"
-        android:visibility="visible" >
-    </ImageView>
+    
 
     <TextView
         android:id="@+id/freeroom_layout_prev_req_separator_2"
         style="@style/Vertical_Divider"
         android:layout_toLeftOf="@id/freeroom_layout_prev_req_edit"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    -->
 
     <TextView
         android:id="@+id/freeroom_layout_prev_req_text"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_toLeftOf="@id/freeroom_layout_prev_req_separator_2"
-        android:drawableLeft="@drawable/freeroom_ic_action_next_item"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:gravity="left|center_vertical"
-        android:maxLines="2"
-        android:padding="2dp"
-        android:text="mock text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/darker_gray" />
+        android:text="16h-18h Toutes le salle libres" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/freeroom_layout_prev_req_edit"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/freeroom_layout_prev_req_edit_img"
+        android:src="@drawable/freeroom_ic_action_edit"
+        android:visibility="visible" >
+    </ImageView>
+
+</LinearLayout>
