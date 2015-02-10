@@ -33,7 +33,7 @@ public final class PictureSourceImpl implements PictureSource {
 		String folderPath = PocketCampusServer.CONFIG.getString("FOOD_RESTAURANTS_PHOTOS_FOLDER_LOCATION");
 		File file = new File(folderPath + "/" + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION);
 		if (!file.isFile()) {
-			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " in '" + folderPath + "'");
+			System.err.println("Food: did not find expected photo file for restaurant " + restaurantName + " in '" + folderPath + "'");
 			return null;
 		}
 		String prefix = PocketCampusServer.CONFIG.getString("APACHE_SERVER_BASE_URL") + "/" + RESTAURANTS_PHOTOS_FOLDER_URI;

@@ -35,7 +35,6 @@ public class CamiproServiceImpl implements CamiproService.Iface {
 
     @Override
     public TequilaToken getTequilaTokenForCamipro() throws TException {
-        System.out.println("getTequilaToken");
         try {
             String cmdLine = "curl --include https://cmp2www.epfl.ch/ws/balance";
             String resp = executeCommand(cmdLine, "UTF-8");
@@ -58,8 +57,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
             return teqToken;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new TException(
-                    "Failed to getTequilaToken from upstream server");
+            throw new TException("Failed to getTequilaToken from upstream server");
         }
     }
 
@@ -106,7 +104,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
             return new BalanceAndTransactions(404);
         }
         if (balPage == null || trxPage == null) {
-            System.out.println("not logged in");
+            System.out.println("Camipro: not logged in");
             return new BalanceAndTransactions(407);
         }
 
@@ -158,7 +156,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
             return new StatsAndLoadingInfo(404);
         }
         if (ebnkPage == null) {
-            System.out.println("not logged in");
+            System.out.println("Camipro: not logged in");
             return new StatsAndLoadingInfo(407);
         }
 
@@ -202,7 +200,7 @@ public class CamiproServiceImpl implements CamiproService.Iface {
             return new SendMailResult(404);
         }
         if (ebmPage == null) {
-            System.out.println("not logged in");
+            System.out.println("Camipro: not logged in");
             return new SendMailResult(407);
         }
 

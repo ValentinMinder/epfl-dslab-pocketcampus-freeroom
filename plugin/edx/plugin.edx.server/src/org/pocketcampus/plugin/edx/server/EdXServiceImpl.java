@@ -58,7 +58,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 	static JsonParser jsonParser = new JsonParser();
 
 	public EdXServiceImpl() {
-		System.out.println("Starting EdX plugin server ...");
 		new Thread(cleaner).start();
 	}
 
@@ -316,7 +315,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public EdxLoginResp doLogin(EdxLoginReq req) throws TException {
-		System.out.println("doLogin");
 		Cookie cookie = getLoginCookie();
 		if (!doLogin(req.getEmail(), req.getPassword(), cookie)) {
 			return new EdxLoginResp(407);
@@ -329,7 +327,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public EdxResp getUserCourses(EdxReq req) throws TException {
-		System.out.println("getUserCourses");
 		EdxResp resp = new EdxResp();
 		resp.setUserCourses(new LinkedList<EdxCourse>());
 		resp.setStatus(getUserCourses(req.getSessionId(), resp.getUserCourses()));
@@ -338,7 +335,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public EdxResp getCourseSections(EdxReq req) throws TException {
-		System.out.println("getCourseSections");
 		if (!req.isSetCourseId())
 			return new EdxResp(400);
 		// getCourseSections("EPFL/CS305/Software_Engineering", req.getSessionId());
@@ -350,7 +346,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public EdxResp getModuleDetails(EdxReq req) throws TException {
-		System.out.println("getModuleDetails");
 		if (!req.isSetCourseId() || !req.isSetModuleUrl())
 			return new EdxResp(400);
 		// getModuleDetails("EPFL/CS305/Software_Engineering", "eaf1ca597c7444c58a1e23de729ffc95/2a676d099f124157b0b7b5f859a0ffda", req.getSessionId());
@@ -824,7 +819,7 @@ public class EdXServiceImpl implements EdXService.Iface {
 		if (!atLeastOne || !priorityExists && oneIsEmpty)
 			return null;
 
-		System.out.println("SEND AUDIO " + tracks);
+		System.out.println("edX SEND AUDIO " + tracks);
 
 		short[] buffer = new short[BUFFER_SIZE];
 		short occupancy = (short) tracks.size();
@@ -896,8 +891,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public MsgPsgReceiveBroadcastResp receiveBroadcast(MsgPsgReceiveBroadcastReq req) throws TException {
-		System.out.println("receiveBroadcast receiver=" + req.getReceiverRef() + " lastMsg=" + req.getLastMessageRef());
-
 		long reqArrival = System.currentTimeMillis();
 
 		StudyRoom room = roomManager.rooms.checkRoom(req.getRoomRef());
@@ -963,7 +956,6 @@ public class EdXServiceImpl implements EdXService.Iface {
 
 	@Override
 	public MsgPsgGetActiveRoomsResp getActiveRooms(MsgPsgGetActiveRoomsReq req) throws TException {
-		System.out.println("getActiveRooms");
 		// TODO Auto-generated method stub
 		return null;
 	}

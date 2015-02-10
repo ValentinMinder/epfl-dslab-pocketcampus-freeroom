@@ -27,7 +27,7 @@ public class SmsSender {
 			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			boolean ok = "queued".equals(new JSONObject(result).getString("status"));
 			if(!ok) { // shit
-				System.out.println(result);
+				System.out.println("SMS error: " + result);
 			}
 			return ok;
 		} catch (JSONException | IOException e) {

@@ -115,11 +115,9 @@ public class FetchOccupancyDataJSON {
                 // clean the DATA
                 connDB.setAutoCommit(false);
                 server.cleanOldData(connDB);
-                System.out.println("cleaned");
             } catch (SQLException e) {
                 e.printStackTrace();
-                server.log(Level.SEVERE,
-                        "Cannot execute transaction while updating, in FetchOccupancyDataJSON");
+                server.log(Level.SEVERE,"Cannot execute transaction while updating, in FetchOccupancyDataJSON");
                 return;
             }
         }
@@ -140,7 +138,6 @@ public class FetchOccupancyDataJSON {
                     String uid = extractAndInsertRoom(room, updateRooms);
                     if (uid != null) {
                         countRoom++;
-                        System.out.println("room count = " + countRoom);
                         extractAndInsertOccupancies(occupancy, uid);
                     }
                 }

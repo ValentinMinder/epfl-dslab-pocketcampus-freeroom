@@ -38,8 +38,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	 * Constructor, no arguments needed
 	 */
 	public DirectoryServiceImpl() {
-		System.out.println("Starting Directory plugin server...");
-		
 		try {
 			ldap =  new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 1); // need to have only 1 connection, because of ldap cookie crap
 		} catch (LDAPException e) {
@@ -98,7 +96,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 
 	@Override
 	public DirectoryResponse searchDirectory(DirectoryRequest req) throws TException {
-		System.out.println("searchDirectory: " + req.getQuery());
 		try {
 			Pagination pag = new Pagination();
 			if (req.isSetResultSetCookie())

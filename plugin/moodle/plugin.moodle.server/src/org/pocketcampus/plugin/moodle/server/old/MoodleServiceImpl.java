@@ -38,11 +38,10 @@ public class MoodleServiceImpl {
 	public static final String MOODLE_WEBSERVICE_URL = "http://moodle.epfl.ch/webservice/rest/server.php";
 
 	public MoodleServiceImpl() {
-		System.out.println("Starting Moodle plugin server ...");
+
 	}
 	
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
-		System.out.println("getTequilaTokenForMoodle");
 		try {
 			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
 			conn2.setInstanceFollowRedirects(false);
@@ -64,7 +63,6 @@ public class MoodleServiceImpl {
 	}
 
 	public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws TException {
-		System.out.println("getMoodleSession");
 		try {
 			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
 			conn2.setRequestProperty("Cookie", iTequilaToken.getLoginCookie());
@@ -149,8 +147,7 @@ public class MoodleServiceImpl {
 		//System.out.println(getCourseSections(iRequest));
 		//System.out.println(getEventsList(iRequest));
 		
-		
-		System.out.println("getCoursesList");
+
 		String page = null;
 //		Gson gson = new Gson();
 		//NodeJson courses = null;
@@ -165,7 +162,7 @@ public class MoodleServiceImpl {
 			return new CoursesListReply(404);
 		}
 		if(page == null || page.indexOf("login/logout.php") == -1) {
-			System.out.println("not logged in");
+			System.out.println("Moodle: not logged in");
 			return new CoursesListReply(407);
 		}
 		
@@ -275,7 +272,6 @@ public class MoodleServiceImpl {
 	}
 
 	public SectionsListReply getCourseSections(MoodleRequest iRequest) throws TException {
-		System.out.println("getCourseSections");
 		String page = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
@@ -290,7 +286,7 @@ public class MoodleServiceImpl {
 			return new SectionsListReply(404);
 		}
 		if(page == null || page.indexOf("login/index.php") != -1) {
-			System.out.println("not logged in");
+			System.out.println("Moodle: not logged in");
 			return new SectionsListReply(407);
 		}
 		
@@ -494,7 +490,7 @@ public class MoodleServiceImpl {
 			if(httpReply.getLocation().indexOf("/pluginfile.php/") != -1)
 				urls.add(stripOffQueryString(httpReply.getLocation()));
 		} else {
-			System.out.println("error while processing " + resourceUrl);
+			System.out.println("Moodle: error while processing " + resourceUrl);
 		}
 		return urls;
 	}

@@ -33,7 +33,6 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	private static final int PRINT_PREVIEW_TIMEOUT = 30000;
 	
 	public CloudPrintServiceImpl() {
-		System.out.println("Starting CloudPrint plugin server ...");
 	}
 
 	@Override

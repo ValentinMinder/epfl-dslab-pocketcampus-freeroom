@@ -88,7 +88,7 @@ public class PrintFileServiceImpl implements PrintFileService {
 			// Connection is lazily executed whenever you request any status.
 			int responseCode = connection.getResponseCode();
 			if(responseCode != 200) {
-				System.out.println("ERROR: returned status " + responseCode);
+				System.out.println("Moodle: ERROR: returned status " + responseCode);
 				return new MoodlePrintFileResponse2(MoodleStatusCode2.NETWORK_ERROR);
 			}
 			InputStreamReader isr = new InputStreamReader(connection.getInputStream(), "UTF-8");

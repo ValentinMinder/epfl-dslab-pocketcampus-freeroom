@@ -91,8 +91,6 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 
 	@Override
 	public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request) {
-		
-		System.out.println("Recommended apps for " + request);
 		RecommendedAppsResponse response = new RecommendedAppsResponse();
 		response.setStatus(RecommendedAppsResponseStatus.OK);
 
@@ -110,13 +108,11 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			
 			List<RecommendedAppCategory> categories = getCategories(languageSuffix, appCategs);
 			response.setCategories(categories);
-			
-			System.out.println("Returning recommended apps for " + request + " " + response);
 			return response;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("Returning ERROR status");
+			System.err.println("RecommendedApps: Returning ERROR status");
 			response.setStatus(RecommendedAppsResponseStatus.ERROR);
 			return response;
 		}

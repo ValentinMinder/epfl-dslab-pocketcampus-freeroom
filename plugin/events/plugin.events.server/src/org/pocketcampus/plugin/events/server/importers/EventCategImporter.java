@@ -27,21 +27,21 @@ public class EventCategImporter {
 			e.printStackTrace();
 		}
 		if(json == null) {
-			System.out.println("failed to get categs from Memento... aborting");
+			System.out.println("Events: failed to get categs from Memento... aborting");
 			return;
 		}
 		Gson gson = new Gson();
 		MementoCateg [] categs = gson.fromJson(json, MementoCateg[].class);
-		System.out.println("received " + categs.length + " categs from Memento");
+		System.out.println("Events: received " + categs.length + " categs from Memento");
 		for(MementoCateg c : categs) {
 			try {
 				insertUpdateEventCateg(c, conn);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				System.out.println("failed to insert/update categ " + c.code + "... skipping");
+				System.out.println("Events: failed to insert/update categ " + c.code + "... skipping");
 			}
 		}
-		System.out.println("finished importing categs");
+		System.out.println("Events: finished importing categs");
 	}
 	
 	private static void insertUpdateEventCateg(MementoCateg e, Connection conn) throws SQLException {
@@ -53,7 +53,7 @@ public class EventCategImporter {
 		PreparedStatement stm = q.getPreparedStatement(conn);
 		stm.executeUpdate();
 		stm.close();
-		System.out.println("inserted/updated categ " + e.code);
+		System.out.println("Events: inserted/updated categ " + e.code);
 	}
 	
 }

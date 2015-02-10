@@ -44,14 +44,14 @@ public class MapDatabase {
         while (results.next()) {
             String layerName = results.getString(layerNameColumn);
             if (layerName == null) {
-                System.err.println("Could not find required value for column " + layerNameColumn + ". Ignoring layer.");
+                System.err.println("Map: Could not find required value for column " + layerNameColumn + ". Ignoring layer.");
                 continue;
             }
             Long layerId = results.getLong(LAYER_ID);
             String nameForQuery = results.getString(LAYER_NAME_FOR_QUERY);
             String nameForQueryAllFloors = results.getString(LAYER_NAME_FOR_QUERY_ALL_FLOORS);
             if (nameForQuery == null && nameForQueryAllFloors == null) {
-                System.err.println("Both nameForQuery and nameForQueryAllFloors are null for layer " + layerName + ". Ignoring layer.");
+                System.err.println("Map: Both nameForQuery and nameForQueryAllFloors are null for layer " + layerName + ". Ignoring layer.");
                 continue;
             }
 

@@ -76,8 +76,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
     }
 
     public FreeRoomServiceImpl() {
-        System.out.println("Starting FreeRoom plugin server ... V2");
-
         logger.setLevel(Level.WARNING);
         ConsoleHandler logHandler = new ConsoleHandler();
         logger.addHandler(logHandler);
@@ -88,7 +86,7 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
         OCCUPANCIES_URL = PocketCampusServer.CONFIG.getString("FR_OCCUPANCIES");
         ROOMS_LIST_URL = PocketCampusServer.CONFIG.getString("FR_ROOMS_LIST");
         ROOM_DETAILS_URL = PocketCampusServer.CONFIG.getString("FR_ROOM_DETAILS");
-        System.out.println(OCCUPANCIES_URL);
+
         try {
             connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
             connMgrUpdate = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
@@ -136,7 +134,6 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
 
     // for test purposes ONLY
     public FreeRoomServiceImpl(ConnectionManager conn) {
-        System.out.println("Starting TEST FreeRoom plugin server ...");
         connMgr = conn;
     }
 

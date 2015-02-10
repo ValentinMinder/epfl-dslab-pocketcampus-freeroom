@@ -307,9 +307,7 @@ public class FetchRoomsDetails {
                         dincat_textFR.put(lineSplitted[1], lineSplitted[3]);
                         dincat_textEN.put(lineSplitted[1], lineSplitted[4]);
                     } else {
-                        System.err
-                                .println("Cannot extract dincat plain text for "
-                                        + line);
+                        System.err.println("FreeRoom: Cannot extract dincat plain text for " + line);
                     }
                 }
                 sc.close();
