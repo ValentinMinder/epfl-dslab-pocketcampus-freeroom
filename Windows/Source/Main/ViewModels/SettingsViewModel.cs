@@ -75,8 +75,11 @@ namespace PocketCampus.Main.ViewModels
 
         private async Task DestroySessionsAsync()
         {
-            var request = new LogoutRequest { Session = Settings.Session };
-            await _authenticationService.DestroyAllSessionsAsync( request );
+            if ( Settings.Session != null )
+            {
+                var request = new LogoutRequest { Session = Settings.Session };
+                await _authenticationService.DestroyAllSessionsAsync( request );
+            }
 
             await LogOutAsync();
         }
