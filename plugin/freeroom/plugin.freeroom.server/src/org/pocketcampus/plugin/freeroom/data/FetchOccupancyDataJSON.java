@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.HttpClientImpl;
 import org.pocketcampus.platform.server.database.ConnectionManager;
@@ -117,34 +117,28 @@ public class FetchOccupancyDataJSON {
                 server.cleanOldData(connDB);
             } catch (SQLException e) {
                 e.printStackTrace();
-                server.log(Level.SEVERE,"Cannot execute transaction while updating, in FetchOccupancyDataJSON");
+                server.log(Level.SEVERE, "Cannot execute transaction while updating, in FetchOccupancyDataJSON");
                 return;
             }
         }
 
-        try {
-            JSONArray sourceArray = new JSONArray(jsonSource);
-            int lengthSourceArray = sourceArray.length();
-            int countRoom = 0;
+        JsonParser parser = new JsonParser();
+        JsonArray sourceArray = parser.parse(jsonSource).getAsJsonArray();
+        int lengthSourceArray = sourceArray.size();
 
-            for (int i = 0; i < lengthSourceArray; ++i) {
-                JSONArray subArray = sourceArray.getJSONArray(i);
-                int subArrayLength = subArray.length();
+        for (int i = 0; i < lengthSourceArray; ++i) {
+            JsonArray subArray = sourceArray.get(i).getAsJsonArray();
+            int subArrayLength = subArray.size();
 
-                if (subArrayLength == 2) {
-                    JSONObject room = subArray.getJSONObject(0);
-                    JSONArray occupancy = subArray.getJSONArray(1);
+            if (subArrayLength == 2) {
+                JsonObject room = subArray.get(0).getAsJsonObject();
+                JsonArray occupancy = subArray.get(1).getAsJsonArray();
 
-                    String uid = extractAndInsertRoom(room, updateRooms);
-                    if (uid != null) {
-                        countRoom++;
-                        extractAndInsertOccupancies(occupancy, uid);
-                    }
+                String uid = extractAndInsertRoom(room, updateRooms);
+                if (uid != null) {
+                    extractAndInsertOccupancies(occupancy, uid);
                 }
-
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
@@ -157,15 +151,15 @@ public class FetchOccupancyDataJSON {
      *                    false if you just want to get the UID
      * @return The unique id (UID) of the room
      */
-    private String extractAndInsertRoom(JSONObject room, boolean updateRooms) {
+    private String extractAndInsertRoom(JsonObject room, boolean updateRooms) {
         if (room == null) {
             return null;
         }
 
         try {
             String uid;
-            if (room.has(KEY_UID) && !room.getString(KEY_UID).equals("null")) {
-                uid = room.getString(KEY_UID);
+            if (room.has(KEY_UID) && !room.getAsJsonPrimitive(KEY_UID).isJsonNull()) {
+                uid = room.get(KEY_UID).getAsString();
             } else {
                 return null;
             }
@@ -204,10 +198,10 @@ public class FetchOccupancyDataJSON {
 
             int capacity = 0;
             if (room.has(KEY_CAPACITY)) {
-                capacity = Integer.parseInt(room.getString(KEY_CAPACITY));
+                capacity = Integer.parseInt(room.get(KEY_CAPACITY).getAsString());
             }
             if (capacity == 0 && room.has(KEY_CAPACITY_EXTRA)) {
-                capacity = Integer.parseInt(room.getString(KEY_CAPACITY_EXTRA));
+                capacity = Integer.parseInt(room.get(KEY_CAPACITY_EXTRA).getAsString());
             }
 
             queryCapacity.setInt(1, capacity);
@@ -219,14 +213,14 @@ public class FetchOccupancyDataJSON {
 
             String alias = null;
             if (room.has(KEY_ALIAS)) {
-                JSONObject aliasObject = room.getJSONObject(KEY_ALIAS);
+                JsonObject aliasObject = room.get(KEY_ALIAS).getAsJsonObject();
                 if (aliasObject.has("fr")) {
-                    alias = aliasObject.getString("fr");
+                    alias = aliasObject.get("fr").getAsString();
                 }
             }
 
             if (alias == null && room.has(KEY_ALIAS_WITHOUT_SPACE)) {
-                alias = room.getString(KEY_ALIAS_WITHOUT_SPACE);
+                alias = room.get(KEY_ALIAS_WITHOUT_SPACE).getAsString();
             }
 
             if (alias != null) {
@@ -240,11 +234,7 @@ public class FetchOccupancyDataJSON {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
         }
-
     }
 
     /**
@@ -255,45 +245,41 @@ public class FetchOccupancyDataJSON {
      * @return The number of occupancies extracted and inserted into the
      * database
      */
-    private int extractAndInsertOccupancies(JSONArray array, String uid) {
+    private int extractAndInsertOccupancies(JsonArray array, String uid) {
         if (array == null || uid == null) {
             return 0;
         }
 
-        if (array.length() == 0) {
+        if (array.size() == 0) {
             return 0;
         }
-        try {
-            int nbOccupancy = array.length();
-            int count = 0;
-            for (int i = 0; i < nbOccupancy; ++i) {
-                JSONObject occupancy = array.getJSONObject(i);
-                long tsStart = 0;
-                long tsEnd = 0;
-                if (occupancy.has(KEY_OCCUPANCY_START)) {
-                    tsStart = Long.parseLong(occupancy
-                            .getString(KEY_OCCUPANCY_START));
 
-                    if (occupancy.has(KEY_OCCUPANCY_LENGTH)) {
-                        int length = Integer.parseInt(occupancy
-                                .getString(KEY_OCCUPANCY_LENGTH));
-                        tsEnd = tsStart + length * FRTimes.ONE_MIN_IN_MS;
-                    }
-                }
+        int nbOccupancy = array.size();
+        int count = 0;
+        for (int i = 0; i < nbOccupancy; ++i) {
+            JsonObject occupancy = array.get(i).getAsJsonObject();
+            long tsStart = 0;
+            long tsEnd = 0;
+            if (occupancy.has(KEY_OCCUPANCY_START)) {
+                tsStart = Long.parseLong(occupancy
+                        .get(KEY_OCCUPANCY_START).getAsString());
 
-                if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
-                    FRPeriod period = new FRPeriod(tsStart, tsEnd);
-                    if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM,
-                            uid, null, null)) {
-                        count++;
-                    }
+                if (occupancy.has(KEY_OCCUPANCY_LENGTH)) {
+                    int length = Integer.parseInt(occupancy
+                            .get(KEY_OCCUPANCY_LENGTH).getAsString());
+                    tsEnd = tsStart + length * FRTimes.ONE_MIN_IN_MS;
                 }
             }
-            return count;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return 0;
+
+            if (tsStart != 0 && tsEnd != 0 && tsStart < tsEnd) {
+                FRPeriod period = new FRPeriod(tsStart, tsEnd);
+                if (server.insertOccupancy(period, OCCUPANCY_TYPE.ROOM,
+                        uid, null, null)) {
+                    count++;
+                }
+            }
         }
+        return count;
     }
 
     /**
