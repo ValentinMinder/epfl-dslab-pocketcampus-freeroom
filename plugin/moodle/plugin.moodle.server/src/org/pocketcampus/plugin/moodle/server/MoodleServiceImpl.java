@@ -74,31 +74,37 @@ public class MoodleServiceImpl implements MoodleService.Iface, RawPlugin, StateC
 			new org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl();
 
 	@Override
+    @Deprecated
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
 		return oldService.getTequilaTokenForMoodle();
 	}
 
 	@Override
+    @Deprecated
 	public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws TException {
 		return oldService.getMoodleSession(iTequilaToken);
 	}
 
 	@Override
+    @Deprecated
 	public CoursesListReply getCoursesList(MoodleRequest iRequest) throws TException {
 		return oldService.getCoursesList(iRequest);
 	}
 
 	@Override
+    @Deprecated
 	public SectionsListReply getCourseSections(MoodleRequest iRequest) throws TException {
 		return oldService.getCourseSections(iRequest);
 	}
 
 	@Override
+    @Deprecated
 	public CoursesListReply getCoursesListAPI(String dummy) throws TException {
 		return oldService.getCoursesListAPI(dummy);
 	}
 
 	@Override
+    @Deprecated
 	public SectionsListReply getCourseSectionsAPI(String courseId) throws TException {
 		return oldService.getCourseSectionsAPI(courseId);
 	}

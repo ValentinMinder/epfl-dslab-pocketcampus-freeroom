@@ -92,8 +92,7 @@ public class MoodleServiceImpl {
 			public String link;
 		}
 	}
-	
-	static Gson gson = new Gson();
+
 	static JsonParser jsonParser = new JsonParser();
 	
 	private List<ItemJson> fetchNode(Cookie cookie, String reqKey, int reqType, int filterType) {

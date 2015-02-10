@@ -55,6 +55,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public List<Person> searchPersons(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		List<Person> result = new LinkedList<Person>();
 		DirectoryResponse resp = searchDirectory(new DirectoryRequest(param));
@@ -68,6 +69,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
 		String pictureExtUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + sciper;
 		if (NetworkUtils.checkUrlImage(pictureExtUrl)) {
@@ -77,6 +79,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public List<String> autocomplete(String constraint) throws TException {
 		List<String> result = new LinkedList<String>();
 		DirectoryResponse resp = searchDirectory(new DirectoryRequest(constraint));
