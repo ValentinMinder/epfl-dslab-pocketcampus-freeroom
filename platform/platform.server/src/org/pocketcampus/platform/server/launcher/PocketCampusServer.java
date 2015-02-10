@@ -1,7 +1,7 @@
 package org.pocketcampus.platform.server.launcher;
 
 import org.apache.thrift.TProcessor;
-import org.joda.time.LocalTime;
+import org.joda.time.LocalDateTime;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.PCConfig;
@@ -129,7 +129,7 @@ public class PocketCampusServer extends ServerBase {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 final StringBuilder builder = new StringBuilder();
-                builder.append(LocalTime.now().toString());
+                builder.append(LocalDateTime.now().toString());
                 builder.append(" ");
                 builder.append(pluginName);
                 builder.append(" ");
