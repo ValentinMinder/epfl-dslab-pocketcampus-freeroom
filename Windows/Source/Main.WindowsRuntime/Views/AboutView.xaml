@@ -43,7 +43,7 @@
                        Style="{StaticResource AppSubtleTextBlockStyle}" />
 
             <HyperlinkButton Command="{Binding BrowseUrlCommand}"
-                             CommandParameter="{CustomResource About.Website}">
+                             CommandParameter="{CustomResource About.FullWebsiteUrl}">
                 <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
                     <Underline>
                         <Run Text="{CustomResource About.Website}" />
