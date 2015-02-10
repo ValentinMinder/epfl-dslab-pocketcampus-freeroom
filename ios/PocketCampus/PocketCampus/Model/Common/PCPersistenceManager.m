@@ -299,7 +299,7 @@ static NSString* const kBundleIdentifier = @"org.pocketcampus";
         return nil;
     }
     NSDate* modifDate = fileAttributes[NSFileModificationDate];
-    if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
+    if ((double)(fabs([modifDate timeIntervalSinceNow])) > interval) {
         return nil;
     }
     return object;
