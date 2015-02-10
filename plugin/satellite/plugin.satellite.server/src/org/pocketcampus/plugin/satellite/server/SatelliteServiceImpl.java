@@ -4,44 +4,51 @@ import org.apache.thrift.TException;
 import org.joda.time.Duration;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.satellite.shared.Affluence;
-import org.pocketcampus.plugin.satellite.shared.Beer;
-import org.pocketcampus.plugin.satellite.shared.BeersResponse;
-import org.pocketcampus.plugin.satellite.shared.SatelliteService;
+import org.pocketcampus.plugin.satellite.shared.*;
 
 /**
  * Implementation of SatelliteService.
- * 
+ *
  * @author Solal Pirelli <solal@pocketcampus.org>
  */
 public final class SatelliteServiceImpl implements SatelliteService.Iface {
-	private static final Duration MENU_CACHE_DURATION = Duration.standardDays(1);
+    private static final Duration MENU_CACHE_DURATION = Duration.standardDays(1);
 
-	private final BeerMenu _beerMenu;
+    private final BeerMenu _beerMenu;
 
-	public SatelliteServiceImpl(BeerMenu beerMenu) {
-		_beerMenu = beerMenu;
-	}
+    public SatelliteServiceImpl(BeerMenu beerMenu) {
+        _beerMenu = beerMenu;
+    }
 
-	public SatelliteServiceImpl() {
-		this(CachingProxy.create(new BeerMenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, false));
-	}
+    public SatelliteServiceImpl() {
+        this(CachingProxy.create(new BeerMenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, false));
+    }
 
-	@Override
-	public BeersResponse getBeers() throws TException {
-		return _beerMenu.get();
-	}
+    @Override
+    public BeersResponse getBeers() throws TException {
+        return _beerMenu.get();
+    }
 
-	// OLD STUFF - DO NOT TOUCH
-	private org.pocketcampus.plugin.satellite.server.old.OldSatelliteServiceImpl oldService = new org.pocketcampus.plugin.satellite.server.old.OldSatelliteServiceImpl();
 
-	@Override
-	public Beer getBeerOfTheMonth() throws TException {
-		return oldService.getBeerOfTheMonth();
-	}
+    @Override
+    @Deprecated
+    public Beer getBeerOfTheMonth() throws TException {
+        // This method only returns the first beer of the month.
+        // It's wrong, but that's what the old code did.
+        for (final SatelliteMenuPart menuPart : _beerMenu.get().getBeerList().values()) {
+            for (final SatelliteBeer beer : menuPart.getBeersOfTheMonth()) {
+                return new Beer(0, beer.getName(), beer.getDescription())
+                        .setPrice(beer.getPrice());
+            }
+        }
 
-	@Override
-	public Affluence getAffluence() throws TException {
-		return oldService.getAffluence();
-	}
+        return null;
+    }
+
+    @Override
+    @Deprecated
+    public Affluence getAffluence() throws TException {
+        // Satellite does not support affluence indicators any more.
+        return Affluence.ERROR;
+    }
 }
