@@ -105,43 +105,20 @@ public class PocketCampusServer extends ServerBase {
      * Gets an implementation of the service for the plugin with the specified name.
      */
     private Object getPluginService(final String pluginName) {
-        final String interfaceName = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".shared." + pluginName + "Service$Iface";
         final String serviceName = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".server." + pluginName + "ServiceImpl";
 
-        Class<?> interfaceClass;
         final Class<?> serviceClass;
         try {
-            interfaceClass = Class.forName(interfaceName);
             serviceClass = Class.forName(serviceName);
         } catch (ClassNotFoundException e) {
             return null;
         }
 
-        Object instance;
         try {
-            instance = serviceClass.getConstructor().newInstance();
+            return serviceClass.getConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Error while fetching the " + pluginName + " plugin.", e);
         }
-
-        final Object finalInstance = instance; // required for capture
-        return Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                final StringBuilder builder = new StringBuilder();
-                builder.append(LocalDateTime.now().toString());
-                builder.append(" ");
-                builder.append(pluginName);
-                builder.append(" ");
-                if (serviceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class) != null) {
-                    builder.append("(DEPRECATED) ");
-                }
-                builder.append(method.getName());
-                System.out.println(builder.toString());
-
-                return method.invoke(finalInstance, args);
-            }
-        });
     }
 
     /**
@@ -152,23 +129,45 @@ public class PocketCampusServer extends ServerBase {
             return null;
         }
 
+        final String serviceName = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".server." + pluginName + "ServiceImpl";
         final String sharedPrefix = "org.pocketcampus.plugin." + pluginName.toLowerCase() + ".shared." + pluginName;
         final String interfaceName = sharedPrefix + "Service$Iface";
         final String serviceProcessorName = sharedPrefix + "Service$Processor";
 
+        Class<?> serviceClass;
         Class<?> interfaceClass;
         Class<?> processorClass;
         try {
+            serviceClass = Class.forName(serviceName);
             interfaceClass = Class.forName(interfaceName);
             processorClass = Class.forName(serviceProcessorName);
         } catch (ClassNotFoundException e) {
             return null;
         }
 
+        final Class<?> finalServiceClass = serviceClass; // needs to be final for capture
+        final Object loggedPluginService = Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                final StringBuilder builder = new StringBuilder();
+                builder.append(LocalDateTime.now().toString());
+                builder.append(" ");
+                builder.append(pluginName);
+                builder.append(" ");
+                if (finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class) != null) {
+                    builder.append("(DEPRECATED) ");
+                }
+                builder.append(method.getName());
+                System.out.println(builder.toString());
+
+                return method.invoke(pluginService, args);
+            }
+        });
+
         try {
             return (TProcessor) processorClass
                     .getConstructor(interfaceClass)
-                    .newInstance(pluginService);
+                    .newInstance(loggedPluginService);
         } catch (Exception e) {
             throw new RuntimeException("Error while creating the Thrift processor for the " + pluginName + " plugin.", e);
         }
