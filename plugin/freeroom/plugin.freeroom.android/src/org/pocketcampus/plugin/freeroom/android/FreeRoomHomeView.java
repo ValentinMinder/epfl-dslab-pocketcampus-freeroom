@@ -33,7 +33,7 @@ import org.pocketcampus.plugin.freeroom.shared.FRPeriodOccupation;
 import org.pocketcampus.plugin.freeroom.shared.FRRoom;
 import org.pocketcampus.plugin.freeroom.shared.FRRoomOccupancy;
 import org.pocketcampus.plugin.freeroom.shared.FRWorkingOccupancy;
-import org.pocketcampus.plugin.freeroom.shared.utils.FRStruct;
+import org.pocketcampus.plugin.freeroom.android.utils.FRStruct;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
 
 import android.app.AlertDialog;

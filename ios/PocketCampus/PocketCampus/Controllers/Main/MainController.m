@@ -60,6 +60,7 @@
 @property (nonatomic, strong) MainMenuViewController* mainMenuViewController;
 @property (nonatomic, weak) UINavigationController* settingsNavController;
 @property (nonatomic, strong) ZUUIRevealController* revealController;
+@property (nonatomic) BOOL ignoreRevealMainMenuGesture;
 @property (nonatomic) CGFloat revealWidth;
 @property (nonatomic, strong) NSDictionary* plistDicForPluginIdentifier;
 @property (nonatomic, strong) NSArray* logicOnlyPluginsList; //plugin identifiers of plugins that have no UI (logicOnly is YES)
@@ -197,6 +198,14 @@ static MainController<MainControllerPublic>* instance = nil;
         topViewController = topViewController.presentedViewController;
     }
     return topViewController;
+}
+
+- (void)beginIgnoringRevealMainMenuGesture {
+    self.ignoreRevealMainMenuGesture = YES;
+}
+
+- (void)endIgnoringRevealMainMenuGesture {
+    self.ignoreRevealMainMenuGesture = NO;
 }
 
 - (PCURLSchemeHandler*)urlSchemeHandlerSharedInstance {
@@ -724,6 +733,7 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     if (!identifier) { //means switch to splash view controller
+        [self endIgnoringRevealMainMenuGesture];
         if (self.activePluginController) {
             [self.pluginControllerForIdentifierName removeObjectForKey:[self.activePluginController.class identifierName]];
         }
@@ -745,6 +755,7 @@ static MainController<MainControllerPublic>* instance = nil;
     }
     
     [self throwExceptionIfPluginIdentifierNameIsNotValid:identifier];
+    [self endIgnoringRevealMainMenuGesture];
     if (self.revealController.presentedViewController && self.revealController.presentedViewController != self.settingsNavController) {
         [self.revealController.presentedViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
     }
@@ -1091,7 +1102,8 @@ static MainController<MainControllerPublic>* instance = nil;
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if (![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+    if (![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]
+        || self.ignoreRevealMainMenuGesture) {
         return NO;
     }
     /*

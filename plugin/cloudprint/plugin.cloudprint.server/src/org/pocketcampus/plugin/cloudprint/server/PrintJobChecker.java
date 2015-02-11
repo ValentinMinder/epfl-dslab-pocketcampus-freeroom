@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.cloudprint.server;
 
-import java.io.IOException;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.IOException;
 
 public class PrintJobChecker {
 	private static final long STUCK_JOB_CHECK_PERIOD = 3l; // in minutes (if a job lasts for more than x minutes, it is considered stuck)

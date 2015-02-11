@@ -11,4 +11,4 @@ pod 'MBProgressHUD'
 pod 'JTTargetActionBlock'
 pod 'TTTAttributedLabel'
 pod 'TapkuLibrary', :git => 'git@github.com:loicgardiol/tapkulibrary.git'
-pod 'LGALibrary', :git => 'git@github.com:loicgardiol/LGALibrary.git'
+pod 'LGALibrary', :head

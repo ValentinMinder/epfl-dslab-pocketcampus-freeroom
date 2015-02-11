@@ -1,12 +1,13 @@
 package org.pocketcampus.platform.server.tests;
 
-import static org.junit.Assert.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.Duration;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.pocketcampus.platform.server.CachingProxy;
 
-import org.joda.time.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for CachingProxy.

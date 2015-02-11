@@ -25,15 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 24.03.12.
-
 
 #import "TransportUtils.h"
 
 #import "TransportModelAdditions.h"
+
+NSString* const kTransportDepartureTimeNowString = @"Now";
 
 @implementation TransportUtils
 
@@ -77,14 +75,14 @@
     NSTimeInterval seconds = timestamp - [nowDate timeIntervalSince1970];
     if (seconds < 0.0) {
         if (seconds > -60.0) { //might still consider that it (train, bus, ...) is not left yet
-            return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : @"Now";
+            return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : kTransportDepartureTimeNowString;
         } else {
             return accessibilityOriented ? NSLocalizedStringFromTable(@"LeftAlready", @"TransportPlugin", nil) : @"Left"; //already left, should not show this result
         }
     }
     double minutesLeft = floor((seconds/60.0)+0.5);
     if (minutesLeft == 0.0) {
-        return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : @"Now";
+        return accessibilityOriented ? NSLocalizedStringFromTable(@"Now", @"PocketCampus", nil) : kTransportDepartureTimeNowString;
     }
     
     double hoursLeft = floor(minutesLeft/60.0);

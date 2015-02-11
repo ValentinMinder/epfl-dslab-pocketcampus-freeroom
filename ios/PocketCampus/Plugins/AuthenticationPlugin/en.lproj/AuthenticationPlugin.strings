@@ -13,11 +13,10 @@
 "LoggedInAsWithFormat" = "Logged in as \"%@\"";
 
 "GasparAccountRequiredFor" = "Your Gaspar account is required for some services like Camipro, Moodle, or IS-Academia.";
-"PasswordSavedAndPolicy" = "Your password in stored securely\nin the iOS keychain.\n\nThe password is directly sent to EPFL's authentication server (Tequila) via a secure connexion.";
+"PasswordSavedAndPolicy" = "Your password in stored securely in the iOS keychain.\n\nThe password is directly sent to EPFL's authentication server (Tequila) via a secure connexion.";
 "PasswordNotSavedAndPolicy" = "Your password was not saved. You will have to enter it again after 1 hour of inactivity.";
 "WillSavePasswordAndPolicy" = "Your password will be stored securely in the iOS keychain and sent directly to EPFL's authentication server (Tequila) via a secure connexion.";
 "WillNotSavePasswordAndPolicy" = "You will have to re-enter your password after 1 hour of inactivity.\n\nThe password will be sent directly to EPFL's authentication server (Tequila) via a secure connexion.";
-"WillNotSavePasswordAndInstructionsAndPolicy" = "Vous devrez à nouveau entrer votre mot de passe après 1 heure d'inactivité. Vous pouvez vous déconnecter dans les réglages.\n\nLe mot de passe sera envoyé directement au serveur d'authentification de l'EPFL (Tequila) via une connection sécurisée.";
 "WillNotSavePasswordAndInstructionsAndPolicy" = "You will have to re-enter your password after 1 hour of inactivity.\n\nYou can logout in the app settings.\n\nThe password will be sent directly to EPFL's authentication server (Tequila) via a secure connexion.";
 
 //Accessibility

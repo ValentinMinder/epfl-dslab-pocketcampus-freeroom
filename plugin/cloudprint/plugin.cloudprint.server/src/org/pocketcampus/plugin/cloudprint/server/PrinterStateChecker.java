@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.cloudprint.server;
 
-import java.io.IOException;
-
 import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 
 public class PrinterStateChecker {
 	private static boolean checkPrinterEnabled(String printerName) throws IOException {

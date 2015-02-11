@@ -1,9 +1,9 @@
 package org.pocketcampus.plugin.isacademia.server.tests;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-
 import org.pocketcampus.plugin.isacademia.server.RoomUtil;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class RoomUtilTests {
 	@Test

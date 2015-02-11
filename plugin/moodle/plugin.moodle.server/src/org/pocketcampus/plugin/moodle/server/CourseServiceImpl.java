@@ -1,21 +1,20 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Locale;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.pocketcampus.plugin.moodle.shared.*;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.plugin.moodle.shared.*;
 
-import com.google.gson.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Implementation of CourseService using Moodle's REST API.
@@ -121,7 +120,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_USER_SCIPER_KEY, sciper)
 				.toString();
 
-		int userId = -1;
+		int userId;
 		try {
 			final String usersResponseString = client.get(SERVICE_URL + usersQueryParams, CHARSET);
 			final JsonUsersResponse usersResponse = new Gson().fromJson(usersResponseString, JsonUsersResponse.class);
@@ -143,7 +142,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_COURSES_USERID_KEY, Integer.toString(userId))
 				.toString();
 
-		JsonCourse[] courses = null;
+		JsonCourse[] courses;
 		try {
 			final String coursesResponseString = client.get(SERVICE_URL + coursesQueryParams, CHARSET);
 			courses = new Gson().fromJson(coursesResponseString, JsonCourse[].class);
@@ -177,7 +176,7 @@ public final class CourseServiceImpl implements CourseService {
 				.addParam(GET_SECTIONS_COURSEID_KEY, Integer.toString(request.getCourseId()))
 				.toString();
 
-		JsonSection[] sections = null;
+		JsonSection[] sections;
 		try {
 			final String responseString = client.get(SERVICE_URL + queryParams, CHARSET);
 			sections = new Gson().fromJson(responseString, JsonSection[].class);

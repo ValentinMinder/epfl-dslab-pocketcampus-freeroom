@@ -1,13 +1,5 @@
 package org.pocketcampus.plugin.transport.server;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -18,7 +10,14 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.*;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
+import org.pocketcampus.plugin.transport.shared.TransportLine;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Implementation of TripsService using the SBB's API (HAFAS).
@@ -52,8 +51,7 @@ public final class TripsServiceImpl implements TripsService {
 	private static final DateTimeFormatter REQUEST_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
 
 	// Values for the request
-	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a
-																			// mode of transport.
+	private static final String REQUEST_FILTER_ALL = "1111111111111111"; // Undocumented. Each 'bit' enables/disables a mode of transport.
 	private static final int REQUEST_PAST_RESULTS_COUNT = 0; // 0-6
 	private static final int REQUEST_FUTURE_RESULTS_COUNT = 6; // 0-6
 
@@ -97,8 +95,7 @@ public final class TripsServiceImpl implements TripsService {
 	private static final String TRIP_PROPERTY_LINE_NUMBER = "LINE";
 
 	// Special line values
-	private static final Set<String> LINE_NAMES_WITH_NUMBERS = new HashSet<String>(Arrays.asList(new String[] { "M",
-			"S" }));
+	private static final Set<String> LINE_NAMES_WITH_NUMBERS = new HashSet<>(Arrays.asList("M", "S"));
 
 	// Placeholder if a line name cannot be found
 	private static final String EMPTY_LINE_PLACEHOLDER = "???";
@@ -126,7 +123,7 @@ public final class TripsServiceImpl implements TripsService {
 			final DateTime datetime) throws IOException {
 		final XElement request = buildRequest(token, start, end, datetime);
 		final String responseXml = client.post(API_URL, request.toBytes(API_CHARSET), API_CHARSET);
-		return parseResponse(responseXml, start, end);
+		return parseResponse(responseXml);
 	}
 
 	/** Builds the request XML. */
@@ -162,20 +159,19 @@ public final class TripsServiceImpl implements TripsService {
 	}
 
 	/** Parses the response XML. */
-	private static List<TransportTrip> parseResponse(final String responseXml, final TransportStation start,
-			final TransportStation end) {
+	private static List<TransportTrip> parseResponse(final String responseXml) {
 		final XElement responseElem = XElement.parse(responseXml);
 		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportTrip>();
+			return new ArrayList<>();
 		}
 
 		final XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
 		// haven't seen it in the wild, but the XSD allows it
 		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportTrip>();
+			return new ArrayList<>();
 		}
 
-		final List<TransportTrip> trips = new ArrayList<TransportTrip>();
+		final List<TransportTrip> trips = new ArrayList<>();
 		int id = 0;
 
 		for (final XElement tripElem : containerElem.child(RESPONSE_TRIPS_ELEMENT).children(RESPONSE_TRIP_ELEMENT)) {
@@ -188,7 +184,7 @@ public final class TripsServiceImpl implements TripsService {
 
 	/** Parses a TransportTrip from the specified XElement. */
 	private static TransportTrip parseTrip(final XElement tripElem, final int id) {
-		final List<TransportConnection> connections = new ArrayList<TransportConnection>();
+		final List<TransportConnection> connections = new ArrayList<>();
 
 		final XElement dateElem = tripElem.child(RESPONSE_TRIP_DATE_CONTAINER_ELEMENT)
 				.child(RESPONSE_TRIP_DATE_ELEMENT);

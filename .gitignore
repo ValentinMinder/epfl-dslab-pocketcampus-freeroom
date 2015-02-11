@@ -7,6 +7,7 @@ target/
 
 # IntelliJ/Android studio
 *.iml
+*.eml
 .idea/
 
 # Merged projects

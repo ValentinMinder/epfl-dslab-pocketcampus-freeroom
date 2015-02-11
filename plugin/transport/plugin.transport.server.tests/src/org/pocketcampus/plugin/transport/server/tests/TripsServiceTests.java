@@ -1,25 +1,25 @@
 package org.pocketcampus.plugin.transport.server.tests;
 
-import static org.junit.Assert.*;
+import org.joda.time.DateTime;
 import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.transport.server.TripsService;
+import org.pocketcampus.plugin.transport.server.TripsServiceImpl;
+import org.pocketcampus.plugin.transport.shared.TransportConnection;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
 
-import org.joda.time.DateTime;
-
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.transport.server.TripsService;
-import org.pocketcampus.plugin.transport.server.TripsServiceImpl;
-import org.pocketcampus.plugin.transport.shared.*;
+import static org.junit.Assert.*;
 
 public final class TripsServiceTests {
 	@Test

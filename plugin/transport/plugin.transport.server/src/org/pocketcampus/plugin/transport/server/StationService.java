@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.transport.server;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.pocketcampus.plugin.transport.shared.TransportGeoPoint;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Service that allows the search of stations by name, partial or complete.

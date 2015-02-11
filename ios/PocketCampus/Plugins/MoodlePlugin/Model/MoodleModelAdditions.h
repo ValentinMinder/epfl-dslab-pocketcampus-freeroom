@@ -31,6 +31,10 @@
 
 extern NSString* const kMoodleSaveDocsPositionGeneralSettingBoolKey;
 
+extern NSString* const kMoodleDocsAutomaticallyHideNavBarSettingBoolKey;
+
+extern NSString* const kMoodleDocsHideMasterWithNavBarSettingBoolKey;
+
 @protocol MoodleItemDefaults <NSObject>
 
 /**

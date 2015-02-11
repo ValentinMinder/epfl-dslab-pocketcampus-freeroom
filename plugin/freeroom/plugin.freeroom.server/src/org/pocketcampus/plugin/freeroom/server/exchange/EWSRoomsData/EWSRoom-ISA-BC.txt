@@ -1,1 +1,0 @@
-BC 01 <bc01@intranet.epfl.ch>, BC 02 <bc02@intranet.epfl.ch>, BC 03 <bc03@intranet.epfl.ch>, BC 04 <bc04@intranet.epfl.ch>, BC 07 <bc07-08@intranet.epfl.ch>, BC 08 <bc07-08@intranet.epfl.ch>

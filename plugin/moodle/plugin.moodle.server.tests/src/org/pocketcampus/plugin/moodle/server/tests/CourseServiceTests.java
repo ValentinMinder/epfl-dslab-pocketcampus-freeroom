@@ -1,20 +1,19 @@
 package org.pocketcampus.plugin.moodle.server.tests;
 
-import static org.junit.Assert.*;
-
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.plugin.moodle.server.CourseService;
+import org.pocketcampus.plugin.moodle.server.CourseServiceImpl;
+import org.pocketcampus.plugin.moodle.shared.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.server.Authenticator;
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.plugin.moodle.server.CourseService;
-import org.pocketcampus.plugin.moodle.server.CourseServiceImpl;
-import org.pocketcampus.plugin.moodle.shared.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for CourseServiceImpl.

@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import org.pocketcampus.plugin.moodle.shared.*;
+import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
+import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileResponse2;
 
 /**
  * Print service that prints a Moodle file directly via the CloudPrint plugin.

@@ -1,10 +1,12 @@
 package org.pocketcampus.plugin.food.server;
 
+import org.joda.time.LocalDate;
+import org.pocketcampus.plugin.food.shared.EpflRestaurant;
+import org.pocketcampus.plugin.food.shared.MealTime;
+import org.pocketcampus.plugin.food.shared.SubmitStatus;
+
 import java.sql.SQLException;
 import java.util.List;
-
-import org.joda.time.LocalDate;
-import org.pocketcampus.plugin.food.shared.*;
 
 /**
  * Ratings database.

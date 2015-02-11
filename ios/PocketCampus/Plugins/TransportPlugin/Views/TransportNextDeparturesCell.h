@@ -42,7 +42,7 @@ typedef enum {
 
 - (id)initWithReuseIdentifier:(NSString*)identifier;
 
-/*
+/**
  * Use this property for accessiblity when tripResult is not set yet:
  * allows to speech "Next departures from <departureStation> to <destinationStation>"
  * IMPORTANT: 
@@ -52,7 +52,7 @@ typedef enum {
  */
 @property (nonatomic, strong) TransportStation* departureStation;
 
-/*
+/**
  * Use this property to temporarily indicate the destination when the QueryTripsResult is not available yet
  * The cell will display destinationStation.name
  * IMPORTANT: assigning new value nils tripResult
@@ -60,7 +60,7 @@ typedef enum {
  */
 @property (nonatomic, strong) TransportStation* destinationStation;
 
-/*
+/**
  * Use this property in conjunction with destinationStation to indicate the state
  * If TransportNextDeparturesCellStateLoading, the cell displays a loading indication
  * If TransportNextDeparturesCellStateError, the cell displays the message "Error"
@@ -69,7 +69,7 @@ typedef enum {
  */
 @property (nonatomic) TransportNextDeparturesCellState state;
 
-/*
+/**
  * Assigning a non-nil QueryTripResult sets self.state set to TransportNextDeparturesCellStateLoaded,
  * self.departureStation returns tripResult.from, and self.destinationStation returns tripResult.to
  * The cell then shows the content of tripResult

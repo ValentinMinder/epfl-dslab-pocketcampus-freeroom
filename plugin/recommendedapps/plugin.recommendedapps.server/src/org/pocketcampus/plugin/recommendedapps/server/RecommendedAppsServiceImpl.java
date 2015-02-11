@@ -1,25 +1,14 @@
 package org.pocketcampus.plugin.recommendedapps.server;
 
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.plugin.recommendedapps.shared.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.plugin.recommendedapps.shared.AppStore;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedApp;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppCategory;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsRequest;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponse;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsResponseStatus;
-import org.pocketcampus.plugin.recommendedapps.shared.RecommendedAppsService;
+import java.util.*;
 
 /**
  * RecommendedAppsServiceImpl
@@ -102,8 +91,6 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 
 	@Override
 	public RecommendedAppsResponse getRecommendedApps(RecommendedAppsRequest request) {
-		
-		System.out.println("Recommended apps for " + request);
 		RecommendedAppsResponse response = new RecommendedAppsResponse();
 		response.setStatus(RecommendedAppsResponseStatus.OK);
 
@@ -121,13 +108,11 @@ public class RecommendedAppsServiceImpl implements RecommendedAppsService.Iface 
 			
 			List<RecommendedAppCategory> categories = getCategories(languageSuffix, appCategs);
 			response.setCategories(categories);
-			
-			System.out.println("Returning recommended apps for " + request + " " + response);
 			return response;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("Returning ERROR status");
+			System.err.println("RecommendedApps: Returning ERROR status");
 			response.setStatus(RecommendedAppsResponseStatus.ERROR);
 			return response;
 		}

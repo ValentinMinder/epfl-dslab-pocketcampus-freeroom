@@ -7,7 +7,7 @@ import java.util.Calendar;
  * whether an update is necessary or not.
  * 
  * @author Team Freeroom
- * @author Julien WEBER <julien.weber@eèpfl.ch>
+ * @author Julien WEBER <julien.weber@epfl.ch>
  * @author Valentin MINDER <valentin.minder@epfl.ch>
  * 
  */

@@ -1,17 +1,19 @@
 package org.pocketcampus.plugin.food.server.tests;
 
-import static org.junit.Assert.*;
-
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.junit.*;
-
-import java.util.List;
-import java.util.Arrays;
-import java.util.HashMap;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.pocketcampus.plugin.food.server.RatingDatabaseImpl;
 import org.pocketcampus.plugin.food.shared.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for RatingDatabaseImpl.

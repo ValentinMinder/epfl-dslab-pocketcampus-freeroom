@@ -1,24 +1,23 @@
 package org.pocketcampus.plugin.transport.server.tests;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-
 import org.junit.Test;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.transport.server.StationService;
+import org.pocketcampus.plugin.transport.server.StationServiceImpl;
+import org.pocketcampus.plugin.transport.shared.TransportGeoPoint;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
 
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.transport.server.StationService;
-import org.pocketcampus.plugin.transport.server.StationServiceImpl;
-import org.pocketcampus.plugin.transport.shared.*;
+import static org.junit.Assert.assertEquals;
 
 public final class StationServiceTests {
 	@Test

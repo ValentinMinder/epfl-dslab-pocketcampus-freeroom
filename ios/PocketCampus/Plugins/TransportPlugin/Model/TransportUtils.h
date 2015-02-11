@@ -25,15 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 24.03.12.
 
-
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "transport.h"
+
+extern NSString* const kTransportDepartureTimeNowString;
 
 @interface TransportUtils : NSObject
 

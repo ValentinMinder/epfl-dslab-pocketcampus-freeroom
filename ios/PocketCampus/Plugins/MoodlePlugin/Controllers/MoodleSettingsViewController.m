@@ -33,14 +33,14 @@
 
 #import "MoodleService.h"
 
-static NSUInteger const kReadingSection = 0;
-static NSUInteger const kFilesSection = 1;
+#import "UIBarButtonItem+LGAAdditions.h"
 
-static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositionGeneralSettingBool";
+static NSUInteger const kReadingSection = 0;
+static NSUInteger const kAutoHideNavBarSection = 1;
+static NSUInteger const kHideMasterWithNavBarSection = 2;
+static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
 
 @interface MoodleSettingsViewController ()<UIActionSheetDelegate>
-
-@property (nonatomic) BOOL saveDocsPositionGeneralSetting;
 
 @property (nonatomic, strong) MoodleService* moodleService;
 @property (nonatomic) long long tmpTotalNbResourcesSize; //-2 when should compute, -1 when computing, LLONG_MAX on error
@@ -70,8 +70,10 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     [super viewDidLoad];
     if (![PCUtils isIdiomPad]) {
         //in popover controller on iPad => no need for OK button
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+        __weak __typeof(self) welf = self;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone lga_actionBlock:^(UIBarButtonItem* sender) {
+            [welf.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+        }];
     }
 }
 
@@ -79,23 +81,8 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     [super viewWillAppear:animated];
     self.tmpTotalNbResourcesSize = -2;
     [self.tableView reloadData];
+    self.preferredContentSize = self.tableView.contentSize;
     [self trackScreen];
-}
-
-#pragma mark - Actions
-
-- (void)dismiss {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-}
-
-#pragma mark - Properties
-
-- (BOOL)saveDocsPositionGeneralSetting {
-    return [[[PCPersistenceManager userDefaultsForPluginName:@"moodle"] objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey] boolValue];
-}
-
-- (void)setSaveDocsPositionGeneralSetting:(BOOL)saveDocsPositionGeneralSetting {
-    [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setObject:[NSNumber numberWithBool:saveDocsPositionGeneralSetting] forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
 }
 
 #pragma mark - UITableViewDelegate
@@ -103,9 +90,12 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case kReadingSection:
-            return NSLocalizedStringFromTable(@"General", @"PocketCampus", nil);
-        case kFilesSection:
-            return nil;
+            return NSLocalizedStringFromTable(@"Reading", @"MoodlePlugin", nil);
+        case kAutoHideNavBarSection:
+            return NSLocalizedStringFromTable(@"NavigationBar", @"PocketCampus", nil);
+        case kHideMasterWithNavBarSection:
+            return  [PCUtils isIdiomPad] ? NSLocalizedStringFromTable(@"DocumentsList", @"MoodlePlugin", nil) : nil;
+            
     }
     return nil;
 }
@@ -114,7 +104,11 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
     switch (section) {
         case kReadingSection:
             return NSLocalizedStringFromTable(@"KeepDocsPositionExplanation", @"MoodlePlugin", nil);
-        case kFilesSection:
+        case kAutoHideNavBarSection:
+            return NSLocalizedStringFromTable(@"AutomaticallyHideNavBarExplanation", @"MoodlePlugin", nil);
+        case kHideMasterWithNavBarSection:
+            return [PCUtils isIdiomPad] ? NSLocalizedStringFromTable(@"HideMasterWithNavBarExplanation", @"MoodlePlugin", nil) : nil;
+        case kDeleteAllDownloadedDocumentsSection:
         {
             if (self.tmpTotalNbResourcesSize == -2) {
                 self.tmpTotalNbResourcesSize = -1;
@@ -158,10 +152,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case kReadingSection:
-            [tableView deselectRowAtIndexPath:indexPath animated:NO];
-            break;
-        case kFilesSection:
+        case kDeleteAllDownloadedDocumentsSection:
             if (self.tmpTotalNbResourcesSize <= 0) {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
                 return;
@@ -170,6 +161,7 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             [self.deleteAllDocsActionSheet showInView:self.tableView];
             break;
         default:
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
             break;
     }
 }
@@ -184,23 +176,59 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedStringFromTable(@"KeepDocsPosition", @"MoodlePlugin", nil);
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
             UISwitch* toggle = [UISwitch new];
             __weak __typeof(self) welf = self;
             __weak __typeof(toggle) woggle = toggle;
             [toggle addEventHandler:^(id sender, UIEvent *event) {
-                welf.saveDocsPositionGeneralSetting = woggle.isOn;
+                [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setBool:woggle.isOn forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
                 [welf trackAction:@"SaveDocsPositionGeneralSetting" contentInfo:woggle.isOn ? @"Yes" : @"No"];
             } forControlEvent:UIControlEventValueChanged];
-            toggle.on = self.saveDocsPositionGeneralSetting;
+            toggle.on = [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
             cell.accessoryView = toggle;
             break;
         }
-        case kFilesSection:
+        case kAutoHideNavBarSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = NSLocalizedStringFromTable(@"AutomaticallyHide", @"MoodlePlugin", nil);
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            UISwitch* toggle = [UISwitch new];
+            __weak __typeof(self) welf = self;
+            __weak __typeof(toggle) woggle = toggle;
+            [toggle addEventHandler:^(id sender, UIEvent *event) {
+                [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setBool:woggle.isOn forKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
+                [welf trackAction:@"DocsAutomaticallyHideNavBarSetting" contentInfo:woggle.isOn ? @"Yes" : @"No"];
+            } forControlEvent:UIControlEventValueChanged];
+            toggle.on = [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
+            cell.accessoryView = toggle;
+            break;
+        }
+        case kHideMasterWithNavBarSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = NSLocalizedStringFromTable(@"HideMasterWithNavBar", @"MoodlePlugin", nil);
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
+            UISwitch* toggle = [UISwitch new];
+            __weak __typeof(self) welf = self;
+            __weak __typeof(toggle) woggle = toggle;
+            [toggle addEventHandler:^(id sender, UIEvent *event) {
+                [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] setBool:woggle.isOn forKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey];
+                [welf trackAction:@"DocsHideMasterWithNavBarSetting" contentInfo:woggle.isOn ? @"Yes" : @"No"];
+            } forControlEvent:UIControlEventValueChanged];
+            toggle.on = [[PCPersistenceManager userDefaultsForPluginName:@"moodle"] boolForKey:kMoodleDocsHideMasterWithNavBarSettingBoolKey];
+            cell.accessoryView = toggle;
+            break;
+        }
+        case kDeleteAllDownloadedDocumentsSection:
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
             cell.textLabel.textColor = [PCValues pocketCampusRed];
             cell.textLabel.text = NSLocalizedStringFromTable(@"DeleteAllDownloadedDocuments", @"MoodlePlugin", nil);
+            cell.textLabel.adjustsFontSizeToFitWidth = YES;
             if (self.tmpTotalNbResourcesSize > 0) {
                 cell.textLabel.enabled = YES;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -217,17 +245,14 @@ static NSString* const kKeepDocsPositionGeneralSettingBoolKey = @"KeepDocsPositi
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case kReadingSection:
-            return 1; //keep docs position in general
-        case kFilesSection:
-            return 1; //delete all files
+    if (section == kHideMasterWithNavBarSection) {
+        return [PCUtils isIdiomPad] ? 1 : 0;
     }
-    return 0;
+    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 4;
 }
 
 #pragma mark - UIActionSheetDelegate

@@ -41,16 +41,15 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
 
 @property (nonatomic, strong) IBOutlet UILabel* destinationLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loadingIndicator;
-@property (nonatomic, strong) IBOutlet TransportConnection* transportConnection1;
+@property (nonatomic, strong) TransportConnection* transportConnection1;
 @property (nonatomic, strong) IBOutlet UILabel* time1Label;
 @property (nonatomic, strong) IBOutlet UILabel* platform1Label;
-@property (nonatomic, strong) IBOutlet TransportConnection* transportConnection2;
+@property (nonatomic, strong) TransportConnection* transportConnection2;
 @property (nonatomic, strong) IBOutlet UILabel* time2Label;
 @property (nonatomic, strong) IBOutlet UILabel* platform2Label;
-@property (nonatomic, strong) IBOutlet TransportConnection* transportConnection3;
+@property (nonatomic, strong) TransportConnection* transportConnection3;
 @property (nonatomic, strong) IBOutlet UILabel* time3Label;
 @property (nonatomic, strong) IBOutlet UILabel* platform3Label;
-@property (nonatomic, strong) IBOutlet UILabel* lineLabel;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* destinationLabelCenterYConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint* time1LabelTopConstraint;
@@ -74,8 +73,6 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
     self = (TransportNextDeparturesCell*)elements[0];
     if (self) {
         self.reuseIdentifier = identifier;
-        self.originalLineLabelFont = self.lineLabel.font;
-        self.originalLineLabelTextColor = self.lineLabel.textColor;
         self.destinationLabel.text = nil;
         self.time1Label.text = nil;
         self.time1Label.isAccessibilityElement = NO;
@@ -83,8 +80,6 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
         self.time2Label.isAccessibilityElement = NO;
         self.time3Label.text = nil;
         self.time3Label.isAccessibilityElement = NO;
-        self.lineLabel.text = nil;
-        self.lineLabel.isAccessibilityElement = NO;
     }
     return self;
 }
@@ -115,15 +110,11 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
                 return nil;
             }
             
-            if (self.lineLabel.text) {
-                string = [string stringByAppendingFormat:NSLocalizedStringFromTable(@"lineWithFormat", @"TransportPlugin", nil), self.lineLabel.text];
-            }
-            
             //1
             if (self.time1Label.text) {
                 NSString* depTimeString = [TransportUtils automaticTimeStringForTimestamp:(self.transportConnection1.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString accessibilityOriented:YES];
                 string = [string stringByAppendingString:depTimeString];
-                if (!self.lineLabel.text && self.transportConnection1.line.veryShortName) {
+                if (self.transportConnection1.line.veryShortName) {
                     NSString* lineString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"lineWithFormat", @"TransportPlugin", nil), self.transportConnection1.line.veryShortName];
                     string = [string stringByAppendingString:lineString];
                 }
@@ -140,7 +131,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
                 }
                 NSString* depTimeString = [TransportUtils automaticTimeStringForTimestamp:(self.transportConnection2.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString accessibilityOriented:YES];
                 string = [string stringByAppendingString:depTimeString];
-                if (!self.lineLabel.text && self.transportConnection2.line.veryShortName) {
+                if (self.transportConnection2.line.veryShortName) {
                     NSString* lineString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"lineWithFormat", @"TransportPlugin", nil), self.transportConnection2.line.veryShortName];
                     string = [string stringByAppendingString:lineString];
                 }
@@ -157,7 +148,7 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
                 }
                 NSString* depTimeString = [TransportUtils automaticTimeStringForTimestamp:(self.transportConnection3.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString accessibilityOriented:YES];
                 string = [string stringByAppendingString:depTimeString];
-                if (!self.lineLabel.text && self.transportConnection3.line.veryShortName) {
+                if (self.transportConnection3.line.veryShortName) {
                     NSString* lineString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"lineWithFormat", @"TransportPlugin", nil), self.transportConnection3.line.veryShortName];
                     string = [string stringByAppendingString:lineString];
                 }
@@ -213,32 +204,32 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
 
 - (void)setState:(TransportNextDeparturesCellState)state {
     _state = state;
-    static NSString* errorText = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        errorText = [NSString stringWithFormat:@"%@   ", NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil)];
-    });
     switch (state) {
         case TransportNextDeparturesCellStateLoading:
             self.accessoryType = UITableViewCellAccessoryNone;
+            self.destinationLabel.text = self.destinationStation.shortName;
             [self.loadingIndicator startAnimating];
             break;
         case TransportNextDeparturesCellStateLoaded:
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            self.destinationLabel.text = self.destinationStation.shortName;
             [self.loadingIndicator stopAnimating];
-            self.lineLabel.font = self.originalLineLabelFont;
-            self.lineLabel.textColor = self.originalLineLabelTextColor;
-            if ([self.lineLabel.text isEqualToString:errorText]) {
-                self.lineLabel.text = nil;
-            }
             break;
         case TransportNextDeparturesCellStateError:
+        {
             self.accessoryType = UITableViewCellAccessoryNone;
+            static NSString* errorString = nil;
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                errorString = [NSString stringWithFormat:@"(%@)", NSLocalizedStringFromTable(@"Error", @"PocketCampus", nil)];
+            });
+            NSString* fullString = [NSString stringWithFormat:@"%@ %@", self.destinationStation.shortName, errorString];
+            NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+            [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:[fullString rangeOfString:errorString]];
+            self.destinationLabel.attributedText = attrString;
             [self.loadingIndicator stopAnimating];
-            self.lineLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            self.lineLabel.textColor = [UIColor orangeColor];
-            self.lineLabel.text = errorText;
             break;
+        }
         default:
             [NSException raise:@"Illegal argument" format:@"state is not of enum type TransportNextDeparturesCellState"];
             break;
@@ -270,105 +261,67 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
     }
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
     
-    NSArray* redundantConnections = [TransportUtils nextRedundantDeparturesFromMessyResult:self.tripResult purgeAlreadyLeft:YES];
     NSArray* timeLabels = @[self.time1Label, self.time2Label, self.time3Label];
     NSArray* platformLabels = @[self.platform1Label, self.platform2Label, self.platform3Label];
     
-    if (redundantConnections.count > 0) {
-        [redundantConnections enumerateObjectsUsingBlock:^(TransportConnection* connection, NSUInteger index, BOOL *stop) {
-            switch (index) {
-                case 0:
-                    self.transportConnection1 = connection;
-                    break;
-                case 1:
-                    self.transportConnection2 = connection;
-                    break;
-                case 2:
-                    self.transportConnection3 = connection;
-                    break;
-                default:
-                    break;
-            }
-            NSString* timeString = [TransportUtils automaticTimeStringForTimestamp:(connection.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString];
-            UILabel* timeLabel = index < 3 ? timeLabels[index] : nil;
-            if ([timeString isEqualToString:@"Now"]) {
-                [self setBusImageViewVisible:YES inLabel:timeLabel];
-                timeLabel.text = @"     ";
-            } else {
-                [self setBusImageViewVisible:NO inLabel:timeLabel];
-                timeLabel.text = timeString;
-            }
-            UILabel* platformLabel = index < 3 ? platformLabels[index] : nil;
-            if (connection.departurePosition) {
-                self.time1LabelTopConstraint.constant = kTime1LabelTopConstraintConstantShiftedUpForPlatform;
-                self.destinationLabelCenterYConstraint.constant = kDestinationLabelCenterYConstraintConstantShiftedUpForPlatform;
-                platformLabel.text = [NSString stringWithFormat:@" %@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), connection.departurePosition];
-            } else {
-                platformLabel.text = nil;
-            }
-        }];
-        TransportConnection* connection = [redundantConnections firstObject]; //all have same line anyway
-        self.lineLabel.text = connection.line.veryShortName;
-        
-    } else {
-        NSArray* trips = self.tripResult.nonLeftTrips;
-        if (trips.count < 3) {
-            //reset labels if less than 3 connections, as we might then leave previous content of the cell
-            for (UILabel* label in timeLabels) {
-                label.text = nil;
-            }
+
+    NSArray* trips = self.tripResult.nonLeftTrips;
+    if (trips.count < 3) {
+        //reset labels if less than 3 connections, as we might then leave previous content of the cell
+        for (UILabel* label in timeLabels) {
+            label.text = nil;
         }
-        [trips enumerateObjectsUsingBlock:^(TransportTrip* transportTrip, NSUInteger index, BOOL *stop) {
-            if (index > 2) {
-                *stop = YES;
-                return;
-            }
-            NSString* timeString = nil;
-            TransportConnection* firstConnection = transportTrip.firstConnection;
-            if (firstConnection) {
-                timeString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString];
-            } else {
-                timeString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
-            }
-            
-            switch (index) {
-                case 0:
-                    self.transportConnection1 = firstConnection;
-                    break;
-                case 1:
-                    self.transportConnection2 = firstConnection;
-                    break;
-                case 2:
-                    self.transportConnection3 = firstConnection;
-                    break;
-                default:
-                    break;
-            }
-            UILabel* timeLabel = timeLabels[index];
-            NSString* lineName = firstConnection.line.veryShortName ?: @"";
-            NSString* fullString = nil;
-            if ([timeString isEqualToString:@"Now"]) {
-                [self setBusImageViewVisible:YES inLabel:timeLabel];
-                fullString = [NSString stringWithFormat:@"     %@", lineName];
-            } else {
-                [self setBusImageViewVisible:NO inLabel:timeLabel];
-                fullString = [NSString stringWithFormat:@"%@ %@", timeString, lineName];
-            }
-            NSMutableAttributedString* fullAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-            [fullAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.5 alpha:1.0],
-                                            NSFontAttributeName:[UIFont systemFontOfSize:timeLabel.font.fontDescriptor.pointSize-2]}
-                                    range:[fullString rangeOfString:lineName]];
-            timeLabel.attributedText = fullAttrString;
-            UILabel* platformLabel = index < 3 ? platformLabels[index] : nil;
-            if (firstConnection.departurePosition) {
-                self.time1LabelTopConstraint.constant = kTime1LabelTopConstraintConstantShiftedUpForPlatform;
-                self.destinationLabelCenterYConstraint.constant = kDestinationLabelCenterYConstraintConstantShiftedUpForPlatform;
-                platformLabel.text = [NSString stringWithFormat:@" %@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), firstConnection.departurePosition];
-            } else {
-                platformLabel.text = nil;
-            }
-        }];
     }
+    [trips enumerateObjectsUsingBlock:^(TransportTrip* transportTrip, NSUInteger index, BOOL *stop) {
+        if (index > 2) {
+            *stop = YES;
+            return;
+        }
+        NSString* timeString = nil;
+        TransportConnection* firstConnection = transportTrip.firstConnection;
+        if (firstConnection) {
+            timeString = [TransportUtils automaticTimeStringForTimestamp:(firstConnection.departureTime)/1000.0 maxIntervalForMinutesLeftString:kMaxIntervalForMinutesLeftString];
+        } else {
+            timeString = [TransportUtils automaticHoursMinutesLeftStringForTimestamp:transportTrip.departureTime/1000.0];
+        }
+        
+        switch (index) {
+            case 0:
+                self.transportConnection1 = firstConnection;
+                break;
+            case 1:
+                self.transportConnection2 = firstConnection;
+                break;
+            case 2:
+                self.transportConnection3 = firstConnection;
+                break;
+            default:
+                break;
+        }
+        UILabel* timeLabel = timeLabels[index];
+        NSString* lineName = firstConnection.line.veryShortName ?: @"";
+        NSString* fullString = nil;
+        if ([timeString isEqualToString:kTransportDepartureTimeNowString]) {
+            [self setBusImageViewVisible:YES inLabel:timeLabel];
+            fullString = [NSString stringWithFormat:@"     %@", lineName];
+        } else {
+            [self setBusImageViewVisible:NO inLabel:timeLabel];
+            fullString = [NSString stringWithFormat:@"%@ %@", timeString, lineName];
+        }
+        NSMutableAttributedString* fullAttrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+        [fullAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.5 alpha:1.0],
+                                        NSFontAttributeName:[UIFont systemFontOfSize:timeLabel.font.fontDescriptor.pointSize-2]}
+                                range:[fullString rangeOfString:lineName]];
+        timeLabel.attributedText = fullAttrString;
+        UILabel* platformLabel = index < 3 ? platformLabels[index] : nil;
+        if (firstConnection.departurePosition.length > 0) {
+            self.time1LabelTopConstraint.constant = kTime1LabelTopConstraintConstantShiftedUpForPlatform;
+            self.destinationLabelCenterYConstraint.constant = kDestinationLabelCenterYConstraintConstantShiftedUpForPlatform;
+            platformLabel.text = [NSString stringWithFormat:@" %@ %@", NSLocalizedStringFromTable(@"PlatformShort", @"TransportPlugin", nil), firstConnection.departurePosition];
+        } else {
+            platformLabel.text = nil;
+        }
+    }];
     
     self.time1Label.alpha = 0.0;
     self.platform1Label.alpha = 0.0;
@@ -376,7 +329,6 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
     self.platform2Label.alpha = 0.0;
     self.time3Label.alpha = 0.0;
     self.platform3Label.alpha = 0.0;
-    self.lineLabel.alpha = 0.0;
     [UIView animateWithDuration:0.3 animations:^{
         self.time1Label.alpha = 1.0;
         self.platform1Label.alpha = 1.0;
@@ -384,7 +336,6 @@ static NSTimeInterval kMaxIntervalForMinutesLeftString = 15.0;
         self.platform2Label.alpha = 1.0;
         self.time3Label.alpha = 1.0;
         self.platform3Label.alpha = 1.0;
-        self.lineLabel.alpha = 1.0;
         [self.contentView layoutIfNeeded];
     }];
     

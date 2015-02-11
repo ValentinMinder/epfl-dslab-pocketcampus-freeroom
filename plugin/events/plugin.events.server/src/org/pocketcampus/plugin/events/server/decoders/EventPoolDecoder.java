@@ -1,5 +1,9 @@
 package org.pocketcampus.plugin.events.server.decoders;
 
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
+import org.pocketcampus.plugin.events.server.utils.Utils;
+import org.pocketcampus.plugin.events.shared.EventPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +11,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
-import org.pocketcampus.plugin.events.server.utils.MyQuery;
-import org.pocketcampus.plugin.events.server.utils.Utils;
-import org.pocketcampus.plugin.events.shared.EventPool;
 
 public class EventPoolDecoder {
 

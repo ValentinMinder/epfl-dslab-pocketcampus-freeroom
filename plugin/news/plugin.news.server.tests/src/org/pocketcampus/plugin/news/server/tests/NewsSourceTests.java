@@ -1,19 +1,19 @@
 package org.pocketcampus.plugin.news.server.tests;
 
-import static org.junit.Assert.*;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.plugin.news.server.NewsSource.Feed;
+import org.pocketcampus.plugin.news.server.NewsSource.FeedItem;
+import org.pocketcampus.plugin.news.server.NewsSourceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.plugin.news.server.NewsSourceImpl;
-import org.pocketcampus.plugin.news.server.NewsSource.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for NewsSourceImpl.

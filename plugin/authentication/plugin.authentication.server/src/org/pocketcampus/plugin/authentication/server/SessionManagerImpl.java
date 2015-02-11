@@ -1,16 +1,15 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-
-import ch.epfl.tequila.client.model.TequilaPrincipal;
 
 /**
  * SessionManager to manage PC sessions.
@@ -22,7 +21,7 @@ public class SessionManagerImpl implements SessionManager {
 	private final static long TIMEOUT_INTERVAL = 3600; // 1 hour
 	private final static long EXPIRY_INTERVAL = 30 * 24 * 3600; // 1 month
 
-	private ConnectionManager mConnectionManager;
+	private final ConnectionManager mConnectionManager;
 
 	public SessionManagerImpl() {
 		this.mConnectionManager = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
@@ -98,8 +97,8 @@ public class SessionManagerImpl implements SessionManager {
 			sqlStm = mConnectionManager.getConnection().prepareStatement("SELECT " + fieldsBuilder.toString() + " FROM `authsessions` WHERE `sessionid` = ?");
 			sqlStm.setString(1, sessionId);
 			ResultSet rs = sqlStm.executeQuery();
-			while (rs.next()) {
-				List<String> res = new LinkedList<String>();
+			if (rs.next()) {
+				List<String> res = new LinkedList<>();
 				for (int i = 1; i <= fields.size(); i++)
 					res.add(rs.getString(i));
 				return res;

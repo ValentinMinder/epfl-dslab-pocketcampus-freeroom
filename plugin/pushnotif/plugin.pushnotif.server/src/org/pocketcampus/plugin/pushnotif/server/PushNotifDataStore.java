@@ -1,14 +1,14 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 public class PushNotifDataStore {
 	private ConnectionManager mConnectionManager;

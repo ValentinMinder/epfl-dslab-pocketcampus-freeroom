@@ -1,36 +1,18 @@
 package org.pocketcampus.plugin.directory.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.unboundid.asn1.ASN1OctetString;
+import com.unboundid.ldap.sdk.*;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
 import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.shared.utils.NetworkUtils;
 import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.directory.shared.DirectoryPersonRole;
-import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
-import org.pocketcampus.plugin.directory.shared.DirectoryResponse;
-import org.pocketcampus.plugin.directory.shared.DirectoryService;
-import org.pocketcampus.plugin.directory.shared.NoPictureFound;
-import org.pocketcampus.plugin.directory.shared.Person;
+import org.pocketcampus.plugin.directory.shared.*;
 
-import com.unboundid.asn1.ASN1OctetString;
-import com.unboundid.ldap.sdk.Control;
-import com.unboundid.ldap.sdk.DereferencePolicy;
-import com.unboundid.ldap.sdk.LDAPConnection;
-import com.unboundid.ldap.sdk.LDAPConnectionPool;
-import com.unboundid.ldap.sdk.LDAPException;
-import com.unboundid.ldap.sdk.LDAPInterface;
-import com.unboundid.ldap.sdk.SearchRequest;
-import com.unboundid.ldap.sdk.SearchResult;
-import com.unboundid.ldap.sdk.SearchResultEntry;
-import com.unboundid.ldap.sdk.SearchScope;
-import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Class that manages the services the server side of Directory provides to the client.
@@ -56,8 +38,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	 * Constructor, no arguments needed
 	 */
 	public DirectoryServiceImpl() {
-		System.out.println("Starting Directory plugin server...");
-		
 		try {
 			ldap =  new LDAPConnectionPool(new LDAPConnection("ldap.epfl.ch", 389), 1, 1); // need to have only 1 connection, because of ldap cookie crap
 		} catch (LDAPException e) {
@@ -73,6 +53,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public List<Person> searchPersons(String param) throws TException, org.pocketcampus.plugin.directory.shared.LDAPException {
 		List<Person> result = new LinkedList<Person>();
 		DirectoryResponse resp = searchDirectory(new DirectoryRequest(param));
@@ -86,6 +67,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public String getProfilePicture(String sciper) throws TException, NoPictureFound {
 		String pictureExtUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=" + sciper;
 		if (NetworkUtils.checkUrlImage(pictureExtUrl)) {
@@ -95,6 +77,7 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 	}
 
 	@Override
+    @Deprecated
 	public List<String> autocomplete(String constraint) throws TException {
 		List<String> result = new LinkedList<String>();
 		DirectoryResponse resp = searchDirectory(new DirectoryRequest(constraint));
@@ -113,7 +96,6 @@ public class DirectoryServiceImpl implements DirectoryService.Iface, StateChecke
 
 	@Override
 	public DirectoryResponse searchDirectory(DirectoryRequest req) throws TException {
-		System.out.println("searchDirectory: " + req.getQuery());
 		try {
 			Pagination pag = new Pagination();
 			if (req.isSetResultSetCookie())

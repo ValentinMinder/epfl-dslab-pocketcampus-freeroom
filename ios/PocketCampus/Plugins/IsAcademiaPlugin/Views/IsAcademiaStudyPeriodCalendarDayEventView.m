@@ -74,7 +74,7 @@
         
         NSString* fullString = [NSString stringWithFormat:@"%@ %@ %@", self.studyPeriod.startTimeString, roomsString, self.studyPeriod.name];
         NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
-        [attrString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[fullString rangeOfString:roomsString]];
+        [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:[fullString rangeOfString:roomsString]];
         [attrString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:self.titleLabel.font.pointSize+2] range:[fullString rangeOfString:self.studyPeriod.name]];
         self.titleLabel.attributedText = attrString;
         
@@ -89,7 +89,7 @@
         [attrString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:self.titleLabel.font.pointSize+2] range:[fullString rangeOfString:self.studyPeriod.name]];
         self.titleLabel.attributedText = attrString;
         
-        self.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:self.studyPeriod.roomsString attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+        self.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:self.studyPeriod.roomsString attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
     }
 }
 

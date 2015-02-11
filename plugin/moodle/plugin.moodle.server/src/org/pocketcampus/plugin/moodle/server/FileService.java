@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.moodle.server;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import javax.servlet.http.*;
 
 /**
  * Downloads files from Moodle.

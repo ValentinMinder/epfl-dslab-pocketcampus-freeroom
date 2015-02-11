@@ -4,7 +4,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/platform.shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/plugin.transport.shared"/>
-	<classpathentry kind="lib" path="/platform.shared/lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="lib" path="/platform.shared/lib/commons-codec-1.4.jar"/>

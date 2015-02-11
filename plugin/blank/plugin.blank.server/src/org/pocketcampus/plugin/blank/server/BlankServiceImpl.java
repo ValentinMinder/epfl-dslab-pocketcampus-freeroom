@@ -13,9 +13,6 @@ import org.pocketcampus.plugin.blank.shared.BlankService;
  *
  */
 public class BlankServiceImpl implements BlankService.Iface {
-	
 	public BlankServiceImpl() {
-		System.out.println("Starting Blank plugin server ...");
-	}
-	
+    }
 }
