@@ -402,7 +402,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		 */
 		@Override
 		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
+			return R.drawable.sdk_refresh;
 		}
 
 		/**

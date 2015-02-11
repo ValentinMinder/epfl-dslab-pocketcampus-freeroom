@@ -135,7 +135,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			@Override
 			public int getDrawable() {
-				return R.drawable.transport_add_white;
+				return R.drawable.sdk_add_white;
 			}
 
 			@Override
@@ -155,7 +155,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			@Override
 			public int getDrawable() {
-				return R.drawable.transport_remove;
+				return R.drawable.sdk_remove;
 			}
 
 			@Override
@@ -414,7 +414,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
+			return R.drawable.sdk_refresh;
 		}
 
 		/**
