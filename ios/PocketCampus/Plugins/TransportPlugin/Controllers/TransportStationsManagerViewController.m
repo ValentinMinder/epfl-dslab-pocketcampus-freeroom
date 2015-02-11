@@ -76,7 +76,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
     __weak __typeof(self) welf = self;
-    [[NSNotificationCenter defaultCenter] lga_addObserver:self name:kTransportUserTransportStationsModifiedNotification object:self.transportService block:^(NSNotification *notif) {
+    [[NSNotificationCenter defaultCenter] lga_addObserver:self name:kTransportUserTransportStationsModifiedNotification object:nil block:^(NSNotification *notif) {
         [welf refreshFromModelAnimated:YES];
     }];
     [self refreshFromModelAnimated:NO];
