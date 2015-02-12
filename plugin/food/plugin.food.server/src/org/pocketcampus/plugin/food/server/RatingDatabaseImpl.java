@@ -8,7 +8,6 @@ import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.food.shared.*;
 
 import java.sql.*;
-import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
                         mealStatement.setString(2, meal.getMName());
                         mealStatement.setString(3, meal.getMDescription());
                         mealStatement.setLong(4, restaurant.getRId());
-                        mealStatement.setLong(5, getTimeIndependentId(meal));
+                        mealStatement.setLong(5, Meals.computeTimeIndependentId(meal, restaurant.getRId()));
                         mealStatement.setDate(6, new Date(date.toDate().getTime()));
                         mealStatement.setString(7, time.name());
                         mealStatement.addBatch();
@@ -167,7 +166,7 @@ public final class RatingDatabaseImpl implements RatingDatabase {
                         "FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
                         "WHERE meals.TimeIndependentId = ?";
                 try (PreparedStatement mealQuery = connection.prepareStatement(mealQueryString)) {
-                    mealQuery.setLong(1, getTimeIndependentId(meal));
+                    mealQuery.setLong(1, Meals.computeTimeIndependentId(meal, restaurant.getRId()));
 
                     ResultSet result = mealQuery.executeQuery();
                     if (result.next()) {
@@ -217,20 +216,5 @@ public final class RatingDatabaseImpl implements RatingDatabase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private static long getTimeIndependentId(EpflMeal meal) {
-        final int prime = 31;
-        int result = 1;
-        // TODO: Anything else?
-        result = prime * result + normalize(meal.getMName()).hashCode();
-        result = prime * result + normalize(meal.getMDescription()).hashCode();
-        return result;
-    }
-
-    private static String normalize(String s) {
-        s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+", "");
-        return s.replaceAll("\\W", "").toLowerCase();
     }
 }
