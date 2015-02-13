@@ -1,59 +1,68 @@
 package org.pocketcampus.plugin.map.android;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Locale;
+import java.util.Random;
 
-import org.osmdroid.DefaultResourceProxyImpl;
-import org.osmdroid.ResourceProxy;
-import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.XYTileSource;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapController;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay.OnItemGestureListener;
-import org.osmdroid.views.overlay.ItemizedOverlay;
-import org.osmdroid.views.overlay.MyLocationOverlay;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.TilesOverlay;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
+import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.map.R;
-import org.pocketcampus.plugin.map.android.elements.MapElement;
-import org.pocketcampus.plugin.map.android.elements.MapElementsList;
-import org.pocketcampus.plugin.map.android.elements.MapPathOverlay;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
-import org.pocketcampus.plugin.map.android.search.MapSearchActivity;
-import org.pocketcampus.plugin.map.android.ui.LevelBar;
-import org.pocketcampus.plugin.map.android.ui.OnLevelBarChangeListener;
-import org.pocketcampus.plugin.map.android.utils.Position;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
-import android.app.SearchManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 import com.markupartist.android.widget.Action;
 
 /**
  * Main class for the map plugin.
  * 
- * @author Johan <johan.leuenberger@epfl.ch>
- * @author Jonas <jonas.schmid@epfl.ch>
- * @author Florian <florian.laurent@epfl.ch>
- * @author Johan <johan.leuenberger@epfl.ch>
+ * @author Amer Chamseddine <amer@pocketcampus.org>
  *
  */
 public class MapMainView extends PluginView implements IMapView {
@@ -62,95 +71,179 @@ public class MapMainView extends PluginView implements IMapView {
 		return MapMainController.class;
 	}
 
-	public static final String ITEM_GO_URL = "go_url:";
-
-	// Used for the location
-	private static Position CAMPUS_CENTER_P;
-	private static GeoPoint CAMPUS_CENTER_G;
-
-	private static boolean DEBUG = true;
-
-	// Map UI
-	private MapView mapView_;
-	private MapController mapController_;
-	private MyLocationOverlay myLocationOverlay_;
-	private MyLocationOverlay googleLocationOverlay_;
-	private MapPathOverlay mapPathOverlay_;
-	private ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>> cachedOverlays_;
-
-	private OnItemGestureListener<MapElement> overlayClickHandler_;
-
-	/**
-	 * Overlays which are unconditionally displayed, like the campus Tiles
-	 * Overlay, or the user position
-	 */
-	private List<Overlay> constantOverlays_;
-
-	/**
-	 * Overlays which are temporary, like the search result.
-	 */
-	private List<Overlay> temporaryOverlays_;
-
-	// List of all and displayed overlays
-	private List<MapElementsList> selectedLayers_;
-
+	private MapMainController mController;
 	private MapModel mModel;
 
+	private ProgressDialog loading;
+	
+
+	private GoogleMap mMap;
+    private TileOverlay mOsmOverlay;
+    private TileOverlay mEpflOverlay;
+    private GroundOverlay mGroundOverlay;
+    private List<Marker> mMarkers = new LinkedList<Marker>();
+    
+	private LatLngBounds visibleRegion;
+	private AsyncTask<LatLngBounds, Void, BitmapDescriptor> mDownloader;
+
+	private String layer = "all";
+	private boolean epflLabels = true;
+
+	
+	
 	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 
-		// mController = (MapMainController) controller;
+		mController = (MapMainController) controller;
 		mModel = (MapModel) controller.getModel();
 
-		setContentView(R.layout.map_main);
-
-		initVariables();
-
-		// Setup view
-		setupMapView();
-
-		// Download the available layers
-		// mController.getLayers();
-
-		// handleSearchIntent(getIntent().getExtras());
 		setActionBarTitle(getString(R.string.map_plugin_title));
+		setContentView(R.layout.map_main_view);
 
-		updateActionBar();
+
+        Spinner spinner = (Spinner) findViewById(R.id.map_layers_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.map_layers_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				onGoogleLayerSelected(arg0, arg1, arg2, arg3);
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
+
+        Spinner spinner1 = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
+                this, R.array.map_epfl_layers_array, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter1);
+        spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				onEpflLayerSelected(arg0, arg1, arg2, arg3);
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
+
+        
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_main_fragment);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+			public void onMapReady(GoogleMap arg0) {
+				onMapObjectReady(arg0);
+			}
+		});
+        
+        updateActionBar();
 	}
 
+	
+	
+
+	private String getAnnotationPictureUrl(LatLngBounds bnds) {
+//		System.out.println(bnds.southwest + " " + bnds.northeast);
+//		System.out.println(convert(bnds.southwest) + " " + convert(bnds.northeast));
+		PointF sw = convert(bnds.southwest);
+		PointF ne = convert(bnds.northeast);
+		String bbox = "" + sw.x + "," + sw.y + "," + ne.x + "," + ne.y;
+		int w,h;
+		if(ne.x - sw.x > ne.y - sw.y) { // landscape
+			h = 480;
+			w = (int) (h * (ne.x - sw.x) / (ne.y - sw.y));
+		} else { // portrait
+			w = 480;
+			h = (int) (w * (ne.y - sw.y) / (ne.x - sw.x));
+		}
+		// BBOX=731311,5863258,734565,5864324&WIDTH=1000&HEIGHT=1000
+		String layers = "parkings_publics" + layer + ",arrets_metro" + layer + ",transports_publics" + layer + ",information" + layer + ",locaux_h" + layer + ",locaux_labels_en" + layer + ",batiments_routes_labels";
+		// LAYERS=parkings_publicsall,arrets_metroall,transports_publicsall,informationall,locaux_hall,locaux_labels_enall,batiments_routes_labels
+		String url = "http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&LAYERS=" + layers + "&TRANSPARENT=TRUE&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A900913&BBOX=" + bbox + "&WIDTH=" + w + "&HEIGHT=" + h;
+		System.out.println(url);
+		return url;
+	}
+	
+	
+	private class Downloader extends AsyncTask<LatLngBounds, Void, BitmapDescriptor> {
+		LatLngBounds bnds;
+		@Override
+		protected BitmapDescriptor doInBackground(LatLngBounds... params) {
+			bnds = params[0];
+			return BitmapDescriptorFactory.fromBitmap(getBitmapFromURL(getAnnotationPictureUrl(bnds)));
+		}
+		@Override
+		protected void onPostExecute(BitmapDescriptor result) {
+			if(!"".equals(layer) && epflLabels) {
+		        showLabels(result, bnds);
+			}
+//	        mGroundOverlay.setImage(result);
+//	        mGroundOverlay.setPositionFromBounds(bnds);
+			super.onPostExecute(result);
+			synchronized (MapMainView.this) {
+				if(visibleRegion.equals(bnds)) {
+					mDownloader = null;
+				} else {
+					mDownloader = new Downloader().execute(visibleRegion);
+				}
+			}
+		}
+	}
+	
+	private void onCamMove() {
+		synchronized (MapMainView.this) {
+			visibleRegion = mMap.getProjection().getVisibleRegion().latLngBounds;
+			if("".equals(layer) || !epflLabels)
+				return;
+			if(mDownloader == null) {
+				mDownloader = new Downloader().execute(visibleRegion);
+			}
+		}
+		
+	}
+	
+    private void onMapObjectReady(GoogleMap map1) {
+    	mMap = map1;
+
+        //map.getUiSettings().setZoomControlsEnabled(true); // show zoom buttons
+        mMap.setTrafficEnabled(false);
+        mMap.setMyLocationEnabled(true);
+        mMap.setBuildingsEnabled(false);
+        mMap.setIndoorEnabled(false);
+        
+        // center on EPFL
+    	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.52, 6.57), 15));
+        
+    	mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+			
+			@Override
+			public void onCameraChange(CameraPosition position) {
+				
+				onCamMove();
+				
+//				map.addMarker(new MarkerOptions().position(bnds.northeast).title("northeast"));
+//				map.addMarker(new MarkerOptions().position(bnds.southwest).title("southwest"));
+				
+			}
+		});
+    	
+    	showEpfl();
+        
+        
+
+    }
+    
+    
+    
 	private void updateActionBar() {
 		removeAllActionsFromActionBar();
 		addActionToActionBar(new Action() {
 			@Override
 			public void performAction(View view) {
-				if (!myLocationOverlay_.isMyLocationEnabled()) {
-					Toast.makeText(MapMainView.this,
-							getString(R.string.map_compute_position),
-							Toast.LENGTH_LONG).show();
-				}
-				toggleCenterOnUserPosition();
-				updateActionBar();
-			}
-
-			@Override
-			public int getDrawable() {
-				if (!myLocationOverlay_.isMyLocationEnabled()) {
-					return R.drawable.map_mylocation_action;
-				} else {
-					return R.drawable.map_mylocation_on_action;
-				}
-			}
-
-			@Override
-			public String getDescription() {
-				return getString(R.string.map_compute_position);
-			}
-		});
-		addActionToActionBar(new Action() {
-			@Override
-			public void performAction(View view) {
 				onSearchRequested();
+				DialogUtils.showInputDialog(MapMainView.this, "Map", "Search for", "Go", new DialogUtils.TextInputHandler(){
+					public void gotText(String s) {
+						onSearch(s);
+					}});
 				trackEvent("Search", null);
 			}
 
@@ -166,72 +259,68 @@ public class MapMainView extends PluginView implements IMapView {
 		});
 	}
 
-	private void initVariables() {
-		// The layers are not know yet
-		constantOverlays_ = new ArrayList<Overlay>();
-		temporaryOverlays_ = new ArrayList<Overlay>();
-		selectedLayers_ = new ArrayList<MapElementsList>();
-		cachedOverlays_ = new ConcurrentHashMap<MapElementsList, ItemizedIconOverlay<MapElement>>();
 
-		overlayClickHandler_ = new OverlayClickHandler(this);
-
-		// Get the campus coordinates
-		double lat = Double.parseDouble(getResources().getString(
-				R.string.map_campus_latitude));
-		double lon = Double.parseDouble(getResources().getString(
-				R.string.map_campus_longitude));
-		double alt = Double.parseDouble(getResources().getString(
-				R.string.map_campus_altitude));
-
-		CAMPUS_CENTER_P = new Position(lat, lon, alt);
-		CAMPUS_CENTER_G = new GeoPoint(CAMPUS_CENTER_P.getLatitude(),
-				CAMPUS_CENTER_P.getLongitude(), CAMPUS_CENTER_P.getAltitude());
-
+	
+    synchronized private void showMarkers(List<MapItem> items) {
+    	for(Marker m : mMarkers) {
+    		m.remove();
+    	}
+    	mMarkers.clear();
+    	if(items.size() == 1 && items.get(0).isSetFloor()) {
+    		int floor = items.get(0).getFloor();
+    		int res = getResources().getIdentifier("epfl_floor_" + floor, "string", getPackageName());
+    		if(res != 0) {
+    			Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+    			for(int i = 0; i < spinner.getAdapter().getCount(); i++) {
+    				if(spinner.getAdapter().getItem(i).toString().equals(getString(res))) {
+    					spinner.setSelection(i, true);
+    					break;
+    				}
+    			}
+                //setEpflLayer(getString(res));
+    		}
+    	}
+    	for(MapItem i : items) {
+    		mMarkers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(i.getLatitude(), i.getLongitude())).title(i.getTitle()).snippet(i.getDescription())));
+    	}
+    }
+    
+    synchronized private void adaptCamera() {
+    	// http://stackoverflow.com/questions/14828217/android-map-v2-zoom-to-show-all-the-markers
+    	if(mMarkers.size() == 0) {
+    		return;
+    	}
+    	LatLngBounds.Builder builder = new LatLngBounds.Builder();
+    	for (Marker marker : mMarkers) {
+    	    builder.include(marker.getPosition());
+    	}
+    	LatLngBounds bounds = builder.build();
+    	CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 10);
+    	mMap.animateCamera(cu);
+    }
+    
+	
+	private void onSearch(String query) {
+		mController.search(query);
+		loading = ProgressDialog.show(this, null, null, true, false);
+		
 	}
-
-	/**
-	 * Change the level of the map.
-	 * 
-	 * @param level
-	 *            the new level
-	 */
-	private void changeLevel(int level) {
-		MapTileProviderBasic provider = new MapTileProviderBasic(
-				getApplicationContext());
-
-		ITileSource tileSource = getTileSource(level);
-
-		provider.setTileSource(tileSource);
-
-		TilesOverlay tilesOverlay = new TilesOverlay(provider, getBaseContext());
-		tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
-		constantOverlays_.remove(0);
-		constantOverlays_.add(0, tilesOverlay);
-		updateOverlays(false);
-		mapView_.postInvalidate();
-
-		trackEvent("ChangeLevel", "" + level);
+	
+	@Override
+	protected void handleIntent(Intent intent) {
+		Uri aData = intent.getData();
+		if (aData != null && aData.getQueryParameter("q") != null) {
+			String query = aData.getQueryParameter("q");
+			mController.search(query);
+			loading = ProgressDialog.show(this, null, null, true, false);
+//			Intent i = new Intent(this, MapSearchActivity.class);
+//			i.putExtra(SearchManager.QUERY, query);
+//			i.setAction(Intent.ACTION_SEARCH);
+//			startActivity(i);
+		}
+		handleSearchIntent(intent.getExtras());
 	}
-
-	/**
-	 * Returns the tile source to be displayed
-	 * 
-	 * @return the tile source
-	 */
-	private ITileSource getTileSource(int level) {
-		ITileSource tileSource;
-		tileSource = new EpflTileSource(level + "");
-		return tileSource;
-	}
-
-	/**
-	 * Handle the eventual extras of the intent. For example, it can show a map
-	 * element
-	 * 
-	 * @param extras
-	 *            the bundle containing the extras
-	 * @return Whether it handled the intent or not
-	 */
+	
 	private boolean handleSearchIntent(Bundle extras) {
 
 		if (extras == null) {
@@ -240,112 +329,12 @@ public class MapMainView extends PluginView implements IMapView {
 
 		if (extras.containsKey("MapElement")) {
 			MapItem meb = (MapItem) extras.getSerializable("MapElement");
-			GeoPoint gp = new GeoPoint(meb.getLatitude(), meb.getLongitude());
-			MapElement overItem = new MapElement(meb.getTitle(),
-					meb.getDescription(), gp);
-			List<MapElement> overItems = new ArrayList<MapElement>(1);
-			overItems.add(overItem);
-			Drawable searchMarker = this.getResources().getDrawable(
-					R.drawable.map_marker_search);
-			ItemizedOverlay<MapElement> aOverlay = new ItemizedIconOverlay<MapElement>(
-					overItems, searchMarker, overlayClickHandler_,
-					new DefaultResourceProxyImpl(getApplicationContext()));
-
-			temporaryOverlays_.clear();
-			temporaryOverlays_.add(aOverlay);
-
-			centerOnPoint(gp);
-
-			updateOverlays(false);
+			showMarkers(Arrays.asList(meb));
+			adaptCamera();
 			return true;
 		}
 
 		return false;
-	}
-
-	/**
-	 * The background is provided by the default tile source. We add a
-	 * TileOverlay above the background (for example the map of the campus).
-	 */
-	private void setupMapView() {
-
-		mapView_ = (MapView) findViewById(R.id.mapview);
-		mapView_.setMultiTouchControls(true);
-		mapView_.setBuiltInZoomControls(true);
-		/*
-		 * XXX This is done to allow zoom up to 22 (for epfl) but the tiles will
-		 * not load because the mapnik zoom is between 14 and 19
-		 */
-		ITileSource aTileSource = new XYTileSource("Mapnik",
-				ResourceProxy.string.mapnik, 14, 19, 256, ".png",
-				"http://tile.openstreetmap.org/");
-		mapView_.setTileSource(aTileSource);
-		mapController_ = mapView_.getController();
-
-		// Display the level bar if needed
-		if (getResources().getBoolean(R.bool.map_has_levels)) {
-			SeekBar seekBar = (SeekBar) findViewById(R.id.map_level_bar);
-			int max = getResources().getInteger(R.integer.map_level_max);
-			int min = getResources().getInteger(R.integer.map_level_min);
-			final TextView levelTextView = (TextView) findViewById(R.id.map_level_textview);
-			new LevelBar(seekBar, new OnLevelBarChangeListener() {
-				@Override
-				public void onLevelChanged(int level) {
-					levelTextView.setVisibility(View.INVISIBLE);
-					changeLevel(level);
-					String slevel = getResources()
-							.getString(R.string.map_level);
-					Toast.makeText(getApplicationContext(),
-							slevel + " " + level, Toast.LENGTH_SHORT).show();
-				}
-
-				@Override
-				public void onLevelChanging(int level) {
-					levelTextView.setVisibility(View.VISIBLE);
-					levelTextView.setText(level + "");
-
-				}
-			}, max, min, max);
-		}
-
-		// Add Campus tiles layer
-		int level = getResources().getInteger(R.integer.map_level_default);
-		ITileSource campusTile = getTileSource(level);
-		MapTileProviderBasic provider = new MapTileProviderBasic(
-				getApplicationContext());
-		provider.setTileSource(campusTile);
-		TilesOverlay tilesOverlay = new TilesOverlay(provider,
-				this.getBaseContext());
-		tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
-		constantOverlays_.add(0, tilesOverlay);
-
-		// Following the user
-		myLocationOverlay_ = new MyLocationOverlay(this, mapView_);
-		// myLocationOverlay_ = new HybridPositioningOverlay(this, mapView_);
-		// constantOverlays_.add(myLocationOverlay_);
-		if (DEBUG) {
-			googleLocationOverlay_ = new MyLocationOverlay(this, mapView_);
-			constantOverlays_.add(googleLocationOverlay_);
-		}
-
-		// Path overlay
-		mapPathOverlay_ = new MapPathOverlay(Color.RED, 3.0f, this);
-		constantOverlays_.add(mapPathOverlay_);
-
-		// Center map
-		centerOnCampus();
-
-		// Forces redisplay
-		updateOverlays(false);
-	}
-
-	/**
-	 * Re-enable the location service and the layers refresh
-	 */
-	@Override
-	protected void onResume() {
-
-		super.onResume();
 	}
 
 	@Override
@@ -353,234 +342,279 @@ public class MapMainView extends PluginView implements IMapView {
 		return "/map";
 	}
 
-	/**
-	 * Disable the location service and the layers refresh
-	 */
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void handleIntent(Intent intent) {
-		Uri aData = intent.getData();
-		if (aData != null && aData.getQueryParameter("q") != null) {
-			String query = aData.getQueryParameter("q");
-			Intent i = new Intent(this, MapSearchActivity.class);
-			i.putExtra(SearchManager.QUERY, query);
-			i.setAction(Intent.ACTION_SEARCH);
-			startActivity(i);
-		}
-		handleSearchIntent(intent.getExtras());
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
-
-	/**
-	 * Enable the location and center the map on the user
-	 */
-	private void toggleCenterOnUserPosition() {
-		if (myLocationOverlay_.isFollowLocationEnabled()) {
-			myLocationOverlay_.disableMyLocation();
-			myLocationOverlay_.disableFollowLocation();
-
-			trackEvent("CenterOnSelf", "false");
-
-			if (DEBUG) {
-				googleLocationOverlay_.disableMyLocation();
-			}
-
-		} else {
-			myLocationOverlay_.enableMyLocation();
-			myLocationOverlay_.enableFollowLocation();
-
-			trackEvent("CenterOnSelf", "true");
-
-			if (DEBUG) {
-				googleLocationOverlay_.enableMyLocation();
-			}
-		}
-	}
-
-	/**
-	 * Center the map on campus
-	 */
-	private void centerOnCampus() {
-		centerOnPoint(CAMPUS_CENTER_G);
-	}
-
-	/**
-	 * Center on a point on the map
-	 * 
-	 * @param point
-	 *            Where to center the map
-	 */
-	public void centerOnPoint(GeoPoint point) {
-		// myLocationOverlay_.disableFollowLocation();
-
-		mapController_.setZoom(getResources().getInteger(
-				R.integer.map_zoom_level));
-		mapController_.setCenter(point);
-	}
-
-	/**
-	 * Show the directions layer to a certain POI
-	 *
-	 * @param endPos
-	 *            Position where to go
-	 */
-	public void showDirectionsFromHereToPosition(final Position endPos) {
-	}
-
-	/**
-	 * Displays all selected overlay items (from layers).
-	 * 
-	 * @param forceRefresh
-	 *            Whether to check is the cache is still valid or to force
-	 *            refresh.
-	 */
-	private void updateOverlays(boolean forceRefresh) {
-		// First we remove all the overlays and then add the constant ones
-		mapView_.getOverlays().clear();
-		for (Overlay over : constantOverlays_) {
-			mapView_.getOverlays().add(over);
-		}
-
-		// Display the selected layers
-		for (MapElementsList layer : selectedLayers_) {
-			ItemizedIconOverlay<MapElement> aOverlay = cachedOverlays_
-					.get(layer);
-
-			// The overlay already exists
-			if (aOverlay != null) {
-				mapView_.getOverlays().add(aOverlay);
-			}
-
-		}
-
-		for (Overlay over : temporaryOverlays_) {
-			mapView_.getOverlays().add(over);
-		}
-
-		mapView_.invalidate();
-	}
-
-	/**
-	 * Used to retrieve the items from a layer If the layer already exists, but
-	 * is outdated, we redownload the new items, but keep the old ones on the
-	 * screen while downloading
-	 */
-
-	/**
-	 * Handle a click on an item
-	 */
-	class OverlayClickHandler implements
-			ItemizedIconOverlay.OnItemGestureListener<MapElement> {
-
-		MapMainView a_;
-
-		protected OverlayClickHandler(MapMainView a) {
-			this.a_ = a;
-		}
-
-		@Override
-		public boolean onItemLongPress(int arg0, MapElement arg1) {
-			return false;
-		}
-
-		@Override
-		public boolean onItemSingleTapUp(int index, final MapElement item) {
-			// final ItemDialog dialog = new ItemDialog(a_, item);
-			// dialog.showDialog();
-
-			return true;
-		}
-	}
-
-	/**
-	 * Get the Drawable object from an icon on the server. Get a cached version
-	 * if available
-	 * 
-	 * @param iconUrl
-	 *            URL of the icon
-	 * @return the Drawable
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
-	public Drawable getDrawableFromCacheOrUrl(String iconUrl) {
-		if (iconUrl == null || iconUrl.equals("null") || iconUrl.length() <= 0)
-			return null;
-
-		// Drawable i = icons.get(iconUrl);
-		Drawable i = getResources().getDrawable(R.drawable.map_marker_search);
-
-		// if(i == null) {
-		// try {
-		// i = ImageUtil.getDrawableFromUrl(RequestHandler.getServerUrl() +
-		// iconUrl);
-		// icons.put(iconUrl, i);
-		// } catch (IOException e) {
-		// Log.e(this.getClass().toString(), "getDrawableFromCacheOrUrl -> " +
-		// e.toString());
-		// }
-		// }
-
-		return i;
-	}
 
 	@Override
 	public void networkErrorHappened() {
-		// Toast toast = Toast.makeText(getApplicationContext(),
-		// "Network error!", Toast.LENGTH_SHORT);
-		// toast.show();
-	}
-
-	@Override
-	public void layersUpdated() {
-	}
-
-	@Override
-	public void layerItemsUpdated() {
-		List<MapItem> items = mModel.getLayerItems();
-
-		if (items == null || items.size() < 1) {
-			return;
-		}
-
-		System.out.println("Layer id: " + items.get(0).getLayerId());
-
-		MapElementsList layer = null;
-		for (MapElementsList l : selectedLayers_) {
-			if (l.getLayerId() == items.get(0).getLayerId()) {
-				layer = l;
-			}
-		}
-
-		ItemizedIconOverlay<MapElement> aOverlay;
-
-		// Try to get the icon for the overlay
-		aOverlay = new ItemizedIconOverlay<MapElement>(layer,
-				overlayClickHandler_, new DefaultResourceProxyImpl(
-						getApplicationContext()));
-
-		ItemizedIconOverlay<MapElement> oldOverlay = cachedOverlays_.put(layer,
-				aOverlay);
-
-		if (oldOverlay != null) {
-			mapView_.getOverlays().remove(oldOverlay);
-		}
-		if (aOverlay != null) {
-			mapView_.getOverlays().add(aOverlay);
-		}
-		mapView_.invalidate();
+		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.sdk_connection_error_happened),
+				Toast.LENGTH_SHORT); 
+		toast.show();
+		loading.dismiss();
 	}
 
 	@Override
 	public void searchResultsUpdated() {
-		// TODO Auto-generated method stub
+		loading.dismiss();
+		
+		showMarkers(mModel.getSearchResults());
+		adaptCamera();
 
 	}
+	
+	
+
+    public void onTrafficToggled(View v) {
+        mMap.setTrafficEnabled(((CheckBox) v).isChecked());
+    }
+    public void onMyLocationToggled(View v) {
+        mMap.setMyLocationEnabled(((CheckBox) v).isChecked());
+    }
+    public void onBuildingsToggled(View v) {
+        mMap.setBuildingsEnabled(((CheckBox) v).isChecked());
+    }
+    public void onIndoorToggled(View v) {
+        mMap.setIndoorEnabled(((CheckBox) v).isChecked());
+    }
+
+
+    
+    
+    public void toggleOsm(View v) {
+    	removeOsm();
+    	if(((CheckBox) v).isChecked()) {
+    		showOsm();
+    	}
+    }
+    
+    
+
+    public void toggleEpflLabels(View v) {
+    	if(((CheckBox) v).isChecked()) {
+    		epflLabels = true;
+    		onCamMove();
+    	} else {
+    		epflLabels = false;
+    		removeLabels();
+    	}
+    }
+
+    private void toggleEpflLayers() {
+    	removeEpfl();
+    	removeLabels();
+    	if(!"".equals(layer)) {
+    		showEpfl();
+    		onCamMove();
+    	}
+    }
+
+    
+    public void onGoogleLayerSelected(AdapterView<?> parent, View view, int position, long id) {
+        // This is also called by the Android framework in onResume(). The map may not be created at
+        // this stage yet.
+        if (mMap != null) {
+        	setGoogleLayer((String) parent.getItemAtPosition(position));
+        }
+    }
+
+    public void onEpflLayerSelected(AdapterView<?> parent, View view, int position, long id) {
+        // This is also called by the Android framework in onResume(). The map may not be created at
+        // this stage yet.
+        if (mMap != null) {
+            setEpflLayer((String) parent.getItemAtPosition(position));
+        }
+    }
+
+    private void setGoogleLayer(String layerName) {
+        if (layerName.equals(getString(R.string.map_normal))) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        } else if (layerName.equals(getString(R.string.map_hybrid))) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        } else if (layerName.equals(getString(R.string.map_satellite))) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        } else if (layerName.equals(getString(R.string.map_terrain))) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        } else if (layerName.equals(getString(R.string.map_none))) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+        } else {
+            Log.i("LDA", "Error setting layer with name " + layerName);
+        }
+    }
+    
+    private void setEpflLayer(String layerName) {
+        if (layerName.equals(getString(R.string.epfl_floor_all))) {
+            layer = "all";
+        } else if (layerName.equals(getString(R.string.epfl_floor_8))) {
+        	layer = "8";
+        } else if (layerName.equals(getString(R.string.epfl_floor_7))) {
+        	layer = "7";
+        } else if (layerName.equals(getString(R.string.epfl_floor_6))) {
+        	layer = "6";
+        } else if (layerName.equals(getString(R.string.epfl_floor_5))) {
+        	layer = "5";
+        } else if (layerName.equals(getString(R.string.epfl_floor_4))) {
+        	layer = "4";
+        } else if (layerName.equals(getString(R.string.epfl_floor_3))) {
+        	layer = "3";
+        } else if (layerName.equals(getString(R.string.epfl_floor_2))) {
+        	layer = "2";
+        } else if (layerName.equals(getString(R.string.epfl_floor_1))) {
+        	layer = "1";
+        } else if (layerName.equals(getString(R.string.epfl_floor_0))) {
+        	layer = "0";
+        } else if (layerName.equals(getString(R.string.epfl_floor_b1))) {
+        	layer = "-1";
+        } else if (layerName.equals(getString(R.string.epfl_floor_b2))) {
+        	layer = "-2";
+        } else if (layerName.equals(getString(R.string.epfl_floor_b3))) {
+        	layer = "-3";
+        } else if (layerName.equals(getString(R.string.epfl_floor_b4))) {
+        	layer = "-4";
+        } else if (layerName.equals(getString(R.string.map_none))) {
+        	layer = "";
+        } else {
+            Log.i("LDA", "Error setting layer with name " + layerName);
+        }
+        toggleEpflLayers();
+    }
+
+	
+	
+	
+	
+	
+	
+	/*****************
+	 * HELPERS
+	 */
+	
+	
+
+    synchronized private void showOsm() {
+    	removeOsm();
+    	final Random rand = new Random();
+        TileProvider osmProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public synchronized URL getTileUrl(int x, int y, int zoom) {
+                // The moon tile coordinate system is reversed.  This is not normal.
+                //int reversedY = (1 << zoom) - y - 1;
+                // http://plan-osm-tile4.epfl.ch/15/16982/11590.png
+                // http://plan-epfl-tile0.epfl.ch/batiments-4-merc/18/000/135/850/000/169/428.png
+            	//String sx = TextUtils.join("/", String.format("%09d", x).split("(?<=\\G.{3})/u"));
+            	//String sy = TextUtils.join("/", String.format("%09d", y).split("(?<=\\G.{3})/u"));
+            	
+            	//String sz = String.format("%02d", zoom);
+                //String s = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
+            	String s = "http://plan-osm-tile" + rand.nextInt(5) + ".epfl.ch/" + zoom + "/" + x + "/" + y + ".png";
+                System.out.println(s);
+                URL url = null;
+                try {
+                    url = new URL(s);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+                return url;
+            }
+        };
+        mOsmOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(osmProvider));
+	}
+    
+    synchronized private void removeOsm() {
+    	if(mOsmOverlay != null) {
+    		mOsmOverlay.remove();
+    		mOsmOverlay = null;
+    	}
+	}
+
+
+
+
+    synchronized private void showEpfl() {
+    	removeEpfl();
+    	final Random rand = new Random();
+        TileProvider epflProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public synchronized URL getTileUrl(int x, int y, int zoom) {
+                // The moon tile coordinate system is reversed.  This is not normal.
+                int reversedY = (1 << zoom) - y - 1;
+                // http://plan-osm-tile4.epfl.ch/15/16982/11590.png
+                // http://plan-epfl-tile0.epfl.ch/batiments-4-merc/18/000/135/850/000/169/428.png
+            	//String sx = TextUtils.join("/", String.format("%09d", x).split("(?<=\\G.{3})/u"));
+            	//String sy = TextUtils.join("/", String.format("%09d", y).split("(?<=\\G.{3})/u"));
+            	
+            	DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+				DecimalFormatSymbols customSymbol = new DecimalFormatSymbols();
+				customSymbol.setGroupingSeparator('/');
+				formatter.setDecimalFormatSymbols(customSymbol);
+				String sx = formatter.format(x + 1000000000).substring(2);
+				String sy = formatter.format(reversedY + 1000000000).substring(2);
+            	
+            	String sz = String.format(Locale.US, "%02d", zoom);
+                //String s = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, reversedY);
+            	String s = "http://plan-epfl-tile" + rand.nextInt(5) + ".epfl.ch/batiments" + layer + "-merc/" + sz + "/" + sx + "/" + sy + ".png";
+                System.out.println(s);
+                URL url = null;
+                try {
+                    url = new URL(s);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+                return url;
+            }
+        };
+        mEpflOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(epflProvider));;
+	}
+    
+    synchronized private void removeEpfl() {
+    	if(mEpflOverlay != null) {
+    		mEpflOverlay.remove();
+    		mEpflOverlay = null;
+    	}
+	}
+
+    
+    synchronized private void showLabels(BitmapDescriptor bd, LatLngBounds bounds) {
+		removeLabels();
+		GroundOverlayOptions goo = new GroundOverlayOptions().image(bd)
+				.positionFromBounds(bounds).zIndex(100000000);
+		mGroundOverlay = mMap.addGroundOverlay(goo);
+	}
+    
+	synchronized private void removeLabels() {
+		if (mGroundOverlay != null) {
+			mGroundOverlay.remove();
+			mGroundOverlay = null;
+		}
+	}
+    
+
+	
+
+    /*********
+     * https://gist.github.com/springmeyer/871897
+     */
+    public static PointF convert(LatLng epsg4326) {
+    	double longitude = epsg4326.longitude * 20037508.34 / 180;
+    	double latitude = Math.log(Math.tan((90 + epsg4326.latitude) * Math.PI / 360)) / (Math.PI / 180);
+    	latitude = latitude * 20037508.34 / 180;
+    	return new PointF((float) longitude, (float) latitude);
+    }
+    
+    /*****
+     * http://stackoverflow.com/questions/8992964/android-load-from-url-to-bitmap
+     */
+	public static Bitmap getBitmapFromURL(String src) {
+		try {
+			URL url = new URL(src);
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			return myBitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

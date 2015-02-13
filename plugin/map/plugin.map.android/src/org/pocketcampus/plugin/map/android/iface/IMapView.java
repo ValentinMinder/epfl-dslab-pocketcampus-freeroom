@@ -9,15 +9,6 @@ import org.pocketcampus.platform.android.core.IView;
  *
  */
 public interface IMapView extends IView {
-	/**
-	 * Triggered when the layers are updated.
-	 */
-	void layersUpdated();
-	
-	/**
-	 * Triggered when elements of a layer have been updated.
-	 */
-	void layerItemsUpdated();
 	
 	/**
 	 * Triggered when the search results are updated.
