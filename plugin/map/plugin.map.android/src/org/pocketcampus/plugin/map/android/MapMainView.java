@@ -214,22 +214,13 @@ public class MapMainView extends PluginView implements IMapView {
     	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.52, 6.57), 15));
         
     	mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
-			
-			@Override
 			public void onCameraChange(CameraPosition position) {
-				
 				onCamMove();
-				
-//				map.addMarker(new MarkerOptions().position(bnds.northeast).title("northeast"));
-//				map.addMarker(new MarkerOptions().position(bnds.southwest).title("southwest"));
-				
 			}
 		});
     	
     	showEpfl();
-        
-        
-
+    	handleSearchIntent(getIntent());
     }
     
     
@@ -306,35 +297,21 @@ public class MapMainView extends PluginView implements IMapView {
 		
 	}
 	
-	@Override
-	protected void handleIntent(Intent intent) {
+	private void handleSearchIntent(Intent intent) {
+		
 		Uri aData = intent.getData();
 		if (aData != null && aData.getQueryParameter("q") != null) {
 			String query = aData.getQueryParameter("q");
 			mController.search(query);
 			loading = ProgressDialog.show(this, null, null, true, false);
-//			Intent i = new Intent(this, MapSearchActivity.class);
-//			i.putExtra(SearchManager.QUERY, query);
-//			i.setAction(Intent.ACTION_SEARCH);
-//			startActivity(i);
 		}
-		handleSearchIntent(intent.getExtras());
-	}
-	
-	private boolean handleSearchIntent(Bundle extras) {
-
-		if (extras == null) {
-			return false;
-		}
-
-		if (extras.containsKey("MapElement")) {
+		
+		Bundle extras = intent.getExtras();
+		if (extras != null && extras.containsKey("MapElement")) {
 			MapItem meb = (MapItem) extras.getSerializable("MapElement");
 			showMarkers(Arrays.asList(meb));
 			adaptCamera();
-			return true;
 		}
-
-		return false;
 	}
 
 	@Override
