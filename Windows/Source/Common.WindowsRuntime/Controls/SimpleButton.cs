@@ -102,6 +102,7 @@ namespace PocketCampus.Common.Controls
             PointerReleased += ( _, __ ) => SetState( "Normal" );
             PointerCanceled += ( _, __ ) => SetState( "Normal" );
             PointerCaptureLost += ( _, __ ) => SetState( "Normal" );
+            PointerExited += ( _, __ ) => SetState( "Normal" );
 
             Holding += ( _, __ ) =>
             {
