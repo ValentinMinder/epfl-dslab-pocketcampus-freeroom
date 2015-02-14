@@ -437,7 +437,10 @@
                                               Icon="Refresh"
                                               Command="{TemplateBinding RetryCommand}"
                                               Style="{StaticResource AppNoLabelAppBarButtonStyle}"
-                                              VerticalAlignment="Top" />
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding RetryCommand,
+                                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                                   Converter={StaticResource NonDefaultToVisibility}}" />
                             </Grid>
                         </myc:SwitchCase>
                         <myc:SwitchCase Values="NetworkError">
@@ -455,7 +458,10 @@
                                               Icon="Refresh"
                                               Command="{TemplateBinding RetryCommand}"
                                               Style="{StaticResource AppNoLabelAppBarButtonStyle}"
-                                              VerticalAlignment="Top" />
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding RetryCommand,
+                                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                                   Converter={StaticResource NonDefaultToVisibility}}" />
                             </Grid>
                         </myc:SwitchCase>
                     </myc:Switch>
