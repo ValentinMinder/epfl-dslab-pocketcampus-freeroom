@@ -1,15 +1,15 @@
 package org.pocketcampus.platform.server;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
-
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.pocketcampus.platform.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.shared.utils.StringUtils;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 public class SmsSender {
 
@@ -27,12 +27,10 @@ public class SmsSender {
 			String result = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
 			boolean ok = "queued".equals(new JSONObject(result).getString("status"));
 			if(!ok) { // shit
-				System.out.println(result);
+				System.out.println("SMS error: " + result);
 			}
 			return ok;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 		}
 		return false;

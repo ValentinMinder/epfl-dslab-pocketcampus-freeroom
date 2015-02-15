@@ -1,13 +1,5 @@
 package org.pocketcampus.plugin.satellite.server.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.pocketcampus.platform.server.HttpClient;
@@ -15,6 +7,14 @@ import org.pocketcampus.plugin.satellite.server.BeerMenuImpl;
 import org.pocketcampus.plugin.satellite.shared.SatelliteBeer;
 import org.pocketcampus.plugin.satellite.shared.SatelliteBeerContainer;
 import org.pocketcampus.plugin.satellite.shared.SatelliteMenuPart;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for BeerMenuImpl.

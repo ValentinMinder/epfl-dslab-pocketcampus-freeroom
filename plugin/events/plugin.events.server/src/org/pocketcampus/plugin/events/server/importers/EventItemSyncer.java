@@ -23,16 +23,16 @@ public class EventItemSyncer {
 			e1.printStackTrace();
 		}
 		if(idMap == null) {
-			System.out.println("couldn't get non-deleted events from db... aborting");
+			System.out.println("Events: couldn't get non-deleted events from db... aborting");
 			return;
 		}
-		System.out.println(idMap.size() + " non-deleted memento events in the db");
+		System.out.println("Events: " + idMap.size() + " non-deleted memento events in the db");
 		int deleted = 0;
 		for(Entry<Long, Translations> e : idMap.entrySet()) {
 			if(e.getValue().enTr == null && e.getValue().frTr == null) {
 				// make sure we don't delete non-memento events
 				// should never happen because they are excluded in select query
-				System.out.println("ERROR is this even a Memento event? skipping");
+				System.out.println("Events: ERROR is this even a Memento event? skipping");
 				continue;
 			}
 			boolean oneTranslationAvailable = false;
@@ -44,7 +44,7 @@ public class EventItemSyncer {
 					// silent because this is the behavior when event (translation object) is deleted
 				} catch (IOException ex) {
 					ex.printStackTrace();
-					System.out.println("ERROR IOException dunno what to do... skipping");
+					System.out.println("Events: ERROR IOException dunno what to do... skipping");
 					continue;
 				}
 			}
@@ -56,7 +56,7 @@ public class EventItemSyncer {
 					// silent because this is the behavior when event (translation object) is deleted
 				} catch (IOException ex) {
 					ex.printStackTrace();
-					System.out.println("ERROR IOException dunno what to do... skipping");
+					System.out.println("Events: ERROR IOException dunno what to do... skipping");
 					continue;
 				}
 			}
@@ -67,10 +67,10 @@ public class EventItemSyncer {
 				}
 			} catch (SQLException ex) {
 				ex.printStackTrace();
-				System.out.println("couldn't mark deleted event " + e.getKey() + "... skipping");
+				System.out.println("Events: couldn't mark deleted event " + e.getKey() + "... skipping");
 			}
 		}
-		System.out.println(deleted + " memento events were marked as deleted");
+		System.out.println("Events: " + deleted + " memento events were marked as deleted");
 	}
 	
 	private static class Translations {
@@ -79,7 +79,7 @@ public class EventItemSyncer {
 	}
 
 	private static Map<Long, Translations> getIdsOfMementoEventsFromDb(Connection conn) throws SQLException {
-		Map<Long, Translations> idMap = new HashMap<Long, Translations>();
+		Map<Long, Translations> idMap = new HashMap<>();
 		PreparedStatement stm = conn.prepareStatement("SELECT eventId,translation,translation_fr FROM eventitems WHERE (translation IS NOT NULL OR translation_fr IS NOT NULL) AND deleted IS NULL;");
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {

@@ -1,26 +1,16 @@
 package org.pocketcampus.plugin.news.server;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.platform.server.XElement;
+
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of NewsSource using the EPFL RSS feeds.
@@ -35,9 +25,9 @@ public final class NewsSourceImpl implements NewsSource {
 	// All feed IDs. If you add any, make sure you update FEED_NAMES as well.
 	private static final String[] FEED_IDS = { "mediacom", "enac", "sb", "ic", "cdh", "sti", "sv", "cdm" };
 	// The feed names, per language
-	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<String, Map<String, String>>();
+	private static final Map<String, Map<String, String>> FEED_NAMES = new HashMap<>();
 	// All supported languages
-	private static final Set<String> AVAILABLE_LANGUAGES = new HashSet<String>();
+	private static final Set<String> AVAILABLE_LANGUAGES = new HashSet<>();
 	// The default language
 	private static final String DEFAULT_LANGUAGE = "en";
 	// Charset used by RSS feeds
@@ -94,7 +84,7 @@ public final class NewsSourceImpl implements NewsSource {
 			language = DEFAULT_LANGUAGE;
 		}
 
-		List<Feed> feeds = new ArrayList<Feed>();
+		List<Feed> feeds = new ArrayList<>();
 		for (String feedId : FEED_IDS) {
 			String url = String.format(FEED_URL_FORMAT, feedId, language);
 
@@ -111,7 +101,7 @@ public final class NewsSourceImpl implements NewsSource {
 			String feedName = FEED_NAMES.get(language).get(feedId);
 			boolean isMain = feedId.equals(MAIN_FEED_ID);
 
-			Map<Integer, FeedItem> items = new LinkedHashMap<Integer, FeedItem>(); // LinkedHashMap keeps insertion order
+			Map<Integer, FeedItem> items = new LinkedHashMap<>(); // LinkedHashMap keeps insertion order
 			for (XElement itemElement : channelElem.children(RSS_FEED_ITEM_ELEMENT)) {
 				String title = itemElement.child(RSS_FEED_ITEM_TITLE_ELEMENT).text();
 				int id = getFeedItemId(title, feedId);
@@ -131,7 +121,7 @@ public final class NewsSourceImpl implements NewsSource {
 		Collections.sort(feeds, new Comparator<Feed>() {
 			@Override
 			public int compare(Feed feed1, Feed feed2) {
-				int result = Boolean.valueOf(feed2.isMain).compareTo(Boolean.valueOf(feed1.isMain)); // yes, the order is right
+				int result = Boolean.valueOf(feed2.isMain).compareTo(feed1.isMain); // yes, the order is right
 				if (result == 0) {
 					return feed1.name.compareTo(feed2.name);
 				}

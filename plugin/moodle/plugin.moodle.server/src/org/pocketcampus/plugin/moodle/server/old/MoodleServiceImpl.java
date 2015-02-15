@@ -1,39 +1,27 @@
 package org.pocketcampus.plugin.moodle.server.old;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.thrift.TException;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.PostDataBuilder;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
+import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
+import org.pocketcampus.plugin.moodle.shared.*;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.thrift.TException;
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
-import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.NodeJson.ItemJson;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode;
-import org.pocketcampus.plugin.moodle.server.old.MoodleServiceImpl.SectionNode.ModuleNode.ModuleContent;
-import org.pocketcampus.plugin.moodle.shared.TequilaToken;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.shared.utils.Cookie;
-import org.pocketcampus.platform.shared.utils.PostDataBuilder;
-import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.moodle.shared.CoursesListReply;
-import org.pocketcampus.plugin.moodle.shared.MoodleCourse;
-import org.pocketcampus.plugin.moodle.shared.MoodleRequest;
-import org.pocketcampus.plugin.moodle.shared.MoodleResource;
-import org.pocketcampus.plugin.moodle.shared.MoodleSection;
-import org.pocketcampus.plugin.moodle.shared.MoodleSession;
-import org.pocketcampus.plugin.moodle.shared.SectionsListReply;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * MoodleServiceImpl
@@ -50,11 +38,10 @@ public class MoodleServiceImpl {
 	public static final String MOODLE_WEBSERVICE_URL = "http://moodle.epfl.ch/webservice/rest/server.php";
 
 	public MoodleServiceImpl() {
-		System.out.println("Starting Moodle plugin server ...");
+
 	}
 	
 	public TequilaToken getTequilaTokenForMoodle() throws TException {
-		System.out.println("getTequilaTokenForMoodle");
 		try {
 			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
 			conn2.setInstanceFollowRedirects(false);
@@ -76,7 +63,6 @@ public class MoodleServiceImpl {
 	}
 
 	public MoodleSession getMoodleSession(TequilaToken iTequilaToken) throws TException {
-		System.out.println("getMoodleSession");
 		try {
 			HttpURLConnection conn2 = (HttpURLConnection) new URL("http://moodle.epfl.ch/auth/tequila/index.php").openConnection();
 			conn2.setRequestProperty("Cookie", iTequilaToken.getLoginCookie());
@@ -104,8 +90,7 @@ public class MoodleServiceImpl {
 			public String link;
 		}
 	}
-	
-	static Gson gson = new Gson();
+
 	static JsonParser jsonParser = new JsonParser();
 	
 	private List<ItemJson> fetchNode(Cookie cookie, String reqKey, int reqType, int filterType) {
@@ -162,8 +147,7 @@ public class MoodleServiceImpl {
 		//System.out.println(getCourseSections(iRequest));
 		//System.out.println(getEventsList(iRequest));
 		
-		
-		System.out.println("getCoursesList");
+
 		String page = null;
 //		Gson gson = new Gson();
 		//NodeJson courses = null;
@@ -178,7 +162,7 @@ public class MoodleServiceImpl {
 			return new CoursesListReply(404);
 		}
 		if(page == null || page.indexOf("login/logout.php") == -1) {
-			System.out.println("not logged in");
+			System.out.println("Moodle: not logged in");
 			return new CoursesListReply(407);
 		}
 		
@@ -288,7 +272,6 @@ public class MoodleServiceImpl {
 	}
 
 	public SectionsListReply getCourseSections(MoodleRequest iRequest) throws TException {
-		System.out.println("getCourseSections");
 		String page = null;
 		Cookie cookie = new Cookie();
 		cookie.importFromString(iRequest.getISessionId().getMoodleCookie());
@@ -303,7 +286,7 @@ public class MoodleServiceImpl {
 			return new SectionsListReply(404);
 		}
 		if(page == null || page.indexOf("login/index.php") != -1) {
-			System.out.println("not logged in");
+			System.out.println("Moodle: not logged in");
 			return new SectionsListReply(407);
 		}
 		
@@ -507,7 +490,7 @@ public class MoodleServiceImpl {
 			if(httpReply.getLocation().indexOf("/pluginfile.php/") != -1)
 				urls.add(stripOffQueryString(httpReply.getLocation()));
 		} else {
-			System.out.println("error while processing " + resourceUrl);
+			System.out.println("Moodle: error while processing " + resourceUrl);
 		}
 		return urls;
 	}

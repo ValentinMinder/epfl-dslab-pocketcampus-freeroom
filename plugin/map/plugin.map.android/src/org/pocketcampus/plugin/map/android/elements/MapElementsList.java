@@ -2,8 +2,6 @@ package org.pocketcampus.plugin.map.android.elements;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.plugin.map.common.MapLayerBean;
-
 /**
  * Custom List class for <code>MapElement</code>s.
  * 
@@ -26,14 +24,6 @@ public class MapElementsList extends ArrayList<MapElement> {
 	public MapElementsList(String title, int cache) {
 		layerTitle_ = title;
 		cacheTimeInSeconds_ = cache;
-	}
-	
-	public MapElementsList(MapLayerBean mlb) {
-		layerTitle_ = mlb.getName();
-		cacheTimeInSeconds_ = mlb.getCacheInSeconds();
-		layerId_ = mlb.getExternalId();
-		iconUrl_ = mlb.getDrawableUrl();
-		isDisplayable_ = mlb.isDisplayable();
 	}
 	
 	public MapElement getItemFromId(int id) {

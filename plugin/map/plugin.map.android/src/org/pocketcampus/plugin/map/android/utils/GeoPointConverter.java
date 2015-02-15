@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.map.android.utils;
 
 import org.osmdroid.util.GeoPoint;
-import org.pocketcampus.plugin.map.common.Position;
 
 /**
  * Utility class to convert <code>GeoPoint</code>s to our own <code>Position</code>s.

@@ -1,28 +1,18 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import ch.epfl.tequila.client.model.ClientConfig;
+import ch.epfl.tequila.client.model.TequilaPrincipal;
+import ch.epfl.tequila.client.service.TequilaService;
+import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import org.pocketcampus.platform.shared.PCConstants;
+import org.pocketcampus.plugin.authentication.shared.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.thrift.TException;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
-import org.pocketcampus.platform.shared.PCConstants;
-import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
-import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
-import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
-import org.pocketcampus.plugin.authentication.shared.AuthTokenResponse;
-import org.pocketcampus.plugin.authentication.shared.AuthenticationService;
-import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
-import org.pocketcampus.plugin.authentication.shared.LogoutResponse;
-import org.pocketcampus.plugin.authentication.shared.UserAttributesRequest;
-import org.pocketcampus.plugin.authentication.shared.UserAttributesResponse;
-
-import ch.epfl.tequila.client.model.ClientConfig;
-import ch.epfl.tequila.client.model.TequilaPrincipal;
-import ch.epfl.tequila.client.service.TequilaService;
 
 /**
  * AuthenticationServiceImpl
@@ -39,13 +29,11 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	private final SessionManager _manager;
 
 	public AuthenticationServiceImpl() {
-		System.out.println("Starting Authentication plugin server ...");
 		_manager = new SessionManagerImpl();
 	}
 
 	@Override
 	public AuthTokenResponse getAuthTequilaToken() throws TException {
-		System.out.println("getAuthTequilaToken");
 		String token = authGetTequilaToken("authentication");
 		if(token == null)
 			return new AuthTokenResponse(AuthStatusCode.NETWORK_ERROR);
@@ -54,7 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public AuthSessionResponse getAuthSession(AuthSessionRequest req) throws TException {
-		System.out.println("getAuthSession");
 		try {
 			TequilaPrincipal principal = authGetTequilaPrincipal(req.getTequilaToken());
 			if(principal == null)
@@ -69,7 +56,6 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public LogoutResponse destroyAllUserSessions(LogoutRequest req) throws TException {
-		System.out.println("destroyAllUserSessions");
 		String sciper = getSciperFromSession(req.getSessionId());
 		if(sciper == null)
 			return new LogoutResponse(AuthStatusCode.INVALID_SESSION);
@@ -83,8 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
 	@Override
 	public UserAttributesResponse getUserAttributes(UserAttributesRequest req) throws TException {
-		System.out.println("getUserAttributes");
-		List<String> fields = new LinkedList<String>();
+		List<String> fields = new LinkedList<>();
 		for(String s : req.getAttributeNames())
 			fields.add("`" + s + "`");
 		AuthUserDetailsResp resp = getUserFieldsFromSession(new AuthUserDetailsReq(req.getSessionId(), fields));
@@ -204,8 +189,8 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	public static class AuthUserDetailsReq {
-		public String sessionId;
-		public List<String> requestedFields;
+		public final String sessionId;
+		public final List<String> requestedFields;
 
 		public AuthUserDetailsReq(String sessionId, List<String> requestedFields) {
 			this.sessionId = sessionId;
@@ -214,7 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	public static class AuthUserDetailsResp {
-		public List<String> fieldValues;
+		public final List<String> fieldValues;
 
 		public AuthUserDetailsResp(List<String> fieldValues) {
 			this.fieldValues = fieldValues;
@@ -231,7 +216,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	}
 
 	private String getFieldFromSession(String sess, String field) {
-		List<String> list = _manager.getFields(sess, Arrays.asList(new String[]{field}));
+		List<String> list = _manager.getFields(sess, Arrays.asList(field));
 		return (list == null ? null : firstValue(list.get(0)));
 	}
 

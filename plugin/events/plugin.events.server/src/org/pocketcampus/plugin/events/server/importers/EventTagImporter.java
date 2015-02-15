@@ -1,15 +1,14 @@
 package org.pocketcampus.plugin.events.server.importers;
 
+import com.google.gson.Gson;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.events.server.utils.MyQuery;
-
-import com.google.gson.Gson;
 
 public class EventTagImporter {
 
@@ -34,21 +33,21 @@ public class EventTagImporter {
 			e.printStackTrace();
 		}
 		if(json == null) {
-			System.out.println("failed to get tags from Memento... aborting");
+			System.out.println("Events: failed to get tags from Memento... aborting");
 			return;
 		}
 		Gson gson = new Gson();
 		MementoTag [] tags = gson.fromJson(json, MementoTag[].class);
-		System.out.println("received " + tags.length + " tags from Memento");
+		System.out.println("Events: received " + tags.length + " tags from Memento");
 		for(MementoTag t : tags) {
 			try {
 				insertUpdateEventTag(t, conn);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				System.out.println("failed to insert/update tag " + t.slug + "... skipping");
+				System.out.println("Events: failed to insert/update tag " + t.slug + "... skipping");
 			}
 		}
-		System.out.println("finished importing tags");
+		System.out.println("Events: finished importing tags");
 	}
 	
 	private static void insertUpdateEventTag(MementoTag t, Connection conn) throws SQLException {
@@ -64,7 +63,7 @@ public class EventTagImporter {
 		PreparedStatement stm = q.getPreparedStatement(conn);
 		stm.executeUpdate();
 		stm.close();
-		System.out.println("inserted/updated tag " + t.slug);
+		System.out.println("Events: inserted/updated tag " + t.slug);
 	}
 	
 }

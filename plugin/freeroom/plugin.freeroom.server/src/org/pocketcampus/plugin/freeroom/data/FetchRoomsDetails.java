@@ -1,7 +1,7 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.plugin.freeroom.server.utils.Utils;
 
@@ -65,12 +65,12 @@ public class FetchRoomsDetails {
      * @return The JSONObject associated or null if an error occured (wrong id,
      * error...)
      */
-    public JSONObject fetchRoomDetail(String uid) {
+    public JsonObject fetchRoomDetail(String uid) {
         StringBuilder mRoomDetail = new StringBuilder();
         URL url;
         InputStream is;
         BufferedReader bufferedInput;
-        JSONObject mJSONRoom;
+        JsonObject mJSONRoom;
 
         try {
             url = new URL(URL_INDIVIDUAL_ROOM + uid);
@@ -82,13 +82,14 @@ public class FetchRoomsDetails {
                 mRoomDetail.append(line);
             }
 
-            mJSONRoom = new JSONObject(mRoomDetail.toString());
+            JsonParser parser = new JsonParser();
+            mJSONRoom = parser.parse(mRoomDetail.toString()).getAsJsonObject();
 
             if (mJSONRoom.has("result")) {
-                return mJSONRoom.getJSONObject("result");
+                return mJSONRoom.get("result").getAsJsonObject();
             }
 
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -100,7 +101,7 @@ public class FetchRoomsDetails {
      * @param room The room to be inserted
      * @return true if the room has been successfully inserted
      */
-    private boolean insertIntoDBRoomDetail(JSONObject room) {
+    private boolean insertIntoDBRoomDetail(JsonObject room) {
         if (room == null) {
             return false;
         }
@@ -129,9 +130,9 @@ public class FetchRoomsDetails {
             // filling the query with values
             // doorCode is mapped to name in the JSON
             if (room.has("id") && room.has("name")) {
-                query.setString(1, room.getString("id"));
-                query.setString(2, room.getString("name"));
-                query.setString(3, room.getString("name").replaceAll("\\s", ""));
+                query.setString(1, room.get("id").getAsString());
+                query.setString(2, room.get("name").getAsString());
+                query.setString(3, room.get("name").getAsString().replaceAll("\\s", ""));
             } else {
                 // the required field for inserting a new record in the DB are
                 // not available,
@@ -143,107 +144,107 @@ public class FetchRoomsDetails {
             // we still continue to check the other
 
             if (room.has("alias")) {
-                query.setString(4, room.getString("alias"));
+                query.setString(4, room.get("alias").getAsString());
             } else {
                 query.setNull(4, Types.CHAR);
             }
 
             if (room.has("places")) {
-                query.setInt(5, room.getInt("places"));
+                query.setInt(5, room.get("places").getAsInt());
             } else {
                 query.setNull(5, Types.INTEGER);
             }
 
             if (room.has("site_label")) {
-                query.setString(6, room.getString("site_label"));
+                query.setString(6, room.get("site_label").getAsString());
             } else {
                 query.setNull(6, Types.CHAR);
             }
 
             if (room.has("surface")) {
-                query.setDouble(7, room.getDouble("surface"));
+                query.setDouble(7, room.get("surface").getAsDouble());
             } else {
                 query.setNull(7, Types.DOUBLE);
             }
 
             if (room.has("building_name")) {
-                query.setString(8, room.getString("building_name"));
+                query.setString(8, room.get("building_name").getAsString());
             } else {
                 query.setNull(8, Types.CHAR);
             }
 
             if (room.has("zone")) {
-                query.setString(9, room.getString("zone"));
+                query.setString(9, room.get("zone").getAsString());
             } else {
                 query.setNull(9, Types.CHAR);
             }
 
             if (room.has("unitlabel")) {
-                query.setString(10, room.getString("unitlabel"));
+                query.setString(10, room.get("unitlabel").getAsString());
             } else {
                 query.setNull(10, Types.CHAR);
             }
 
             if (room.has("site_id")) {
-                query.setInt(11, room.getInt("site_id"));
+                query.setInt(11, room.get("site_id").getAsInt());
             } else {
                 query.setNull(11, Types.INTEGER);
             }
 
             if (room.has("floor")) {
-                query.setInt(12, room.getInt("floor"));
+                query.setInt(12, room.get("floor").getAsInt());
             } else {
                 query.setNull(12, Types.INTEGER);
             }
 
             if (room.has("unitname")) {
-                query.setString(13, room.getString("unitname"));
+                query.setString(13, room.get("unitname").getAsString());
             } else {
                 query.setNull(13, Types.CHAR);
             }
 
             if (room.has("site_name")) {
-                query.setString(14, room.getString("site_name"));
+                query.setString(14, room.get("site_name").getAsString());
             } else {
                 query.setNull(14, Types.CHAR);
             }
 
             if (room.has("unitid")) {
-                query.setInt(15, room.getInt("unitid"));
+                query.setInt(15, room.get("unitid").getAsInt());
             } else {
                 query.setNull(15, Types.INTEGER);
             }
 
             if (room.has("building_label")) {
-                query.setString(16, room.getString("building_label"));
+                query.setString(16, room.get("building_label").getAsString());
             } else {
                 query.setNull(16, Types.CHAR);
             }
 
             if (room.has("cf")) {
-                query.setString(17, room.getString("cf"));
+                query.setString(17, room.get("cf").getAsString());
             } else {
                 query.setNull(17, Types.CHAR);
             }
 
             if (room.has("adminuse")) {
-                query.setString(18, room.getString("adminuse"));
+                query.setString(18, room.get("adminuse").getAsString());
             } else {
                 query.setNull(18, Types.CHAR);
             }
 
             if (room.has("dincat")) {
                 String typeFR = getFromFileDinCatStringFR(room
-                        .getString("dincat"));
+                        .get("dincat").getAsString());
                 String typeEN = getFromFileDinCatStringEN(room
-                        .getString("dincat"));
+                        .get("dincat").getAsString());
                 query.setString(19, typeFR);
                 query.setString(20, typeEN);
-                query.setString(21, room.getString("dincat"));
+                query.setString(21, room.get("dincat").getAsString());
                 query.setInt(22,
-                        Utils.determineGroupAccessRoom(room.getString("id")));
+                        Utils.determineGroupAccessRoom(room.get("id").getAsString()));
                 // in case of update
-                query.setString(23, room.getString("dincat"));
+                query.setString(23, room.get("dincat").getAsString());
                 query.setString(24, typeFR);
                 query.setString(25, typeEN);
             } else {
@@ -251,7 +252,7 @@ public class FetchRoomsDetails {
                 query.setNull(20, Types.CHAR);
                 query.setNull(21, Types.CHAR);
                 query.setInt(22,
-                        Utils.determineGroupAccessRoom(room.getString("id")));
+                        Utils.determineGroupAccessRoom(room.get("id").getAsString()));
                 query.setNull(23, Types.CHAR);
                 query.setNull(24, Types.CHAR);
                 query.setNull(25, Types.CHAR);
@@ -259,9 +260,6 @@ public class FetchRoomsDetails {
 
             return query.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } catch (JSONException e) {
             e.printStackTrace();
             return false;
         }
@@ -307,9 +305,7 @@ public class FetchRoomsDetails {
                         dincat_textFR.put(lineSplitted[1], lineSplitted[3]);
                         dincat_textEN.put(lineSplitted[1], lineSplitted[4]);
                     } else {
-                        System.err
-                                .println("Cannot extract dincat plain text for "
-                                        + line);
+                        System.err.println("FreeRoom: Cannot extract dincat plain text for " + line);
                     }
                 }
                 sc.close();

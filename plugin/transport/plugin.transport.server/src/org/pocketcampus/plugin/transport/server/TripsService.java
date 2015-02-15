@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.transport.server;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Service that finds trips from one station to another.

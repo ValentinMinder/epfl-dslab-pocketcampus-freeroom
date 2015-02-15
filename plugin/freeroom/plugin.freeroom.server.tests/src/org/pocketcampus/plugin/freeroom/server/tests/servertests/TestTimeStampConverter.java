@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.freeroom.server.tests.servertests;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Calendar;
-
 import org.junit.Test;
 import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
 import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+
+import java.util.Calendar;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * 

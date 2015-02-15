@@ -1,24 +1,6 @@
 package org.pocketcampus.plugin.cloudprint.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.TException;
@@ -26,16 +8,16 @@ import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintColorConfig;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintMultiPageLayout;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintOrientation;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService;
-import org.pocketcampus.plugin.cloudprint.shared.CloudPrintStatusCode;
-import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentRequest;
-import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentResponse;
-import org.pocketcampus.plugin.cloudprint.shared.PrintPreviewDocumentResponse;
+import org.pocketcampus.plugin.cloudprint.shared.*;
 
-import com.google.gson.Gson;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.util.*;
 
 /**
  * CloudPrintServiceImpl
@@ -51,7 +33,6 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 	private static final int PRINT_PREVIEW_TIMEOUT = 30000;
 	
 	public CloudPrintServiceImpl() {
-		System.out.println("Starting CloudPrint plugin server ...");
 	}
 
 	@Override

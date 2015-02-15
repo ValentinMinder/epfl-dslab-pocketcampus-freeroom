@@ -1,7 +1,10 @@
 package org.pocketcampus.plugin.food.server.tests;
 
-import static org.junit.Assert.*;
+import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.plugin.food.server.MenuImpl;
+import org.pocketcampus.plugin.food.shared.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.plugin.food.server.*;
-import org.pocketcampus.plugin.food.shared.*;
-
-import org.joda.time.LocalDate;
+import static org.junit.Assert.*;
 
 /**
  * Tests for MenuImpl.

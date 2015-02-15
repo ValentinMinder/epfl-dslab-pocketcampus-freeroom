@@ -1,11 +1,11 @@
 package org.pocketcampus.plugin.transport.server;
 
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 // The SBB HAFAS API's schema is available at http://fahrplan.sbb.ch/xsd/hafasXMLInterface.xsd
 
@@ -36,8 +36,8 @@ final class HafasUtil {
 	private static final String STATION_LATITUDE_ATTRIBUTE = "y";
 
 	// EPFL-centered special names for common stations
-	private static final Map<String, String> SPECIAL_NAMES = new HashMap<String, String>();
-	private static final Map<String, String> SPECIAL_NAMES_INVERSE = new HashMap<String, String>();
+	private static final Map<String, String> SPECIAL_NAMES = new HashMap<>();
+	private static final Map<String, String> SPECIAL_NAMES_INVERSE = new HashMap<>();
 
 	static {
 		// The entire M1 line goes into SPECIAL_NAMES for convenience

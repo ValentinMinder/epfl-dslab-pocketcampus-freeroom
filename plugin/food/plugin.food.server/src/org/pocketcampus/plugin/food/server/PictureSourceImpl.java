@@ -1,15 +1,15 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.food.shared.MealType;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 public final class PictureSourceImpl implements PictureSource {
-	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<MealType, String>();
+	private static final Map<MealType, String> MEAL_TYPE_PICTURE_URLS = new HashMap<>();
 
 	private static final String MEAL_PICS_FOLDER_URI = "backend/meal-pics";
 	private static final String RESTAURANTS_PHOTOS_FOLDER_URI = "backend/restaurant-pics";
@@ -33,7 +33,7 @@ public final class PictureSourceImpl implements PictureSource {
 		String folderPath = PocketCampusServer.CONFIG.getString("FOOD_RESTAURANTS_PHOTOS_FOLDER_LOCATION");
 		File file = new File(folderPath + "/" + normalizedName + RESTAURANTS_PHOTOS_FILE_EXTENSION);
 		if (!file.isFile()) {
-			System.err.println("INFO: did not find expected photo file for restaurant " + restaurantName + " in '" + folderPath + "'");
+			System.err.println("Food: did not find expected photo file for restaurant " + restaurantName + " in '" + folderPath + "'");
 			return null;
 		}
 		String prefix = PocketCampusServer.CONFIG.getString("APACHE_SERVER_BASE_URL") + "/" + RESTAURANTS_PHOTOS_FOLDER_URI;
@@ -45,7 +45,6 @@ public final class PictureSourceImpl implements PictureSource {
 	}
 
 	/**
-	 * @param restaurantName
 	 * @return restaurantName that is accents-freed, lower-cased,
 	 *         and apostrophes and spaces replaced by _
 	 *         Examples:

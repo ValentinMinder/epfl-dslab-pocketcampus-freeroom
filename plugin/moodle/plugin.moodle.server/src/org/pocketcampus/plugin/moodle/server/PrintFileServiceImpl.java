@@ -1,12 +1,6 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
@@ -17,7 +11,12 @@ import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileResponse2;
 import org.pocketcampus.plugin.moodle.shared.MoodleStatusCode2;
 
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Implementation of PrintService.
@@ -89,7 +88,7 @@ public class PrintFileServiceImpl implements PrintFileService {
 			// Connection is lazily executed whenever you request any status.
 			int responseCode = connection.getResponseCode();
 			if(responseCode != 200) {
-				System.out.println("ERROR: returned status " + responseCode);
+				System.out.println("Moodle: ERROR: returned status " + responseCode);
 				return new MoodlePrintFileResponse2(MoodleStatusCode2.NETWORK_ERROR);
 			}
 			InputStreamReader isr = new InputStreamReader(connection.getInputStream(), "UTF-8");

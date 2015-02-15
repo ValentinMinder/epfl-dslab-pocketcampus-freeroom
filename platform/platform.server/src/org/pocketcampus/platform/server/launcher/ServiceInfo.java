@@ -1,9 +1,9 @@
 package org.pocketcampus.platform.server.launcher;
 
-import javax.servlet.http.HttpServlet;
-
 import org.apache.thrift.TProcessor;
 import org.pocketcampus.platform.server.StateChecker;
+
+import javax.servlet.http.HttpServlet;
 
 public final class ServiceInfo {
 	public final String name;
