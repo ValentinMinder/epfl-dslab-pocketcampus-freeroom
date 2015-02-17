@@ -230,7 +230,7 @@ static inline void ServiceRequestLog(PCServiceRequest* serviceRequest, NSString*
             return;
         }
         
-        ServiceRequestLog(self, @"other error: %@", error);
+        ServiceRequestLog(self, @"other error: %@ Thrift exception: %@", error, texception);
         [self indicateFailureToDelegateCompletion:^{
             [self finish];
         }];

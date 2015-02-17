@@ -108,6 +108,7 @@ static NSTimeInterval kHideNavbarSeconds = 6.0;
     actionButton.enabled = NO;
     
     UIBarButtonItem* printButton = [[UIBarButtonItem alloc] initWithImage:[PCValues imageForPrintBarButtonLandscapePhone:NO] landscapeImagePhone:[PCValues imageForPrintBarButtonLandscapePhone:YES] style:UIBarButtonItemStyleBordered target:self action:@selector(printButtonTapped)];
+    printButton.accessibilityLabel = NSLocalizedStringFromTable(@"Print", @"MoodlePlugin", nil);
     printButton.accessibilityHint = NSLocalizedStringFromTable(@"PrintThisDocumentAtEPFL", @"MoodlePlugin", nil);
     printButton.enabled = NO;
     

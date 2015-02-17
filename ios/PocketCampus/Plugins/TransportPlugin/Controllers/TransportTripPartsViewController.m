@@ -90,9 +90,8 @@ typedef enum {
         currentY += departure.frame.size.height + 0.0;
         UIView* line = nil;
         
-        NSString* lineName = @"|";
+        NSString* lineName = NSLocalizedStringFromTable(@"(unknown)", @"TransportPlugin", nil);
         if (connection.line != nil && connection.line.name != nil) {
-            //lineName = [TransportUtils nicerName:connection.line.name];
             lineName = connection.line.shortName;
         }
         line = [self longLineViewWithTitle:lineName startingY:currentY];

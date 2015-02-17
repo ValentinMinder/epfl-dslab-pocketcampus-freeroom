@@ -51,6 +51,8 @@
 
 /* Accessiblity */
 
+"Options" = "Options";
+"ShowOptionsForDinnerAndOtherMenus" = "Permet de voir les menus du soir ou pour un autre jour";
 "ShowsMenuForThisRestaurant" = "Affiche le menu de ce restaurant";
 "AddRestaurantToFavorites" = "Ajouter ce restaurant aux favoris";
 "RemoveRestaurantFromFavorites" = "Enlever ce restaurant des favoris";

@@ -82,6 +82,7 @@
 "TryAgain" = "Try again";
 
 //CloudPrintPreviewViewController
+"SorryErrorOccured" = "Sorry, an error occured with this file.";
 "PreparingPrintPreviewMightTakeSomeTime" = "Generating preview\nMight last a few seconds...";
 "PreviousWithArrow" = "← Previous";
 "NextWithArrow" = "Next →";

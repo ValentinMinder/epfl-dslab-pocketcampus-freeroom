@@ -211,6 +211,7 @@ static NSInteger const kDisclaimerSection = 0;
             __weak __typeof(self) welf = self;
             RecommendedAppsForCategoryCell* categCell = [[RecommendedAppsForCategoryCell alloc] initWithRecommendedApps:[self recommendedAppsInCategory:category] forCategory:category appTappedBlock:^(RecommendedApp *app) {
                 NSString* appOpenURLPattern = app.appOpenURLPattern;
+#warning DANGEROUS to treat pattern as Objective-C format. Should change that.
                 if(appOpenURLPattern){
                     BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:appOpenURLPattern]];
                     if(canOpen){
