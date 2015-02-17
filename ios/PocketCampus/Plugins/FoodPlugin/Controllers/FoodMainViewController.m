@@ -153,6 +153,8 @@ static NSString* const kMealTypeCellReuseIdentifier = @"MealTypeCell";
     self.mealTypesCollectionView.collectionViewLayout = layout;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ClockBarButton"] style:UIBarButtonItemStylePlain target:self action:@selector(clockButtonTapped)];
+    self.navigationItem.rightBarButtonItem.accessibilityLabel = NSLocalizedStringFromTable(@"Options", @"FoodPlugin", nil);
+    self.navigationItem.rightBarButtonItem.accessibilityHint = NSLocalizedStringFromTable(@"ShowOptionsForDinnerAndOtherMenus", @"FoodPlugin", nil);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fillCollectionsAndUpdateUI) name:kFoodFavoritesRestaurantsUpdatedNotification object:self.foodService];
@@ -574,6 +576,11 @@ static NSString* const kLastSelectedSegmentedIndexKey = @"FoodMainViewController
 #pragma mark - Dealloc
 
 - (void)dealloc {
+    [self.lgRefreshControl setTarget:nil selector:nil];
+    self.restaurantsTableView.delegate = nil;
+    self.restaurantsTableView.dataSource = nil;
+    self.mealTypesCollectionView.delegate = nil;
+    self.mealTypesCollectionView.dataSource = nil;
     [self.foodService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     @try {

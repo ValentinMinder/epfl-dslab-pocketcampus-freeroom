@@ -36,10 +36,22 @@ extern NSString* const kPCUtilsExtensionFolder;
 @interface PCUtils : NSObject
 
 + (BOOL)isRetinaDevice;
++ (BOOL)is3_5inchDevice;
 + (BOOL)is4inchDevice;
 + (BOOL)is4_7inchDevice;
 + (BOOL)is5_5inchDevice;
 + (BOOL)isIdiomPad;
+
+/**
+ * Similar to [[NSBundle mainBundle] pathForResource:] but will add retina postfix if necessary
+ */
++ (NSString*)pathForImageResource:(NSString*)resourceName;
+
+/**
+ * @return "@2x", "@3x" or "" (empty string) depending on device's screeen
+ */
++ (NSString*)postfixForResources;
+
 + (BOOL)isOSVersionSmallerThan:(float)version;
 + (BOOL)isOSVersionGreaterThanOrEqualTo:(float)version;
 + (float)OSVersion;
@@ -61,9 +73,16 @@ extern NSString* const kPCUtilsExtensionFolder;
 + (void)showServerErrorAlert;
 + (void)showConnectionToServerTimedOutAlert;
 
-+ (NSDictionary*)urlStringParameters:(NSString*)urlString;
 
-/*
+/**
+ * @return a dictionary of key-values of the parameters in the URL, or nil if
+ * the URL is malformed.
+ * For example http://example.com/test?toto=bonjour returns @{@"toto":@"bonjour"}
+ * @param urlString the URL string to parse.
+ */
++ (NSDictionary*)parametersDictionaryForURLString:(NSString*)urlString;
+
+/**
  * Computes in background total size of file or folder.
  * totalNbBytes is 0 if either path does not exist or size is actually 0
  * error is YES if there was an error while reading the file
@@ -77,8 +96,8 @@ extern NSString* const kPCUtilsExtensionFolder;
  */
 + (UIImage*)iconForFileExtension:(NSString*)extension;
 
-/*
- * Returns [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable
+/**
+ * @return [[Reachability reachabilityForInternetConnection] isReachable], i.e. whether internet is reachable
  */
 + (BOOL)hasDeviceInternetConnection;
 + (BOOL)hasAppAccessToLocation;

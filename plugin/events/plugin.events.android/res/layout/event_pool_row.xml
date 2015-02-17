@@ -1,73 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    style="@style/PocketCampusRow"
+    android:orientation="horizontal" >
 
-    android:orientation="horizontal"
-    android:padding="5dip" >
+    <ImageView
+        android:id="@+id/event_thumbnail"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="50dip"
+        android:layout_height="50dip" />
 
-	<!--  ListRow Left sied Thumbnail image -->
-	<LinearLayout android:id="@+id/event_thumbnail_container" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="3dip"		
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/pocketcampus_image_border" 
-	    android:layout_marginRight="5dip">
-        
-		<ImageView     
-			android:id="@+id/event_thumbnail"   
-	        android:layout_width="50dip"
-	        android:layout_height="50dip"/>
-        
-	</LinearLayout>
- 
-	<LinearLayout
-	    android:orientation="vertical"
-	    android:gravity="center_vertical"  
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_alignTop="@+id/event_thumbnail_container"
         android:layout_alignBottom="@+id/event_thumbnail_container"
+        android:layout_alignTop="@+id/event_thumbnail_container"
         android:layout_toRightOf="@+id/event_thumbnail_container"
-	    >
-        
-        
-		<!-- Title Of Song-->
-	    <TextView
-	        android:id="@+id/event_title"
-	        android:singleLine="true"
-	        android:scrollHorizontally="true"
-	        android:text="Rihanna Love the way lie"
-	        android:textColor="#040404"
-	        android:typeface="sans" 
-	        android:layout_marginRight="30dip"
-	        android:layout_marginTop="-5dip"
-	        android:textSize="18sp"
-	        android:textStyle="bold"/>
-	
-		<!-- Artist Name -->
-	    <TextView
-	        android:id="@+id/event_place"
-	        android:singleLine="true"
-	        android:scrollHorizontally="true"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:textColor="#343434"
-	        android:textSize="13sp"
-	        android:layout_marginTop="1dip"
-	        android:layout_marginRight="15dip"
-	        android:text="Just gona stand there and ..." />
-	
-	</LinearLayout>
-	    
-	    
-     <!-- Rightend Arrow -->    
-     <ImageView 
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <!-- Title Of Song -->
+
+        <TextView
+            android:id="@+id/event_title"
+            style="@style/PocketCampusListItemTitle"
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="-5dip"
+            android:text="Rihanna Love the way lie" />
+
+        <!-- Artist Name -->
+
+        <TextView
+            android:id="@+id/event_place"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_marginTop="1dip"
+            android:text="Just gona stand there and ..." />
+    </LinearLayout>
+
+    <!-- Rightend Arrow -->
+
+    <ImageView
         android:layout_width="wrap_content"
-     	android:layout_height="wrap_content"
-     	android:src="@drawable/pocketcampus_list_arrow"
-     	android:layout_alignParentRight="true"
-     	android:layout_centerVertical="true"/>
-     
-     
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/pocketcampus_list_arrow" />
+
 </RelativeLayout>

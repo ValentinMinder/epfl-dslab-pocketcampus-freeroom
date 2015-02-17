@@ -36,7 +36,7 @@
 "POOL1Printers" = "POOL1 printers";
 "OpenPCandShowMyPrintLayerExplanations" = "Map cannot be displayed from here. Open PocketCampus > Map, then select the \"Printers\" layer.";
 "DidYouKnowExtensionTitle" = "Print from other apps";
-"DidYouKnowExtensionSubtitle" = "Did you know that you can print PDFs from other app? Tap to see how.";
+"DidYouKnowExtensionSubtitle" = "Did you know that you can use EPFL Print to print PDFs from other app? Tap to see how.";
 "1Copy" = "1 copy";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";
@@ -82,6 +82,7 @@
 "TryAgain" = "Try again";
 
 //CloudPrintPreviewViewController
+"SorryErrorOccured" = "Sorry, an error occured with this file.";
 "PreparingPrintPreviewMightTakeSomeTime" = "Generating preview\nMight last a few seconds...";
 "PreviousWithArrow" = "← Previous";
 "NextWithArrow" = "Next →";

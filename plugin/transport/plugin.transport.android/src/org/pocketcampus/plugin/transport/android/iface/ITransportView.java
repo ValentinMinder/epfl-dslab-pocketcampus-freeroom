@@ -4,47 +4,29 @@ import java.util.List;
 
 import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
-import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
+import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
 /**
  * The interface that defines the methods implemented by a view of the plugin.
  * 
- * @author Oriane <oriane.rodriguez@epfl.ch>
- * @author Pascal <pascal.scheiben@epfl.ch>
- * @author Florian <florian.laurent@epfl.ch>
+ * @author silviu@pocketcampus.org
+ *
  * 
  */
 public interface ITransportView extends IView {
 
-	/**
-	 * Called by the model when the list of auto completed stations has been
-	 * updated.
-	 */
-	void autoCompletedStationsUpdated();
+	public void searchForStationsFinished(String searchQuery,
+			List<TransportStation> result);
 
-	/**
-	 * Called by the model when the data for the resulted connections between
-	 * two stations has been updated.
-	 * 
-	 * @param result
-	 *            A <code>QueryTripsResult</code> consisting of the connections
-	 *            between two stations, and all the information that goes with
-	 *            it.
-	 */
-	void connectionsUpdated(QueryTripsResult result);
+	public void searchForStationsFailed(String searchQuery, ErrorCause cause);
 
-	/**
-	 * Called by the model when the list of favorite stations has been updated
-	 * and refreshes the view.
-	 */
-	void favoriteStationsUpdated();
+	public void searchForTripsFinished(TransportStation from,
+			TransportStation to, List<TransportTrip> result);
 
-	/**
-	 * Called by the model when the stations corresponding to a list of
-	 * <code>String</code> have been updated.
-	 * 
-	 * @param result
-	 *            The list of corresponding stations.
-	 */
-	public void stationsFromNamesUpdated(List<TransportStation> result);
+	public void searchForTripsFailed(TransportStation from,
+			TransportStation to, ErrorCause cause);
+
+	public void getDefaultStationsFinished(List<TransportStation> result);
+
+	public void getDefaultStationsFailed(ErrorCause cause);
 }

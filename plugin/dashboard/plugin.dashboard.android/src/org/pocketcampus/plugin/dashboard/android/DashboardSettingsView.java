@@ -6,7 +6,6 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.dashboard.R;
@@ -51,6 +50,8 @@ public class DashboardSettingsView extends PluginView {
 		
 		mList = (ListView) findViewById(R.id.dashboard_settings_list);
 		
+		setTitle(R.string.dashboard_settings);
+		
 		updateDisplay();
 	}
 	
@@ -87,9 +88,6 @@ public class DashboardSettingsView extends PluginView {
 				null, 
 				R.drawable.app_icon, 
 				"ViewWebsite");
-		
-		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.dashboard_settings_list_header);
 
 		Preparated<ListEntry> p = new Preparated<ListEntry>(Arrays.asList(authItem, aboutItem, playStoreItem, facebookItem, websiteItem), new Preparator<ListEntry>() {
 			public int[] resources() {
@@ -111,10 +109,8 @@ public class DashboardSettingsView extends PluginView {
 				map.put(MAP_KEY_TRACKING_TEXT, item.trackingText);
 			}
 		});
-		adapter.addSection(getString(R.string.dashboard_settings), new LazyAdapter(this, p.getMap(), 
-				R.layout.dashboard_settings_list_row, p.getKeys(), p.getResources()));
 		
-
+		LazyAdapter adapter = new LazyAdapter(this, p.getMap(), R.layout.dashboard_settings_list_row, p.getKeys(), p.getResources());
 
 		mList.setAdapter(adapter);
 		

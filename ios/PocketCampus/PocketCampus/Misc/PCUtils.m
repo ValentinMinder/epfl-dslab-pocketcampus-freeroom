@@ -39,28 +39,23 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 @implementation PCUtils
 
 + (BOOL)isRetinaDevice{
-    return ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))?1:0;
+    return [UIScreen mainScreen].scale >= 2.0;
+}
+
++ (BOOL)is3_5inchDevice {
+    return ([UIScreen mainScreen].bounds.size.height == 480);
 }
 
 + (BOOL)is4inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 568) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 568);
 }
 
 + (BOOL)is4_7inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 667) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 667);
 }
 
 + (BOOL)is5_5inchDevice {
-    if ([UIScreen mainScreen].bounds.size.height == 736) {
-        return YES;
-    }
-    return NO;
+    return ([UIScreen mainScreen].bounds.size.height == 736);
 }
 
 + (BOOL)isIdiomPad {
@@ -69,6 +64,22 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     pad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 #endif
     return pad;
+}
+
++ (NSString*)pathForImageResource:(NSString*)resourceName {
+    [PCUtils throwExceptionIfObject:resourceName notKindOfClass:[NSString class]];
+    return [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@%@", resourceName, [PCUtils postfixForResources]] ofType:@"png"];
+}
+
++ (NSString*)postfixForResources {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    if (scale == 2.0) {
+        return @"@2x";
+    }
+    if (scale == 3.0) {
+        return @"@3x";
+    }
+    return @"";
 }
 
 + (BOOL)isOSVersionSmallerThan:(float)version {
@@ -183,17 +194,12 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 #endif
 }
 
-+ (NSDictionary*)urlStringParameters:(NSString*)urlString {
-    
++ (NSDictionary*)parametersDictionaryForURLString:(NSString*)urlString {
     [self throwExceptionIfObject:urlString notKindOfClass:[NSString class]];
-    
-    NSMutableDictionary* queryStringDictionary = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* queryStringDictionary = [NSMutableDictionary dictionary];
     @try {
-        
         NSArray* urlComponents = [urlString componentsSeparatedByString:@"?"];
-        
         NSArray* paramsComponents = [urlComponents[1] componentsSeparatedByString:@"&"];
-        
         for (NSString* keyValuePair in paramsComponents) {
             NSArray* pairComponents = [keyValuePair componentsSeparatedByString:@"="];
             NSString* key = pairComponents[0];
@@ -206,7 +212,7 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
     @catch (NSException *exception) {
         return nil;
     }
-    return  [queryStringDictionary copy]; //non-mutable copy
+    return queryStringDictionary;
 }
 
 + (void)fileOrFolderSizeWithPath:(NSString*)path completion:(void (^)(unsigned long long totalNbBytes, BOOL error))completion {

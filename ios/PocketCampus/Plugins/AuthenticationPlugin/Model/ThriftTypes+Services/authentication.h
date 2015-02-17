@@ -260,6 +260,7 @@ enum AuthStatusCode {
 @end
 
 @protocol AuthenticationService <NSObject>
+- (AuthSessionResponse *) getOAuth2TokensFromCode: (AuthSessionRequest *) req;  // throws TException
 - (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
 - (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;  // throws TException
 - (LogoutResponse *) destroyAllUserSessions: (LogoutRequest *) req;  // throws TException
@@ -285,4 +286,5 @@ enum AuthStatusCode {
 
 @interface authenticationConstants : NSObject {
 }
++ (NSMutableArray *) OAUTH2_SCOPES;
 @end

@@ -6,28 +6,32 @@
 
     <uses-sdk android:minSdkVersion="8" />
 
-
     <application
-        android:label="@string/app_name"
         android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:icon="@drawable/news_icon"
-        android:theme="@style/PocketCampusTheme" >
+        android:label="@string/app_name"
+        android:logo="@drawable/news_icon_white"
+        android:theme="@style/PocketCampusActionBarTheme" >
         <activity
+            android:name="org.pocketcampus.plugin.news.android.NewsMainView"
             android:icon="@drawable/news_icon"
             android:label="@string/news_plugin_title"
-            android:screenOrientation="nosensor"
-            android:name="org.pocketcampus.plugin.news.android.NewsMainView" >
-            <intent-filter >
+            android:logo="@drawable/news_icon_white"
+            android:screenOrientation="nosensor" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.news.android.NewsPreferencesView"
-            android:screenOrientation="nosensor">
+        <activity
+            android:name="org.pocketcampus.plugin.news.android.NewsPreferencesView"
+            android:screenOrientation="nosensor" >
         </activity>
-        <activity android:name="org.pocketcampus.plugin.news.android.NewsItemView"
+        <activity
+            android:name="org.pocketcampus.plugin.news.android.NewsItemView"
+            android:logo="@drawable/news_icon_white"
             android:screenOrientation="nosensor" >
         </activity>
 
@@ -37,8 +41,8 @@
         </service>
     </application>
 
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

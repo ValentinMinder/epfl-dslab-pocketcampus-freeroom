@@ -39,6 +39,8 @@
 
 #import "PCAboutViewController.h"
 
+#import "UIBarButtonItem+LGAAdditions.h"
+
 static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
@@ -93,12 +95,11 @@ static const int kPluginsSection = 0;
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kTableViewFooterHeight)];
 
-    
+    self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask, so that when device rotates, main menu keeps its "normal" width
     if ([PCUtils isIdiomPad]) {
         CGRect frame = self.navigationController.view.frame;
         frame.size.width = 320.0;
         self.navigationController.view.frame = frame;
-        self.navigationController.view.autoresizingMask = self.navigationController.view.autoresizingMask & ~UIViewAutoresizingFlexibleWidth; //remove flexible width from mask (we want constant 320.0 width)
     }
     
 }
@@ -230,42 +231,45 @@ static const int kPluginsSection = 0;
 }
 
 - (UIBarButtonItem*)settingsButton {
-    if (_settingsButton) {
-        return _settingsButton;
+    if (!_settingsButton) {
+        __weak __typeof(self) welf = self;
+        _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered lga_actionBlock:^(UIBarButtonItem* button) {
+            [welf.mainController showGlobalSettings];
+        }];
+        _settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
+        
+        // Bar items placement differs depending on device. We shift the settings icon left/right
+        // so that it is aligned with the plugin icons in the menu
+        if ([PCUtils is4inchDevice] || [PCUtils is3_5inchDevice] || [PCUtils is4_7inchDevice]) {
+            _settingsButton.imageInsets = UIEdgeInsetsMake(0.0, 1.0, 0.0, -1.0);
+        } else if ([PCUtils isIdiomPad] || [PCUtils is5_5inchDevice]) {
+            _settingsButton.imageInsets = UIEdgeInsetsMake(0.0, -3.0, 0.0, 3.0);
+        }
     }
-    _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SettingsBarButton"] style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed)];
-    _settingsButton.accessibilityLabel = NSLocalizedStringFromTable(@"Settings", @"PocketCampus", nil);
     return _settingsButton;
 }
 
 - (UIBarButtonItem*)doneButton {
-    if (_doneButton) {
-        return _doneButton;
+    if (!_doneButton) {
+        __weak __typeof(self) welf = self;
+        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain lga_actionBlock:^(UIBarButtonItem* button) {
+            [welf setEditing:NO];
+        }];
     }
-    _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Done", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
     return _doneButton;
 }
 
 #pragma mark - Actions
 
-- (void)settingsButtonPressed {
-    [self.mainController showGlobalSettings];
-}
-
-- (void)doneButtonPressed {
-    [self setEditing:NO];
-}
-
 - (void)institutionLogoTapped {
     PCAboutViewController* aboutViewController = [PCAboutViewController new];
-    aboutViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissPresentedViewController)];
+    __weak __typeof(self) welf = self;
+    aboutViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone lga_actionBlock:^(UIBarButtonItem* button) {
+        [welf dismissViewControllerAnimated:YES completion:NULL];
+    }];
     PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:aboutViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:NULL];
-}
-
-- (void)dismissPresentedViewController {
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark EyeButtonDelegate (MainMenuItemCell)

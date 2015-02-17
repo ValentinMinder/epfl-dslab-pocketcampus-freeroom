@@ -22,17 +22,21 @@
 
 @import Foundation;
 
-@interface NSDictionary (LGAAdditions)
+#import "LGACollectionTransitiveHash.h"
+
+@interface NSDictionary (LGAAdditions)<LGACollectionTransitiveHash>
 
 /**
- * @return whether all keys-values pairs of receiver can be found in dictionary.
+ * @return whether all key-value pairs of receiver can be found in dictionary.
  */
-- (BOOL)lg_isContainedInDictionary:(NSDictionary*)dictionary;
+- (BOOL)lga_isContainedInDictionary:(NSDictionary*)dictionary;
 
 /**
  * @return a hash computed with hash of all keys and all values.
- * @discussion if a value is an NSDictionary, the transitive hash is called recursively.
+ * @discussion if a key or a value responds to lga_transitiveHash,
+ * the value returned returned by lga_transitiveHash is integrated
+ * into the hash computation.
  */
-- (NSUInteger)lg_transitiveHash;
+- (NSUInteger)lga_transitiveHash;
 
 @end

@@ -36,7 +36,7 @@
 "POOL1Printers" = "Imprimantes POOL1";
 "OpenPCandShowMyPrintLayerExplanations" = "Le plan ne peut pas être affiché depuis ici. Ouvrez PocketCampus > Plan, puis affichez le layer «Imprimantes».";
 "DidYouKnowExtensionTitle" = "Impression depuis d'autres apps";
-"DidYouKnowExtensionSubtitle" = "Saviez-vous qu'il est possible d'imprimer des PDFs depuis les autres apps ? Touchez pour plus d'info.";
+"DidYouKnowExtensionSubtitle" = "Saviez-vous qu'il est possible d'utiliser EPFL Print pour imprimer des PDFs depuis d'autres apps ? Touchez pour plus d'info.";
 "1Copy" = "1 copie";
 "NbCopiesWithFormat" = "%d copies";
 "Pages" = "Pages";
@@ -88,6 +88,7 @@
 "PageIndexOutOfTotalWithFormat" = "Page %ld sur %ld";
 
 //Extension
+"SorryErrorOccured" = "Désolé, une erreur est survenue avec ce fichier.";
 "SorryUnsupportedFileFormat" = "Désolé, ce format de fichier n'est pas supporté.\nSeuls les PDFs sont supportés pour le moment.";
 "SorryUnsupportedURLSafariExplanations" = "Sorry, this URL is not supported or inacessible for printing.\nCurrently, only PDFs are supported.\n\nIf you're trying to print a PDF from Safari, try tapping anywhere on the PDF then on \"Open in...\" in the bar that appears.";
 "SorryUnsupportedURLSafariExplanations" = "Désolé, cette URL n'est pas supportée ou inaccessible pour l'impression.\nSeuls les PDFs sont supportés pour le moment.\n\nSi vous souhaitez imprimer un PDF depuis Safari, tappez n'importe où sur le PDF puis sur \"Ouvrir dans...\" dans la barre qui apparaît.";

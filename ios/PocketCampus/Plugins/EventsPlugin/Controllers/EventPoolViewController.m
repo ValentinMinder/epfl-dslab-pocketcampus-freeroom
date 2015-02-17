@@ -924,7 +924,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
             [self trackAction:@"ChangePeriod" contentInfo:[NSString stringWithFormat:@"%d", (int)self.selectedPeriod]];
             [self.eventsService saveSelectedPoolPeriod:self.selectedPeriod];
             if (buttonIndex >= 0 && (buttonIndex != [self.periodsSelectionActionSheet cancelButtonIndex])) {
-                [self.tableView scrollsToTop];
+                [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES]; // Scroll to top
                 [self refresh];
             }
             self.periodsSelectionActionSheet = nil;

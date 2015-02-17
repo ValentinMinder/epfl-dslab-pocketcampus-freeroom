@@ -38,6 +38,8 @@
 
 @implementation PCAboutViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithNibName:@"PCAboutView" bundle:nil];
@@ -47,6 +49,8 @@
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -61,7 +65,8 @@
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
     
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$PC_VERSION$" withString:[PCUtils appVersion]];
-    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$INSTITUTION_LOGO_PATH$" withString:[[NSBundle mainBundle] pathForResource:@"InstitutionLogo@2x" ofType:@"png"]];
+    
+    htmlString = [htmlString stringByReplacingOccurrencesOfString:@"$INSTITUTION_LOGO_PATH$" withString:[PCUtils pathForImageResource:@"InstitutionLogo"]];
     
     if (!error) {
         [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@""]];
@@ -83,6 +88,8 @@
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Private
+
 - (void)showInfos {
     NSString* build = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     BOOL loadedFromBundle = [[PCConfig defaults] boolForKey:PC_CONFIG_LOADED_FROM_BUNDLE_KEY];
@@ -99,7 +106,7 @@
     [alert show];
 }
 
-/* UIWebViewDelegate delegation */
+#pragma mark - UIWebViewDelegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView_ {
     [UIView animateWithDuration:0.3 animations:^{
@@ -119,6 +126,8 @@
     }
     return YES;
 }
+
+#pragma mark - Dealloc
 
 - (void)dealloc
 {

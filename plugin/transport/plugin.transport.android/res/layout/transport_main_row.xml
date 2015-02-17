@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transport_main_row"
+    style="@style/PocketCampusRow"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/transport_destination_name"
+            style="@style/PocketCampusListItemTitle"
+            android:text="Lausanne-Flon" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/transport_departure_time0"
+                    style="@style/PocketCampusListItemTitle"
+                    android:layout_width="wrap_content"
+                    android:text="05:52" />
+
+                <TextView
+                    android:id="@+id/transport_departure_line0"
+                    style="@style/PocketCampusListItemSubTitle"
+                    android:layout_width="wrap_content"
+                    android:text="Bus 18" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/transport_departure_time1"
+                    style="@style/PocketCampusListItemTitle"
+                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:text="06:52" />
+
+                <TextView
+                    android:id="@+id/transport_departure_line1"
+                    style="@style/PocketCampusListItemSubTitle"
+                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:text="Bus 18" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/transport_departure_time2"
+                    style="@style/PocketCampusListItemTitle"
+                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:text="23:59" />
+
+                <TextView
+                    android:id="@+id/transport_departure_line2"
+                    style="@style/PocketCampusListItemSubTitle"
+                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:text="Bus 18" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/transport_main_details_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:src="@drawable/pocketcampus_list_arrow" />
+
+</LinearLayout>

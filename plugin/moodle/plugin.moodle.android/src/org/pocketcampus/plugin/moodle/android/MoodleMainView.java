@@ -68,12 +68,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		// Get and cast the controller and model
 		mController = (MoodleController) controller;
 		mModel = (MoodleModel) controller.getModel();
-
-		setContentView(R.layout.moodle_main_container);
-		mList = (ListView) findViewById(R.id.moodle_main_list);
-		displayingList = true;
-
-		setActionBarTitle(getString(R.string.moodle_plugin_title));
+		//setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
 
 	/**
@@ -117,6 +112,11 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 	@Override
 	public void coursesListUpdated() {
+		
+		setContentView(R.layout.moodle_main_container);
+		mList = (ListView) findViewById(R.id.moodle_main_list);
+		displayingList = true;
+		
 		updateDisplay();
 	}
 	

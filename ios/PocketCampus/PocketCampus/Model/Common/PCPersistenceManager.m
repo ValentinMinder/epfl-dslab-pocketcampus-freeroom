@@ -298,8 +298,8 @@ static NSString* const kBundleIdentifier = @"org.pocketcampus";
         CLSNSLog(@"!! ERROR in objectForKey:pluginName:nilIfDiffIntervalLargerThan:isCache: : could not read file attributes");
         return nil;
     }
-    NSDate* modifDate = fileAttributes[@"NSFileModificationDate"];
-    if ((double)(abs([modifDate timeIntervalSinceNow])) > interval) {
+    NSDate* modifDate = fileAttributes[NSFileModificationDate];
+    if ((double)(fabs([modifDate timeIntervalSinceNow])) > interval) {
         return nil;
     }
     return object;

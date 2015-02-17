@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
@@ -125,7 +124,7 @@ public class NewsItemView extends PluginView implements INewsView {
 		
 		// update action bar
 		removeAllActionsFromActionBar();
-		addActionToActionBar(new Action() {
+		addActionToActionBar(new com.markupartist.android.widget.Action() {
 			public void performAction(View view) {
 				trackEvent("Share", null);
 				Intent sendIntent = new Intent(Intent.ACTION_SEND);
@@ -136,8 +135,12 @@ public class NewsItemView extends PluginView implements INewsView {
 			public int getDrawable() {
 				return R.drawable.news_share;
 			}
+			@Override
+			public String getDescription() {
+				return getString(R.string.sdk_share);
+			}
 		});
-		addActionToActionBar(new Action() {
+		addActionToActionBar(new com.markupartist.android.widget.Action() {
 			public void performAction(View view) {
 				trackEvent("ViewInBrowser", null);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(contents.getLink()));
@@ -145,6 +148,10 @@ public class NewsItemView extends PluginView implements INewsView {
 			}
 			public int getDrawable() {
 				return R.drawable.news_globe;
+			}
+			@Override
+			public String getDescription() {
+				return getString(R.string.news_view_in_browser);
 			}
 		});
 		
@@ -273,14 +280,12 @@ public class NewsItemView extends PluginView implements INewsView {
 	
 	@Override
 	public void networkErrorHappened() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.sdk_connection_error_happened), Toast.LENGTH_SHORT).show();
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_connection_error_happened));
 	}
 	
 	@Override
 	public void newsServersDown() {
-		Toast.makeText(getApplicationContext(), getResources().getString(
-				R.string.sdk_upstream_server_down), Toast.LENGTH_SHORT).show();
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_upstream_server_down));
 	}
 
 }

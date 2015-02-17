@@ -52,6 +52,7 @@ static NewsController* instance __weak = nil;
                 PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:newsListViewController];
                 NewsSplashViewController* splashViewController = [[NewsSplashViewController alloc] init];
                 self.mainSplitViewController = [[PluginSplitViewController alloc] initWithMasterViewController:navController detailViewController:[[PCNavigationController alloc] initWithRootViewController:splashViewController]];
+                self.mainSplitViewController.gaiScreenName = @"/news";
                 self.mainSplitViewController.pluginIdentifier = [[self class] identifierName];
                 self.mainSplitViewController.delegate = self;
                 

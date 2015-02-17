@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/transport_add_station_name"
+        style="@style/PocketCampusListItemTitle" />
+
+</LinearLayout>
