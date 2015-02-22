@@ -51,7 +51,7 @@
         <cc:Placeholder Grid.Row="2"
                         For="{Binding Courses}">
             <TextBlock Text="{CustomResource Main.NoCourses}"
-                       Style="{StaticResource AppLargeTextBlockStyle}" />
+                       Style="{StaticResource AppCenterTextBlockStyle}" />
         </cc:Placeholder>
         
         <cc:DataStatusDisplay Grid.Row="2"

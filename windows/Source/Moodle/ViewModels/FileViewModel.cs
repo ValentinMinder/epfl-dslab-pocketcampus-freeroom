@@ -3,6 +3,7 @@
 // File author: Solal Pirelli
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.CloudPrint;
 using PocketCampus.Moodle.Models;
@@ -15,6 +16,8 @@ namespace PocketCampus.Moodle.ViewModels
     [LogId( "/moodle/file" )]
     public sealed class FileViewModel : DataViewModel<MoodleFile>
     {
+        private static readonly string[] PrintExtensions = { "pdf" };
+
         private readonly IMoodleService _moodleService;
         private readonly IMoodleDownloader _downloader;
         private readonly IFileStorage _storage;
@@ -47,7 +50,7 @@ namespace PocketCampus.Moodle.ViewModels
         [LogParameter( "File.Name" )]
         public AsyncCommand PrintCommand
         {
-            get { return this.GetAsyncCommand( PrintAsync ); }
+            get { return this.GetAsyncCommand( PrintAsync, () => PrintExtensions.Contains( File.Extension ) ); }
         }
 
         public FileViewModel( IMoodleService moodleService, IMoodleDownloader downloader, IFileStorage storage,

@@ -10,7 +10,6 @@ using Windows.UI.Xaml.Controls.Primitives;
 
 namespace PocketCampus.Common.Controls
 {
-    // BUG: Sometimes tapping the button doesn't change the background color (transitions are triggered though)
     [TemplateVisualState( GroupName = "CommonStates", Name = "Normal" )]
     [TemplateVisualState( GroupName = "CommonStates", Name = "PointerOver" )]
     [TemplateVisualState( GroupName = "CommonStates", Name = "Pressed" )]
@@ -40,6 +39,8 @@ namespace PocketCampus.Common.Controls
             {
                 ( (ICommand) args.NewValue ).CanExecuteChanged += button.Command_CanExecuteChanged;
             }
+
+            button.CheckCanExecute();
         }
         #endregion
 
@@ -51,7 +52,12 @@ namespace PocketCampus.Common.Controls
         }
 
         public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register( "CommandParameter", typeof( object ), typeof( SimpleButton ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "CommandParameter", typeof( object ), typeof( SimpleButton ), new PropertyMetadata( null, OnCommandParameterChanged ) );
+
+        private static void OnCommandParameterChanged( DependencyObject obj, DependencyPropertyChangedEventArgs args )
+        {
+            ( (SimpleButton) obj ).CheckCanExecute();
+        }
         #endregion
 
         #region TappedFlyout
@@ -115,6 +121,11 @@ namespace PocketCampus.Common.Controls
 
 
         private void Command_CanExecuteChanged( object sender, EventArgs e )
+        {
+            CheckCanExecute();
+        }
+
+        private void CheckCanExecute()
         {
             IsEnabled = Command.CanExecute( CommandParameter );
 

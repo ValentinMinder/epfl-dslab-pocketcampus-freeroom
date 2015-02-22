@@ -37,7 +37,7 @@ namespace PocketCampus.Moodle.ViewModels
         public CourseSection SelectedSection
         {
             get { return _selectedSection; }
-            private set { SetProperty( ref _selectedSection, value ); }
+            set { SetProperty( ref _selectedSection, value ); }
         }
 
         [LogId( "OpenLink" )]

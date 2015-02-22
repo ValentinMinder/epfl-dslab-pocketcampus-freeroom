@@ -146,10 +146,10 @@
                                Status="{Binding CacheStatus}"
                                RetryCommand="{Binding RefreshCommand}" />
 
-        <!-- TODO: The SelectedItem binding doesn't work for some reason :/ -->
         <Pivot Grid.Row="2"
                ItemsSource="{Binding Sections}"
-               SelectedItem="{Binding SelectedSection}"
+               SelectedItem="{Binding SelectedSection,
+                                      Mode=TwoWay}"
                ItemTemplate="{StaticResource SectionTemplate}"
                HeaderTemplate="{StaticResource SectionHeaderTemplate}" />
 

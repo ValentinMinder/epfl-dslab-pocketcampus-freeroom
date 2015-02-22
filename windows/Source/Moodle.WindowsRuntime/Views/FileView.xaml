@@ -71,6 +71,9 @@
         <!-- "Print" button -->
         <cc:SimpleButton Grid.Row="4"
                          Command="{Binding PrintCommand}"
+                         Visibility="{Binding IsEnabled,
+                                              RelativeSource={RelativeSource Self},
+                                              Converter={StaticResource NonDefaultToVisibility}}"
                          Padding="19,12">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Document" />
