@@ -311,10 +311,19 @@ function update_eventitem_visits($record, $newid, $conn) {
 	if($record["PC_CATEG"]) $succ = $succ && sql_query("UPDATE eventitems SET eventCateg = '" . sql_real_escape_string($record["PC_CATEG"]) . "'  WHERE eventId = '$newid'", $conn);
 
 	if($record["VisitName"]) $succ = $succ && sql_query("UPDATE eventitems SET eventTitle = '" . sql_real_escape_string($record["VisitName"]) . "'  WHERE eventId = '$newid'", $conn);
-	if($record["Venue"]) $succ = $succ && sql_query("UPDATE eventitems SET eventPlace = '" . sql_real_escape_string($record["Venue"]) . "'  WHERE eventId = '$newid'", $conn);
-	if($record["VenueURL"]) $succ = $succ && sql_query("UPDATE eventitems SET locationHref = '" . sql_real_escape_string($record["VenueURL"]) . "'  WHERE eventId = '$newid'", $conn);
 
 	$eventDetails = "";
+	if($record["Venue"]) {
+		$profs = array_map("trim", explode(",", $record["Venue"]));
+		if($record["VenueURL"]) {
+			$prof_map = array_map("trim", explode(",", $record["VenueURL"]));
+			if(count($profs) == count($prof_map)) {
+				for($i = 0; $i < count($prof_map); $i++) if($prof_map[$i]) $profs[$i] = "<a href=\"{$prof_map[$i]}\">{$profs[$i]}</a>";
+			}
+		}
+		$profs = array_map("make_li", $profs);
+		if(count($profs)) $eventDetails .= "<h2>Venue</h2><p>" . implode("", $profs) . "</p>";
+	}
 	if($record["OrganizingProfs"]) {
 		$profs = array_map("trim", explode(",", $record["OrganizingProfs"]));
 		if($record["ORG_PROF_PC_IDS"]) {
