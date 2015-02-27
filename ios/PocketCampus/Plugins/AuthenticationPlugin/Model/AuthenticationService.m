@@ -62,7 +62,7 @@ static AuthenticationService* instance __weak = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSString* commaSeparatedScopes = [[authenticationConstants OAUTH2_SCOPES] componentsJoinedByString:@","];
-        kTequilaOAuth2AuthURL = [@"https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" stringByAppendingString:commaSeparatedScopes];
+        kTequilaOAuth2AuthURL = [@"https://tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" stringByAppendingString:commaSeparatedScopes];
         kTequilaOAuth2AuthApproveURL = [kTequilaOAuth2AuthURL stringByAppendingString:@"&doauth=Approve"];
     });
 }
