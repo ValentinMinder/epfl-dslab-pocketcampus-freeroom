@@ -82,10 +82,9 @@ namespace PocketCampus.Main.Services
             var xml = new XmlDocument();
             xml.LoadXml( string.Format( TileXmlFormat, PrimaryTilePaths[coloring] ) );
 
-            var manager = TileUpdateManager.CreateTileUpdaterForApplication();
-            manager.EnableNotificationQueue( true );
-            manager.Clear();
-            manager.AddToSchedule( new ScheduledTileNotification( xml, DateTimeOffset.Now.AddSeconds( 1 ) ) );
+            var notification = new TileNotification( xml );
+            notification.ExpirationTime = DateTimeOffset.MaxValue;
+            TileUpdateManager.CreateTileUpdaterForApplication().Update( notification );
         }
 
         private async Task UpdateSecondaryTilesAsync( TileColoring coloring )
