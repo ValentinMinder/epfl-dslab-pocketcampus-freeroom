@@ -12,9 +12,6 @@
             <cc:SimpleButton Command="{Binding DataContext.OpenPluginCommand, ElementName=Root}"
                              CommandParameter="{Binding}"
                              Style="{StaticResource AppTileButtonStyle}"
-                             Margin="0,0,17,17"
-                             Width="104"
-                             Height="104"
                              CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -71,10 +68,17 @@
         </Grid>
         
         <!-- Plugins -->
-        <GridView Grid.Row="1"
+        <ListView Grid.Row="1"
                   ItemsSource="{Binding Plugins}"
                   ItemTemplate="{StaticResource PluginTemplate}"
-                  Margin="19,19,2,0" />
+                  Margin="19,19,19,0">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <cc:HorizontalUniformGrid ColumnCount="3"
+                                              ElementMargin="17" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 
     <cc:PageBase.BottomAppBar>

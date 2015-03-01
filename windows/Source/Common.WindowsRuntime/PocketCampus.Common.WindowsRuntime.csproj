@@ -60,6 +60,7 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SimpleButton.cs" />
+    <Compile Include="Controls\UniformGrid.cs" />
     <Compile Include="FocusBehavior.cs" />
     <Compile Include="LauncherEx.cs" />
     <Compile Include="LocalizationHelper.cs" />
