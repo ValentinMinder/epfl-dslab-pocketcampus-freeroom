@@ -58,7 +58,7 @@ namespace PocketCampus.Moodle.Services
                                             .FirstOrDefault( f => f.Name == fileName );
             if ( storageFile == null && create )
             {
-                storageFile = await folder.CreateFileAsync( fileName );
+                storageFile = await folder.CreateFileAsync( fileName, CreationCollisionOption.ReplaceExisting );
             }
             return storageFile;
         }

@@ -82,7 +82,7 @@ namespace PocketCampus.Moodle.ViewModels
 
         private async Task OpenAsync()
         {
-            if ( !( await _storage.IsStoredAsync( File ) ) )
+            if ( !IsCached )
             {
                 await ForceDownloadAsync();
             }

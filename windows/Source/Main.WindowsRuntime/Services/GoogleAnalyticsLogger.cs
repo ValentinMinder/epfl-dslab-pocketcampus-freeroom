@@ -2,10 +2,11 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-#if !DEBUG
+#if DEBUG
+using System.Diagnostics;
+#else
 using GoogleAnalytics;
 #endif
-using System.Diagnostics;
 using ThinMvvm;
 using ThinMvvm.Logging;
 
