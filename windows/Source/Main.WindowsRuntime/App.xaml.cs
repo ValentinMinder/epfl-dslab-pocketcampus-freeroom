@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using PocketCampus.CloudPrint;
 using PocketCampus.Common;
@@ -35,6 +36,9 @@ namespace PocketCampus.Main
         private IPluginLoader _pluginLoader;
         private ProtocolHandler _protocolHandler;
 
+        // for compatibility
+        private ITileService _tileService;
+
         public App()
         {
             RequestedTheme = ApplicationTheme.Light;
@@ -63,7 +67,7 @@ namespace PocketCampus.Main
             Container.Bind<IEmailService, EmailService>();
             Container.Bind<IPhoneService, PhoneService>();
             Container.Bind<ILocationService, LocationService>();
-            Container.Bind<ITileService, TileService>();
+            _tileService = Container.Bind<ITileService, TileService>();
             Container.Bind<IDeviceIdentifier, DeviceIdentifier>();
             Container.Bind<IAppRatingService, AppRatingService>();
             Container.Bind<ICredentialsStorage, CredentialsStorage>();
@@ -96,6 +100,9 @@ namespace PocketCampus.Main
                 e.Handled = true;
                 _navigationService.NavigateBack();
             };
+
+            // COMPAT: Deal with bugs from previous versions :-(
+            HandleCompatibilityIssues();
         }
 
         protected override Frame CreateRootFrame()
@@ -186,6 +193,17 @@ namespace PocketCampus.Main
 
             // We can't display share errors on WP, so...
             return null;
+        }
+
+        private void HandleCompatibilityIssues()
+        {
+            // TileService had a bug in v2.5.0, re-apply the tile coloring to fix it
+            if ( _settings.LastUsedVersion < new Version( 2, 5, 1 ) )
+            {
+                _tileService.SetTileColoring( _settings.TileColoring );
+            }
+
+            _settings.LastUsedVersion = typeof( App ).GetTypeInfo().Assembly.GetName().Version;
         }
 
         private sealed class Initializer : IDisposable

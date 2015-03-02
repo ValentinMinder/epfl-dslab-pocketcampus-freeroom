@@ -82,6 +82,9 @@ namespace PocketCampus.Main.Services
             var xml = new XmlDocument();
             xml.LoadXml( string.Format( TileXmlFormat, PrimaryTilePaths[coloring] ) );
 
+            // COMPAT: v2.5.0 (incorrectly) used a ScheduledTileNotification, so we must clear the queue
+            TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+
             var notification = new TileNotification( xml );
             notification.ExpirationTime = DateTimeOffset.MaxValue;
             TileUpdateManager.CreateTileUpdaterForApplication().Update( notification );
