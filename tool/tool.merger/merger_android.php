@@ -21,7 +21,6 @@ $libs_to_export = array(
 		"gcm.jar",
 		"httpclient-4.3.5.jar", "httpcore-4.3.2.jar", "httpmime-4.3.5.jar",
 		"libGoogleAnalyticsServices.jar", "libthrift-0.9.2.jar", "javax.annotation.jar", 
-		"osmdroid-android-3.0.3.jar",
 		"popup-menu-compat-lib.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
 		"universal-image-loader-1.9.3.jar");
@@ -90,6 +89,7 @@ function generate_android_manifest($output_dir, $is_lib){
 	if(!$is_lib) {
 		foreach($plugins_to_merge as $plgn) {
 			$plugin = strtolower($plgn);
+			echo "Merging ".$plugin."\n";
 			$manifest_file = "$path_to_plugin_dir/$plugin/plugin.$plugin.android/AndroidManifest.xml";
 			import_nodes($manifest_file, "/manifest/application/activity", $doc, $app, ($plugin == "dashboard" ? "" : "//category[@android:name='android.intent.category.LAUNCHER']"));
 			import_nodes($manifest_file, "/manifest/application/service", $doc, $app, "");
@@ -98,6 +98,17 @@ function generate_android_manifest($output_dir, $is_lib){
 			import_nodes($manifest_file, "/manifest/permission-group", $doc, $manif, "");
 			import_nodes($manifest_file, "/manifest/permission", $doc, $manif, "");
 			import_nodes($manifest_file, "/manifest/uses-permission", $doc, $manif, "");
+
+			if($plugin == "map"){
+				$keyMetaData = $doc->createElement("meta-data");
+				$keyMetaData->setAttribute("android:name", "com.google.android.maps.v2.API_KEY");
+				$keyMetaData->setAttribute("android:value", "AIzaSyBxjrH9IRyVCTJrHdcTtNGIKtuZSlXcRTE");
+				$app->appendChild($keyMetaData);
+				$keyMetaData = $doc->createElement("meta-data");
+				$keyMetaData->setAttribute("android:name", "com.google.android.gms.version");
+				$keyMetaData->setAttribute("android:value", "@integer/google_play_services_version");
+				$app->appendChild($keyMetaData);
+			}
 		}
 	}
 
@@ -452,7 +463,7 @@ generate_ant_properties($output_dir);
 generate_build_xml($output_dir, "$project_name");
 generate_proguard_cfg($output_dir);
 //generate_project_properties($output_dir, false, array("../PocketCampusLib"));
-generate_project_properties($output_dir, false, array());
+generate_project_properties($output_dir, false, array("../google_play_services/libproject/google-play-services_lib"));
 generate_dot_classpath($output_dir);
 generate_dot_project($output_dir, "$project_name");
 // need to manually generate local.properties;
