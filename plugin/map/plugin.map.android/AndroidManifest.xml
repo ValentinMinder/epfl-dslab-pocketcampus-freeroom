@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8"
+    <uses-sdk android:minSdkVersion="15"
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,6 +30,7 @@
         
         <!-- Map Plugin -->
         <activity
+            android:logo="@drawable/map_icon_white"
             android:label="@string/map_plugin_title"
             android:name="org.pocketcampus.plugin.map.android.MapMainView"
             android:screenOrientation="nosensor"
