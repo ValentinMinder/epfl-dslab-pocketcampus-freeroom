@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,11 +14,7 @@ namespace PocketCampus.Satellite.Services
 {
     public sealed class SatelliteService : ThriftServiceImplementation<ISatelliteService>, ISatelliteService
     {
-        public SatelliteService( IServerAccess access )
-            : base( access.CreateCommunication( "satellite" ) )
-        {
-
-        }
+        public SatelliteService( IServerAccess access ) : base( access.CreateCommunication( "satellite" ) ) { }
 
         public Task<BeersResponse> GetBeersAsync( CancellationToken cancellationToken )
         {

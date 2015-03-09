@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -12,7 +12,12 @@ namespace PocketCampus.Common
         /// <summary>
         /// Nothing was requested (yet).
         /// </summary>
-        NoneRequested,
+        NotRequested,
+
+        /// <summary>
+        /// An e-mail was requested.
+        /// </summary>
+        Requested,
 
         /// <summary>
         /// The request was successfully completed.

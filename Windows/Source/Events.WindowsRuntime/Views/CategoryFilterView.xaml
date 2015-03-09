@@ -1,0 +1,47 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Events.Views.CategoryFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding CategoryFilter, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Template for category filters -->
+            <DataTemplate x:Key="CategoryFilterTemplate">
+                <CheckBox IsChecked="{Binding Include, 
+                                              Mode=TwoWay}"
+                          Content="{Binding DisplayName}"
+                          Margin="0,16,0,0" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header & title -->
+        <StackPanel Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+
+            <TextBlock Text="{CustomResource CategoryFilter.ViewTitle}"
+                       Style="{StaticResource AppTitleTextBlockStyle}" />
+        </StackPanel>
+
+        <!-- Filters -->
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Categories}"
+                  ItemTemplate="{StaticResource CategoryFilterTemplate}"
+                  Margin="19,0" />
+    </Grid>
+</cc:PageBase>

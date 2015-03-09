@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -9,9 +9,6 @@ using ThriftSharp;
 
 namespace PocketCampus.Transport.Services
 {
-    /// <summary>
-    /// The transport server service.
-    /// </summary>
     [ThriftService( "TransportService" )]
     public interface ITransportService
     {

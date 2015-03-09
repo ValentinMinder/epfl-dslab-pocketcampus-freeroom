@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{94FB2B30-AA95-41E8-9B2F-6AF7D37355E1}</ProjectGuid>
@@ -10,8 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PocketCampus.Satellite</RootNamespace>
     <AssemblyName>PocketCampus.Satellite</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile151</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -49,31 +49,24 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.23.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
-    </Reference>
-    <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.23.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.2.1.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Common\PocketCampus.Common.csproj">
       <Project>{f780f0dd-8a14-4e72-9525-a11d792cbfab}</Project>
       <Name>PocketCampus.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ThinMvvm">
+      <HintPath>..\..\packages\ThinMvvm.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="ThinMvvm.Logging">
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="ThriftSharp">
+      <HintPath>..\..\packages\ThriftSharp.2.3.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
 </Project>

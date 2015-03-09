@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,10 +14,7 @@ namespace PocketCampus.News.Services
 {
     public sealed class NewsService : ThriftServiceImplementation<INewsService>, INewsService
     {
-        public NewsService( IServerAccess access )
-            : base( access.CreateCommunication( "news" ) )
-        {
-        }
+        public NewsService( IServerAccess access ) : base( access.CreateCommunication( "news" ) ) { }
 
         public Task<FeedsResponse> GetFeedsAsync( FeedsRequest request, CancellationToken cancellationToken )
         {

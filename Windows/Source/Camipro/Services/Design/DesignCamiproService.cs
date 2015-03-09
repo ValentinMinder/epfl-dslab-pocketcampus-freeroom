@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -93,7 +93,7 @@ namespace PocketCampus.Camipro.Services.Design
                             Amount = -3.70,
                             Place = "Le Négoce",
                             Date = new DateTime(2013, 5, 8, 12, 22, 48)
-                        },
+                        }
                     }
                 }
             );
@@ -127,7 +127,7 @@ namespace PocketCampus.Camipro.Services.Design
             (
                 new MailRequestResult
                 {
-
+                    Status = ResponseStatus.Success
                 }
             );
         }

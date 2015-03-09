@@ -1,0 +1,632 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:my="using:PocketCampus.Common"
+                    xmlns:myc="using:PocketCampus.Common.Controls">
+    <Color x:Key="AppStatusBarBackgroundColor">#E5060A</Color>
+    <Color x:Key="AppStatusBarForegroundColor">White</Color>
+
+    <SolidColorBrush x:Key="AppHeaderBackgroundBrush"
+                     Color="#E5060A" />
+    <SolidColorBrush x:Key="AppHeaderForegroundBrush"
+                     Color="White" />
+
+    <SolidColorBrush x:Key="AppSecondaryHeaderBackgroundBrush" 
+                     Color="#E0E0E0" />
+    <SolidColorBrush x:Key="AppSecondaryHeaderForegroundBrush" 
+                     Color="Black" />
+
+    <SolidColorBrush x:Key="AppSubtleBrush"
+                     Color="{StaticResource PhoneBaseMidColor}" />
+    <!-- TODO override accent color -->
+    <SolidColorBrush x:Key="AppAccentBrush"
+                     Color="#C9060C" />
+
+    <!-- All converters declared in Common -->
+    <my:DictionaryFixer x:Key="DictionaryFixer" />
+    <my:StringFormatConverter x:Key="StringFormat" />
+    <my:MoneyFormatConverter x:Key="MoneyFormat" />
+    <my:DateToWeekStringConverter x:Key="DateToWeek" />
+    <my:EnumToValuesConverter x:Key="EnumToValues" />
+    <my:EnumToStringConverter x:Key="EnumToString" />
+    <my:DefaultToVisibilityConverter x:Key="DefaultToVisibility" />
+    <my:DefaultToVisibilityConverter x:Key="NonDefaultToVisibility"
+                                     IsReversed="True" />
+
+
+    <!-- Normal text -->
+    <Style x:Key="AppNormalTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Subtle text -->
+    <Style x:Key="AppSubtleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppSubtleBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Large text -->
+    <Style x:Key="AppLargeTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Large centered text -->
+    <Style x:Key="AppCenterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+    <!-- Group header text -->
+    <Style x:Key="AppGroupHeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Header text -->
+    <Style x:Key="AppHeaderTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="Margin" Value="19,6,0,4" />
+    </Style>
+
+    <!-- Title text -->
+    <Style x:Key="AppTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargePlusFontSize}" />
+        <Setter Property="Margin" Value="19,6,0,4" />
+    </Style>
+
+    <!-- Secondary title text -->
+    <Style x:Key="AppSecondaryTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AppSecondaryHeaderForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleExtraLargeFontSize}" />
+        <Setter Property="Margin" Value="19,6,0,4" />
+    </Style>
+
+
+    <!-- Normal rich text -->
+    <Style x:Key="AppNormalRichTextBlockStyle" TargetType="RichTextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleMediumFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+    <!-- Large rich text -->
+    <Style x:Key="AppLargeRichTextBlockStyle" TargetType="RichTextBlock">
+        <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+    </Style>
+
+
+    <!-- ItemsControl style that stretches its contents -->
+    <Style TargetType="ItemsControl">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <!-- BUG: This crashes, why? -->
+        <!--<Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                </Style>
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+
+    <!-- ListView style that stretches its contents-->
+    <Style TargetType="ListView">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ToggleSwitch that doesn't display the traditional thumb; tapping the header switches the content -->
+    <Style x:Key="AppHeaderedToggleSwitchStyle" TargetType="ToggleSwitch">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleSwitch">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchHeaderDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OffContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OnContentPresenter"
+                                                                   Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ToggleSwitchDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ToggleStates">
+                                <VisualState x:Name="Dragging" />
+                                <VisualState x:Name="Off" />
+                                <VisualState x:Name="On" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ContentStates">
+                                <VisualState x:Name="OffContent">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OffContentPresenter"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OffContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="OnContent">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OnContentPresenter"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OnContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="PointerFocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter x:Name="HeaderContentPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <ContentPresenter x:Name="OffContentPresenter"
+                                          Grid.Row="1"
+                                          Visibility="Collapsed"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OffContent}"
+                                          ContentTemplate="{TemplateBinding OffContentTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <ContentPresenter x:Name="OnContentPresenter"
+                                          Grid.Row="1"
+                                          Visibility="Collapsed"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OnContent}"
+                                          ContentTemplate="{TemplateBinding OnContentTemplate}"
+                                          HorizontalAlignment="Stretch"
+                                          AutomationProperties.AccessibilityView="Raw" />
+
+                        <Thumb x:Name="SwitchThumb" 
+                               AutomationProperties.AccessibilityView="Raw">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Rectangle Fill="Transparent" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- Pivot style fix, inspired from http://modernography.wordpress.com/2014/07/31/fixing-pivot-control-layout-issues/
+         No more title, since we need it outside of the "loading..." -->
+    <x:Int32 x:Key="PivotHeaderItemCharacterSpacing">0</x:Int32>
+    <Thickness x:Key="PivotItemMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="PivotHeaderItemMargin">19,-6.5,5,0</Thickness>
+    <Style TargetType="Pivot">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Pivot">
+                    <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                          Background="{TemplateBinding Background}">
+                        <ScrollViewer x:Name="ScrollViewer"
+                                      HorizontalSnapPointsType="MandatorySingle"
+                                      HorizontalSnapPointsAlignment="Center"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollMode="Disabled"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalSnapPointsType="None"
+                                      VerticalContentAlignment="Stretch"
+                                      ZoomMode="Disabled"
+                                      Template="{StaticResource ScrollViewerScrollBarlessTemplate}">
+                            <PivotPanel x:Name="Panel"
+                                        VerticalAlignment="Stretch">
+                                <!-- RequestedTheme HACK to get white foreground for headers -->
+                                <PivotHeaderPanel x:Name="Header"
+                                                  Background="{StaticResource AppHeaderBackgroundBrush}"
+                                                  RequestedTheme="Dark">
+                                    <PivotHeaderPanel.RenderTransform>
+                                        <CompositeTransform x:Name="HeaderTranslateTransform"
+                                                            TranslateX="0" />
+                                    </PivotHeaderPanel.RenderTransform>
+                                </PivotHeaderPanel>
+                                <ItemsPresenter x:Name="PivotItemPresenter">
+                                    <ItemsPresenter.RenderTransform>
+                                        <TranslateTransform x:Name="ItemsPresenterTranslateTransform"
+                                                            X="0" />
+                                    </ItemsPresenter.RenderTransform>
+                                </ItemsPresenter>
+                            </PivotPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- Default style for Switch -->
+    <Style TargetType="myc:Switch">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <!-- Default style for Condition -->
+    <Style TargetType="myc:Condition">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <!-- Default style for Placeholder -->
+    <Style TargetType="myc:Placeholder">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <!-- Default style for SimpleButton -->
+    <Style TargetType="myc:SimpleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myc:SimpleButton">
+                    <Grid x:Name="Border"
+                            Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Pressed" To="PointerOver">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PointerOver" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPointerOverBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPointerOverForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPressedBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPressedForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="Border" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Margin="{TemplateBinding Padding}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Default style for DataStatusDisplay -->
+    <Style TargetType="myc:DataStatusDisplay">
+        <Setter Property="TextStyle" Value="{StaticResource AppCenterTextBlockStyle}" />
+        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myc:DataStatusDisplay">
+                    <myc:Switch Value="{TemplateBinding Data}"
+                                Padding="{TemplateBinding Padding}">
+                        <myc:SwitchCase Values="Loading">
+                            <Border Background="{TemplateBinding Background}">
+                                <ProgressRing IsActive="True" />
+                            </Border>
+                        </myc:SwitchCase>
+                        <myc:SwitchCase Values="Error">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="{CustomResource Common.DataStatusDisplay.Error}"
+                                           Style="{TemplateBinding TextStyle}"
+                                           VerticalAlignment="Bottom" />
+                                
+                                <AppBarButton Grid.Row="1"
+                                              Icon="Refresh"
+                                              Command="{TemplateBinding RetryCommand}"
+                                              Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding RetryCommand,
+                                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                                   Converter={StaticResource NonDefaultToVisibility}}" />
+                            </Grid>
+                        </myc:SwitchCase>
+                        <myc:SwitchCase Values="NetworkError">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{CustomResource Common.DataStatusDisplay.NetworkError}"
+                                           Style="{TemplateBinding TextStyle}"
+                                           VerticalAlignment="Bottom" />
+
+                                <AppBarButton Grid.Row="1"
+                                              Icon="Refresh"
+                                              Command="{TemplateBinding RetryCommand}"
+                                              Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding RetryCommand,
+                                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                                   Converter={StaticResource NonDefaultToVisibility}}" />
+                            </Grid>
+                        </myc:SwitchCase>
+                    </myc:Switch>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Default style for CacheStatusDisplay -->
+    <SolidColorBrush x:Key="AppCacheStatusDisplayBackgroundBrush" Color="#C9060C" />
+    <SolidColorBrush x:Key="AppCacheStatusDisplayForegroundBrush" Color="White" />
+    <Style TargetType="myc:CacheStatusDisplay">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myc:CacheStatusDisplay">
+                    <Grid Background="{StaticResource AppCacheStatusDisplayBackgroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{CustomResource Common.CacheStatusDisplay.Text}"
+                                   Style="{StaticResource AppNormalTextBlockStyle}"
+                                   Foreground="{StaticResource AppCacheStatusDisplayForegroundBrush}"
+                                   Margin="19,4" />
+
+                        <AppBarButton Grid.Column="1"
+                                      Icon="Refresh"
+                                      Command="{TemplateBinding RetryCommand}"
+                                      Style="{StaticResource AppNoLabelAppBarButtonStyle}"
+                                      Foreground="{StaticResource AppCacheStatusDisplayForegroundBrush}"
+                                      BorderBrush="{StaticResource AppCacheStatusDisplayForegroundBrush}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- No-label AppBarButton style -->
+    <Style x:Key="AppNoLabelAppBarButtonStyle" TargetType="AppBarButton">
+        <Setter Property="Foreground" Value="{StaticResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource ApplicationForegroundThemeBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="AppBarButton">
+                    <Grid x:Name="RootGrid"
+                          Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Ellipse"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" 
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Ellipse"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" 
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPressedForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RootGrid"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.5" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid Width="40" 
+                              Height="40">
+                            <Ellipse x:Name="Ellipse"
+                                     UseLayoutRounding="False"
+                                     Width="40"
+                                     Height="40"
+                                     Fill="{TemplateBinding Background}"
+                                     Stroke="{TemplateBinding BorderBrush}"
+                                     StrokeThickness="{TemplateBinding BorderThickness}" />
+                            <ContentPresenter x:Name="Content"
+                                              Content="{TemplateBinding Icon}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- "Live tile" button style -->
+    <SolidColorBrush x:Key="AppTileBackgroundBrush"
+                     Color="#E5060A" />
+    <SolidColorBrush x:Key="AppTileForegroundBrush"
+                     Color="White" />
+    <SolidColorBrush x:Key="AppTilePressedBackgroundBrush"
+                     Color="#C9060C" />
+    <Style x:Key="AppTileButtonStyle" TargetType="myc:SimpleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="myc:SimpleButton">
+                    <Border x:Name="Border"
+                            Background="{StaticResource AppTileBackgroundBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Pressed" To="PointerOver">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PointerOver" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed" To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Border" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="Border" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppTilePressedBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          Foreground="{StaticResource AppTileForegroundBrush}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

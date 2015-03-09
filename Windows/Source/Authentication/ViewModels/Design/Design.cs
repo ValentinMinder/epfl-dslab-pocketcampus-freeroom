@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -15,16 +15,15 @@ namespace PocketCampus.Authentication.ViewModels.Design
     public sealed class Design
     {
 #if DEBUG
-        public AuthenticationViewModel Authentication { get; private set; }
+        public MainViewModel Main { get; private set; }
 
         public Design()
         {
-            Authentication =
-                new AuthenticationViewModel( new DesignAuthenticationService(), new DesignAuthenticator(), new DesignServerAccess(),
-                                             new DesignNavigationService(), new DesignServerSettings(), new DesignCredentialsStorage(),
-                                             new AuthenticationRequest() );
+            Main = new MainViewModel( new DesignAuthenticationService(), new DesignAuthenticator(), new DesignNavigationService(),
+                                      new DesignServerSettings(), new DesignCredentialsStorage(),
+                                      new AuthenticationRequest() );
 
-            Authentication.OnNavigatedTo();
+            Main.OnNavigatedTo();
         }
 #endif
     }

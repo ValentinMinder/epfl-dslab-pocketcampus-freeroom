@@ -1,0 +1,165 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Food.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:myc="using:PocketCampus.Food.Controls"
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Meal template -->
+            <DataTemplate x:Key="MealTemplate">
+                <Grid Margin="19,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <!-- Image -->
+                        <Image Source="{Binding Converter={StaticResource MealToImage}}"
+                               Width="100"
+                               Height="100" />
+
+                        <!-- Price -->
+                        <TextBlock Text="{Binding CurrentPrice, Converter={StaticResource MoneyFormat}}"
+                                   TextAlignment="Center"
+                                   Style="{StaticResource AppNormalTextBlockStyle}" />
+
+                        <!-- Price placeholder -->
+                        <cc:Placeholder For="{Binding CurrentPrice}">
+                            <TextBlock Text="{CustomResource Main.UnknownPrice}"
+                                       TextAlignment="Center"
+                                       Style="{StaticResource AppNormalTextBlockStyle}"  />
+                        </cc:Placeholder>
+
+                        <!-- Half-portion price -->
+                        <StackPanel Visibility="{Binding HalfPortionPrice, 
+                                                         Converter={StaticResource NonDefaultToVisibility}}">
+                            <TextBlock Text="{CustomResource Main.HalfPortionPrice}"
+                                       Style="{StaticResource AppSubtleTextBlockStyle}"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Text="{Binding HalfPortionPrice, 
+                                                      Converter={StaticResource MoneyFormat}}"
+                                       Style="{StaticResource AppSubtleTextBlockStyle}"
+                                       TextAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Margin="8,0,0,0">
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Name}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}"
+                                   Margin="0,0,0,8" />
+
+                        <!-- Description -->
+                        <TextBlock Text="{Binding Description}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}"
+                                   Margin="0,0,0,8" />
+
+                        <!-- Rating -->
+                        <myc:RatingDisplay Rating="{Binding Rating}"
+                                           TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
+
+                        <!-- "Vote" button -->
+                        <cc:SimpleButton Command="{Binding DataContext.RateMealCommand, 
+                                                           ElementName=Root}"
+                                         CommandParameter="{Binding}">
+                            <TextBlock Text="{CustomResource Main.Vote}"
+                                       Style="{StaticResource AppNormalTextBlockStyle}"
+                                       Foreground="{StaticResource AppAccentBrush}" />
+                        </cc:SimpleButton>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="RestaurantSubheaderTemplate">
+                <myc:RatingDisplay Rating="{Binding Rating}"
+                                   TextStyle="{StaticResource AppSubtleTextBlockStyle}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}"
+                       VerticalAlignment="Center" />
+
+            <myc:MealTimePicker Grid.Column="1"
+                                Value="{Binding MealTime,
+                                                Mode=TwoWay}"
+                                Foreground="{StaticResource AppHeaderForegroundBrush}" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <myc:DayPicker Value="{Binding MealDate,
+                                           Mode=TwoWay}"
+                           TextStyle="{StaticResource AppLargeTextBlockStyle}"
+                           Margin="19,5" />
+        </Border>
+
+        <cc:CacheStatusDisplay Grid.Row="2"
+                               Status="{Binding CacheStatus}" />
+
+        <cc:GroupedListView Grid.Row="3"
+                            ItemTemplate="{StaticResource MealTemplate}"
+                            GroupKeyPath="Name"
+                            GroupSubheaderTemplate="{StaticResource RestaurantSubheaderTemplate}">
+            <cc:GroupedListView.ItemsViewSource>
+                <CollectionViewSource Source="{Binding Menu}"
+                                      IsSourceGrouped="True"
+                                      ItemsPath="Meals" />
+            </cc:GroupedListView.ItemsViewSource>
+        </cc:GroupedListView>
+
+        <cc:Switch Grid.Row="3"
+                   Value="{Binding MenuStatus}">
+            <cc:SwitchCase Values="NoResults">
+                <TextBlock Text="{CustomResource Main.EmptyMenu}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+            </cc:SwitchCase>
+            <cc:SwitchCase Values="AllResultsFilteredOut">
+                <TextBlock Text="{CustomResource Main.AllMealsAreFilteredOut}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+            </cc:SwitchCase>
+        </cc:Switch>
+
+        <cc:DataStatusDisplay Grid.Row="3"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding ViewSettingsCommand}"
+                              Label="{CustomResource Main.Settings}"
+                              Icon="Setting" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
+</cc:PageBase>

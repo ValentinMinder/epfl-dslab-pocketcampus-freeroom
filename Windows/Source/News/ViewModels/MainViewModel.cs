@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -12,9 +12,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.News.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/news" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, FeedsResponse>
     {
@@ -23,18 +20,14 @@ namespace PocketCampus.News.ViewModels
 
         private Feed[] _feeds;
 
-        /// <summary>
-        /// Gets the list of feeds.
-        /// </summary>
+
         public Feed[] Feeds
         {
             get { return _feeds; }
             private set { SetProperty( ref _feeds, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view a feed item.
-        /// </summary>
+
         [LogId( "OpenNewsItem" )]
         [LogParameter( "$Param.LogId" )]
         public Command<FeedItem> ViewFeedItemCommand
@@ -43,9 +36,6 @@ namespace PocketCampus.News.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, INewsService feedsService, INavigationService navigationService )
             : base( cache )
         {

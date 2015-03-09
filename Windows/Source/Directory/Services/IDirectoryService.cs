@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -16,7 +16,7 @@ namespace PocketCampus.Directory.Services
     public interface IDirectoryService
     {
         /// <summary>
-        /// Asynchronously searches for all people whose name or SCIPER number matches the specified request.
+        /// Asynchronously searches for all people whose name, SCIPER number, phone number or other attribute matches the specified request.
         /// </summary>
         [ThriftMethod( "searchDirectory" )]
         Task<SearchResponse> SearchAsync( [ThriftParameter( 1, "req" )] SearchRequest request, CancellationToken cancellationToken );

@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -18,28 +18,17 @@ namespace PocketCampus.Food.ViewModels
     {
         private readonly PriceTarget _previousTarget;
 
-        /// <summary>
-        /// Gets the plugin settings.
-        /// </summary>
+
         public IPluginSettings Settings { get; private set; }
 
-        /// <summary>
-        /// Gets the displayed meal types.
-        /// </summary>
         public Pair<MealType, bool>[] DisplayedMealTypes { get; private set; }
 
-        /// <summary>
-        /// Gets the available price target.
-        /// </summary>
         public PriceTarget[] PriceTargets
         {
             get { return new[] { PriceTarget.Student, PriceTarget.PhDStudent, PriceTarget.Staff, PriceTarget.Visitor }; }
         }
 
 
-        /// <summary>
-        /// Creates a new SettingsViewModel.
-        /// </summary>
         public SettingsViewModel( IPluginSettings settings )
         {
             Settings = settings;
@@ -49,9 +38,6 @@ namespace PocketCampus.Food.ViewModels
         }
 
 
-        /// <summary>
-        /// Executed when the user navigates away from this page.
-        /// </summary>
         public override void OnNavigatedFrom()
         {
             Settings.DisplayedMealTypes = SettingsUtils.GetEnumList( DisplayedMealTypes );

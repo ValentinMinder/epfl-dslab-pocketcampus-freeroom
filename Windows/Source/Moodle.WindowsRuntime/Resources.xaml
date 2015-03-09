@@ -1,0 +1,17 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:my="using:PocketCampus.Moodle"
+                    xmlns:myDesign="using:PocketCampus.Moodle.ViewModels.Design">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///PocketCampus.Common.WindowsRuntime/Resources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <my:FileToIconElementConverter x:Key="FileToIcon" />
+    <my:PathComponentsToStringConverter x:Key="PathComponentsToString" />
+
+    <myDesign:Design x:Key="Design" />
+</ResourceDictionary>
