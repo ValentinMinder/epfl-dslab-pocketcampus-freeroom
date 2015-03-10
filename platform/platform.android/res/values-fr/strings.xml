@@ -20,7 +20,7 @@
 	
 	<!-- Server Communication  -->
 	<string name="sdk_connection_error_happened">Erreur de connexion</string>
-	<string name="sdk_authentication_invalid_credentials">Nom d'utilisateur ou mot de passe incorrects</string>
+	<string name="sdk_authentication_invalid_credentials">Nom d\'utilisateur ou mot de passe incorrects</string>
 	<string name="sdk_authentication_invalid_token">Token invalide</string>
 	<string name="sdk_authentication_failed">Erreur d\'authentification</string>
 	<string name="sdk_authentication_unexpected_error">Erreur inattendue!</string>

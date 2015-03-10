@@ -2,17 +2,17 @@
 <resources>
     <string name="map_plugin_title">Plan</string>
     
-    <string name="map_menu_layers">Points d'intérêts</string>
+    <string name="map_menu_layers">Points d\'intérêts</string>
     <string name="map_menu_my_position_on">Ma position</string>
     <string name="map_menu_my_position_off">Masquer ma position</string>
     <string name="map_menu_campus_position">Centrer sur le campus</string>
     <string name="map_menu_search">Rechercher</string>
     <string name="map_menu_clear_path">Effacer le chemin</string>
-    <string name="map_menu_toggle_map_mode">Mode d'affichage</string>
-    <string name="map_menu_clear_layers">Masquer les points d'intérêts</string>
+    <string name="map_menu_toggle_map_mode">Mode d\'affichage</string>
+    <string name="map_menu_clear_layers">Masquer les points d\'intérêts</string>
     
-    <string name="map_layer_pick_text">Choisir les points d'intérêts à afficher</string>
-    <string name="map_loading_layers">Chargement des points d'intérêts</string>
+    <string name="map_layer_pick_text">Choisir les points d\'intérêts à afficher</string>
+    <string name="map_loading_layers">Chargement des points d\'intérêts</string>
     <string name="map_layer_ok_button">Ok</string>
     
     <string name="map_search">Rechercher sur la carte</string>
