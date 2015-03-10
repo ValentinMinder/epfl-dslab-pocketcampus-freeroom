@@ -15,19 +15,19 @@
 	<string name="sdk_day_sunday">Dimanche</string>
 	    
 	<!-- Votes -->
-	<string name="sdk_nb_votes_singular">vote</string>
-	<string name="sdk_nb_votes_plural">votes</string>
+	<string name="sdk_nb_votes_singular">note</string>
+	<string name="sdk_nb_votes_plural">notes</string>
 	
 	<!-- Server Communication  -->
-	<string name="sdk_connection_error_happened">Erreur de connexion!</string>
-	<string name="sdk_authentication_invalid_credentials">Identifiants non valides!</string>
-	<string name="sdk_authentication_invalid_token">Token invalide!</string>
-	<string name="sdk_authentication_failed">L\'authentification a échoué</string>
+	<string name="sdk_connection_error_happened">Erreur de connexion</string>
+	<string name="sdk_authentication_invalid_credentials">Nom d'utilisateur ou mot de passe incorrects</string>
+	<string name="sdk_authentication_invalid_token">Token invalide</string>
+	<string name="sdk_authentication_failed">Erreur d\'authentification</string>
 	<string name="sdk_authentication_unexpected_error">Erreur inattendue!</string>
 
-	<string name="sdk_upstream_server_down">Le serveur en amont est en panne</string>
+	<string name="sdk_upstream_server_down">Le serveur est inaccessible</string>
 	<string name="sdk_connection_no_cache_yes">Erreur de connexion, affichage des données à partir du cache</string>		
 	<string name="sdk_server_failed">Une erreur inattendue s\'est produite</string>
-	<string name="sdk_please_wait_loading">Merci de patienter...\nLes datas seront toutsuite\ntéléchargées.</string>
+	<string name="sdk_please_wait_loading">Chargement\nMerci de patienter...</string>
 		
 </resources>

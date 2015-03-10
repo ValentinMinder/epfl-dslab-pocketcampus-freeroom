@@ -229,7 +229,7 @@
     <string name="freeroom_welcome_submitting">"Transmission en cours, veuillez patienter !"</string>
     <string name="freeroom_welcome_error">"Vous devez être enregistré avec votre adresse email EPFL pour pouvoir tester cette application. Veuillez réessayer et attendez que le serveur confirme. Si vous pensez qu\'il s\'agit d\'une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire à freeroom.epfl@gmail.com. Pour fermer l'app presser deux fois le bouton retour."</string>
     <string name="freeroom_welcome_invalid_mail">"Email invalide !\nMerci d\'utiliser votre email epfl ayant pour format \nprénom.nom@epfl.ch\n sans espace ou caractère spécial.\nSi vous pensez que c'est une erreur ou que vous n\'arrivez pas à vous enregistrer, merci de nous écrire un email à \nfreeroom.epfl@gmail.com"</string>
-    <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connection internet."</string>
+    <string name="freeroom_welcome_validate_network_error">"Erreur réseau, merci de réessayer et de vérifier votre connexion internet."</string>
     <string name="freeroom_welcome_validate_reject">"Le serveur a rejeté votre enregistrement !Merci de réessayer.\nSi cela persiste, merci de nous contacter à\nfreeroom.epfl@gmail.com !"</string>
 
     <!-- Welcome: reused for normal usage -->

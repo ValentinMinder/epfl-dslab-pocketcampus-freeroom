@@ -3,7 +3,7 @@
 
     <string name="moodle_plugin_title">Moodle</string>
     
-    <string name="moodle_courses_view_title">Liste des Cours Moodle inscrits</string>
+    <string name="moodle_courses_view_title">Vos cours Moodle</string>
     <string name="moodle_events_view_title">Événements Moodle Actuels</string>
         
     <string name="moodle_string_logout">Déconnexion</string>
@@ -17,15 +17,15 @@
     
     <string name="moodle_filemenu_open">Ouvrir</string>
     <string name="moodle_filemenu_share">Partager</string>
-    <string name="moodle_filemenu_redownload">Télécharger de nouveau</string>
+    <string name="moodle_filemenu_redownload">Télécharger à nouveau</string>
     <string name="moodle_filemenu_delete">Supprimer</string>
     <string name="moodle_filemenu_download">Télécharger</string>
     <string name="moodle_filemenu_print">Imprimer</string>
     
-    <string name="moodle_error_moodle_down">PocketCampus a essayé de se connecter aux serveurs Moodle, mais ils semblent hors-ligne.</string>
+    <string name="moodle_error_moodle_down">PocketCampus a essayé de se connecter aux serveurs Moodle, mais ceux-ci semblent hors-ligne.</string>
     <string name="moodle_connection_error_happened">Nous ne pouvons pas récupérer les données Moodle maintenant, car vous n\'êtes pas connecté à Internet.</string>
     <string name="moodle_file_downloaded">Fichier téléchargé avec succès.</string>
-    <string name="moodle_file_downloading">Téléchargement du fichier... Patienter.</string>
+    <string name="moodle_file_downloading">Téléchargement du fichier...</string>
     
     <string name="moodle_no_app_to_handle_filetype">Impossible de trouver une application pour ouvrir ce fichier.</string>
         
