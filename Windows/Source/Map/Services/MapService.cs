@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,21 +14,7 @@ namespace PocketCampus.Map.Services
 {
     public sealed class MapService : ThriftServiceImplementation<IMapService>, IMapService
     {
-        public MapService( IServerAccess access )
-            : base( access.CreateCommunication( "map" ) )
-        {
-
-        }
-
-        public Task<MapLayer[]> GetLayersAsync()
-        {
-            return CallAsync<MapLayer[]>( x => x.GetLayersAsync );
-        }
-
-        public Task<MapItem[]> GetLayerItemsAsync( long layerId, CancellationToken cancellationToken )
-        {
-            return CallAsync<long, CancellationToken, MapItem[]>( x => x.GetLayerItemsAsync, layerId, cancellationToken );
-        }
+        public MapService( IServerAccess access ) : base( access.CreateCommunication( "map" ) ) { }
 
         public Task<MapItem[]> SearchAsync( string query, CancellationToken cancellationToken )
         {

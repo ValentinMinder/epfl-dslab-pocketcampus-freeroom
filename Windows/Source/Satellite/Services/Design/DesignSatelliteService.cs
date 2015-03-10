@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -38,7 +38,7 @@ namespace PocketCampus.Satellite.Services.Design
 Description = @"Il s’agit d’une bière titrant 8.5 % alcool volume,
 refermentée en bouteilles de ¾ l et en fûts de 20 L. La bière est très atténuée,
 ce qui veut dire qu’elle est très facile à boire parce qu’elle n’est pas lourde. La coloration est due à du sucre candi. En fin d’ébullition une petite quantité  d’écorces d’oranges est ajoutée.  Selon les personnes qui l’ont déjà goûtée il s’agit d’une brune très différente des brunes traditionnelles et de goût très apprécié."
-                                            },
+                                    }
                                 },
                                 Beers = new Dictionary<string, Beer[]>
                                 {
@@ -83,8 +83,7 @@ Elle est brassée à partir de moût sucré auquel on rajoute du houblon et des 
 Description = @"Depuis cet automne nous servons en pression une des bières de la brasserie locale Docteur Gab's. On alterne entre la Tempête,
 la Chameau ainsi que des spécialités saisonnières.
 Cette bière blonde double malt combine force de caractère et amertume subtile."
-                                            },
-                
+                                            }
                                         }
                                     },
                                     { "Blanche",
@@ -112,8 +111,7 @@ avec un bon petit caractère."
 Description = @"Bière de haute fermentation,
 non-filtrée,
 naturellement trouble. Son arôme subtil est dût à l'adjonction d'épices et son goût piquant et fruité à un processus de fermentation particulier."
-                                            },
-                      
+                                            }
                                         }
                                     },
                                     { "Lager",
@@ -129,8 +127,7 @@ naturellement trouble. Son arôme subtil est dût à l'adjonction d'épices et s
 Description = @"Légèrement sucrée et fruitée (groseille),
 elle se laisserait facilement passer pour un cocktail. Brassée à base de matières premières sélectionnées pour leur excellente qualité,
 la Super Bock a été récompensée par 28 médailles d'Or au Concours International""Monde Sélection""."
-                                            },
-                    
+                                            }
                                         }
                                     },
                                     { "Bière D",
@@ -148,8 +145,7 @@ brassée au malt pâle et au maïs. Goût plein,
 doux et fruité. Elle une des perles des bière belges,
 à la saveur surprenante et envoûtante. Bien qu'extrêmement connue et consommée,
 elle reste une bière de dégustation qui se savoure à chaque instant."
-                                            },
-                     
+                                            }
                                         }
                                     },
                                     { "Brune",
@@ -172,8 +168,7 @@ grâce à sa densité élevée de 19° plato,
 la chaleur du vin à la fraîcheur de la bière. Elle est classée sous les bières spéciales et est particulièrement indiquée à des fins culinaires comme des étuvés,
 du gibier,
 des pâtés et même des sabayons."
-                                            },
-                   
+                                            }
                                         }
                                     },
                                     { "Blonde Triple",
@@ -192,8 +187,7 @@ de froment et d'avoine. Au goût doux et fruité,
 au saveur de citron,
 d'orange ou de vanille. Elle est cependant forte,
 dangereuse par son goût agréable qui cache un haut taux d'alcool."
-                                            },
-                   
+                                            }
                                         }
                                     },
                                     { "Ambrée",
@@ -220,8 +214,7 @@ le brasseur Pauwel Kwak."
                                                 Price = 4.0,
 Description = @"Bière de haute fermentation,
 à l'orge caramélisé et aux notes subtilement fruitées. Elle accompagne généralement la Guinness sur les comptoirs des pubs irlandais et vous fera découvrir le côté caché de la bière irlandaise."
-                                            },
-                 
+                                            }
                                         }
                                     },
                                     { "Variable",
@@ -242,8 +235,7 @@ blonde puissante,
 la Chameau,
 ambrée au caractère complexe,
 ou bien les bières saisonnières de la brasserie... Les hasards du calendrier vous permettront de découvrir en profondeur la diversité de cette excellente brasserie vaudoise !"
-                                            },
-                  
+                                            }
                                         }
                                     },
                                     { "Stout",
@@ -258,8 +250,7 @@ ou bien les bières saisonnières de la brasserie... Les hasards du calendrier v
                                                 Price = 4.0,
 Description = @"Bière de haute fermentation  au malt fortement torréfié et grains d'orge grillés. La plus célèbre bière irlandaise est reconnaissable à sa couleur noire et opaque,
 sa mousse crémeuse et son goût authentique."
-                                            },
-                  
+                                            }
                                         }
                                     }
                                 }
@@ -1139,7 +1130,7 @@ fruitée,
 épicée,
 légèrement houblonnée,
 au goût évolutif."
-                                            },
+                                            }
                                         }
                                     }
                                 }

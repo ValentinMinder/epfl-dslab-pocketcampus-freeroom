@@ -1,0 +1,130 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Directory.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}"
+             StatusBarShowsProgress="{Binding IsLoadingMoreResults}"
+             StatusBarShowsText="{Binding IsLoadingMoreResults}"
+             StatusBarText="">
+    <!-- FRAMEWORK BUG: Setting StatusBarText to a CustomResource fails.
+            Workaround: Don't set any text, the progress should be clear enough for now.
+                        It should be {CustomResource Main.LoadingMoreResults} -->
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Unit (e.g. DSLAB, SIN-ENS, IN-BA4) template -->
+            <DataTemplate x:Key="UnitTemplate">
+                <TextBlock Text="{Binding}"
+                           Style="{StaticResource AppSubtleTextBlockStyle}"
+                           Margin="0,0,16,0" />
+            </DataTemplate>
+
+            <!-- Person template -->
+            <DataTemplate x:Key="PersonTemplate">
+                <cc:SimpleButton Command="{Binding DataContext.ViewPersonCommand, ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Height="100">
+                    <Grid Margin="19,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Picture -->
+                        <cc:ImageWithPlaceholder Source="{Binding PictureUrl}">
+                            <Viewbox>
+                                <TextBlock Foreground="{StaticResource ApplicationForegroundThemeBrush}"
+                                           FontFamily="Segoe UI Symbol"
+                                           Text="&#xE13D;" />
+                            </Viewbox>
+                        </cc:ImageWithPlaceholder>
+
+                        <Grid Grid.Column="1"
+                              Margin="16,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <!-- Name -->
+                            <Viewbox StretchDirection="DownOnly"
+                                     HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding FullName}"
+                                           Style="{StaticResource AppLargeTextBlockStyle}" />
+                            </Viewbox>
+
+                            <!-- Units -->
+                            <ItemsControl Grid.Row="1"
+                                          ItemsSource="{Binding Roles.Keys}"
+                                          ItemTemplate="{StaticResource UnitTemplate}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <!-- This is an overview, we don't care about overflows -->
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+
+                            <!-- Office -->
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding Office}"
+                                       Style="{StaticResource AppNormalTextBlockStyle}" />
+                        </Grid>
+                    </Grid>
+                </cc:SimpleButton>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+
+        <!-- Search box -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <cc:SearchBox Query="{Binding Query, Mode=TwoWay}" 
+                          SearchCommand="{Binding SearchCommand}"
+                          Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                          Background="{StaticResource AppSecondaryHeaderBackgroundBrush}"
+                          Margin="19,4" />
+        </Border>
+
+        <!-- Search results -->
+        <cc:PaginatingListView Grid.Row="2"
+                               ItemsSource="{Binding SearchResults}"
+                               ItemRequestCommand="{Binding SearchForMoreCommand}"
+                               ItemTemplate="{StaticResource PersonTemplate}" />
+
+        <!-- "No search results" message, displayed only if the query is empty -->
+        <cc:Placeholder Grid.Row="2"
+                        For="{Binding SearchResults}">
+            <TextBlock Text="{CustomResource Main.NoResults}"
+                       Style="{StaticResource AppCenterTextBlockStyle}"
+                       Visibility="{Binding Query, Converter={StaticResource NonDefaultToVisibility}}" />
+        </cc:Placeholder>
+        
+
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="2"
+                              Data="{Binding DataStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+</cc:PageBase>

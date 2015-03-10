@@ -1,0 +1,213 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Camipro.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Transaction item template -->
+            <DataTemplate x:Key="TransactionTemplate">
+                <Grid Margin="19,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Description -->
+                    <TextBlock Text="{Binding Place}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
+
+                    <!-- Amount -->
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Amount, 
+                                              Converter={StaticResource MoneyFormat}}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" 
+                               Foreground="{Binding Amount, 
+                                                    Converter={StaticResource MoneyToBrush}}" />
+
+                    <!-- Date -->
+                    <TextBlock Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               Text="{Binding Date,
+                                              Converter={StaticResource StringFormat},
+                                              ConverterParameter='{}{0:m}, {0:t}'}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource Main.PageHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+        
+        <Pivot Grid.Row="1">
+            <!-- Account (balance and transaction) -->
+            <PivotItem Header="{CustomResource Main.Account}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Current balance -->
+                    <TextBlock Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="19,16,19,0">
+                        <Run Text="{CustomResource Main.CurrentBalance}" />
+                        <Run Text="{Binding AccountInfo.Balance,
+                                            Converter={StaticResource MoneyFormat}}"
+                             Foreground="{Binding AccountInfo.Balance, 
+                                                  Converter={StaticResource MoneyToBrush}}" />
+                    </TextBlock>
+
+                    <!-- Last month -->
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,8,19,0">
+                        <Run Text="{CustomResource Main.MonthTotal}" />
+                        <Run Text="{Binding EbankingInfo.CardStatistics.MonthTotal,
+                                            Converter={StaticResource MoneyFormat}}" />
+                    </TextBlock>
+
+                    <!-- Three months total -->
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,8,19,0">
+                        <Run Text="{CustomResource Main.ThreeMonthsTotal}"/>
+                        <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsTotal,
+                                            Converter={StaticResource MoneyFormat}}" />
+                    </TextBlock>
+
+                    <!-- Three months average -->
+                    <TextBlock Grid.Row="3"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,8,19,0">
+                        <Run Text="{CustomResource Main.ThreeMonthsAverage}" />
+                        <Run Text="{Binding EbankingInfo.CardStatistics.ThreeMonthsAverage,
+                                            Converter={StaticResource MoneyFormat}}" />
+                    </TextBlock>
+
+                    <!-- Transactions -->
+                    <ListView Grid.Row="4"
+                              ItemsSource="{Binding AccountInfo.Transactions}"
+                              ItemTemplate="{StaticResource TransactionTemplate}" 
+                              Margin="0,32,0,0" />
+                </Grid>
+            </PivotItem>
+
+            <!-- E-banking -->
+            <PivotItem Header="{CustomResource Main.Ebanking}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Payment type -->
+                    <TextBlock Text="{CustomResource Main.EbankingPaymentTypeHeader}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,12,19,0" />
+                    <TextBlock Grid.Row="1"
+                               Text="{CustomResource Main.EbankingPaymentType}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="19,0" />
+
+                    <!-- Account name -->
+                    <TextBlock Grid.Row="2"
+                               Text="{CustomResource Main.EbankingAccountName}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,12,19,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountName}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="19,0" />
+
+                    <!-- Account number -->
+                    <TextBlock Grid.Row="4"
+                               Text="{CustomResource Main.EbankingAccountNumber}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,12,19,0" />
+                    <TextBlock Grid.Row="5"
+                               Text="{Binding EbankingInfo.PaymentInfo.AccountNumber}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="19,0" />
+
+                    <!-- Reference number -->
+                    <TextBlock Grid.Row="6"
+                               Text="{CustomResource Main.EbankingReferenceNumber}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,12,19,0"/>
+                    <TextBlock Grid.Row="7"
+                               Text="{Binding EbankingInfo.PaymentInfo.ReferenceNumber}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="19,0" />
+
+                    <!-- Various info -->
+                    <TextBlock Grid.Row="8"
+                               Text="{CustomResource Main.EbankingInfo}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               Margin="19,32" />
+
+                    <cc:Switch Grid.Row="9"
+                               Value="{Binding EmailStatus}"
+                               VerticalAlignment="Bottom"
+                               Margin="19,0,19,12">                      
+                        <!-- 'Request e-mail with info' button -->
+                        <cc:SwitchCase Values="NotRequested">
+                            <Button Command="{Binding RequestEbankingEmailCommand}"
+                                    Content="{CustomResource Main.RequestEbankingEmail}"
+                                    HorizontalAlignment="Stretch" />
+                        </cc:SwitchCase>
+                        
+                        <!-- Loading... -->
+                        <cc:SwitchCase Values="Requested">
+                            <ProgressBar IsIndeterminate="True" />
+                        </cc:SwitchCase>
+                        
+                        <!-- E-mail status text -->
+                        <cc:SwitchCase Values="Success, Error">
+                            <TextBlock Text="{Binding EmailStatus,
+                                                      Converter={StaticResource EnumToString}}"
+                                       Style="{StaticResource AppNormalTextBlockStyle}" />
+                        </cc:SwitchCase>
+                    </cc:Switch>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+        
+        <cc:DataStatusDisplay Grid.Row="1"
+                              Data="{Binding DataStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+</cc:PageBase>

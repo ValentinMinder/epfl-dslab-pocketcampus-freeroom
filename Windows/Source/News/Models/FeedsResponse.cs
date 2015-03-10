@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -12,15 +12,9 @@ namespace PocketCampus.News.Models
     [ThriftStruct( "NewsFeedsResponse" )]
     public sealed class FeedsResponse
     {
-        /// <summary>
-        /// The response status
-        /// </summary>
         [ThriftField( 1, true, "statusCode" )]
         public ResponseStatus Status { get; set; }
 
-        /// <summary>
-        /// The feeds.
-        /// </summary>
         [ThriftField( 2, true, "feeds" )]
         public Feed[] Feeds { get; set; }
     }

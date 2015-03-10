@@ -1,0 +1,196 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Events.Views.EventItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding EventItem, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Template for child pools -->
+            <DataTemplate x:Key="ItemPoolTemplate">
+                <cc:SimpleButton Command="{Binding DataContext.ViewPoolCommand, 
+                                                   ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Margin="19,12,8,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="{Binding PictureUrl}"
+                               Width="96"
+                               Height="96"
+                               Stretch="Uniform" />
+
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                </cc:SimpleButton>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+
+        <!-- Cache status -->
+        <cc:CacheStatusDisplay Grid.Row="1"
+                               Status="{Binding CacheStatus}" />
+
+        <!-- Everything needs to scroll, sometimes some values are extremely long -->
+        <ScrollViewer Grid.Row="3">
+            <StackPanel>
+                <!-- Name, description and image thumbnail -->
+                <Grid Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <!-- Name -->
+                        <TextBlock Text="{Binding Item.Name}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
+                                   Visibility="{Binding Item.HideName,
+                                                        Converter={StaticResource DefaultToVisibility}}" />
+
+                        <!-- Short details -->
+                        <TextBlock Text="{Binding Item.ShortDetails}"
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
+                                   FontSize="{StaticResource TextStyleMediumFontSize}" />
+                    </StackPanel>
+
+                    <!-- Thumbnail -->
+                    <Image Grid.Column="1"
+                           Source="{Binding Item.ThumbnailUrl}"
+                           VerticalAlignment="Top"
+                           Width="100"
+                           Visibility="{Binding Item.HideThumbnail, 
+                                                Converter={StaticResource DefaultToVisibility}}"/>
+                </Grid>
+
+                <!-- Information -->
+                <StackPanel Margin="19,0"
+                            Visibility="{Binding Item.HideInformation, 
+                                                 Converter={StaticResource DefaultToVisibility}}">
+                    <!-- Date -->
+                    <StackPanel Margin="0,16,0,0"
+                                Visibility="{Binding Item.StartDate, 
+                                                     Converter={StaticResource NonDefaultToVisibility}}">
+                        <TextBlock Text="{CustomResource EventItem.Date}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+                        <TextBlock Text="{Binding Item,
+                                                  Converter={StaticResource EventToDate}}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}" />
+                    </StackPanel>
+
+                    <!-- Location -->
+                    <StackPanel Margin="0,16,0,0"
+                                Visibility="{Binding Item.Location, 
+                                                     Converter={StaticResource NonDefaultToVisibility}}">
+                        <TextBlock Text="{CustomResource EventItem.Location}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+                        <TextBlock Text="{Binding Item.Location}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}"
+                                   Visibility="{Binding Item.LocationUrl, 
+                                                        Converter={StaticResource DefaultToVisibility}}" />
+
+                        <HyperlinkButton Command="{Binding ViewOnMapCommand}"
+                                         Margin="0"
+                                         Visibility="{Binding Item.LocationUrl, 
+                                                              Converter={StaticResource NonDefaultToVisibility}}">
+                            <TextBlock Style="{StaticResource AppLargeTextBlockStyle}">
+                                <Underline>
+                                    <Run Text="{Binding Item.Location}" />
+                                </Underline>
+                            </TextBlock>
+                        </HyperlinkButton>
+                    </StackPanel>
+
+                    <!-- Speaker -->
+                    <StackPanel Margin="0,16,0,0"
+                                Visibility="{Binding Item.SpeakerName, 
+                                                     Converter={StaticResource NonDefaultToVisibility}}">
+                        <TextBlock Text="{CustomResource EventItem.Speaker}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+                        <RichTextBlock c:RichTextBlockEx.Html="{Binding Item.SpeakerName}"
+                                       Style="{StaticResource AppLargeRichTextBlockStyle}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Large image -->
+                <Image Source="{Binding Item.PictureUrl}"
+                       Visibility="{Binding Item.PictureUrl, 
+                                            Converter={StaticResource NonDefaultToVisibility}}" />
+
+                <!-- Details, in HTML -->
+                <RichTextBlock c:RichTextBlockEx.Html="{Binding Item.Details}"
+                               Style="{StaticResource AppNormalRichTextBlockStyle}"
+                               Visibility="{Binding Item.Details, 
+                                                    Converter={StaticResource NonDefaultToVisibility}}"
+                               Margin="19,16" />
+
+                <!-- "More details" button -->
+                <HyperlinkButton Margin="19,0"
+                                 Command="{Binding ViewMoreDetailsCommand}"
+                                 Visibility="{Binding Item.DetailsUrl, 
+                                                      Converter={StaticResource NonDefaultToVisibility}}">
+                    <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}">
+                        <Underline>
+                            <Run Text="{CustomResource EventItem.MoreDetails}" />
+                        </Underline>
+                    </TextBlock>
+                </HyperlinkButton>
+
+                <!-- Child pools -->
+                <ItemsControl ItemsSource="{Binding Pools}"
+                              ItemTemplate="{StaticResource ItemPoolTemplate}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="1"
+                              Grid.RowSpan="3"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <!-- "Mark as favorite" button -->
+                <AppBarToggleButton IsChecked="{Binding IsFavorite, 
+                                                        Mode=TwoWay}"
+                                    Icon="Favorite"
+                                    Label="{CustomResource EventItem.Favorite}" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
+</cc:PageBase>

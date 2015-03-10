@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -17,9 +17,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Food.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/food" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, FoodResponse>
     {
@@ -34,59 +31,38 @@ namespace PocketCampus.Food.ViewModels
         private Restaurant[] _fullMenu;
 
         private Restaurant[] _menu;
-        private bool _allResultsFilteredOut;
+        private SearchStatus _menuStatus;
         private MealTime _mealTime;
         private DateTime _mealDate;
 
-        /// <summary>
-        /// Gets the filtered list of menus.
-        /// </summary>
+
         public Restaurant[] Menu
         {
             get { return _menu; }
             private set { SetProperty( ref _menu, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether all meals are hidden by filters.
-        /// </summary>
-        public bool AllResultsFilteredOut
+        public SearchStatus MenuStatus
         {
-            get { return _allResultsFilteredOut; }
-            private set { SetProperty( ref _allResultsFilteredOut, value ); }
+            get { return _menuStatus; }
+            private set { SetProperty( ref _menuStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the menu's meal time.
-        /// </summary>
         public MealTime MealTime
         {
             get { return _mealTime; }
-            set { SetProperty( ref _mealTime, value ); UpdateMenu(); }
+            set { SetProperty( ref _mealTime, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the menu's date.
-        /// </summary>
         public DateTime MealDate
         {
             get { return _mealDate; }
-            set { SetProperty( ref _mealDate, value ); UpdateMenu(); }
+            set { SetProperty( ref _mealDate, value ); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the ratings are enabled.
-        /// </summary>
-        public bool AreRatingsEnabled { get; private set; }
-
-        /// <summary>
-        /// Gets the settings.
-        /// </summary>
         public IPluginSettings Settings { get; private set; }
 
-        /// <summary>
-        /// Gets the command executed to view a restaurant on the map.
-        /// </summary>
+
         [LogId( "ViewRestaurantOnMap" )]
         [LogParameter( "$Param.Name" )]
         public Command<Restaurant> ViewMapItemCommand
@@ -94,32 +70,22 @@ namespace PocketCampus.Food.ViewModels
             get { return this.GetCommand<Restaurant>( r => Messenger.Send( new MapSearchRequest( r.MapItem ) ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to show the settings.
-        /// </summary>
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
-
-        /// <summary>
-        /// Gets the command executed to vote on a meal.
-        /// </summary>
         [LogId( "RateMeal" )]
         [LogParameter( "$Param.LogId" )]
         public Command<Meal> RateMealCommand
         {
-            get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal>, _ => AreRatingsEnabled ); }
+            get { return this.GetCommand<Meal>( _navigationService.NavigateTo<RatingViewModel, Meal> ); }
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, INavigationService navigationService, IFoodService menuService,
-                              ICredentialsStorage credentials, IPluginSettings settings, IServerSettings serverSettings )
+                              ICredentialsStorage credentials, IPluginSettings settings )
             : base( cache )
         {
             _navigationService = navigationService;
@@ -129,24 +95,15 @@ namespace PocketCampus.Food.ViewModels
             _mealDate = DateTime.Now;
             _mealTime = GetMealTime( _mealDate.Hour );
 
-            AreRatingsEnabled = serverSettings.Configuration.AreFoodRatingsEnabled != 0;
             Settings = settings;
+            Settings.PropertyChanged += ( _, __ ) => UpdateMenu();
 
-            Settings.PropertyChanged += ( _, __ ) =>
-            {
-                if ( _fullMenu != null )
-                {
-                    Menu = FilterMenu( _fullMenu );
-                    AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
-                }
-            };
+            this.ListenToProperty( x => x.MealDate, RefreshMenu );
+            this.ListenToProperty( x => x.MealTime, RefreshMenu );
         }
 
 
-        /// <summary>
-        /// Executed when the user selects another meal time or date.
-        /// </summary>
-        private async void UpdateMenu()
+        private async void RefreshMenu()
         {
             await TryRefreshAsync( true );
         }
@@ -198,36 +155,45 @@ namespace PocketCampus.Food.ViewModels
             if ( !token.IsCancellationRequested )
             {
                 _fullMenu = data.Menu;
-                Menu = FilterMenu( _fullMenu );
-                AllResultsFilteredOut = Menu.Length == 0 && _fullMenu.Length > 0;
+                UpdateMenu();
             }
 
             return true;
         }
 
 
-        private Restaurant[] FilterMenu( Restaurant[] menu )
+        private void UpdateMenu()
         {
-            // The simple solution, using Any() on Settings.DisplayedMealTypes, displays meals with more than one type
+            if ( _fullMenu == null )
+            {
+                return;
+            }
+
+            // Using Any() on Settings.DisplayedMealTypes displays meals with more than one type
             // even if the user doesn't want the second type to appear
             var forbiddenTypes = EnumEx.GetValues<MealType>().Where( type => !Settings.DisplayedMealTypes.Contains( type ) ).ToArray();
 
-            return ( from restaurant in _fullMenu
+            foreach ( var meal in _fullMenu.SelectMany( r => r.Meals ) )
+            {
+                meal.SetCurrentPrice( Settings.PriceTarget );
+            }
+
+            Menu = ( from restaurant in _fullMenu
                      let meals = from meal in restaurant.Meals
                                  where !forbiddenTypes.Any( type => meal.MealTypes.Contains( type ) )
-                                 let mealPrice = meal.GetPrice( Settings.PriceTarget )
-                                 where mealPrice == null || mealPrice <= Settings.MaximumBudget
+                                 where meal.CurrentPrice == null || meal.CurrentPrice <= Settings.MaximumBudget
                                     || ( meal.HalfPortionPrice.HasValue && meal.HalfPortionPrice.Value <= Settings.MaximumBudget )
                                  select meal
                      where meals.Any()
                      orderby restaurant.Name ascending
-                     select restaurant.WithMeals( meals ) )
+                     select restaurant.CopyWithMeals( meals ) )
                     .ToArray();
+
+            MenuStatus = Menu.Length == 0
+                ? _fullMenu.Length == 0 ? SearchStatus.NoResults : SearchStatus.AllResultsFilteredOut
+                : SearchStatus.Finished;
         }
 
-        /// <summary>
-        /// Gets the meal time associated with the specified hour.
-        /// </summary>
         private static MealTime GetMealTime( int hour )
         {
             return hour <= LunchLimit ? MealTime.Lunch : MealTime.Dinner;

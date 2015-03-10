@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -13,9 +13,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Moodle.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel.
-    /// </summary>
     [LogId( "/moodle" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, CoursesResponse>
     {
@@ -25,15 +22,12 @@ namespace PocketCampus.Moodle.ViewModels
 
         private Course[] _courses;
 
-        /// <summary>
-        /// Gets the courses the user is enrolled in.
-        /// </summary>
+
         public Course[] Courses
         {
             get { return _courses; }
             private set { SetProperty( ref _courses, value ); }
         }
-
 
         /// <summary>
         /// Gets the command executed to view a course.
@@ -46,9 +40,6 @@ namespace PocketCampus.Moodle.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, ISecureRequestHandler requestHandler, INavigationService navigationService,
                               IMoodleService moodleService )
             : base( cache )

@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,10 +14,7 @@ namespace PocketCampus.Camipro.Services
 {
     public sealed class CamiproService : ThriftServiceImplementation<ICamiproService>, ICamiproService
     {
-        public CamiproService( IServerAccess config )
-            : base( config.CreateCommunication( "camipro" ) )
-        {
-        }
+        public CamiproService( IServerAccess config ) : base( config.CreateCommunication( "camipro" ) ) { }
 
         public Task<TequilaToken> GetTokenAsync()
         {

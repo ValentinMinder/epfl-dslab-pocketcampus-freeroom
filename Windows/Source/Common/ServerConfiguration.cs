@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -12,12 +12,17 @@ namespace PocketCampus.Common
     /// <summary>
     /// Server configuration information.
     /// </summary>
-    /// <remarks>
-    /// Properties in this class have public setters for the settings serializer.
-    /// </remarks>
     [DataContract]
     public sealed class ServerConfiguration
     {
+        // The format of the server URL
+        // Parameters are the protocol, the URL and the port
+#if DEBUG
+        private const string ServerBaseUrlFormat = "http://test-pocketcampus.epfl.ch:14610/v3r1/";
+#else
+        private const string ServerBaseUrlFormat = "{0}://{1}:{2}/v3r1/";
+#endif
+
         /// <summary>
         /// Gets the protocol used to access the server.
         /// </summary>
@@ -47,10 +52,13 @@ namespace PocketCampus.Common
         public string[] EnabledPlugins { get; set; }
 
         /// <summary>
-        /// Gets 1 if the food ratings are enabled, 0 otherwise.
+        /// Gets the server's base URL.
         /// </summary>
-        [DataMember( Name = "FOOD_RATINGS_ENABLED" )]
-        public int AreFoodRatingsEnabled { get; set; }
+        [IgnoreDataMember]
+        public string ServerBaseUrl
+        {
+            get { return string.Format( ServerBaseUrlFormat, Protocol, Address, Port ); }
+        }
 
 
         /// <summary>

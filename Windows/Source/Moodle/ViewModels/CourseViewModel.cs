@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -19,14 +18,12 @@ namespace PocketCampus.Moodle.ViewModels
     public sealed class CourseViewModel : CachedDataViewModel<Course, CourseSectionsResponse>
     {
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly INavigationService _navigationService;
         private readonly IMoodleService _moodleService;
-        private readonly IMoodleDownloader _downloader;
-        private readonly IFileStorage _storage;
         private readonly IBrowserService _browserService;
 
         private CourseSection[] _sections;
         private CourseSection _selectedSection;
-        private DownloadState _downloadState;
 
 
         public Course Course { get; set; }
@@ -43,29 +40,6 @@ namespace PocketCampus.Moodle.ViewModels
             private set { SetProperty( ref _selectedSection, value ); }
         }
 
-        /// <summary>
-        /// Gets the state of the current download (or lack thereof).
-        /// </summary>
-        public DownloadState DownloadState
-        {
-            get { return _downloadState; }
-            private set { SetProperty( ref _downloadState, value ); }
-        }
-
-
-        /// <summary>
-        /// Gets the command executed to open a file, downloading if needed.
-        /// </summary>
-        [LogId( "DownloadAndOpenFile" )]
-        [LogParameter( "$Param.Name" )]
-        public AsyncCommand<MoodleFile> OpenFileCommand
-        {
-            get { return this.GetAsyncCommand<MoodleFile>( OpenFileAsync ); }
-        }
-
-        /// <summary>
-        /// Gets the command executed to open a link.
-        /// </summary>
         [LogId( "OpenLink" )]
         [LogParameter( "$Param.Name" )]
         public Command<MoodleLink> OpenLinkCommand
@@ -73,19 +47,26 @@ namespace PocketCampus.Moodle.ViewModels
             get { return this.GetCommand<MoodleLink>( l => _browserService.NavigateTo( l.Url ) ); }
         }
 
+        [LogId( "ViewFile" )]
+        [LogParameter( "$Param.Name" )]
+        public Command<MoodleFile> ViewFileCommand
+        {
+            get { return this.GetCommand<MoodleFile>( _navigationService.NavigateTo<FileViewModel, MoodleFile> ); }
+        }
 
-        public CourseViewModel( IDataCache cache, ISecureRequestHandler requestHandler, IMoodleService moodleService,
-                                IMoodleDownloader downloader, IFileStorage storage, IBrowserService browserService,
+
+        public CourseViewModel( IDataCache cache, ISecureRequestHandler requestHandler, INavigationService navigationService,
+                                IMoodleService moodleService, IBrowserService browserService,
                                 Course course )
             : base( cache )
         {
             _requestHandler = requestHandler;
+            _navigationService = navigationService;
             _moodleService = moodleService;
-            _downloader = downloader;
-            _storage = storage;
             _browserService = browserService;
             Course = course;
         }
+
 
         protected override CachedTask<CourseSectionsResponse> GetData( bool force, CancellationToken token )
         {
@@ -126,62 +107,29 @@ namespace PocketCampus.Moodle.ViewModels
                     {
                         if ( resource.File != null )
                         {
-                            resource.File.PathComponents = new[] { Course.Name, section.DisplayTitle };
+                            resource.File.PathComponents = new[] { Course.Name, GetSectionPath( section ) };
                         }
                         if ( resource.Folder != null )
                         {
                             foreach ( var file in resource.Folder.Files )
                             {
-                                file.PathComponents = new[] { Course.Name, section.DisplayTitle, resource.Folder.Name };
+                                file.PathComponents = new[] { Course.Name, GetSectionPath( section ), resource.Folder.Name };
                             }
                         }
                     }
                 }
 
                 Sections = data.Sections;
-                if ( SelectedSection == null )
-                {
-                    SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
-                                   ?? Sections.FirstOrDefault();
-                }
+                SelectedSection = Sections.FirstOrDefault( s => s.Title == null && s.StartDate.Value <= DateTime.Now && DateTime.Now <= s.EndDate.Value )
+                               ?? Sections.FirstOrDefault();
             }
 
             return true;
         }
 
-
-        /// <summary>
-        /// Downloads (if it hasn't already been downloaded) and opens the specified file.
-        /// </summary>
-        private async Task OpenFileAsync( MoodleFile file )
+        private static string GetSectionPath( CourseSection section )
         {
-            if ( DownloadState == DownloadState.Downloading )
-            {
-                return;
-            }
-
-            // some very odd errors can happen here
-            try
-            {
-                if ( !( await _storage.IsStoredAsync( file ) ) )
-                {
-                    DownloadState = DownloadState.Downloading;
-
-                    var bytes = await _downloader.DownloadAsync( file );
-                    await _storage.StoreFileAsync( file, bytes );
-
-                    DownloadState = DownloadState.None;
-                }
-            }
-            catch
-            {
-                DownloadState = DownloadState.Error;
-            }
-
-            if ( DownloadState == DownloadState.None )
-            {
-                await _storage.OpenFileAsync( file );
-            }
+            return section.Title ?? section.StartDate.Value.ToString( "M" );
         }
     }
 }

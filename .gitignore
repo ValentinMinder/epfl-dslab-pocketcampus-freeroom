@@ -32,6 +32,10 @@ target/
 TestResults/
 [Pp]ackages/
 
-# Windows Phone hidden files
-Windows/Source/Main.WindowsPhone/analytics.xml
-Windows/Source/Map.WindowsPhone/MapTokens.txt
+# Windows Phone build artifacts
+AppPackages/
+BundleArtifacts/
+
+# Secret files in the Windows Phone client
+Windows/Source/Main.WindowsRuntime/analytics.xml
+Windows/Source/Map.WindowsRuntime/MapToken.txt

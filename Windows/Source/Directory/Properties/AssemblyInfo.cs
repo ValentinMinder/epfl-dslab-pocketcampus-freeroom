@@ -1,14 +1,11 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle( "PocketCampus.Directory.Common" )]
-[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014" )]
+[assembly: AssemblyTitle( "PocketCampus.Directory" )]
+[assembly: AssemblyCopyright( "Copyright © PocketCampus.Org 2014-15" )]
 [assembly: AssemblyCulture( "" )]
 
-[assembly: ComVisible( false )]
-
-[assembly: AssemblyVersion( "2.4.1.*" )]
+[assembly: AssemblyVersion( "2.5.0.*" )]

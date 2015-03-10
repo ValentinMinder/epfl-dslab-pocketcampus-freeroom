@@ -1,0 +1,174 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.CloudPrint.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="ComboBoxEnumItemTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header & title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource Main.ViewHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+
+        <!-- File name -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <TextBlock Text="{Binding FileName}"
+                       Style="{StaticResource AppSecondaryTitleTextBlockStyle}" />
+        </Border>
+
+        <!-- "Print" button -->
+        <Button Grid.Row="2"
+                Command="{Binding PrintCommand}"
+                Content="{CustomResource Main.Print}"
+                HorizontalAlignment="Stretch"
+                Margin="19" />
+
+        <ScrollViewer Grid.Row="3">
+            <StackPanel Margin="19,0,19,38">
+                <!-- Color config -->
+                <ComboBox ItemsSource="{Binding Settings.ColorConfig, 
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding Settings.ColorConfig,
+                                                 Mode=TwoWay}"
+                          Header="{CustomResource Main.ColorConfig}" />
+
+                <!-- Copies config part 1: number of copies -->
+                <TextBox InputScope="Number"
+                         Text="{Binding Settings.CopiesConfig.Count,
+                                        Mode=TwoWay}"
+                         Header="{CustomResource Main.CopiesCount}" />
+
+                <!-- Double-sided option -->
+                <ComboBox ItemsSource="{Binding Settings.DoubleSidedConfig, 
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding Settings.DoubleSidedConfig,
+                                                 Mode=TwoWay}"
+                          Header="{CustomResource Main.DoubleSidedConfig}" />
+
+                <!-- Multi-page config part 1: pages per sheet -->
+                <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.PagesPerSheet, 
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.PagesPerSheet,
+                                                 Mode=TwoWay}"
+                          Header="{CustomResource Main.PagesPerSheet}" />
+
+                <!-- Page orientation -->
+                <ComboBox ItemsSource="{Binding Settings.PageOrientation, 
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding Settings.PageOrientation,
+                                                 Mode=TwoWay}"
+                          Header="{CustomResource Main.PageOrientation}" />
+
+                <!-- Print all pages -->
+                <RadioButton GroupName="PageRange"
+                             IsChecked="{Binding Settings.PrintAllPages, 
+                                                 Mode=TwoWay}"
+                             Content="{CustomResource Main.PrintAllPages}" />
+                <!-- Print a range -->
+                <!-- FRAMEWORK BUG: RadioButton does not let its inputs pass through,
+                                    which means we have to put a button next to the textboxes
+                                    instead of putting the boxes inside the button's content. -->
+                <!-- FRAMEWORK BUG: An empty RadioButton still takes up quite a lot of horizontal space,
+                                    the Width property doesn't seem to have any effect, 
+                                    so we need some tricks to make it look good. -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="26" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <RadioButton x:Name="RangeButton"
+                                 GroupName="PageRange" />
+
+                    <TextBox Grid.Column="1"
+                             c:TextBoxEx.AssociatedToggle="{Binding ElementName=RangeButton}"
+                             InputScope="Number"
+                             Text="{Binding Settings.PageRange.From,
+                                            Mode=TwoWay}"
+                             Header="{CustomResource Main.RangeFrom}"
+                             Margin="9,0,19,0" />
+
+                    <TextBox Grid.Column="2"
+                             c:TextBoxEx.AssociatedToggle="{Binding ElementName=RangeButton}"
+                             InputScope="Number"
+                             Text="{Binding Settings.PageRange.To,
+                                            Mode=TwoWay}"
+                             Header="{CustomResource Main.RangeTo}"
+                             Margin="0" />
+                </Grid>
+
+                <!-- Copies config part 2: collate copies -->
+                <CheckBox IsChecked="{Binding Settings.CopiesConfig.Collate,
+                                              Mode=TwoWay}">
+                    <StackPanel>
+                        <TextBlock Text="{CustomResource Main.CollateCopies}" />
+                        <TextBlock Text="{CustomResource Main.CollateCopiesExplanation}" 
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+                    </StackPanel>
+                </CheckBox>
+
+                <!-- Multi-page config part 2: pages per sheet -->
+                <ComboBox ItemsSource="{Binding Settings.MultiPageConfig.Layout, 
+                                                Converter={StaticResource EnumToValues},
+                                                Mode=OneTime}"
+                          ItemTemplate="{StaticResource ComboBoxEnumItemTemplate}"
+                          SelectedItem="{Binding Settings.MultiPageConfig.Layout,
+                                                 Mode=TwoWay}"
+                          Header="{CustomResource Main.PagesLayout}" />
+            </StackPanel>
+        </ScrollViewer>
+        
+        <cc:Switch Grid.Row="2"
+                   Grid.RowSpan="2"
+                   Value="{Binding Status}">
+            <cc:SwitchCase Values="Printing">
+                <Border Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <ProgressRing IsActive="True"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+                </Border>
+            </cc:SwitchCase>
+            <cc:SwitchCase Values="Success, UploadError, PrintingError">
+                <Border Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <TextBlock Text="{Binding Status,
+                                              Converter={StaticResource EnumToString}}"
+                               Style="{StaticResource AppCenterTextBlockStyle}" />
+                </Border>
+            </cc:SwitchCase>
+        </cc:Switch>
+    </Grid>
+</cc:PageBase>

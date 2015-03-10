@@ -1,0 +1,253 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Transport.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.Transport"
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <my:TakeNConverter x:Key="Take3Converter"
+                               Count="3" />
+            <my:DateFormatConverter x:Key="DateFormat"
+                                    Format="HH:mm" />
+            
+            <!-- Departure position template -->
+            <DataTemplate x:Key="ConnectionDeparturePositionTemplate">
+                <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}"
+                           Visibility="{Binding DeparturePosition, Converter={StaticResource NonDefaultToVisibility}}">
+                        <Run Text="{CustomResource Main.DeparturePosition}" />
+                        <Run Text="{Binding DeparturePosition}" />
+                </TextBlock>
+            </DataTemplate>
+
+            <!-- Connection template -->
+            <DataTemplate x:Key="ConnectionTemplate">
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Arrival -->
+                    <TextBlock Text="{Binding Arrival.Name}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
+                    
+                    <!-- Line -->
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Converter={StaticResource ConnectionToLine}}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               HorizontalAlignment="Right" />
+                    
+                    <!-- Departure and arrival time -->
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource AppSubtleTextBlockStyle}">
+                        <Run Text="{Binding DepartureTime,
+                                            Converter={StaticResource DateFormat}}" />
+
+                        <Run Text="→" />
+
+                        <Run Text="{Binding ArrivalTime,
+                                            Converter={StaticResource DateFormat}}" />
+                    </TextBlock>
+
+                    <!-- Departure position (if any) -->
+                    <ContentControl Grid.Column="1"
+                                    Grid.Row="1"
+                                    Content="{Binding}"
+                                    ContentTemplate="{StaticResource ConnectionDeparturePositionTemplate}" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Basic trip template -->
+            <DataTemplate x:Key="TripBasicTemplate">
+                <Grid Margin="0,0,17,17"
+                      Width="104">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Departure time -->
+                    <TextBlock Text="{Binding DepartureTime, 
+                                              Converter={StaticResource DateFormat}}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Margin="0,0,16,4" />
+
+                    <!-- First line name -->
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Connections[0],
+                                              Converter={StaticResource ConnectionToLine}}"
+                               Style="{StaticResource AppLargeTextBlockStyle}"
+                               Foreground="{StaticResource AppSubtleBrush}"
+                               Margin="0,0,0,4" />
+
+                    <!-- First departure position (if any) -->
+                    <ContentControl Grid.ColumnSpan="2"
+                                    Grid.Row="1"
+                                    Content="{Binding Connections[0]}"
+                                    ContentTemplate="{StaticResource ConnectionDeparturePositionTemplate}" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Full trip template -->
+            <DataTemplate x:Key="TripFullTemplate">
+                <Grid Margin="0,0,17,32">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Times -->
+                    <StackPanel VerticalAlignment="Top">
+                        <!-- Departure time -->
+                        <TextBlock Text="{CustomResource Main.TripDeparture}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+                        <TextBlock Text="{Binding DepartureTime, 
+                                                  Converter={StaticResource DateFormat}}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}"
+                                   Margin="0,0,0,16" />
+
+                        <!-- Arrival time -->
+                        <TextBlock Text="{CustomResource Main.TripArrival}"
+                                   Style="{StaticResource AppSubtleTextBlockStyle}" />
+                        <TextBlock Text="{Binding ArrivalTime, 
+                                                  Converter={StaticResource DateFormat}}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}" />
+                    </StackPanel>
+
+                    <!-- Separator -->
+                    <Rectangle Grid.Column="1"
+                               Width="1"
+                               Fill="#20000000"
+                               Margin="10,0" />
+
+                    <!-- Connections -->
+                    <ItemsControl Grid.Column="2"
+                                  ItemsSource="{Binding Connections}"
+                                  ItemTemplate="{StaticResource ConnectionTemplate}" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Template for trips to a station -->
+            <DataTemplate x:Key="StationTripsTemplate">
+                <ToggleSwitch Style="{StaticResource AppHeaderedToggleSwitchStyle}"
+                              Margin="0,16,0,0">
+                    <ToggleSwitch.Header>
+                        <!-- Header: destination name -->
+                        <StackPanel>
+                            <cc:SimpleButton>
+                                <TextBlock Text="{Binding Destination.Name}"
+                                           Style="{StaticResource AppGroupHeaderTextBlockStyle}" />
+
+                                <cc:SimpleButton.HoldingFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="{CustomResource Main.RemoveStation}"
+                                                        Command="{Binding DataContext.RemoveStationCommand, 
+                                                                          ElementName=Root}"
+                                                        CommandParameter="{Binding Destination}" />
+                                    </MenuFlyout>
+                                </cc:SimpleButton.HoldingFlyout>
+                            </cc:SimpleButton>
+
+                            <!-- Small data status indicator -->
+                            <cc:DataStatusDisplay Data="{Binding DataStatus}"
+                                                  RetryCommand="{Binding RefreshCommand}"
+                                                  TextStyle="{StaticResource AppNormalTextBlockStyle}" />
+                        </StackPanel>
+                    </ToggleSwitch.Header>
+
+                    <ToggleSwitch.OffContent>
+                        <!-- Collapsed content: basic trips information -->
+                        <GridView ItemsSource="{Binding Trips, 
+                                                        Converter={StaticResource Take3Converter}}"
+                                  ItemTemplate="{StaticResource TripBasicTemplate}" />
+                    </ToggleSwitch.OffContent>
+
+                    <ToggleSwitch.OnContent>
+                        <!-- Expanded content: full trips information -->
+                        <ListView ItemsSource="{Binding Trips}"
+                                  ItemTemplate="{StaticResource TripFullTemplate}" />
+                    </ToggleSwitch.OnContent>
+                </ToggleSwitch>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+        </Border>
+
+        <!-- Station picker -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <ComboBox ItemsSource="{Binding Settings.Stations}"
+                      SelectedItem="{Binding SelectedStation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      Header="{CustomResource Main.Departure}"
+                      Foreground="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                      BorderBrush="{StaticResource AppSecondaryHeaderForegroundBrush}"
+                      Margin="19,5" />
+        </Border>
+
+        <!-- "Tap for more info" text -->
+        <TextBlock Grid.Row="2"
+                   Text="{CustomResource Main.Explanation}"
+                   Style="{StaticResource AppSubtleTextBlockStyle}"
+                   Margin="19,16,19,0" />
+
+        <!-- Trips -->
+        <ListView Grid.Row="3"
+                  ItemsSource="{Binding Trips}"
+                  ItemTemplate="{StaticResource StationTripsTemplate}"
+                  Margin="19,0,2,0" />
+
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="1"
+                              Grid.RowSpan="3"
+                              Data="{Binding DataStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+
+    <!-- App bar -->
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact">
+            <!-- "Add station" button -->
+            <AppBarButton Command="{Binding AddStationCommand}"
+                          Label="{CustomResource Main.AddStation}"
+                          Icon="Add" />
+
+            <!-- "View settings" button -->
+            <AppBarButton Command="{Binding ViewSettingsCommand}"
+                          Label="{CustomResource Main.Settings}"
+                          Icon="Setting" />
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
+</cc:PageBase>
