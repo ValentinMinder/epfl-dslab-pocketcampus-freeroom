@@ -9,9 +9,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 import org.pocketcampus.platform.android.core.PluginController;
@@ -42,6 +43,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -81,13 +84,15 @@ public class MapMainView extends PluginView implements IMapView {
     private TileOverlay mOsmOverlay;
     private TileOverlay mEpflOverlay;
     private GroundOverlay mGroundOverlay;
-    private List<Marker> mMarkers = new LinkedList<Marker>();
+    private Map<Marker, MapItem> mMarkers = new HashMap<Marker, MapItem>();
     
 	private LatLngBounds visibleRegion;
 	private AsyncTask<LatLngBounds, Void, BitmapDescriptor> mDownloader;
 
 	private String layer = "all";
 	private boolean epflLabels = true;
+	private CameraUpdate epflView = null;
+	
 
 	
 	
@@ -211,11 +216,31 @@ public class MapMainView extends PluginView implements IMapView {
         mMap.setIndoorEnabled(false);
         
         // center on EPFL
-    	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.52, 6.57), 15));
+        epflView = CameraUpdateFactory.newLatLngZoom(new LatLng(46.518, 6.567), (float)14.7);
+    	mMap.moveCamera(epflView);
         
     	mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 			public void onCameraChange(CameraPosition position) {
 				onCamMove();
+			}
+		});
+    	mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+			public boolean onMarkerClick(Marker marker) {
+				synchronized (MapMainView.this) {
+					MapItem i = mMarkers.get(marker);
+					changeEpflFloor(i.getFloor());
+				}
+				return false; // don't consume the event (so that the map centers on this marker, and info window appears)
+			}
+		});
+    	mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			public void onInfoWindowClick(Marker marker) {
+				synchronized (MapMainView.this) {
+					MapItem i = mMarkers.get(marker);
+					if("persons".equals(i.getCategory())) {
+						searchDirectory(i.getTitle());
+					}
+				}
 			}
 		});
     	
@@ -223,6 +248,23 @@ public class MapMainView extends PluginView implements IMapView {
     	handleSearchIntent(getIntent());
     }
     
+	private void searchDirectory(String str) {
+		try {
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_VIEW);
+			Uri.Builder uri = new Uri.Builder();
+			uri.scheme("pocketcampus").authority("directory.plugin.pocketcampus.org").appendPath("query").appendQueryParameter("q", str);
+			//System.out.println(uri.build());
+			i.setData(uri.build());
+			//i.putExtra("MapElement", r.location);
+			startActivity(i);
+		} catch (Exception e) {
+			// Should never happen
+			Toast.makeText(getApplicationContext(), "The Map plugin is not installed??", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+
     
     
 	private void updateActionBar() {
@@ -231,7 +273,7 @@ public class MapMainView extends PluginView implements IMapView {
 			@Override
 			public void performAction(View view) {
 				onSearchRequested();
-				DialogUtils.showInputDialog(MapMainView.this, "Map", "Search for", "Go", new DialogUtils.TextInputHandler(){
+				DialogUtils.showInputDialog(MapMainView.this, "Map", "Search for (TODO replace me)", "Go", new DialogUtils.TextInputHandler(){
 					public void gotText(String s) {
 						onSearch(s);
 					}});
@@ -248,32 +290,56 @@ public class MapMainView extends PluginView implements IMapView {
 				return getString(R.string.map_search);
 			}
 		});
+		addActionToActionBar(new Action() {
+			@Override
+			public void performAction(View view) {
+				mMap.animateCamera(epflView);
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.map_icon;
+			}
+
+			@Override
+			public String getDescription() {
+				return getString(R.string.map_menu_campus_position);
+			}
+		});
 	}
 
 
 	
     synchronized private void showMarkers(List<MapItem> items) {
-    	for(Marker m : mMarkers) {
+    	for(Marker m : mMarkers.keySet()) {
     		m.remove();
     	}
     	mMarkers.clear();
     	if(items.size() == 1 && items.get(0).isSetFloor()) {
-    		int floor = items.get(0).getFloor();
-    		int res = getResources().getIdentifier("epfl_floor_" + floor, "string", getPackageName());
-    		if(res != 0) {
-    			Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
-    			for(int i = 0; i < spinner.getAdapter().getCount(); i++) {
-    				if(spinner.getAdapter().getItem(i).toString().equals(getString(res))) {
-    					spinner.setSelection(i, true);
-    					break;
-    				}
-    			}
-                //setEpflLayer(getString(res));
-    		}
+    		changeEpflFloor(items.get(0).getFloor());
     	}
     	for(MapItem i : items) {
-    		mMarkers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(i.getLatitude(), i.getLongitude())).title(i.getTitle()).snippet(i.getDescription())));
+    		MarkerOptions opt = new MarkerOptions();
+    		opt.position(new LatLng(i.getLatitude(), i.getLongitude()));
+    		opt.title(i.getTitle());
+    		if(i.isSetDescription())
+    			opt.snippet(i.getDescription());
+    		mMarkers.put(mMap.addMarker(opt), i);
     	}
+    }
+    
+    synchronized private void changeEpflFloor(int floor) {
+		int res = getResources().getIdentifier("epfl_floor_" + floor, "string", getPackageName());
+		if(res != 0) {
+			Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+			for(int i = 0; i < spinner.getAdapter().getCount(); i++) {
+				if(spinner.getAdapter().getItem(i).toString().equals(getString(res))) {
+					spinner.setSelection(i, true);
+					break;
+				}
+			}
+            //setEpflLayer(getString(res));
+		}
     }
     
     synchronized private void adaptCamera() {
@@ -282,7 +348,7 @@ public class MapMainView extends PluginView implements IMapView {
     		return;
     	}
     	LatLngBounds.Builder builder = new LatLngBounds.Builder();
-    	for (Marker marker : mMarkers) {
+    	for (Marker marker : mMarkers.keySet()) {
     	    builder.include(marker.getPosition());
     	}
     	LatLngBounds bounds = builder.build();
