@@ -52,6 +52,195 @@ function htmlify($str) {
 
 
 
+
+function export_csv_stats_pageviews_l3($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1,
+ep2.poolId AS id2, ep2.poolTitle AS title2, count2.accessCount AS count2, 
+ei3.eventId AS id3, ei3.eventTitle AS title3, count3.accessCount AS count3
+
+FROM  eventitems ei1
+LEFT JOIN  eventpools ep2 ON ep2.parentEvent = ei1.eventId
+LEFT JOIN  eventitems ei3 ON ei3.parentPool = ep2.poolId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+LEFT JOIN (
+SELECT    ep2.poolId AS poolId, sum(pv2.viewCount) AS accessCount
+FROM   eventpools ep2 
+LEFT JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+group by ep2.poolId
+) count2 ON ep2.poolId = count2.poolId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms INNER JOIN eventpools ON parentEvent = eventItemId WHERE poolId = ei1.parentPool)
+group by  ei1.eventId
+) count3 ON ei3.eventId = count3.eventId
+
+WHERE ei1.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_pageviews_l2($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1,
+ep2.poolId AS id2, ep2.poolTitle AS title2, count2.accessCount AS count2
+
+FROM  eventitems ei1
+LEFT JOIN  eventpools ep2 ON ep2.parentEvent = ei1.eventId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+LEFT JOIN (
+SELECT    ep2.poolId AS poolId, sum(pv2.viewCount) AS accessCount
+FROM   eventpools ep2
+LEFT JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+group by ep2.poolId
+) count2 ON ep2.poolId = count2.poolId
+
+WHERE ei1.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_pageviews_l1($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1
+
+FROM  eventitems ei1
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+WHERE ei1.eventId like '$eventItemId'
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_users($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT ei100.eventId, ei100.eventTitle, engagedUsers.engagedUsers, allUsers.allUsers
+FROM eventitems ei100
+INNER JOIN (
+
+SELECT hp.eventItemId, COUNT(*) AS engagedUsers
+FROM eventperms hp
+WHERE hp.userToken IN (
+
+
+
+
+SELECT DISTINCT pv1.userTicket
+FROM  eventitems ei1
+INNER JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+where ei1.eventId = hp.eventItemId
+
+
+UNION
+
+SELECT DISTINCT pv2.userTicket
+FROM   eventpools ep2 
+INNER JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+WHERE ep2.poolId IN (
+SELECT  ep10.poolId 
+FROM  eventpools ep10 
+WHERE ep10.parentEvent = hp.eventItemId
+)
+
+
+UNION
+
+
+
+SELECT DISTINCT pv1.userTicket
+FROM  eventitems ei1
+INNER JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms INNER JOIN eventpools ON parentEvent = eventItemId WHERE poolId = ei1.parentPool)
+WHERE ei1.eventId IN (
+SELECT  ei20.eventId 
+FROM  eventpools ep10 
+INNER JOIN  eventitems ei20 ON ei20.parentPool = ep10.poolId
+WHERE ep10.parentEvent = hp.eventItemId
+)
+
+
+
+) GROUP BY hp.eventItemId 
+
+) engagedUsers ON ei100.eventId = engagedUsers.eventItemId
+INNER JOIN (
+
+SELECT hp.eventItemId, COUNT(*) AS allUsers
+FROM eventperms hp
+GROUP BY hp.eventItemId 
+
+) allUsers ON ei100.eventId = allUsers.eventItemId
+
+WHERE ei100.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+
+
+
+
+
+
+
+
+function query_to_array($query, $conn) {
+	$csv = array();
+	$resource = sql_query($query, $conn);
+	if($resource) {
+		$row = array();
+		for($i=0;$i<sql_num_fields($resource);$i++) {
+			$row[] = sql_field_name($resource, $i);
+		}
+		$csv[] = $row;
+	}
+	while($item = sql_fetch_array($resource)) {
+		$row = array();
+		for($i=0;$i<sql_num_fields($resource);$i++) {
+			$row[] = $item[$i];
+		}
+		$csv[] = $row;
+	}
+	return $csv;
+}
+
+
+
+
+
+
+
+
+
 function export_event_items_posters($parent, $conn) {
 	$resource = sql_query("SELECT * FROM eventitems WHERE parentPool='$parent' ORDER BY secondLine,eventTitle", $conn);
 	$ret = "<table style=\"margin:auto;\">";
@@ -596,6 +785,11 @@ function sql_insert_id(){
 	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
 }
 function sql_num_fields(){
+	$t=func_get_args();
+	global $DB_FUNC_PREFIX;
+	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
+}
+function sql_field_name(){
 	$t=func_get_args();
 	global $DB_FUNC_PREFIX;
 	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
