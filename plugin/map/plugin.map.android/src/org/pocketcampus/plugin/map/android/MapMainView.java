@@ -306,6 +306,38 @@ public class MapMainView extends PluginView implements IMapView {
 				return getString(R.string.map_menu_campus_position);
 			}
 		});
+		addActionToActionBar(new Action() {
+			@Override
+			public void performAction(View view) {
+				changeEpflSpinner(1);
+			}
+
+			@Override
+			public int getDrawable() {
+				return android.R.drawable.btn_minus;
+			}
+
+			@Override
+			public String getDescription() {
+				return "-"; // TODO
+			}
+		});
+		addActionToActionBar(new Action() {
+			@Override
+			public void performAction(View view) {
+				changeEpflSpinner(-1);
+			}
+
+			@Override
+			public int getDrawable() {
+				return android.R.drawable.btn_plus;
+			}
+
+			@Override
+			public String getDescription() {
+				return "+"; // TODO
+			}
+		});
 	}
 
 
@@ -340,6 +372,13 @@ public class MapMainView extends PluginView implements IMapView {
 			}
             //setEpflLayer(getString(res));
 		}
+    }
+    
+    private void changeEpflSpinner(int delta) {
+		Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+		int index = spinner.getSelectedItemPosition() + delta;
+		index = Math.min(spinner.getCount() - 1, Math.max(0, index));
+		spinner.setSelection(index, true);
     }
     
     synchronized private void adaptCamera() {

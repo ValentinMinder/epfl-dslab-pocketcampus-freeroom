@@ -34,6 +34,7 @@
             android:label="@string/map_plugin_title"
             android:name="org.pocketcampus.plugin.map.android.MapMainView"
             android:screenOrientation="nosensor"
+            android:uiOptions="splitActionBarWhenNarrow"
             android:icon="@drawable/map_icon" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

@@ -11,9 +11,9 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="175dp"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" >
+        android:layout_centerHorizontal="true" >
 
         <LinearLayout
             android:layout_width="wrap_content"
