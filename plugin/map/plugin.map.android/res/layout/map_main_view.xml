@@ -10,8 +10,9 @@
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <ScrollView
+        android:id="@+id/map_extra_settings"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" >
 

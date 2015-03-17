@@ -31,11 +31,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -140,6 +144,9 @@ public class MapMainView extends PluginView implements IMapView {
 			}
 		});
         
+        ScrollView extraSettings = (ScrollView) findViewById(R.id.map_extra_settings);
+        extraSettings.setVisibility(View.GONE);
+        
         updateActionBar();
 	}
 
@@ -174,7 +181,13 @@ public class MapMainView extends PluginView implements IMapView {
 		@Override
 		protected BitmapDescriptor doInBackground(LatLngBounds... params) {
 			bnds = params[0];
-			return BitmapDescriptorFactory.fromBitmap(getBitmapFromURL(getAnnotationPictureUrl(bnds)));
+			Bitmap btmp = null;
+			int trial = 0;
+			while(btmp == null && trial < 5) {
+				btmp = getBitmapFromURL(getAnnotationPictureUrl(bnds));
+				trial++;
+			}
+			return BitmapDescriptorFactory.fromBitmap(btmp);
 		}
 		@Override
 		protected void onPostExecute(BitmapDescriptor result) {
@@ -264,6 +277,53 @@ public class MapMainView extends PluginView implements IMapView {
 		}
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		
+		MenuItem i1 = menu.add("Helo");
+		i1.setTitle("hola");
+		i1.setIcon(android.R.drawable.ic_dialog_dialer);
+		Spinner spinner1 = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+		// i1.setActionView(R.layout.test_layout);
+		i1.setActionView(spinner1);
+		i1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		   
+//		   MenuItem i2 = menu.add("Helo");
+//		   i2.setTitle("hola");
+//		   i2.setIcon(android.R.drawable.ic_dialog_dialer);
+//		   Spinner spinner2 = (Spinner) findViewById(R.id.map_layers_spinner);
+//		   //i2.setActionView(R.layout.test_layout);
+//		   i2.setActionView(spinner2);
+//		   i2.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		   
+		MenuItem i3 = menu.add("Helo");
+		i3.setTitle(R.string.map_menu_campus_position);
+		i3.setIcon(R.drawable.map_icon);
+		i3.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				mMap.animateCamera(epflView);
+				return true;
+			}
+		});
+		i3.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+		return true;
+	}
+	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		menu.clear();
+//		//MenuInflater inflater = getMenuInflater();
+//		  // inflater.inflate(R.menu.test_menu, menu);
+//		   MenuItem i = menu.add("Helo");
+//		   i.setTitle("hola");
+//		   i.setIcon(android.R.drawable.ic_dialog_dialer);
+//		   i.setActionView(R.layout.test_layout);
+//		   i.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//		   //return super.onCreateOptionsMenu(menu);
+//		return true;
+//	}
 
     
     
@@ -290,54 +350,55 @@ public class MapMainView extends PluginView implements IMapView {
 				return getString(R.string.map_search);
 			}
 		});
-		addActionToActionBar(new Action() {
-			@Override
-			public void performAction(View view) {
-				mMap.animateCamera(epflView);
-			}
-
-			@Override
-			public int getDrawable() {
-				return R.drawable.map_icon;
-			}
-
-			@Override
-			public String getDescription() {
-				return getString(R.string.map_menu_campus_position);
-			}
-		});
-		addActionToActionBar(new Action() {
-			@Override
-			public void performAction(View view) {
-				changeEpflSpinner(1);
-			}
-
-			@Override
-			public int getDrawable() {
-				return android.R.drawable.btn_minus;
-			}
-
-			@Override
-			public String getDescription() {
-				return "-"; // TODO
-			}
-		});
-		addActionToActionBar(new Action() {
-			@Override
-			public void performAction(View view) {
-				changeEpflSpinner(-1);
-			}
-
-			@Override
-			public int getDrawable() {
-				return android.R.drawable.btn_plus;
-			}
-
-			@Override
-			public String getDescription() {
-				return "+"; // TODO
-			}
-		});
+//		addActionToActionBar(new Action() {
+//			@Override
+//			public void performAction(View view) {
+//				mMap.animateCamera(epflView);
+//			}
+//
+//			@Override
+//			public int getDrawable() {
+//				return R.drawable.map_icon;
+//			}
+//
+//			@Override
+//			public String getDescription() {
+//				return getString(R.string.map_menu_campus_position);
+//			}
+//		});
+		
+//		addActionToActionBar(new Action() {
+//			@Override
+//			public void performAction(View view) {
+//				changeEpflSpinner(1);
+//			}
+//
+//			@Override
+//			public int getDrawable() {
+//				return android.R.drawable.btn_minus;
+//			}
+//
+//			@Override
+//			public String getDescription() {
+//				return "-"; // TODO
+//			}
+//		});
+//		addActionToActionBar(new Action() {
+//			@Override
+//			public void performAction(View view) {
+//				changeEpflSpinner(-1);
+//			}
+//
+//			@Override
+//			public int getDrawable() {
+//				return android.R.drawable.btn_plus;
+//			}
+//
+//			@Override
+//			public String getDescription() {
+//				return "+"; // TODO
+//			}
+//		});
 	}
 
 
@@ -397,6 +458,11 @@ public class MapMainView extends PluginView implements IMapView {
     
 	
 	private void onSearch(String query) {
+		if("ok maps".equalsIgnoreCase(query)) {
+	        ScrollView extraSettings = (ScrollView) findViewById(R.id.map_extra_settings);
+	        extraSettings.setVisibility(View.VISIBLE);
+			return;
+		};
 		mController.search(query);
 		loading = ProgressDialog.show(this, null, null, true, false);
 		
