@@ -242,25 +242,50 @@ function query_to_array($query, $conn) {
 
 
 function export_event_items_posters($parent, $conn) {
+	$COLS = 4;
 	$resource = sql_query("SELECT * FROM eventitems WHERE parentPool='$parent' ORDER BY secondLine,eventTitle", $conn);
 	$ret = "<table style=\"margin:auto;\">";
+	$table = array();
+	$row = array();
 	while($item1 = sql_fetch_array($resource)) {
-		$ret .= "<tr>";
-		$ret .= "<td style=\"text-align:center;width:300px;\">";
-		$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item1["eventId"]) . "\">";
-		$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item1["secondLine"])) . "&nbsp;</i></div>";
-		$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item1["eventTitle"])) . "</b></div>";
-		$ret .= "</td>";
-		$ret .= "<td>&nbsp;&nbsp;&nbsp;</td>";
-		$ret .= "<td style=\"text-align:center;width:300px;\">";
-		if($item2 = sql_fetch_array($resource)) {
-			$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item2["eventId"]) . "\">";
-			$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item2["secondLine"])) . "&nbsp;</i></div>";
-			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item2["eventTitle"])) . "</b></div>";
+		if(count($row) == $COLS) {
+			$table[] = $row;
+			$row = array();
 		}
-		$ret .= "</td>";
+		$row[] = $item1;
+	}
+	if(count($row) > 0) {
+		$table[] = $row;
+		$row = array();
+	}
+	foreach($table as $row) {
+		$ret .= "<tr>";
+		foreach($row as $i) {
+			$ret .= "<td style=\"text-align:center;width:300px;\">";
+			$ret .= "<img style=\"\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($i["eventId"]) . "\">";
+			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\">" . htmlentities(($i["eventTitle"])) . "<br>";
+			$ret .= "<small><b>" . htmlentities(($i["secondLine"])) . "&nbsp;</b></small></div>";
+			$ret .= "</td>";
+		}
 		$ret .= "</tr>";
 	}
+//	while($item1 = sql_fetch_array($resource)) {
+//		$ret .= "<tr>";
+//		$ret .= "<td style=\"text-align:center;width:300px;\">";
+//		$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item1["eventId"]) . "\">";
+//		$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item1["eventTitle"])) . "</b></div>";
+//		$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item1["secondLine"])) . "&nbsp;</i></div>";
+//		$ret .= "</td>";
+//		$ret .= "<td>&nbsp;&nbsp;&nbsp;</td>";
+//		$ret .= "<td style=\"text-align:center;width:300px;\">";
+//		if($item2 = sql_fetch_array($resource)) {
+//			$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item2["eventId"]) . "\">";
+//			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item2["eventTitle"])) . "</b></div>";
+//			$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item2["secondLine"])) . "&nbsp;</i></div>";
+//		}
+//		$ret .= "</td>";
+//		$ret .= "</tr>";
+//	}
 	$ret .= "</table>";
 	return $ret;
 }
