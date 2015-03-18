@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.utils.DialogUtils;
@@ -101,45 +104,94 @@ public class MapMainView extends PluginView implements IMapView {
 		String sry = formatter.format(ry + 1000000000).substring(2);
     	String fz = String.format(Locale.US, "%02d", z);
 		Map<String, String> replacement = new HashMap<String, String>();
-		replacement.put("{lb}", "" + lb);
+		replacement.put("{lb}", "" + lb); // load balancer
 		replacement.put("{floor}", floor);
 		replacement.put("{z}", "" + z);
 		replacement.put("{x}", "" + x);
 		replacement.put("{y}", "" + y);
-		replacement.put("{rx}", "" + rx);
-		replacement.put("{ry}", "" + ry);
-		replacement.put("{sx}", sx);
-		replacement.put("{sy}", sy);
-		replacement.put("{srx}", srx);
-		replacement.put("{sry}", sry);
-		replacement.put("{fz}", fz);
+		replacement.put("{rx}", "" + rx); // reversed x
+		replacement.put("{ry}", "" + ry); // reversed y
+		replacement.put("{sx}", sx); // separated x
+		replacement.put("{sy}", sy); // separated y
+		replacement.put("{srx}", srx); // separated reversed x
+		replacement.put("{sry}", sry); // separated reversed y
+		replacement.put("{fz}", fz); // formatted zoom
 		for(Map.Entry<String, String> e : replacement.entrySet()) {
 			url = url.replace(e.getKey(), e.getValue());
 		}
 		return url;
 	}
 	
-	private static final String WMS_THEMES_URL = "http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&LAYERS={layers}&TRANSPARENT=TRUE&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A900913&BBOX={bbox}&WIDTH={w}&HEIGHT={h}";
+	private static final String WMS_THEMES_URL = "http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&LAYERS={layers}&TRANSPARENT=TRUE&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A900913&BBOX={cl},{cb},{cr},{ct}&WIDTH={sw}&HEIGHT={sh}";
 	
-	private static String replacePlaceholders(String url, List<String> layers, String floor, String bbox, int h, int w) {
-		List<String> t = new LinkedList<String>();
-		for(String l : layers) {
-			t.add(l.replace("{floor}", floor));
+	private static String replacePlaceholders(String url, List<String> layers, String floor, double l, double b, double r, double t, double scale) {
+		List<String> tt = new LinkedList<String>();
+		for(String ll : layers) {
+			tt.add(ll.replace("{floor}", floor));
 		}
-		layers = t;
+		layers = tt;
+		double cl = convertLng(l);
+		double cb = convertLat(b);
+		double cr = convertLng(r);
+		double ct = convertLat(t);
+		double factor = Math.sqrt(Math.abs((cl - cr) / (cb - ct)));
+		double sw = scale * factor;
+		double sh = scale / factor;
+		double aperture = Math.abs(cl - cr) + Math.abs(cb - ct);
 		Map<String, String> replacement = new HashMap<String, String>();
 		replacement.put("{layers}", TextUtils.join(",", layers));
-		replacement.put("{bbox}", bbox);
-		replacement.put("{h}", "" + h);
-		replacement.put("{w}", "" + w);
+		replacement.put("{l}", "" + l); // left
+		replacement.put("{b}", "" + b); // bottom
+		replacement.put("{r}", "" + r); // right
+		replacement.put("{t}", "" + t); // top
+		replacement.put("{cl}", "" + cl); // converted left
+		replacement.put("{cb}", "" + cb); // converted bottom
+		replacement.put("{cr}", "" + cr); // converted right
+		replacement.put("{ct}", "" + ct); // converted top
+		replacement.put("{sh}", "" + (int) sh); // scaled height
+		replacement.put("{sw}", "" + (int) sw); // scaled width
+		replacement.put("{aperture}", "" + aperture);
 		for(Map.Entry<String, String> e : replacement.entrySet()) {
 			url = url.replace(e.getKey(), e.getValue());
 		}
 		return url;
 	} 
 
-	private static final String QUERY_MAP_URL = "http://plan.epfl.ch/search/xyz/?lang={hl}&tolerance=0.37322767710685734&lon={cx}&lat={cy}&layers__eq={ulayers}&queryable=layers,floor&floor__eq={ifloor}";
+	private static final String QUERY_MAP_URL = "http://plan.epfl.ch/search/xyz/?lang={hl}&tolerance={precision}&lon={cx}&lat={cy}&layers__eq={ulayers}&queryable=layers,floor&floor__eq={ifloor}";
 	
+	private static String replacePlaceholders(String url, String hl, List<String> layers, String floor, double precision, double x, double y) {
+		List<String> tt = new LinkedList<String>();
+		List<String> ulayers = new LinkedList<String>();
+		for(String ll : layers) {
+			tt.add(ll.replace("{floor}", floor));
+			ulayers.add(ll.replace("{floor}", ""));
+		}
+		layers = tt;
+		double cx = convertLng(x);
+		double cy = convertLat(y);
+		int ifloor;
+		try {
+			ifloor = Integer.parseInt(floor);
+		} catch (NumberFormatException e) {
+			ifloor = 10; // "all" is translated to "10"
+		}
+		Map<String, String> replacement = new HashMap<String, String>();
+		replacement.put("{layers}", TextUtils.join(",", layers));
+		replacement.put("{ulayers}", TextUtils.join(",", ulayers)); // unsigned layers (i.e., without the floor number)
+		replacement.put("{hl}", hl); // human language
+		replacement.put("{precision}", "" + precision);
+		replacement.put("{x}", "" + x);
+		replacement.put("{y}", "" + y);
+		replacement.put("{cx}", "" + cx); // converted x
+		replacement.put("{cy}", "" + cy); // converted y
+		replacement.put("{floor}", floor);
+		replacement.put("{ifloor}", "" + ifloor); // integer floor
+		for(Map.Entry<String, String> e : replacement.entrySet()) {
+			url = url.replace(e.getKey(), e.getValue());
+		}
+		return url;
+	} 
+
 	private static final List<String> FIXED_LAYERS = Arrays.asList("locaux_h{floor}", "locaux_labels_en{floor}", "batiments_routes_labels");
 	
 	@Override
@@ -233,21 +285,21 @@ public class MapMainView extends PluginView implements IMapView {
 
 	
 	
-
+/*
 	private static String getAnnotationPictureUrl(LatLngBounds bnds, String floor, Set<String> layers) {
-//		System.out.println(bnds.southwest + " " + bnds.northeast);
-//		System.out.println(convert(bnds.southwest) + " " + convert(bnds.northeast));
-		PointF sw = convert(bnds.southwest);
-		PointF ne = convert(bnds.northeast);
-		String bbox = "" + sw.x + "," + sw.y + "," + ne.x + "," + ne.y;
-		int w,h;
-		if(ne.x - sw.x > ne.y - sw.y) { // landscape
-			h = 480;
-			w = (int) (h * (ne.x - sw.x) / (ne.y - sw.y));
-		} else { // portrait
-			w = 480;
-			h = (int) (w * (ne.y - sw.y) / (ne.x - sw.x));
-		}
+//		PointF sw = convert(bnds.southwest);
+//		PointF ne = convert(bnds.northeast);
+//		String bbox = "" + sw.x + "," + sw.y + "," + ne.x + "," + ne.y;
+//		int w,h;
+//		if(ne.x - sw.x > ne.y - sw.y) { // landscape
+//			h = 480;
+//			w = (int) (h * (ne.x - sw.x) / (ne.y - sw.y));
+//		} else { // portrait
+//			w = 480;
+//			h = (int) (w * (ne.y - sw.y) / (ne.x - sw.x));
+//		}
+		
+		
 		// BBOX=731311,5863258,734565,5864324&WIDTH=1000&HEIGHT=1000
 //		String layers = "" +
 //				"parkings_publics" + floor + "," +
@@ -260,12 +312,18 @@ public class MapMainView extends PluginView implements IMapView {
 		// LAYERS=parkings_publicsall,arrets_metroall,transports_publicsall,informationall,locaux_hall,locaux_labels_enall,batiments_routes_labels
 		//String url = "http://plan.epfl.ch/wms_themes?FORMAT=image%2Fpng&LAYERS=" + layers + "&TRANSPARENT=TRUE&LOCALID=-1&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A900913&BBOX=" + bbox + "&WIDTH=" + w + "&HEIGHT=" + h;
 //		List<String> ll = new LinkedList<String>() { { addAll(layers); addAll(FIXED_LAYERS); } };
+		//String url = replacePlaceholders(WMS_THEMES_URL, all, floor, bbox, h, w);
+		String url = replacePlaceholders(WMS_THEMES_URL, getAllLayers(layers), floor, bnds.southwest.longitude, bnds.southwest.latitude, bnds.northeast.longitude, bnds.northeast.latitude, 480);
+		System.out.println(url);
+		return url;
+	}
+	*/
+	
+	private static List<String> getAllLayers(Set<String> layers) {
 		List<String> all = new ArrayList<String>();
 		all.addAll(layers);
 		all.addAll(FIXED_LAYERS);
-		String url = replacePlaceholders(WMS_THEMES_URL, all, floor, bbox, h, w);
-		System.out.println(url);
-		return url;
+		return all;
 	}
 	
 	
@@ -281,7 +339,10 @@ public class MapMainView extends PluginView implements IMapView {
 			Bitmap btmp = null;
 			int trial = 0;
 			while(btmp == null && trial < 5) {
-				btmp = getBitmapFromURL(getAnnotationPictureUrl(bnds, epflFloor, pois));
+				String url = replacePlaceholders(WMS_THEMES_URL, getAllLayers(pois), epflFloor, bnds.southwest.longitude, bnds.southwest.latitude, bnds.northeast.longitude, bnds.northeast.latitude, 480);
+				System.out.println(url);
+				//btmp = getBitmapFromURL(getAnnotationPictureUrl(bnds, epflFloor, pois));
+				btmp = getBitmapFromURL(url);
 				trial++;
 			}
 			return (btmp == null ? null : BitmapDescriptorFactory.fromBitmap(btmp));
@@ -296,6 +357,47 @@ public class MapMainView extends PluginView implements IMapView {
 				if(!visibleRegion.equals(bnds) || !floor.equals(epflFloor) || !layers.equals(pois)) {
 					onCamMove();
 				}
+			}
+		}
+	}
+
+	
+	private class Fetcher extends AsyncTask<LatLng, Void, MapItem> {
+		LatLng point;
+		@Override
+		protected MapItem doInBackground(LatLng... params) {
+			point = params[0];
+			String aperture = replacePlaceholders("{aperture}", new LinkedList<String>(), "", visibleRegion.southwest.longitude, visibleRegion.southwest.latitude, visibleRegion.northeast.longitude, visibleRegion.northeast.latitude, 0);
+			double precision = Double.parseDouble(aperture) / 100 + 1;
+			String url = replacePlaceholders(QUERY_MAP_URL, Locale.getDefault().getLanguage(), getAllLayers(layers), floor, precision, point.longitude, point.latitude);
+			System.out.println(url);
+			String result = null;
+			try {
+				HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+				result = IOUtils.toString(connection.getInputStream(), "UTF-8");
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+			System.out.println(result);
+			if(result == null || "null".equals(result)) {
+				return null;
+			}
+			try {
+				JSONObject json = new JSONObject(result);
+				MapItem item = new MapItem(json.getString("title"), point.latitude, point.longitude, 0, 0);
+				item.setDescription(json.getString("content"));
+				return item;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		@Override
+		protected void onPostExecute(MapItem item) {
+			if(item != null) {
+				showMarkers(Arrays.asList(item));
+				//mModel.setSearchResult();
 			}
 		}
 	}
@@ -334,7 +436,9 @@ public class MapMainView extends PluginView implements IMapView {
 			public boolean onMarkerClick(Marker marker) {
 				synchronized (MapMainView.this) {
 					MapItem i = mMarkers.get(marker);
-					changeEpflFloor(i.getFloor());
+					if(i.isSetFloor()) {
+						changeEpflFloor(i.getFloor());
+					}
 				}
 				return false; // don't consume the event (so that the map centers on this marker, and info window appears)
 			}
@@ -351,7 +455,9 @@ public class MapMainView extends PluginView implements IMapView {
 		});
     	mMap.setOnMapClickListener(new OnMapClickListener() {
 			public void onMapClick(LatLng point) {
-				PointF p = convert(point);
+//				PointF p = convert(point);
+				showMarkers(null);
+				new Fetcher().execute(point);
 			}
 		});
     	
@@ -526,6 +632,9 @@ public class MapMainView extends PluginView implements IMapView {
     		m.remove();
     	}
     	mMarkers.clear();
+    	if(items == null || items.size() == 0) {
+    		return;
+    	}
     	if(items.size() == 1 && items.get(0).isSetFloor()) {
     		changeEpflFloor(items.get(0).getFloor());
     	}
@@ -535,7 +644,11 @@ public class MapMainView extends PluginView implements IMapView {
     		opt.title(i.getTitle());
     		if(i.isSetDescription())
     			opt.snippet(i.getDescription());
-    		mMarkers.put(mMap.addMarker(opt), i);
+    		Marker m = mMap.addMarker(opt);
+        	if(items.size() == 1) {
+        		m.showInfoWindow();
+        	}
+    		mMarkers.put(m, i);
     	}
     }
     
