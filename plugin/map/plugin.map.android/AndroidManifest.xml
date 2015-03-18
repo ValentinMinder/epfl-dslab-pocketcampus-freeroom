@@ -71,7 +71,7 @@
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.map.android.MapMainController" >
+            android:name="org.pocketcampus.plugin.map.android.MapController" >
         </service>
         
     </application>
