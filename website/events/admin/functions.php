@@ -598,9 +598,9 @@ function update_eventitem_affiliates($record, $newid, $conn) {
 
 function get_required_fields_for_participants(){
 	// NEW
-	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo", "IsPrivate", "AOIKeys");
+	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo", "IsPrivate", "AOIKeys", "LabName", "LAB_PC_ID");
 	
-	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo");
+	//return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo");
 }
 
 function update_eventitem_participants($record, $newid, $conn) {
@@ -617,6 +617,11 @@ function update_eventitem_participants($record, $newid, $conn) {
 	$eventDetails = "";
 	if($record["EmailAddress"]) $eventDetails .= "<h2>Email address</h2><p><a href=\"mailto:{$record["EmailAddress"]}\">{$record["EmailAddress"]}</a></p>";
 	if($record["HomepageURL"]) $eventDetails .= "<h2>Homepage</h2><p><a href=\"{$record["HomepageURL"]}\">Link</a></p>";
+	if($record["LabName"]) {
+		$LabName = $record["LabName"];
+		if($record["LAB_PC_ID"]) $LabName = "<a href=\"pocketcampus://events.plugin.pocketcampus.org/showEventItem?eventItemId=" . rawurlencode($record["LAB_PC_ID"]) . "\">" . $LabName . "</a>";
+		$eventDetails .= "<h2>Lab</h2><p>$LabName</p>";
+	}
 	$contactCardLink = "";
 	if($record["FullName"] && $record["EmailAddress"]) {
 		$contactCardLink = "/view?firstName=" . rawurlencode($record["FullName"]) . "&email=" . rawurlencode($record["EmailAddress"]);
