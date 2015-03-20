@@ -94,7 +94,7 @@ public final class NewsServiceImpl implements NewsService.Iface {
                 }
             }
         }
-        items.sort(new Comparator<NewsItem>() {
+        Collections.sort(items, new Comparator<NewsItem>() {
             @Override
             public int compare(NewsItem o1, NewsItem o2) {
                 return -Long.compare(o1.getPubDate(), o2.getPubDate());
