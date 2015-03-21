@@ -10,6 +10,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -26,11 +28,17 @@ import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
+import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.map.R;
 import org.pocketcampus.plugin.map.android.iface.IMapView;
 import org.pocketcampus.plugin.map.shared.MapItem;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,16 +48,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -74,7 +87,6 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
-import com.markupartist.android.widget.Action;
 
 /**
  * Main class for the map plugin.
@@ -198,6 +210,7 @@ public class MapMainView extends PluginView implements IMapView {
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return MapController.class;
 	}
+	
 
 	private MapController mController;
 	private MapModel mModel;
@@ -219,6 +232,8 @@ public class MapMainView extends PluginView implements IMapView {
 	private CameraUpdate epflView = null;
 	private Set<String> layers = new HashSet<String>();
 	
+	private boolean searchMode = false;
+	
 	
 	
 
@@ -228,12 +243,12 @@ public class MapMainView extends PluginView implements IMapView {
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
 
-		layers.clear();
-		layers.addAll(Arrays.asList(
-				"parkings_publics{floor}", 
-				"arrets_metro{floor}", 
-				"transports_publics{floor}", 
-				"information{floor}"));
+//		layers.clear();
+//		layers.addAll(Arrays.asList(
+//				"parkings_publics{floor}", 
+//				"arrets_metro{floor}", 
+//				"transports_publics{floor}", 
+//				"information{floor}"));
 		
 		mController = (MapController) controller;
 		mModel = (MapModel) controller.getModel();
@@ -254,18 +269,6 @@ public class MapMainView extends PluginView implements IMapView {
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
 
-        Spinner spinner1 = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
-                this, R.array.map_epfl_layers_array, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(adapter1);
-        spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				onEpflLayerSelected(arg0, arg1, arg2, arg3);
-			}
-			public void onNothingSelected(AdapterView<?> arg0) {}
-		});
-
         
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_main_fragment);
@@ -275,14 +278,56 @@ public class MapMainView extends PluginView implements IMapView {
 			}
 		});
         
+        EditText searchField = (EditText) findViewById(R.id.map_search_edittext);
+        searchField.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				onSearch(v.getText().toString());
+		        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		        imm.hideSoftInputFromWindow(v.getWindowToken(), 0); 
+				return true;
+			}
+		});
+        searchField.setVisibility(View.GONE);
+        
         ScrollView extraSettings = (ScrollView) findViewById(R.id.map_extra_settings);
         extraSettings.setVisibility(View.GONE);
         
         mController.getLayers();
         
-        updateActionBar();
+//        updateActionBar();
 	}
 
+	
+	@Override
+	public void onBackPressed() {
+		if(searchMode) {
+			setSearchMode(false);
+		} else {
+			super.onBackPressed();
+		}
+	}
+	
+	private void setSearchMode(boolean state) {
+        EditText searchField = (EditText) findViewById(R.id.map_search_edittext);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        
+		if(state) {
+	        searchField.setVisibility(View.VISIBLE);
+	        searchField.setText("");
+	        searchField.requestFocus();
+	        mMap.setMyLocationEnabled(false);
+	        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+			
+		} else {
+	        searchField.setVisibility(View.GONE);
+	        mMap.setMyLocationEnabled(true);
+	        imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0); 
+	        showMarkers(null);
+			
+		}
+		invalidateOptionsMenu();
+		searchMode = state;
+	}
 	
 	
 /*
@@ -396,11 +441,38 @@ public class MapMainView extends PluginView implements IMapView {
 		@Override
 		protected void onPostExecute(MapItem item) {
 			if(item != null) {
+				//item.getDescription();
+				xyz.clear();
+				xyzL.clear();
+				LinkedList<String> a = StringUtils.getAllSubstringsBetween(item.getDescription(), "<tr class=\"queryline\">", "</tr>");
+				for(String s : a) {
+					LinkedList<String> b = StringUtils.getAllSubstringsBetween(s, "<td class=\"querycell\">", "</td>");
+					//StringBuilder sb = new StringBuilder();
+					List<String> sb = new LinkedList<String>();
+					String url = null;
+					for(String t: b) {
+						if(t.indexOf("target=\"_blank\"") != -1) {
+							url = StringUtils.getSubstringBetween(t, "<a href=\"", "\"");
+						} else {
+							String p = t.trim();
+							if(p.length() > 0) {
+								sb.add(p);
+							}
+							//sb.append(t.trim() + "\n");
+						}
+					}
+					xyz.add(TextUtils.join("\n", sb));
+					xyzL.add(url);
+				}
+				item.setDescription(null);
+				item.setCategory("XYZ");
 				showMarkers(Arrays.asList(item));
 				//mModel.setSearchResult();
 			}
 		}
 	}
+	private List<String> xyz = new LinkedList<String>();
+	private List<String> xyzL = new LinkedList<String>();
 	
 	private void onCamMove() {
 		synchronized (MapMainView.this) {
@@ -424,7 +496,9 @@ public class MapMainView extends PluginView implements IMapView {
         mMap.setIndoorEnabled(false);
         
         // center on EPFL
-        epflView = CameraUpdateFactory.newLatLngZoom(new LatLng(46.518, 6.567), (float)14.7);
+        CameraPosition epflPosition = new CameraPosition.Builder().target(new LatLng(46.518, 6.567)).zoom(14.7f).bearing(0).tilt(0).build();
+        //epflView = CameraUpdateFactory.newLatLngZoom(new LatLng(46.518, 6.567), 14.7f);
+        epflView = CameraUpdateFactory.newCameraPosition(epflPosition);
     	mMap.moveCamera(epflView);
         
     	mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
@@ -437,7 +511,7 @@ public class MapMainView extends PluginView implements IMapView {
 				synchronized (MapMainView.this) {
 					MapItem i = mMarkers.get(marker);
 					if(i.isSetFloor()) {
-						changeEpflFloor(i.getFloor());
+						changeEpflFloor("" + i.getFloor());
 					}
 				}
 				return false; // don't consume the event (so that the map centers on this marker, and info window appears)
@@ -449,15 +523,21 @@ public class MapMainView extends PluginView implements IMapView {
 					MapItem i = mMarkers.get(marker);
 					if("persons".equals(i.getCategory())) {
 						searchDirectory(i.getTitle());
+					} else if("XYZ".equals(i.getCategory())) {
+						displayXyzSearchResults();
 					}
 				}
 			}
 		});
     	mMap.setOnMapClickListener(new OnMapClickListener() {
 			public void onMapClick(LatLng point) {
-//				PointF p = convert(point);
-				showMarkers(null);
-				new Fetcher().execute(point);
+				if(searchMode) {
+					
+				} else {
+//					PointF p = convert(point);
+					showMarkers(null);
+					new Fetcher().execute(point);
+				}
 			}
 		});
     	
@@ -485,13 +565,41 @@ public class MapMainView extends PluginView implements IMapView {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
-		MenuItem i1 = menu.add("Helo");
-		i1.setTitle("hola");
-		i1.setIcon(android.R.drawable.ic_dialog_dialer);
-		Spinner spinner1 = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
+		if(!searchMode) {
+			MenuItem i5 = menu.add("search");
+			i5.setTitle(R.string.map_search);
+			i5.setIcon(R.drawable.map_search_action);
+			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					setSearchMode(true);
+					return true;
+				}
+			});
+			i5.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		
+
+		
+		MenuItem i1 = menu.add("floors");
+		//i1.setIcon(android.R.drawable.ic_dialog_dialer);
+//		Spinner spinner1 = (Spinner) findViewById(R.id.map_epfl_floors_spinner);
+//		int index = spinner.getSelectedItemPosition() + delta;
+//		spinner.setSelection(index, true);
 		// i1.setActionView(R.layout.test_layout);
-		i1.setActionView(spinner1);
+		//i1.setActionView(spinner1);
+		//String sel = spinner1.getSelectedItem().toString();
+		i1.setTitle(mModel.getEpflFloors().get(floor));
 		i1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		i1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				DialogUtils.showSingleChoiceDialog(MapMainView.this, mModel.getEpflFloors(), null, floor, new SingleChoiceHandler<String>() {
+					public void saveSelection(String t) {
+						changeEpflFloor(t);
+					}
+				}, mModel.getFloorKeyComparator());
+				return true;
+			}
+		});
 		   
 //		   MenuItem i2 = menu.add("Helo");
 //		   i2.setTitle("hola");
@@ -501,23 +609,26 @@ public class MapMainView extends PluginView implements IMapView {
 //		   i2.setActionView(spinner2);
 //		   i2.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		   
-		MenuItem i3 = menu.add("Helo");
-		i3.setTitle(R.string.map_menu_campus_position);
-		i3.setIcon(R.drawable.map_icon);
-		i3.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				mMap.animateCamera(epflView);
-				return true;
-			}
-		});
-		i3.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		if(!searchMode) {
+			MenuItem i3 = menu.add("center on epfl");
+			//i3.setTitle(R.string.map_menu_campus_position);
+			i3.setTitle("EPFL");
+			//i3.setIcon(R.drawable.map_center_on_epfl2);
+			i3.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					mMap.animateCamera(epflView);
+					return true;
+				}
+			});
+			i3.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
 
-		MenuItem i4 = menu.add("Helo");
+		MenuItem i4 = menu.add("layers");
 		i4.setTitle(R.string.map_layer_pick_text);
-		i4.setIcon(R.drawable.map_icon);
+		i4.setIcon(R.drawable.map_select_layers);
 		i4.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				DialogUtils.showMultiChoiceDialog(MapMainView.this, mModel.getLayerNames(), getString(R.string.map_layer_pick_text), layers, new MultiChoiceHandler<String>() {
+				DialogUtils.showMultiChoiceDialog(MapMainView.this, mModel.getLayerNames(), null, layers, new MultiChoiceHandler<String>() {
 					public void saveSelection(String t, boolean isChecked) {
 						if (isChecked)
 							layers.add(t);
@@ -532,6 +643,34 @@ public class MapMainView extends PluginView implements IMapView {
 		});
 		i4.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
+		
+		if(searchMode) {
+			MenuItem i5 = menu.add("show results as list");
+			i5.setTitle("Show as list"); // TODO
+			i5.setIcon(R.drawable.map_show_results_as_list);
+			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					displaySearchResultsAsList();
+					return true;
+				}
+			});
+			i5.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		
+		if(searchMode) {
+			MenuItem i5 = menu.add("exit search mode");
+			i5.setTitle(R.string.map_menu_clear_layers); // TODO
+			i5.setIcon(R.drawable.map_exit_search);
+			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					setSearchMode(false);
+					return true;
+				}
+			});
+			i5.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		
+		
 		return true;
 	}
 	
@@ -550,81 +689,81 @@ public class MapMainView extends PluginView implements IMapView {
 //	}
 
     
-    
-	private void updateActionBar() {
-		removeAllActionsFromActionBar();
-		addActionToActionBar(new Action() {
-			@Override
-			public void performAction(View view) {
-				onSearchRequested();
-				DialogUtils.showInputDialog(MapMainView.this, "Map", "Search for (TODO replace me)", "Go", new DialogUtils.TextInputHandler(){
-					public void gotText(String s) {
-						onSearch(s);
-					}});
-				trackEvent("Search", null);
-			}
-
-			@Override
-			public int getDrawable() {
-				return R.drawable.map_search_action;
-			}
-
-			@Override
-			public String getDescription() {
-				return getString(R.string.map_search);
-			}
-		});
+//    
+//	private void updateActionBar() {
+//		removeAllActionsFromActionBar();
 //		addActionToActionBar(new Action() {
 //			@Override
 //			public void performAction(View view) {
-//				mMap.animateCamera(epflView);
+//				onSearchRequested();
+//				DialogUtils.showInputDialog(MapMainView.this, getString(R.string.map_search), "", getString(R.string.map_search), new DialogUtils.TextInputHandler(){
+//					public void gotText(String s) {
+//						onSearch(s);
+//					}});
+//				trackEvent("Search", null);
 //			}
 //
 //			@Override
 //			public int getDrawable() {
-//				return R.drawable.map_icon;
+//				return R.drawable.map_search_action;
 //			}
 //
 //			@Override
 //			public String getDescription() {
-//				return getString(R.string.map_menu_campus_position);
+//				return getString(R.string.map_search);
 //			}
 //		});
-		
-//		addActionToActionBar(new Action() {
-//			@Override
-//			public void performAction(View view) {
-//				changeEpflSpinner(1);
-//			}
+////		addActionToActionBar(new Action() {
+////			@Override
+////			public void performAction(View view) {
+////				mMap.animateCamera(epflView);
+////			}
+////
+////			@Override
+////			public int getDrawable() {
+////				return R.drawable.map_icon;
+////			}
+////
+////			@Override
+////			public String getDescription() {
+////				return getString(R.string.map_menu_campus_position);
+////			}
+////		});
+//		
+////		addActionToActionBar(new Action() {
+////			@Override
+////			public void performAction(View view) {
+////				changeEpflSpinner(1);
+////			}
+////
+////			@Override
+////			public int getDrawable() {
+////				return android.R.drawable.btn_minus;
+////			}
+////
+////			@Override
+////			public String getDescription() {
+////				return "-"; 
+////			}
+////		});
+////		addActionToActionBar(new Action() {
+////			@Override
+////			public void performAction(View view) {
+////				changeEpflSpinner(-1);
+////			}
+////
+////			@Override
+////			public int getDrawable() {
+////				return android.R.drawable.btn_plus;
+////			}
+////
+////			@Override
+////			public String getDescription() {
+////				return "+"; 
+////			}
+////		});
+//	}
 //
-//			@Override
-//			public int getDrawable() {
-//				return android.R.drawable.btn_minus;
-//			}
-//
-//			@Override
-//			public String getDescription() {
-//				return "-"; // TODO
-//			}
-//		});
-//		addActionToActionBar(new Action() {
-//			@Override
-//			public void performAction(View view) {
-//				changeEpflSpinner(-1);
-//			}
-//
-//			@Override
-//			public int getDrawable() {
-//				return android.R.drawable.btn_plus;
-//			}
-//
-//			@Override
-//			public String getDescription() {
-//				return "+"; // TODO
-//			}
-//		});
-	}
-
 
 	
     synchronized private void showMarkers(List<MapItem> items) {
@@ -636,7 +775,9 @@ public class MapMainView extends PluginView implements IMapView {
     		return;
     	}
     	if(items.size() == 1 && items.get(0).isSetFloor()) {
-    		changeEpflFloor(items.get(0).getFloor());
+    		changeEpflFloor("" + items.get(0).getFloor());
+    	} else {
+//    		changeEpflFloor("all");
     	}
     	for(MapItem i : items) {
     		MarkerOptions opt = new MarkerOptions();
@@ -652,26 +793,29 @@ public class MapMainView extends PluginView implements IMapView {
     	}
     }
     
-    synchronized private void changeEpflFloor(int floor) {
-		int res = getResources().getIdentifier("epfl_floor_" + floor, "string", getPackageName());
-		if(res != 0) {
-			Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
-			for(int i = 0; i < spinner.getAdapter().getCount(); i++) {
-				if(spinner.getAdapter().getItem(i).toString().equals(getString(res))) {
-					spinner.setSelection(i, true);
-					break;
-				}
-			}
-            //setEpflLayer(getString(res));
-		}
+    synchronized private void changeEpflFloor(String flr) {
+		floor = flr;
+		toggleEpflFloors();
+		invalidateOptionsMenu();
+//		int res = getResources().getIdentifier("epfl_floor_" + flr, "string", getPackageName());
+//		if(res != 0) {
+//			Spinner spinner = (Spinner) findViewById(R.id.map_epfl_floors_spinner);
+//			for(int i = 0; i < spinner.getAdapter().getCount(); i++) {
+//				if(spinner.getAdapter().getItem(i).toString().equals(getString(res))) {
+//					spinner.setSelection(i, true);
+//					break;
+//				}
+//			}
+//            //setEpflLayer(getString(res));
+//		}
     }
     
-    private void changeEpflSpinner(int delta) {
-		Spinner spinner = (Spinner) findViewById(R.id.map_epfl_layers_spinner);
-		int index = spinner.getSelectedItemPosition() + delta;
-		index = Math.min(spinner.getCount() - 1, Math.max(0, index));
-		spinner.setSelection(index, true);
-    }
+//    private void changeEpflSpinner(int delta) {
+//		Spinner spinner = (Spinner) findViewById(R.id.map_epfl_floors_spinner);
+//		int index = spinner.getSelectedItemPosition() + delta;
+//		index = Math.min(spinner.getCount() - 1, Math.max(0, index));
+//		spinner.setSelection(index, true);
+//    }
     
     synchronized private void adaptCamera() {
     	// http://stackoverflow.com/questions/14828217/android-map-v2-zoom-to-show-all-the-markers
@@ -687,6 +831,73 @@ public class MapMainView extends PluginView implements IMapView {
     	mMap.animateCamera(cu);
     }
     
+    
+    private void displayXyzSearchResults() {
+    	if(xyz.size() == 0) {
+    		return;
+    	}
+
+        AlertDialog sdb = new AlertDialog.Builder(this)
+        .setItems(xyz.toArray(new String[xyz.size()]), new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				String url = xyzL.get(which);
+				if(url != null) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+				}
+
+			}
+		})
+        .create();
+        sdb.setCanceledOnTouchOutside(true);
+        sdb.show();
+
+    }
+    
+    synchronized private  void displaySearchResultsAsList() {
+    	if(mMarkers.size() == 0) {
+    		return;
+    	}
+    	
+    	final List<Marker> markers = new ArrayList<Marker>(mMarkers.keySet());
+    	Collections.sort(markers, new Comparator<Marker>() {
+			public int compare(Marker arg0, Marker arg1) {
+				return arg0.getTitle().compareTo(arg1.getTitle());
+			}
+		});
+    	String [] titles = new String[markers.size()];
+    	for(int i = 0; i < titles.length; i++) {
+    		titles[i] = markers.get(i).getTitle();
+    	}
+    	
+//    	final List<String> texts = new LinkedList<String>();
+//    	final List<Marker> markers = new LinkedList<Marker>();
+//    	for (Map.Entry<Marker, MapItem> e : mMarkers.entrySet()) {
+//    		texts.add(e.getValue().getTitle());
+//    		markers.add(e.getKey());
+//    	}
+    	
+        AlertDialog sdb = new AlertDialog.Builder(this)
+        .setItems(titles, new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Marker marker = markers.get(which);
+		    	LatLngBounds.Builder builder = new LatLngBounds.Builder();
+	    	    builder.include(marker.getPosition());
+	        	LatLngBounds bounds = builder.build();
+	        	CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+	        	mMap.animateCamera(cu);
+	        	marker.showInfoWindow();
+				MapItem i = mMarkers.get(marker);
+				if(i.isSetFloor()) {
+					changeEpflFloor("" + i.getFloor());
+				}
+
+			}
+		})
+        .create();
+        sdb.setCanceledOnTouchOutside(true);
+        sdb.show();
+
+    }
 	
 	private void onSearch(String query) {
 		if("ok maps".equalsIgnoreCase(query)) {
@@ -695,7 +906,7 @@ public class MapMainView extends PluginView implements IMapView {
 			return;
 		};
 		mController.search(query);
-		loading = ProgressDialog.show(this, null, null, true, false);
+		loading = ProgressDialog.show(this, null, getString(R.string.map_searching), true, false);
 		
 	}
 	
@@ -705,7 +916,7 @@ public class MapMainView extends PluginView implements IMapView {
 		if (aData != null && aData.getQueryParameter("q") != null) {
 			String query = aData.getQueryParameter("q");
 			mController.search(query);
-			loading = ProgressDialog.show(this, null, null, true, false);
+			loading = ProgressDialog.show(this, null, getString(R.string.map_searching), true, false);
 		}
 		
 		Bundle extras = intent.getExtras();
@@ -737,6 +948,9 @@ public class MapMainView extends PluginView implements IMapView {
 		showMarkers(mModel.getSearchResults());
 		adaptCamera();
 
+		if(mModel.getSearchResults().size() < 1) {
+			DialogUtils.alert(this, getString(R.string.map_plugin_title), getString(R.string.map_search_no_results));
+		}
 	}
 	
 	
@@ -794,13 +1008,13 @@ public class MapMainView extends PluginView implements IMapView {
         }
     }
 
-    public void onEpflLayerSelected(AdapterView<?> parent, View view, int position, long id) {
-        // This is also called by the Android framework in onResume(). The map may not be created at
-        // this stage yet.
-        if (mMap != null) {
-            setEpflLayer((String) parent.getItemAtPosition(position));
-        }
-    }
+//    public void onEpflFloorSelected(AdapterView<?> parent, View view, int position, long id) {
+//        // This is also called by the Android framework in onResume(). The map may not be created at
+//        // this stage yet.
+//        if (mMap != null) {
+//            setEpflFloor((String) parent.getItemAtPosition(position));
+//        }
+//    }
 
     private void setGoogleLayer(String layerName) {
         if (layerName.equals(getString(R.string.map_normal))) {
@@ -818,42 +1032,42 @@ public class MapMainView extends PluginView implements IMapView {
         }
     }
     
-    private void setEpflLayer(String layerName) {
-        if (layerName.equals(getString(R.string.epfl_floor_all))) {
-            floor = "all";
-        } else if (layerName.equals(getString(R.string.epfl_floor_8))) {
-        	floor = "8";
-        } else if (layerName.equals(getString(R.string.epfl_floor_7))) {
-        	floor = "7";
-        } else if (layerName.equals(getString(R.string.epfl_floor_6))) {
-        	floor = "6";
-        } else if (layerName.equals(getString(R.string.epfl_floor_5))) {
-        	floor = "5";
-        } else if (layerName.equals(getString(R.string.epfl_floor_4))) {
-        	floor = "4";
-        } else if (layerName.equals(getString(R.string.epfl_floor_3))) {
-        	floor = "3";
-        } else if (layerName.equals(getString(R.string.epfl_floor_2))) {
-        	floor = "2";
-        } else if (layerName.equals(getString(R.string.epfl_floor_1))) {
-        	floor = "1";
-        } else if (layerName.equals(getString(R.string.epfl_floor_0))) {
-        	floor = "0";
-        } else if (layerName.equals(getString(R.string.epfl_floor_b1))) {
-        	floor = "-1";
-        } else if (layerName.equals(getString(R.string.epfl_floor_b2))) {
-        	floor = "-2";
-        } else if (layerName.equals(getString(R.string.epfl_floor_b3))) {
-        	floor = "-3";
-        } else if (layerName.equals(getString(R.string.epfl_floor_b4))) {
-        	floor = "-4";
-        } else if (layerName.equals(getString(R.string.map_none))) {
-        	floor = "";
-        } else {
-            Log.i("LDA", "Error setting layer with name " + layerName);
-        }
-        toggleEpflFloors();
-    }
+//    private void setEpflFloor(String layerName) {
+//        if (layerName.equals(getString(R.string.epfl_floor_all))) {
+//            floor = "all";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_8))) {
+//        	floor = "8";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_7))) {
+//        	floor = "7";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_6))) {
+//        	floor = "6";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_5))) {
+//        	floor = "5";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_4))) {
+//        	floor = "4";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_3))) {
+//        	floor = "3";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_2))) {
+//        	floor = "2";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_1))) {
+//        	floor = "1";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_0))) {
+//        	floor = "0";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_b1))) {
+//        	floor = "-1";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_b2))) {
+//        	floor = "-2";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_b3))) {
+//        	floor = "-3";
+//        } else if (layerName.equals(getString(R.string.epfl_floor_b4))) {
+//        	floor = "-4";
+//        } else if (layerName.equals(getString(R.string.map_none))) {
+//        	floor = "";
+//        } else {
+//            Log.i("LDA", "Error setting layer with name " + layerName);
+//        }
+//        toggleEpflFloors();
+//    }
 
 	
 	

@@ -1,6 +1,9 @@
 package org.pocketcampus.plugin.map.android;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +23,8 @@ public class MapModel extends PluginModel {
 	
 	private List<MapItem> mSearchResults;
 	private Map<String, String> layerNames = new HashMap<String, String>();
+	private Map<String, String> epflFloors = new HashMap<String, String>();
+	private Comparator<String> floorKeyComparator;
 	
 	public MapModel() {
 		layerNames.clear();
@@ -27,6 +32,35 @@ public class MapModel extends PluginModel {
 		layerNames.put("arrets_metro{floor}", "arrets metro");
 		layerNames.put("transports_publics{floor}", "transports publics");
 		layerNames.put("information{floor}", "information");
+		
+		epflFloors.clear();
+		epflFloors.put("all", "All floors");
+		epflFloors.put("8", "Floor 8");
+		epflFloors.put("7", "Floor 7");
+		epflFloors.put("6", "Floor 6");
+		epflFloors.put("5", "Floor 5");
+		epflFloors.put("4", "Floor 4");
+		epflFloors.put("3", "Floor 3");
+		epflFloors.put("2", "Floor 2");
+		epflFloors.put("1", "Floor 1");
+		epflFloors.put("0", "Floor 0");
+		epflFloors.put("-1", "Floor -1");
+		epflFloors.put("-2", "Floor -2");
+		epflFloors.put("-3", "Floor -3");
+		epflFloors.put("-4", "Floor -4");
+		epflFloors.put("", "None");
+		
+		floorKeyComparator = new Comparator<String>() {
+			private List<String> floorKeyOrder = Arrays.asList("all", "8", "7", "6", "5", "4", "3", "2", "1", "0", "-1", "-2", "-3", "-4", "");
+			public int compare(String arg0, String arg1) {
+				Integer i0 = floorKeyOrder.indexOf(arg0);
+				Integer i1 = floorKeyOrder.indexOf(arg1);
+				if(i0 == -1 || i1 == -1) {
+					return arg0.compareTo(arg1);
+				}
+				return i0.compareTo(i1);
+			}
+		};
 	}
 	
 	@Override
@@ -51,6 +85,14 @@ public class MapModel extends PluginModel {
 	
 	public Map<String, String> getLayerNames() {
 		return layerNames;
+	}
+
+	public Map<String, String> getEpflFloors() {
+		return epflFloors;
+	}
+	
+	public Comparator<String> getFloorKeyComparator() {
+		return floorKeyComparator;
 	}
 	
 }

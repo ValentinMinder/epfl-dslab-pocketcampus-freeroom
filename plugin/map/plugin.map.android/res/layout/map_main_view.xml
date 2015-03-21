@@ -8,6 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
+    
+    <EditText
+        android:id="@+id/map_search_edittext"
+        android:hint="@string/map_search"
+        android:background="@drawable/map_round_edittext"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:layout_margin="10dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" 
+        />
 
     <ScrollView
         android:id="@+id/map_extra_settings"
@@ -22,11 +35,6 @@
             android:background="#cfff"
             android:orientation="vertical"
             android:paddingRight="5dp" >
-
-            <Spinner
-                android:id="@+id/map_epfl_layers_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <CheckBox
                 android:layout_width="wrap_content"

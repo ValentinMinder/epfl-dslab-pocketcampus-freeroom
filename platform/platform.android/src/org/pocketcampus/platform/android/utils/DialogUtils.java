@@ -33,6 +33,12 @@ public class DialogUtils {
 		void gotText(String s);
 	}
 	
+	public static <T> void showSingleChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler, Comparator<? super T> comparator) {
+		List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList, comparator);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
+	}
 	public static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler) {
 		List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
@@ -45,7 +51,7 @@ public class DialogUtils {
 		List<String> valuesList = res.s;
 		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
+	private static <T> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		int selPos = keysList.indexOf(selected);
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setTitle(title)
@@ -62,6 +68,12 @@ public class DialogUtils {
 		dialog.show();
 	}
 	
+	public static <T> void showMultiChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, Comparator<? super T> comparator) {
+		final List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList, comparator);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
+	}
 	public static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
@@ -74,7 +86,7 @@ public class DialogUtils {
 		List<String> valuesList = res.s;
 		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
+	private static <T> void showMultiChoiceDialog(Context context, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		boolean[] selPos = new boolean[keysList.size()];
 		for(int i = 0; i < keysList.size(); i++) {
 			selPos[i] = selected.contains(keysList.get(i));
@@ -111,17 +123,18 @@ public class DialogUtils {
         ll.addView(tv);
         ll.addView(input);
 		
-        StyledDialog.Builder sdb = new StyledDialog.Builder(context);
-        sdb.setTitle(title);
-        sdb.setContentView(ll);
-        sdb.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+        AlertDialog sdb = new AlertDialog.Builder(context)
+        .setTitle(title)
+        .setView(ll)
+        .setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
 				handler.gotText(input.getText().toString());
 				dialogInterface.dismiss();
             }
-        });
+        })
+        .create();
         sdb.setCanceledOnTouchOutside(true);
-        sdb.create().show();
+        sdb.show();
 	}
 	
 	public static void alert(Context c, CharSequence title, CharSequence message) {
