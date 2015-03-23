@@ -198,12 +198,12 @@ namespace PocketCampus.Main
         private void HandleCompatibilityIssues()
         {
             // TileService had a bug in v2.5.0, re-apply the tile coloring to fix it
-            if ( _settings.LastUsedVersion < new Version( 2, 5, 1 ) )
+            if ( Version.Parse( _settings.LastUsedVersion ) < new Version( 2, 5, 1 ) )
             {
                 _tileService.SetTileColoring( _settings.TileColoring );
             }
 
-            _settings.LastUsedVersion = typeof( App ).GetTypeInfo().Assembly.GetName().Version;
+            _settings.LastUsedVersion = typeof( App ).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
 
         private sealed class Initializer : IDisposable

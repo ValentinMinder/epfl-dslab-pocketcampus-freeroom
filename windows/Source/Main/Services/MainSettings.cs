@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using PocketCampus.Common;
@@ -36,9 +35,9 @@ namespace PocketCampus.Main.Services
             set { Set( value ); }
         }
 
-        public Version LastUsedVersion
+        public string LastUsedVersion
         {
-            get { return Get<Version>(); }
+            get { return Get<string>(); }
             set { Set( value ); }
         }
 
@@ -63,7 +62,7 @@ namespace PocketCampus.Main.Services
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() },
                 { x => x.TileColoring, () => TileColoring.FullColors },
-                { x => x.LastUsedVersion, () => typeof( MainSettings ).GetTypeInfo().Assembly.GetName().Version }
+                { x => x.LastUsedVersion, () => typeof( MainSettings ).GetTypeInfo().Assembly.GetName().Version.ToString() }
             };
         }
     }

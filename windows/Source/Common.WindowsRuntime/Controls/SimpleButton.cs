@@ -127,7 +127,7 @@ namespace PocketCampus.Common.Controls
 
         private void CheckCanExecute()
         {
-            IsEnabled = Command.CanExecute( CommandParameter );
+            IsEnabled = Command != null && Command.CanExecute( CommandParameter );
 
             VisualStateManager.GoToState( this, IsEnabled ? "Normal" : "Disabled", true );
         }

@@ -5,16 +5,15 @@
 // Design implementation for IMainSettings
 
 #if DEBUG
-using System;
 using PocketCampus.Common.Services.Design;
 
 namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignMainSettings : DesignServerSettings, IMainSettings
     {
-        public Version LastUsedVersion
+        public string LastUsedVersion
         {
-            get { return new Version( 2, 5, 1 ); }
+            get { return "2.5.0"; }
             set { }
         }
 

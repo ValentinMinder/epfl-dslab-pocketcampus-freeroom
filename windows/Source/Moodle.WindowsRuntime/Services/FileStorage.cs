@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using PocketCampus.Moodle.Models;
 using Windows.Storage;
-using Windows.Storage.Search;
 using Windows.System;
 
 namespace PocketCampus.Moodle.Services
@@ -22,10 +21,7 @@ namespace PocketCampus.Moodle.Services
         public async Task StoreFileAsync( MoodleFile moodleFile, byte[] content )
         {
             var file = await GetFileAsync( moodleFile, true );
-            using ( var stream = await file.OpenStreamForWriteAsync() )
-            {
-                stream.Write( content, 0, content.Length );
-            }
+            await FileIO.WriteBytesAsync( file, content );
         }
 
         public async Task<bool> IsStoredAsync( MoodleFile moodleFile )
@@ -51,11 +47,8 @@ namespace PocketCampus.Moodle.Services
             string extension = string.IsNullOrWhiteSpace( file.Extension ) ? DefaultExtension : file.Extension;
             string fileName = FixName( file.Name + NameExtensionSeparator + extension, Path.GetInvalidFileNameChars() );
 
-            // GetFileAsync throws an exception if the file doesn't exist
-            // and there's no API to check for a file's existence
-            // so we have to use GetFilesAsync...
-            var storageFile = ( await folder.GetFilesAsync( CommonFileQuery.DefaultQuery ) )
-                                            .FirstOrDefault( f => f.Name == fileName );
+            // GetFileAsync throws an exception if the file doesn't exist, so we have to use GetFilesAsync...
+            var storageFile = ( await folder.GetFilesAsync() ).FirstOrDefault( f => f.Name == fileName );
             if ( storageFile == null && create )
             {
                 storageFile = await folder.CreateFileAsync( fileName, CreationCollisionOption.ReplaceExisting );
