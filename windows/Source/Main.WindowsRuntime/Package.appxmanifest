@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="42114PocketCampus.Org.PocketCampusEPFL" Publisher="CN=B4BD2ACF-803F-400A-9091-55AFFDEE6F8F" Version="2.5.0.0" />
+  <Identity Name="42114PocketCampus.Org.PocketCampusEPFL" Publisher="CN=B4BD2ACF-803F-400A-9091-55AFFDEE6F8F" Version="2.5.1.0" />
   <!-- The PhoneProductId is bound to the maps' Application ID -->
   <mp:PhoneIdentity PhoneProductId="53446f71-dc18-4bc6-949c-babd53258ed7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
