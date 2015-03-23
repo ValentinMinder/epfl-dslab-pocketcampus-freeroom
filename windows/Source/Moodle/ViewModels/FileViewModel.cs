@@ -86,7 +86,11 @@ namespace PocketCampus.Moodle.ViewModels
             {
                 await ForceDownloadAsync();
             }
-            await _storage.OpenFileAsync( File );
+            // Check IsCached again, it'll be false if ForceDownloadAsync threw.
+            if ( IsCached )
+            {
+                await _storage.OpenFileAsync( File );
+            }
         }
 
         private Task PrintAsync()
