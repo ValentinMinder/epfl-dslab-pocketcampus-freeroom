@@ -67,30 +67,32 @@ namespace PocketCampus.Moodle.ViewModels
         {
             await base.OnNavigatedToAsync();
 
-            IsCached = await _storage.IsStoredAsync( File );
+            await TryExecuteAsync( async _ =>
+            {
+                IsCached = await _storage.IsStoredAsync( File );
+            } );
         }
 
         private Task ForceDownloadAsync()
         {
             return TryExecuteAsync( async _ =>
             {
-                var bytes = await _downloader.DownloadAsync( File );
-                await _storage.StoreFileAsync( File, bytes );
+                await _storage.StoreFileAsync( File, await _downloader.DownloadAsync( File ) );
                 IsCached = true;
             } );
         }
 
-        private async Task OpenAsync()
+        private Task OpenAsync()
         {
-            if ( !IsCached )
+            return TryExecuteAsync( async _ =>
             {
-                await ForceDownloadAsync();
-            }
-            // Check IsCached again, it'll be false if ForceDownloadAsync threw.
-            if ( IsCached )
-            {
+                if ( !IsCached )
+                {
+                    await _storage.StoreFileAsync( File, await _downloader.DownloadAsync( File ) );
+                    IsCached = true;
+                }
                 await _storage.OpenFileAsync( File );
-            }
+            } );
         }
 
         private Task PrintAsync()
