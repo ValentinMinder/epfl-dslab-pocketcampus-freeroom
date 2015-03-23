@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System.Collections.Generic;
-using System.Reflection;
 using PocketCampus.Common;
 using ThinMvvm;
 
@@ -35,12 +34,6 @@ namespace PocketCampus.Main.Services
             set { Set( value ); }
         }
 
-        public string LastUsedVersion
-        {
-            get { return Get<string>(); }
-            set { Set( value ); }
-        }
-
         public TileColoring TileColoring
         {
             get { return Get<TileColoring>(); }
@@ -62,7 +55,6 @@ namespace PocketCampus.Main.Services
                 { x => x.Session, () => null },
                 { x => x.Sessions, () => new Dictionary<string, string>() },
                 { x => x.TileColoring, () => TileColoring.FullColors },
-                { x => x.LastUsedVersion, () => typeof( MainSettings ).GetTypeInfo().Assembly.GetName().Version.ToString() }
             };
         }
     }

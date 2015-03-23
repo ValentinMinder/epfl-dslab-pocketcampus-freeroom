@@ -8,8 +8,6 @@ namespace PocketCampus.Main.Services
 {
     public interface IMainSettings : IServerSettings
     {
-        // HACK: The DataContractSerializer can't serialize Version...
-        string LastUsedVersion { get; set; }
         TileColoring TileColoring { get; set; }
     }
 }

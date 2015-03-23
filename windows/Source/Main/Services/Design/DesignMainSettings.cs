@@ -11,12 +11,6 @@ namespace PocketCampus.Main.Services.Design
 {
     public sealed class DesignMainSettings : DesignServerSettings, IMainSettings
     {
-        public string LastUsedVersion
-        {
-            get { return "2.5.0"; }
-            set { }
-        }
-
         public TileColoring TileColoring
         {
             get { return TileColoring.ColorOnTransparent; }
