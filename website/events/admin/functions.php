@@ -52,26 +52,240 @@ function htmlify($str) {
 
 
 
+
+function export_csv_stats_pageviews_l3($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1,
+ep2.poolId AS id2, ep2.poolTitle AS title2, count2.accessCount AS count2, 
+ei3.eventId AS id3, ei3.eventTitle AS title3, count3.accessCount AS count3
+
+FROM  eventitems ei1
+LEFT JOIN  eventpools ep2 ON ep2.parentEvent = ei1.eventId
+LEFT JOIN  eventitems ei3 ON ei3.parentPool = ep2.poolId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+LEFT JOIN (
+SELECT    ep2.poolId AS poolId, sum(pv2.viewCount) AS accessCount
+FROM   eventpools ep2 
+LEFT JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+group by ep2.poolId
+) count2 ON ep2.poolId = count2.poolId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms INNER JOIN eventpools ON parentEvent = eventItemId WHERE poolId = ei1.parentPool)
+group by  ei1.eventId
+) count3 ON ei3.eventId = count3.eventId
+
+WHERE ei1.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_pageviews_l2($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1,
+ep2.poolId AS id2, ep2.poolTitle AS title2, count2.accessCount AS count2
+
+FROM  eventitems ei1
+LEFT JOIN  eventpools ep2 ON ep2.parentEvent = ei1.eventId
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+LEFT JOIN (
+SELECT    ep2.poolId AS poolId, sum(pv2.viewCount) AS accessCount
+FROM   eventpools ep2
+LEFT JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+group by ep2.poolId
+) count2 ON ep2.poolId = count2.poolId
+
+WHERE ei1.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_pageviews_l1($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT  ei1.eventId AS id1, ei1.eventTitle AS title1, count1.accessCount AS count1
+
+FROM  eventitems ei1
+
+LEFT JOIN (
+SELECT  ei1.eventId AS eventId, sum(pv1.viewCount) AS accessCount
+FROM  eventitems ei1
+LEFT JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+group by  ei1.eventId
+) count1 ON ei1.eventId = count1.eventId
+
+WHERE ei1.eventId like '$eventItemId'
+EOS;
+	return query_to_array($query, $conn);
+}
+
+function export_csv_stats_users($eventItemId, $conn) {
+	$eventItemId = sql_real_escape_string($eventItemId);
+$query = <<<EOS
+SELECT ei100.eventId, ei100.eventTitle, engagedUsers.engagedUsers, allUsers.allUsers
+FROM eventitems ei100
+INNER JOIN (
+
+SELECT hp.eventItemId, COUNT(*) AS engagedUsers
+FROM eventperms hp
+WHERE hp.userToken IN (
+
+
+
+
+SELECT DISTINCT pv1.userTicket
+FROM  eventitems ei1
+INNER JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ei1.eventId)
+where ei1.eventId = hp.eventItemId
+
+
+UNION
+
+SELECT DISTINCT pv2.userTicket
+FROM   eventpools ep2 
+INNER JOIN  eventpageviews pv2 ON pv2.nodeId = ep2.poolId AND pv2.pageType = 'eventpool'  AND pv2.userTicket IN (SELECT userToken FROM eventperms WHERE eventItemId = ep2.parentEvent)
+WHERE ep2.poolId IN (
+SELECT  ep10.poolId 
+FROM  eventpools ep10 
+WHERE ep10.parentEvent = hp.eventItemId
+)
+
+
+UNION
+
+
+
+SELECT DISTINCT pv1.userTicket
+FROM  eventitems ei1
+INNER JOIN  eventpageviews pv1 ON pv1.nodeId = ei1.eventId AND pv1.pageType = 'eventitem' AND pv1.userTicket IN (SELECT userToken FROM eventperms INNER JOIN eventpools ON parentEvent = eventItemId WHERE poolId = ei1.parentPool)
+WHERE ei1.eventId IN (
+SELECT  ei20.eventId 
+FROM  eventpools ep10 
+INNER JOIN  eventitems ei20 ON ei20.parentPool = ep10.poolId
+WHERE ep10.parentEvent = hp.eventItemId
+)
+
+
+
+) GROUP BY hp.eventItemId 
+
+) engagedUsers ON ei100.eventId = engagedUsers.eventItemId
+INNER JOIN (
+
+SELECT hp.eventItemId, COUNT(*) AS allUsers
+FROM eventperms hp
+GROUP BY hp.eventItemId 
+
+) allUsers ON ei100.eventId = allUsers.eventItemId
+
+WHERE ei100.eventId like '$eventItemId'
+
+EOS;
+	return query_to_array($query, $conn);
+}
+
+
+
+
+
+
+
+
+
+function query_to_array($query, $conn) {
+	$csv = array();
+	$resource = sql_query($query, $conn);
+	if($resource) {
+		$row = array();
+		for($i=0;$i<sql_num_fields($resource);$i++) {
+			$row[] = sql_field_name($resource, $i);
+		}
+		$csv[] = $row;
+	}
+	while($item = sql_fetch_array($resource)) {
+		$row = array();
+		for($i=0;$i<sql_num_fields($resource);$i++) {
+			$row[] = $item[$i];
+		}
+		$csv[] = $row;
+	}
+	return $csv;
+}
+
+
+
+
+
+
+
+
+
 function export_event_items_posters($parent, $conn) {
+	$COLS = 4;
 	$resource = sql_query("SELECT * FROM eventitems WHERE parentPool='$parent' ORDER BY secondLine,eventTitle", $conn);
 	$ret = "<table style=\"margin:auto;\">";
+	$table = array();
+	$row = array();
 	while($item1 = sql_fetch_array($resource)) {
-		$ret .= "<tr>";
-		$ret .= "<td style=\"text-align:center;width:300px;\">";
-		$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item1["eventId"]) . "\">";
-		$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item1["secondLine"])) . "&nbsp;</i></div>";
-		$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item1["eventTitle"])) . "</b></div>";
-		$ret .= "</td>";
-		$ret .= "<td>&nbsp;&nbsp;&nbsp;</td>";
-		$ret .= "<td style=\"text-align:center;width:300px;\">";
-		if($item2 = sql_fetch_array($resource)) {
-			$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item2["eventId"]) . "\">";
-			$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item2["secondLine"])) . "&nbsp;</i></div>";
-			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item2["eventTitle"])) . "</b></div>";
+		if(count($row) == $COLS) {
+			$table[] = $row;
+			$row = array();
 		}
-		$ret .= "</td>";
+		$row[] = $item1;
+	}
+	if(count($row) > 0) {
+		$table[] = $row;
+		$row = array();
+	}
+	foreach($table as $row) {
+		$ret .= "<tr>";
+		foreach($row as $i) {
+			$ret .= "<td style=\"text-align:center;width:300px;\">";
+			$ret .= "<img style=\"\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($i["eventId"]) . "\">";
+			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\">" . htmlentities(($i["eventTitle"])) . "<br>";
+			$ret .= "<small><b>" . htmlentities(($i["secondLine"])) . "&nbsp;</b></small></div>";
+			$ret .= "</td>";
+		}
 		$ret .= "</tr>";
 	}
+//	while($item1 = sql_fetch_array($resource)) {
+//		$ret .= "<tr>";
+//		$ret .= "<td style=\"text-align:center;width:300px;\">";
+//		$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item1["eventId"]) . "\">";
+//		$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item1["eventTitle"])) . "</b></div>";
+//		$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item1["secondLine"])) . "&nbsp;</i></div>";
+//		$ret .= "</td>";
+//		$ret .= "<td>&nbsp;&nbsp;&nbsp;</td>";
+//		$ret .= "<td style=\"text-align:center;width:300px;\">";
+//		if($item2 = sql_fetch_array($resource)) {
+//			$ret .= "<img style=\"margin-bottom:-20px;\" src=\"http://pocketcampus.epfl.ch/events/qr_code.php?s=190x190&id=" . rawurlencode($parent) . "&mf=" . rawurlencode($item2["eventId"]) . "\">";
+//			$ret .= "<div style=\"width:300px;height:40px;overflow:hidden;margin:auto;text-align:center\"><b>" . htmlentities(($item2["eventTitle"])) . "</b></div>";
+//			$ret .= "<div style=\"margin:auto;text-align:center\"><i>" . htmlentities(($item2["secondLine"])) . "&nbsp;</i></div>";
+//		}
+//		$ret .= "</td>";
+//		$ret .= "</tr>";
+//	}
 	$ret .= "</table>";
 	return $ret;
 }
@@ -384,9 +598,9 @@ function update_eventitem_affiliates($record, $newid, $conn) {
 
 function get_required_fields_for_participants(){
 	// NEW
-	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo", "IsPrivate", "AOIKeys");
+	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo", "IsPrivate", "AOIKeys", "LabName", "LAB_PC_ID");
 	
-	return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo");
+	//return array("FirstName", "FullName", "Affiliation", "EmailAddress", "PictureURL", "HomepageURL", "PC_ID", "PC_CATEG", "EPFL_SCIPER", "userId", "exchangeToken", "accessTo");
 }
 
 function update_eventitem_participants($record, $newid, $conn) {
@@ -403,6 +617,11 @@ function update_eventitem_participants($record, $newid, $conn) {
 	$eventDetails = "";
 	if($record["EmailAddress"]) $eventDetails .= "<h2>Email address</h2><p><a href=\"mailto:{$record["EmailAddress"]}\">{$record["EmailAddress"]}</a></p>";
 	if($record["HomepageURL"]) $eventDetails .= "<h2>Homepage</h2><p><a href=\"{$record["HomepageURL"]}\">Link</a></p>";
+	if($record["LabName"]) {
+		$LabName = $record["LabName"];
+		if($record["LAB_PC_ID"]) $LabName = "<a href=\"pocketcampus://events.plugin.pocketcampus.org/showEventItem?eventItemId=" . rawurlencode($record["LAB_PC_ID"]) . "\">" . $LabName . "</a>";
+		$eventDetails .= "<h2>Lab</h2><p>$LabName</p>";
+	}
 	$contactCardLink = "";
 	if($record["FullName"] && $record["EmailAddress"]) {
 		$contactCardLink = "/view?firstName=" . rawurlencode($record["FullName"]) . "&email=" . rawurlencode($record["EmailAddress"]);
@@ -596,6 +815,11 @@ function sql_insert_id(){
 	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
 }
 function sql_num_fields(){
+	$t=func_get_args();
+	global $DB_FUNC_PREFIX;
+	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
+}
+function sql_field_name(){
 	$t=func_get_args();
 	global $DB_FUNC_PREFIX;
 	return call_user_func_array($DB_FUNC_PREFIX.__FUNCTION__, $t);
