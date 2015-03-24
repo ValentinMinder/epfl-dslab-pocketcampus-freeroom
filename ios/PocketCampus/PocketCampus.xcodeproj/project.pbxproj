@@ -501,6 +501,10 @@
 		32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD525819B4DEB600B5B241 /* CloudPrintPlugin.strings */; };
 		32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
+		32DE5B341AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */; };
+		32DE5B361AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
+		32DE5B371AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
+		32DE5B381AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32DFDB0F190902AE008C61E2 /* NewsModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */; };
 		32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E313194B1FDD003251CC /* FilterBarButton.png */; };
@@ -1261,6 +1265,9 @@
 		32DD525919B4DEB700B5B241 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CloudPrintPlugin.strings; sourceTree = "<group>"; };
 		32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonView.xib; sourceTree = "<group>"; };
+		32DE5B321AC1A8D4005499FD /* PCDebugConfigSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCDebugConfigSelectionViewController.h; sourceTree = "<group>"; };
+		32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCDebugConfigSelectionViewController.m; sourceTree = "<group>"; };
+		32DE5B351AC1ACC4005499FD /* DebugConfigs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DebugConfigs; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32DFDB0D190902AE008C61E2 /* NewsModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModelAdditions.h; sourceTree = "<group>"; };
 		32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsModelAdditions.m; sourceTree = "<group>"; };
@@ -1640,6 +1647,7 @@
 				3288699814FE5AF300CC97DB /* Model */,
 				328869A714FE5AF300CC97DB /* Views */,
 				3219EF5714FCDE4900A271CD /* Supporting Files */,
+				32DE5B351AC1ACC4005499FD /* DebugConfigs */,
 			);
 			path = PocketCampus;
 			sourceTree = "<group>";
@@ -2096,6 +2104,8 @@
 				3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */,
 				3245DF2E18881B5F0072E086 /* PCUsageViewController.h */,
 				3245DF2F18881B5F0072E086 /* PCUsageViewController.m */,
+				32DE5B321AC1A8D4005499FD /* PCDebugConfigSelectionViewController.h */,
+				32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -3206,6 +3216,13 @@
 				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
+<<<<<<< Updated upstream
+=======
+				2D524B61AE18E8A19E65FCA3 /* Alumni.png in Resources */,
+				96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */,
+				32DE5B371AC1ACC4005499FD /* DebugConfigs in Resources */,
+				3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */,
+>>>>>>> Stashed changes
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3340,6 +3357,7 @@
 				32A37A541A682F390079D208 /* FavoriteGlowNavBarButton@3x.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				32A37A261A68203B0079D208 /* FoodSmileyHappy@3x.png in Resources */,
+				32DE5B361AC1ACC4005499FD /* DebugConfigs in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
 				32A37A481A682C540079D208 /* Download@3x.png in Resources */,
 				32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */,
@@ -3541,6 +3559,7 @@
 				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
 				32F9619C19C631ED006A4C46 /* CloudPrintPlugin.strings in Resources */,
+				32DE5B381AC1ACC4005499FD /* DebugConfigs in Resources */,
 				325F1FC819FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32F9619B19C631E1006A4C46 /* PocketCampus.strings in Resources */,
 				325F1FC619FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
@@ -3785,6 +3804,7 @@
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
 				324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */,
 				32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */,
+				32DE5B341AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m in Sources */,
 				32CBF0631634812C00FD92E5 /* PCSplashViewController.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
 				32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */,

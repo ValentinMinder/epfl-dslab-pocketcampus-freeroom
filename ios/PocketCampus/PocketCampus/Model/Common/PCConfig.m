@@ -264,5 +264,54 @@ static BOOL loaded = NO;
     return [NSDictionary dictionaryWithContentsOfFile:[self pathForPersistedServerConfig]];
 }
 
+#ifdef DEBUG
+
++ (NSArray*)bundledDebugConfigsPaths {
+    static NSArray* paths = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        paths = [[NSBundle mainBundle] pathsForResourcesOfType:@"plist" inDirectory:@"DebugConfigs"];
+    });
+    return paths;
+}
+
++ (void)applyAndDieConfigWithPath:(NSString*)configPath {
+    if (configPath) {
+        [PCUtils throwExceptionIfObject:configPath notKindOfClass:[NSString class]];
+    }
+    NSString* classicConfigPath = [PCPersistenceManager classicBundleIdentifierPersistencePath];
+    classicConfigPath = [classicConfigPath stringByAppendingPathComponent:kConfigFilename];
+    if (!configPath) {
+        [[NSFileManager defaultManager] removeItemAtPath:classicConfigPath error:nil];
+        
+        NSString* appGroupConfigPath = [PCPersistenceManager appGroupBundleIdentifierPersistencePath];
+        appGroupConfigPath = [appGroupConfigPath stringByAppendingPathComponent:kConfigFilename];
+        [[NSFileManager defaultManager] removeItemAtPath:appGroupConfigPath error:nil];
+        
+        [[Crashlytics sharedInstance] crash];
+        return;
+    }
+    if (![[NSFileManager defaultManager] fileExistsAtPath:configPath]) {
+        CLSNSLog(@"!! ERROR: configPath is not a valid file path. Will not pursue.");
+        return;
+    }
+    NSError* error = nil;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:classicConfigPath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:classicConfigPath error:&error];
+        if (error) {
+            CLSNSLog(@"!! ERROR: while deleting existing app group config path. Still continuing. %@", error);
+        }
+    }
+    error = nil;
+    [PCPersistenceManager createComponentsForPath:classicConfigPath];
+    [[NSFileManager defaultManager] copyItemAtPath:configPath toPath:classicConfigPath error:&error];
+    if (error) {
+        CLSNSLog(@"!! ERROR: while copying debug config to App Support config path. Still continuing (=> CRASH is next step). %@", error);
+    }
+    [[Crashlytics sharedInstance] crash];
+}
+
+#endif
+
 
 @end

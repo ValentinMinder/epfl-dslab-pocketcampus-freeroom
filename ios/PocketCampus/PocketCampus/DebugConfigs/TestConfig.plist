@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SERVER_ADDRESS</key>
+	<string>test-pocketcampus.epfl.ch</string>
+	<key>SERVER_URI</key>
+	<string>v3r1</string>
+	<key>SERVER_PORT</key>
+	<string>14611</string>
+	<key>SERVER_PROTOCOL</key>
+	<string>https</string>
+	<key>GA_ENABLED</key>
+	<false/>
+</dict>
+</plist>

@@ -49,12 +49,14 @@
 
 #import "PCUsageViewController.h"
 
+#import "PCDebugConfigSelectionViewController.h"
+
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
 static const int kAboutSection = 2;
-
 static const int kMiscSection = 3;
+static const int kDebugSection = 4;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -207,6 +209,12 @@ static const int kUsageRow = 0;
                     break;
             }
             break;
+        case kDebugSection:
+        {
+            PCDebugConfigSelectionViewController* viewController = [PCDebugConfigSelectionViewController new];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         default:
             break;
     }
@@ -311,6 +319,13 @@ static const int kUsageRow = 0;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+        case kDebugSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.textLabel.text = @"Debug";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
         default:
             break;
     }
@@ -327,14 +342,18 @@ static const int kUsageRow = 0;
             return 3;
         case kMiscSection:
             return 1;
-        default:
-            return 0;
-            break;
+        case kDebugSection:
+            return 1;
     }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+#ifdef DEBUG
+    return 5;
+#else
+    eturn 4;
+#endif
 }
 
 @end
