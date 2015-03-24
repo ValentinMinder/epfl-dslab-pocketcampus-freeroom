@@ -37,8 +37,11 @@ NSNumber* kEventItemCategoryFeatured;
 @implementation EventItem (Additions)
 
 + (void)initialize {
-    kEventItemCategoryFavorite = [NSNumber numberWithInt:-2];
-    kEventItemCategoryFeatured = [NSNumber numberWithInt:-1];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kEventItemCategoryFavorite = [NSNumber numberWithInt:-2];
+        kEventItemCategoryFeatured = [NSNumber numberWithInt:-1];
+    });
 }
 
 - (BOOL)isEqual:(id)object {

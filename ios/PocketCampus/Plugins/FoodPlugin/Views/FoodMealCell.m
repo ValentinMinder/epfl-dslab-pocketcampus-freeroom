@@ -107,7 +107,9 @@ static const CGFloat kRateControlsViewWidth = 248.0;
 #pragma mark - Init
 
 + (void)initialize {
-    ratingsEnabled = [[PCConfig defaults] boolForKey:PC_CONFIG_FOOD_RATINGS_ENABLED];
+    if (self == [FoodMealCell self]) {
+        ratingsEnabled = [[PCConfig defaults] boolForKey:PC_CONFIG_FOOD_RATINGS_ENABLED];
+    }
 }
 
 - (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {

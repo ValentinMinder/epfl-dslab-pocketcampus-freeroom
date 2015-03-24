@@ -60,7 +60,9 @@ static NSString* const kCancelledOperationUserInfoBoolKey = @"CancelledOperation
 #pragma mark - init
 
 + (void)initialize {
-    kEmptyImageValue = [NSNull null];
+    if (self == [PCTableViewAdditions self]) {
+        kEmptyImageValue = [NSNull null];
+    }
 }
 
 - (id)init {

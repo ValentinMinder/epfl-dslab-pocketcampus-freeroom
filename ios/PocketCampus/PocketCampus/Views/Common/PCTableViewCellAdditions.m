@@ -58,8 +58,10 @@ static __strong UIColor* kDefaultDetailTextLabelDimmedColor;
 
 //see NSObject doc
 + (void)initialize {
-    PCTableViewCellAdditionsDefaultTextLabelTextStyle = UIFontTextStyleBody;
-    PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+    if (self == [PCTableViewCellAdditions self]) {
+        PCTableViewCellAdditionsDefaultTextLabelTextStyle = UIFontTextStyleBody;
+        PCTableViewCellAdditionsDefaultDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+    }
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
