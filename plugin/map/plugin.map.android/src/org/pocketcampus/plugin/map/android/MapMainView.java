@@ -656,7 +656,7 @@ public class MapMainView extends PluginView implements IMapView {
 		
 		if(searchMode) {
 			MenuItem i5 = menu.add("show results as list");
-			i5.setTitle("Show as list"); // TODO
+			i5.setTitle(R.string.map_show_results_as_list);
 			i5.setIcon(R.drawable.map_show_results_as_list);
 			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
@@ -669,7 +669,7 @@ public class MapMainView extends PluginView implements IMapView {
 		
 		if(searchMode) {
 			MenuItem i5 = menu.add("exit search mode");
-			i5.setTitle(R.string.map_menu_clear_layers); // TODO
+			i5.setTitle(R.string.map_cancel_search);
 			i5.setIcon(R.drawable.map_exit_search);
 			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {

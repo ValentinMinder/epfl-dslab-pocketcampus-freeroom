@@ -32,6 +32,8 @@
     
     <string name="map_layer_not_found">Impossible to find the requested item.</string>
 
+    <string name="map_cancel_search">Cancel search</string>
+    <string name="map_show_results_as_list">Show results as list</string>
     
     
     

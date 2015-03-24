@@ -26,4 +26,9 @@
     <string name="map_compute_position">Localisation...</string>
     
     <string name="map_layer_not_found">Élement non trouvé.</string>
+    
+    <string name="map_cancel_search">Annuler la recherche</string>
+    <string name="map_show_results_as_list">Liste des résultats de la recherche</string>
+    
+    
 </resources>
