@@ -510,6 +510,7 @@ public class MapMainView extends PluginView implements IMapView {
 			public boolean onMarkerClick(Marker marker) {
 				synchronized (MapMainView.this) {
 					MapItem i = mMarkers.get(marker);
+					trackEvent("PinViewMoreInfo", i.getTitle());
 					if(i.isSetFloor()) {
 						changeEpflFloor("" + i.getFloor());
 					}
@@ -534,6 +535,7 @@ public class MapMainView extends PluginView implements IMapView {
 				if(searchMode) {
 					
 				} else {
+					trackEvent("TapOnMap", point.latitude + "," + point.longitude);
 //					PointF p = convert(point);
 					showMarkers(null);
 					new Fetcher().execute(point);
@@ -571,6 +573,7 @@ public class MapMainView extends PluginView implements IMapView {
 			i5.setIcon(R.drawable.map_search_action);
 			i5.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
+					trackEvent("SearchAction", null);
 					setSearchMode(true);
 					return true;
 				}
@@ -592,8 +595,10 @@ public class MapMainView extends PluginView implements IMapView {
 		i1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		i1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				trackEvent("ChangeFloorAction", null);
 				DialogUtils.showSingleChoiceDialog(MapMainView.this, mModel.getEpflFloors(), null, floor, new SingleChoiceHandler<String>() {
 					public void saveSelection(String t) {
+						trackEvent("ChangeFloor", t);
 						changeEpflFloor(t);
 					}
 				}, mModel.getFloorKeyComparator());
@@ -616,6 +621,7 @@ public class MapMainView extends PluginView implements IMapView {
 			//i3.setIcon(R.drawable.map_center_on_epfl2);
 			i3.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
+					trackEvent("CenterOnCampus", null);
 					mMap.animateCamera(epflView);
 					return true;
 				}
@@ -628,12 +634,16 @@ public class MapMainView extends PluginView implements IMapView {
 		i4.setIcon(R.drawable.map_select_layers);
 		i4.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				trackEvent("ShowLayersList", null);
 				DialogUtils.showMultiChoiceDialog(MapMainView.this, mModel.getLayerNames(), null, layers, new MultiChoiceHandler<String>() {
 					public void saveSelection(String t, boolean isChecked) {
-						if (isChecked)
+						if (isChecked) {
+							trackEvent("IncludeLayer", t);
 							layers.add(t);
-						else
+						} else {
+							trackEvent("ExcludeLayer", t);
 							layers.remove(t);
+						}
 						onCamMove();
 						
 					}
@@ -836,6 +846,8 @@ public class MapMainView extends PluginView implements IMapView {
     	if(xyz.size() == 0) {
     		return;
     	}
+    	
+    	trackEvent("TapOnMapShowResults", null);
 
         AlertDialog sdb = new AlertDialog.Builder(this)
         .setItems(xyz.toArray(new String[xyz.size()]), new OnClickListener() {
@@ -855,8 +867,11 @@ public class MapMainView extends PluginView implements IMapView {
     
     synchronized private  void displaySearchResultsAsList() {
     	if(mMarkers.size() == 0) {
+			DialogUtils.alert(this, getString(R.string.map_plugin_title), getString(R.string.map_search_no_results));
     		return;
     	}
+    	
+    	trackEvent("ShowResultsList", null);
     	
     	final List<Marker> markers = new ArrayList<Marker>(mMarkers.keySet());
     	Collections.sort(markers, new Comparator<Marker>() {
@@ -880,6 +895,7 @@ public class MapMainView extends PluginView implements IMapView {
         .setItems(titles, new OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				Marker marker = markers.get(which);
+				trackEvent("SelectResultFromList", marker.getTitle());
 		    	LatLngBounds.Builder builder = new LatLngBounds.Builder();
 	    	    builder.include(marker.getPosition());
 	        	LatLngBounds bounds = builder.build();
@@ -905,6 +921,7 @@ public class MapMainView extends PluginView implements IMapView {
 	        extraSettings.setVisibility(View.VISIBLE);
 			return;
 		};
+		trackEvent("Search", query);
 		mController.search(query);
 		loading = ProgressDialog.show(this, null, getString(R.string.map_searching), true, false);
 		
@@ -915,8 +932,7 @@ public class MapMainView extends PluginView implements IMapView {
 		Uri aData = intent.getData();
 		if (aData != null && aData.getQueryParameter("q") != null) {
 			String query = aData.getQueryParameter("q");
-			mController.search(query);
-			loading = ProgressDialog.show(this, null, getString(R.string.map_searching), true, false);
+			onSearch(query);
 		}
 		
 		Bundle extras = intent.getExtras();
