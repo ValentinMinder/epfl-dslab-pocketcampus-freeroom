@@ -3216,13 +3216,7 @@
 				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
-<<<<<<< Updated upstream
-=======
-				2D524B61AE18E8A19E65FCA3 /* Alumni.png in Resources */,
-				96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */,
 				32DE5B371AC1ACC4005499FD /* DebugConfigs in Resources */,
-				3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */,
->>>>>>> Stashed changes
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
