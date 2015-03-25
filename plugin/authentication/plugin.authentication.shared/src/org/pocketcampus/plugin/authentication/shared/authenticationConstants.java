@@ -41,6 +41,8 @@ public class authenticationConstants {
     OAUTH2_SCOPES.add("Tequila.profile");
     OAUTH2_SCOPES.add("Moodle.read");
     OAUTH2_SCOPES.add("ISA.read");
+    OAUTH2_SCOPES.add("Camipro.read");
+    OAUTH2_SCOPES.add("Camipro.write");
   }
 
 }

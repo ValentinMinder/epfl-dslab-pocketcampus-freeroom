@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -148,6 +149,14 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
 	public String getSciperFromSession(String sess) {
 		return getFieldFromSession(sess, "`sciper`");
+	}
+	
+	public static String getAccessTokenForScope(String scope) {
+		String pcSessionId = PocketCampusServer.getRequestHeaders().get(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
+		if (pcSessionId == null) return null;
+		Map<String, String> map = SessionManagerOAuth2.parseOAuth2Session(pcSessionId);
+		if(map == null) return null;
+		return map.get(scope);
 	}
 	
 	/**

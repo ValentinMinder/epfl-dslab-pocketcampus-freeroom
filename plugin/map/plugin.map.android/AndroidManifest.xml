@@ -14,7 +14,7 @@
     
 
     <application
-        android:icon="@drawable/map_icon_white"
+        android:icon="@drawable/map_icon"
         android:label="@string/app_name"
         android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:theme="@style/PocketCampusActionBarTheme" >

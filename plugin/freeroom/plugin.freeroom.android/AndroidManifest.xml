@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA" />
 
     <application
         android:name="org.pocketcampus.platform.android.core.GlobalContext"
@@ -34,17 +33,6 @@
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
 
-            <!-- Communication with authentication plugin -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="freeroom.plugin.pocketcampus.org"
-                    android:scheme="pocketcampus-authenticate" />
-            </intent-filter>
 
             <!-- Interception of epfl QR-code or website http://occupancy.epfl.ch/room -->
 
@@ -74,7 +62,7 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:pathPrefix="/search"
-                    android:scheme="http" />
+                    android:scheme="pocketcampus" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -96,7 +84,7 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:pathPrefix="/search"
-                    android:scheme="" />
+                    android:scheme="pocketcampus" />
             </intent-filter>
 
             <!-- SCHEME://freeroom.plugin.pocketcampus.org/match?name=NAM -->
@@ -114,7 +102,7 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:pathPrefix="/match"
-                    android:scheme="http" />
+                    android:scheme="pocketcampus" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -136,7 +124,7 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:pathPrefix="/match"
-                    android:scheme="" />
+                    android:scheme="pocketcampus" />
             </intent-filter>
 
             <!-- Interception of PocketCampus Intent or QR-code -->
@@ -174,7 +162,7 @@
                 <data
                     android:host="freeroom.plugin.pocketcampus.org"
                     android:pathPrefix="/show"
-                    android:scheme="" />
+                    android:scheme="pocketcampus" />
             </intent-filter>
         </activity>
         <activity
@@ -212,23 +200,8 @@
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomController" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-
-                <category android:name="org.pocketcampus.plugin.authentication" />
-
-                <data
-                    android:host="freeroom.plugin.pocketcampus.org"
-                    android:scheme="pocketcampus" />
-            </intent-filter>
         </service>
 
-        <receiver android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomController$Logouter" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

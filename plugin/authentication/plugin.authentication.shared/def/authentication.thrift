@@ -1,6 +1,6 @@
 namespace java org.pocketcampus.plugin.authentication.shared
 
-const list<string> OAUTH2_SCOPES = ["Tequila.profile", "Moodle.read", "ISA.read"];
+const list<string> OAUTH2_SCOPES = ["Tequila.profile", "Moodle.read", "ISA.read", "Camipro.read", "Camipro.write"];
 
 enum AuthStatusCode {
   // The request was successful

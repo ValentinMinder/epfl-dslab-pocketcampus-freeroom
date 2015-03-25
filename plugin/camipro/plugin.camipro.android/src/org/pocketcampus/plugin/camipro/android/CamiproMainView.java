@@ -94,13 +94,18 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		 * mController.getCamiproSession(); } else { finish(); }
 		 */
 
-		// Normal start-up
-		if (mModel.getCamiproCookie() == null) {
-			mController.getTequilaToken();
-		} else {
-			mController.refreshBalanceAndTransactions();
-		}
+//		// Normal start-up
+//		if (mModel.getCamiproCookie() == null) {
+//			mController.getTequilaToken();
+//		} else {
+//			mController.refreshBalanceAndTransactions();
+//		}
 
+		if(CamiproController.sessionExists(this)) { // I think this is no longer necessary, since the auth plugin doesnt blindly redo auth (well, this saves the one call that the auth plugin does to check if the session is valid)
+			mController.refreshBalanceAndTransactions();
+		} else { 
+			CamiproController.pingAuthPlugin(this);
+		}
 	}
 
 	/**
@@ -166,7 +171,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		lv.setAdapter(new AmountAdapter(getApplicationContext(),
 				R.layout.camipro_amount, l));
 		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		lv.setLayoutParams(p);
 		mLayout.removeFirstLayoutFillerView();
 		mLayout.addFirstLayoutFillerView(lv);
@@ -192,7 +197,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 	@Override
 	public void gotCamiproCookie() {
-		// TODO check if activity is visible
 		mController.refreshBalanceAndTransactions();
 	}
 
@@ -348,7 +352,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		@Override
 		public int getDrawable() {
-			// TODO Auto-generated method stub
 			return R.drawable.camipro_menu_recharge;
 		}
 
@@ -370,7 +373,6 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 
 		@Override
 		public int getDrawable() {
-			// TODO Auto-generated method stub
 			return R.drawable.camipro_menu_stats;
 		}
 

@@ -27,33 +27,8 @@
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
 
-            <!-- Communication with authentication plugin -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="camipro.plugin.pocketcampus.org"
-                    android:scheme="pocketcampus-authenticate" />
-            </intent-filter>
         </activity>
 
-        <service
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:name="org.pocketcampus.plugin.camipro.android.CamiproController" >
-            <intent-filter>
-                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
-                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
-
-                <category android:name="org.pocketcampus.plugin.authentication" />
-
-                <data
-                    android:host="camipro.plugin.pocketcampus.org"
-                    android:scheme="pocketcampus" />
-            </intent-filter>
-        </service>
 
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,11 +43,40 @@
             android:screenOrientation="nosensor" >
         </activity>
 
+        
+        
+        
+        
+        <service
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.camipro.android.CamiproController" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+                <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
+
+                <category android:name="org.pocketcampus" />
+
+                <data
+                    android:host="camipro.plugin.pocketcampus.org"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+        </service>
+        
+
+        
         <receiver android:name="org.pocketcampus.plugin.camipro.android.CamiproController$Logouter" >
             <intent-filter>
                 <action android:name="org.pocketcampus.plugin.authentication.LOGOUT" />
             </intent-filter>
         </receiver>
+        <receiver android:name="org.pocketcampus.plugin.camipro.android.CamiproController$AuthListener" >
+            <intent-filter>
+                <action android:name="org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED" />
+            </intent-filter>
+        </receiver>
+        
+        
+        
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
