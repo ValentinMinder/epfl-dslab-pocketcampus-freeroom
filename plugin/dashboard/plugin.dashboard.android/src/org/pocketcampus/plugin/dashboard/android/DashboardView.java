@@ -65,7 +65,7 @@ public class DashboardView extends PluginView {
 			}
 
 		});
-		getActionBar().setDisplayHomeAsUpEnabled(false);
+		
 	}
 
 	@Override
@@ -78,6 +78,8 @@ public class DashboardView extends PluginView {
 	public void displayPlugins() {
 
 		setContentView(R.layout.dashboard_main);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+//		getActionBar().setLogo(R.drawable.sdk_transparent);
 		findViewById(R.id.dashboard_epfl_logo).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -94,7 +96,7 @@ public class DashboardView extends PluginView {
 
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.dashboard_main);
 		mainLayout.removeAllViews();
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		mainLayout.addView(dash.getView(), layoutParams);
 	}
 
@@ -178,11 +180,9 @@ public class DashboardView extends PluginView {
 				public void onClick(View v) {
 					trackEvent("OpenPlugin", pluginInfo.getId());
 					((GlobalContext) mContext.getApplicationContext()).displayPlugin(mContext, pluginInfo);
-					launcherView.setBackgroundColor(0x80808080);
-					setContentView(R.layout.dashboard_plugin_button); // HACK
-																		// clear
-																		// the
-																		// screen
+//					launcherView.setBackgroundColor(0x80808080);
+					launcherText.setTextColor(0x00000000);
+					launcherImage.setAlpha(0x00);
 				}
 			});
 		}
