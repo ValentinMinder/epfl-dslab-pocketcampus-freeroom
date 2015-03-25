@@ -69,12 +69,19 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 			for (String scope : authenticationConstants.OAUTH2_SCOPES) {
 				HttpURLConnection conn = (HttpURLConnection) new URL(SessionManagerOAuth2.OAUTH2_TOKEN_URL + "&scope=" + scope + "&code=" + req.getTequilaToken()).openConnection();
 				JsonObject obj = new JsonParser().parse(StringUtils.fromStream(conn.getInputStream(), "UTF-8")).getAsJsonObject();
-				if(obj.get("error") != null) {
-					return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
+//				if(obj.get("error") != null) {
+//					return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
+//				}
+//				map.addProperty(obj.get("scope").getAsString(), obj.get("access_token").getAsString());
+				if(obj.get("error") == null) {
+					map.addProperty(obj.get("scope").getAsString(), obj.get("access_token").getAsString());
 				}
-				map.addProperty(obj.get("scope").getAsString(), obj.get("access_token").getAsString());
 			}
-			return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(new Gson().toJson(map));
+			if(map.entrySet().size() > 0) {
+				return new AuthSessionResponse(AuthStatusCode.OK).setSessionId(new Gson().toJson(map));
+			} else {
+				return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new AuthSessionResponse(AuthStatusCode.NETWORK_ERROR);
