@@ -62,8 +62,8 @@ public class NewsItemView extends PluginView implements INewsView {
 
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
-		setContentView(R.layout.news_main);
-		mList = (ListView) findViewById(R.id.news_main_list);
+		setContentView(R.layout.news_main2);
+		mList = (ListView) findViewById(R.id.news_main_list2);
 		
 
 		setActionBarTitle(getString(R.string.news_plugin_title));
