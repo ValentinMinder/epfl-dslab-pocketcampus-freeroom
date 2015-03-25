@@ -158,9 +158,14 @@ public class PocketCampusServer extends ServerBase {
                     builder.append("(DEPRECATED) ");
                 }
                 builder.append(method.getName());
-                System.out.println(builder.toString());
+                //System.out.println(builder.toString());
 
-                return method.invoke(pluginService, args);
+                long t1 = System.currentTimeMillis();
+                Object a = method.invoke(pluginService, args);
+                long t2 = System.currentTimeMillis();
+                builder.append(" [served in " + (t2 - t1) + "ms]");
+                System.out.println(builder.toString());
+                return a;
             }
         });
 
