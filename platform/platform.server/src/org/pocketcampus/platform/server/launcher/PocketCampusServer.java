@@ -150,22 +150,20 @@ public class PocketCampusServer extends ServerBase {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 final StringBuilder builder = new StringBuilder();
-                builder.append(LocalDateTime.now().toString());
-                builder.append(" ");
-                builder.append(pluginName);
-                builder.append(" ");
-                if (finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class) != null) {
-                    builder.append("(DEPRECATED) ");
-                }
-                builder.append(method.getName());
-                //System.out.println(builder.toString());
+                builder.append("[" + LocalDateTime.now().toString() + "]\t");
+                builder.append("plugin=" + pluginName + "\t");
+                builder.append("method=" + method.getName() + "\t");
+                Deprecated d = finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class); 
 
                 long t1 = System.currentTimeMillis();
-                Object a = method.invoke(pluginService, args);
-                long t2 = System.currentTimeMillis();
-                builder.append(" [served in " + (t2 - t1) + "ms]");
-                System.out.println(builder.toString());
-                return a;
+                try {
+                    return method.invoke(pluginService, args);
+				} finally {
+	                long t2 = System.currentTimeMillis();
+	                builder.append("time=" + (t2 - t1) + "ms\t");
+	                builder.append("deprecated=" + (d != null) + "\t");
+	                System.out.println(builder.toString());
+				}
             }
         });
 
