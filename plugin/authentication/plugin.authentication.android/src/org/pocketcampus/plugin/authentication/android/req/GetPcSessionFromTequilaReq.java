@@ -5,6 +5,7 @@ import java.net.URL;
 
 import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.authentication.android.AuthenticationController;
+import org.pocketcampus.plugin.authentication.android.AuthenticationModel;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionRequest;
 import org.pocketcampus.plugin.authentication.shared.AuthSessionResponse;
 import org.pocketcampus.plugin.authentication.shared.AuthStatusCode;
@@ -52,10 +53,11 @@ public class GetPcSessionFromTequilaReq extends Request<AuthenticationController
 
 	@Override
 	protected void onResult(AuthenticationController controller, AuthSessionResponse result) {
-		System.out.println("HERE");
 		if(result.getStatusCode() == AuthStatusCode.OK) {
-			System.out.println(result.getSessionId());
-			controller.pcAuthenticationFinished(result.getSessionId());
+			if(AuthenticationModel.verifyOAuth2SessionId(result.getSessionId()))
+				controller.pcAuthenticationFinished(result.getSessionId());
+			else 
+				controller.notifyInvalidToken();
 		} else if(result.getStatusCode() == AuthStatusCode.INVALID_SESSION) {
 			controller.notifyInvalidToken();
 		} else {

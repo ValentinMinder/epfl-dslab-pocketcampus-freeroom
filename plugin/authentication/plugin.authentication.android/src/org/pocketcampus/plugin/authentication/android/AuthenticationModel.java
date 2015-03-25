@@ -3,10 +3,13 @@ package org.pocketcampus.plugin.authentication.android;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationModel;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
+import org.pocketcampus.plugin.authentication.shared.authenticationConstants;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -108,6 +111,8 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		gasparPassword = iStorage.getString(GASPAR_PASSWORD_KEY, null);
 		storePassword = iStorage.getBoolean(AUTH_STORE_PASSWORD_KEY, true);
 		pcSessionId = iStorage.getString(PC_SESSION_ID_KEY, null);
+		if(!verifyOAuth2SessionId(pcSessionId))
+			pcSessionId = null;
 		//staySignedIn = iStorage.getBoolean(STAYSIGNEDIN_KEY, false);
 		
 		
@@ -243,6 +248,21 @@ public class AuthenticationModel extends PluginModel implements IAuthenticationM
 		Editor editor = iStorage.edit();
 		editor.putString(PC_SESSION_ID_KEY, pcSessionId);
 		editor.commit();
+	}
+	
+	public static boolean verifyOAuth2SessionId(String sessId) {
+		if(sessId == null)
+			return false;
+		try {
+			JSONObject json = new JSONObject(sessId);
+			for(String scope : authenticationConstants.OAUTH2_SCOPES) {
+				if(!json.has(scope))
+					return false;
+			}
+			return true;
+		} catch (JSONException e) {
+			return false;
+		}
 	}
 	
 	/*public boolean getStaySignedIn() {
