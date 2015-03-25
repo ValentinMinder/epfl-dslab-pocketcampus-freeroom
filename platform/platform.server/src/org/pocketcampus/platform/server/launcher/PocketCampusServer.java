@@ -149,20 +149,18 @@ public class PocketCampusServer extends ServerBase {
         final Object loggedPluginService = Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                final StringBuilder builder = new StringBuilder();
-                builder.append("[" + LocalDateTime.now().toString() + "]\t");
-                builder.append("plugin=" + pluginName + "\t");
-                builder.append("method=" + method.getName() + "\t");
-                Deprecated d = finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class); 
+                String log = "[" + LocalDateTime.now().toString() + "]\t";
+                log += "plugin=" + pluginName + "\t";
+                log += "method=" + method.getName() + "\t";
+                Deprecated d = finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class);
+                System.out.println(log + "deprecated=" + (d != null) + "\t");
 
                 long t1 = System.currentTimeMillis();
                 try {
                     return method.invoke(pluginService, args);
 				} finally {
 	                long t2 = System.currentTimeMillis();
-	                builder.append("time=" + (t2 - t1) + "ms\t");
-	                builder.append("deprecated=" + (d != null) + "\t");
-	                System.out.println(builder.toString());
+	                System.out.println(log + "time=" + (t2 - t1) + "ms\t");
 				}
             }
         });
