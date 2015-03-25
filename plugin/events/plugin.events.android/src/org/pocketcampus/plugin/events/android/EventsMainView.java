@@ -22,9 +22,7 @@ import java.util.Set;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
-import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
 import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
@@ -38,17 +36,14 @@ import org.pocketcampus.plugin.events.shared.Constants;
 import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseArray;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -93,7 +88,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 	Set<Integer> filteredCategs = new HashSet<Integer>();
 	Set<String> filteredTags = new HashSet<String>();
 
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -209,7 +204,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		// The ActionBar is added automatically when you call setContentView
 		// disableActionBar();
 		setContentView(R.layout.events_main);
-		mList = (ListView) findViewById(R.id.events_main_list);
+		mList = (StickyListHeadersListView) findViewById(R.id.events_main_list);
 		displayingList = true;
 
 		if (updated != null && !updated.contains(eventPoolId))
@@ -478,7 +473,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			eventsByCateg.get(e.getEventCateg()).add(e);
 		}
 
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this, R.layout.sdk_separated_list_header2);
 		List<Integer> categList = new ArrayList<Integer>(filteredCategs);
 		Collections.sort(categList);
 		for (int i : categList) {
@@ -562,7 +557,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 		} else {
 			if (!displayingList) {
 				setContentView(R.layout.events_main);
-				mList = (ListView) findViewById(R.id.events_main_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.events_main_list);
 				displayingList = true;
 			}
 			mList.setAdapter(adapter);
