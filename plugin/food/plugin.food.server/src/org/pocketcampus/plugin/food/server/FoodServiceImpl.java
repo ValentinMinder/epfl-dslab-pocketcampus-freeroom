@@ -57,45 +57,37 @@ public class FoodServiceImpl implements FoodService.Iface {
 
     @Override
     public FoodResponse getFood(FoodRequest foodReq) throws TException {
-    	System.out.println("1. " + System.currentTimeMillis());
         LocalDate date = LocalDate.now();
         if (foodReq.isSetMealDate()) {
             date = getDateFromTimestamp(foodReq.getMealDate());
         }
-        System.out.println("2. " + System.currentTimeMillis());
         MealTime time = MealTime.LUNCH;
         if (foodReq.isSetMealTime()) {
             time = foodReq.getMealTime();
         }
-        System.out.println("3. " + System.currentTimeMillis());
+
         FoodResponse response;
         try {
             response = _menu.get(time, date);
         } catch (JsonParseException e) {
             throw new TException("An exception occurred while getting the menu", e);
         }
-        System.out.println("4. " + System.currentTimeMillis());
         try {
             _ratingDatabase.insertMenu(response.getMenu(), date, time);
             _ratingDatabase.setRatings(response.getMenu());
         } catch (SQLException e) {
             throw new TException("An exception occurred while inserting and fetching the ratings", e);
         }
-        System.out.println("5. " + System.currentTimeMillis());
 
         for (EpflRestaurant restaurant : response.getMenu()) {
             restaurant.setRPictureUrl(_pictureSource.forRestaurant(restaurant.getRName()));
             restaurant.setRLocation(_locator.findByName(restaurant.getRName()));
         }
-        System.out.println("6. " + System.currentTimeMillis());
 
         String gaspar = foodReq.isSetUserGaspar() ? foodReq.getUserGaspar() : _authenticator.getGaspar();
         response.setUserStatus(getPriceTarget(gaspar));
 
-        System.out.println("7. " + System.currentTimeMillis());
-        FoodResponse a = response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
-        System.out.println("8. " + System.currentTimeMillis());
-        return a;
+        return response.setMealTypePictureUrls(_pictureSource.getMealTypePictures());
     }
 
     @Override
