@@ -16,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -272,7 +271,7 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	 * Displays the waiting screen.
 	 */
 	private void showLoading() {
-		setContentView(R.layout.authentication_redirectionpage);
+		super.setLoadingContentScreen("");
 	}
 
 	/**

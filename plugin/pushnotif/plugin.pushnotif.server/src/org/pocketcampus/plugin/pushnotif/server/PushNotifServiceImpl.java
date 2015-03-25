@@ -1,17 +1,12 @@
 package org.pocketcampus.plugin.pushnotif.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.PCConstants;
 import org.pocketcampus.platform.shared.utils.ListUtils;
 import org.pocketcampus.plugin.pushnotif.shared.PushNotifService;
+
+import java.util.*;
 
 /**
  * PushNotifServiceImpl
@@ -28,17 +23,16 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 	private PushNotifDataStore dataStore;
 
 	public PushNotifServiceImpl() {
-		System.out.println("Starting PushNotif plugin server ...");
 		dataStore = new PushNotifDataStore();
 	}
 
 	public Boolean addMapping(PushNotifMapReq req) {
-		System.out.println("addMapping");
+		System.out.println("Pushnotif: addMapping");
 		return dataStore.insertMapping(req.pluginName, req.userId, req.deviceOs, req.pushToken);
 	}
 
 	public Boolean sendMessage(PushNotifSendReq req) {
-		System.out.println("sendMessage");
+		System.out.println("Pushnotif: sendMessage");
 		// Chunk list into 50 users batches so that
 		// (1) we limit the size of the query that gets generated in selectTokens
 		// (2) we don't exceed the limit of GCM in sendToAndroidDevices
@@ -50,7 +44,7 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 	}
 
 	private Boolean sendMessageInChunks(String pluginName, List<String> userIds, Map<String, String> msg) {
-		System.out.println("sendMessageInChunks");
+		System.out.println("Pushnotif: sendMessageInChunks");
 		Map<String, String> androidTokens = dataStore.selectTokens(pluginName, userIds, "ANDROID");
 		Map<String, String> iosTokens = dataStore.selectTokens(pluginName, userIds, "IOS");
 		if(androidTokens == null || iosTokens == null)
@@ -72,7 +66,6 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 
 	@Override
 	public int deleteMapping(String dummy) throws TException {
-		System.out.println("deleteMapping");
 		Map<String, String> headers = PocketCampusServer.getRequestHeaders();
 		if(headers == null) return 500;
 		String os = headers.get("X-PC-PUSHNOTIF-OS");

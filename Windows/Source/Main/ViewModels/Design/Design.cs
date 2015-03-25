@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -22,15 +22,13 @@ namespace PocketCampus.Main.ViewModels.Design
 
         public Design()
         {
-            About = new AboutViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignRatingService() );
-            Main = new MainViewModel( new DesignNavigationService(), new DesignServerAccess(), new DesignPluginLoader(),
-                                      new DesignMainSettings(), new DesignTileService(),
-                                      new ViewPluginRequest() );
+            About = new AboutViewModel( new DesignBrowserService(), new DesignEmailService(), new DesignAppRatingService() );
+            Main = new MainViewModel( new DesignNavigationService(), new DesignPluginLoader(), new DesignMainSettings(), new DesignTileService() );
             Settings = new SettingsViewModel( new DesignMainSettings(), new DesignAuthenticator(), new DesignNavigationService(),
                                               new DesignAuthenticationService(), new DesignCredentialsStorage(), new DesignTileService() );
 
             About.OnNavigatedTo();
-            Main.OnNavigatedToAsync();
+            Main.OnNavigatedTo();
             Settings.OnNavigatedTo();
         }
 #endif

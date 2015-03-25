@@ -1,14 +1,5 @@
 package org.pocketcampus.plugin.isacademia.server.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -16,11 +7,16 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.pocketcampus.plugin.isacademia.server.HttpsClient;
 import org.pocketcampus.plugin.isacademia.server.ScheduleImpl;
-import org.pocketcampus.plugin.isacademia.shared.IsaStatusCode;
-import org.pocketcampus.plugin.isacademia.shared.ScheduleResponse;
-import org.pocketcampus.plugin.isacademia.shared.StudyDay;
-import org.pocketcampus.plugin.isacademia.shared.StudyPeriod;
-import org.pocketcampus.plugin.isacademia.shared.StudyPeriodType;
+import org.pocketcampus.plugin.isacademia.shared.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for ScheduleImpl.

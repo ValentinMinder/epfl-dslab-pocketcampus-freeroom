@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -26,8 +26,8 @@ namespace PocketCampus.Food.ViewModels.Design
             var meal = foodService.GetMenusAsync( null, CancellationToken.None ).Result.Menu[0].Meals[0];
 
             Main = new MainViewModel( new DesignDataCache(), new DesignNavigationService(), new DesignFoodService(),
-                                      new DesignCredentialsStorage(), new DesignPluginSettings(), new DesignServerSettings() );
-            Rating = new RatingViewModel( new DesignFoodService(), new DesignPluginSettings(), new DesignNavigationService(), new DesignDeviceIdentifier(), meal );
+                                      new DesignCredentialsStorage(), new DesignPluginSettings() );
+            Rating = new RatingViewModel( new DesignFoodService(), new DesignNavigationService(), new DesignDeviceIdentifier(), meal );
             Settings = new SettingsViewModel( new DesignPluginSettings() );
 
             Main.OnNavigatedToAsync();

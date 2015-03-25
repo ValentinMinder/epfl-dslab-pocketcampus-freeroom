@@ -4,6 +4,7 @@ require_once("functions.php");
 require_once("php_headers.php"); // will set $conn to database
 
 $EVENT_TITLE = "Open &bull; House 2014";
+$EVENT_ID = "117000000";
 
 $SECTIONS = array();
 
@@ -88,6 +89,12 @@ function update_section(pool, type, workbook_elem, sheet_elem) {
 	}
 	?>
 			</ul>	
+			<hr>
+			<h4>Export</h4>
+			<ul>
+				<li><a href="export_csv_stats.php?type=pageviews_l3&rootEventItem=<?php echo $EVENT_ID; ?>">export stats as csv :: pageviews</a></li>
+				<li><a href="export_csv_stats.php?type=users&rootEventItem=<?php echo $EVENT_ID; ?>">export stats as csv :: users</a></li>
+			</ul>
 			<hr>
 		</div>
 	</div>

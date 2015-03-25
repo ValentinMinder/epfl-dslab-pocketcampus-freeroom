@@ -1,0 +1,30 @@
+1) Prepare Registration.html and check that it looks good on both mobile and desktop
+
+2) Go there: http://premailer.dialect.ca and create an inline version (check option "Don’t remove <style> and <link> elements")
+
+3) Paste result into a new RegistrationInlined.html
+
+4) In RegistrationInlined.html
+
+find
+
+<div class="mail desktop_only" style="text-align: left; width: 550px; display: none !important; ...
+
+remove "display: none !important;"
+
+
+find:
+
+
+<div class="mobile_only" style="text-align: left; display: inline !important; overflow: visible !important;
+
+replace 
+
+"display: inline !important; overflow: visible !important; width: auto !important; max-height: inherit !important;"
+
+with 
+
+"overflow:hidden; display:none; width:0px; max-height:0px;"
+
+
+5) RegistrationInlined.html is ready to be sent

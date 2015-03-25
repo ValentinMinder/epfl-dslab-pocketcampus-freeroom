@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -15,72 +15,99 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Camipro.ViewModels
 {
-    /// <summary>
-    /// The main (and only) ViewModel.
-    /// </summary>
     [LogId( "/camipro" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
         private readonly ICamiproService _camiproService;
         private readonly ISecureRequestHandler _requestHandler;
 
+
         private AccountInfo _accountInfo;
         private EbankingInfo _ebankingInfo;
         private EmailSendingStatus _emailStatus;
 
 
-        /// <summary>
-        /// Gets the account information.
-        /// </summary>
         public AccountInfo AccountInfo
         {
             get { return _accountInfo; }
             private set { SetProperty( ref _accountInfo, value ); }
         }
 
-        /// <summary>
-        /// Gets the e-banking information.
-        /// </summary>
         public EbankingInfo EbankingInfo
         {
             get { return _ebankingInfo; }
             private set { SetProperty( ref _ebankingInfo, value ); }
         }
 
-        /// <summary>
-        /// Gets the status of the last sent e-mail, if any.
-        /// </summary>
         public EmailSendingStatus EmailStatus
         {
             get { return _emailStatus; }
             private set { SetProperty( ref _emailStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to request an e-mail with e-banking information.
-        /// </summary>
+
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestEbankingEmailCommand
         {
             get { return this.GetAsyncCommand( RequestEbankingEmailAsync ); }
         }
 
-        /// <summary>
-        /// Initializes a new instance.
-        /// </summary>
+
         public MainViewModel( ICamiproService camiproService, ISecureRequestHandler requestHandler )
         {
             _camiproService = camiproService;
             _requestHandler = requestHandler;
         }
 
-        /// <summary>
-        /// Requests an e-mail with e-banking information.
-        /// </summary>
+
+        protected override async Task RefreshAsync( bool force, CancellationToken token )
+        {
+            if ( !force )
+            {
+                return;
+            }
+
+            await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
+            {
+                var request = new CamiproRequest
+                {
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                    // HACK to make design data work :(
+                    Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
+                };
+
+                var accountTask = _camiproService.GetAccountInfoAsync( request, token );
+                var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
+
+                // parallel requests
+                var accountInfo = await accountTask;
+                var ebankingInfo = await ebankingTask;
+
+                if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
+                {
+                    throw new Exception( "Server error while getting the account or e-banking info." );
+                }
+                if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
+                {
+                    _requestHandler.Authenticate<MainViewModel>();
+                    return;
+                }
+
+                if ( !token.IsCancellationRequested )
+                {
+                    AccountInfo = accountInfo;
+                    EbankingInfo = ebankingInfo;
+                }
+            } );
+        }
+
+
         private Task RequestEbankingEmailAsync()
         {
             return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
             {
+                EmailStatus = EmailSendingStatus.Requested;
+
                 var request = new CamiproRequest
                 {
                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
@@ -97,50 +124,6 @@ namespace PocketCampus.Camipro.ViewModels
                     EmailStatus = EmailSendingStatus.Error;
                 }
             } );
-        }
-
-        /// <summary>
-        /// Asynchronously refreshes the data.
-        /// </summary>
-        protected override async Task RefreshAsync( bool force, CancellationToken token )
-        {
-            if ( !force )
-            {
-                return;
-            }
-
-            await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
-             {
-                 var request = new CamiproRequest
-                 {
-                     Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                     // HACK to make design data work :(
-                     Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
-                 };
-
-                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
-                 var ebankingTask = _camiproService.GetEBankingInfoAsync( request, token );
-
-                 // parallel requests
-                 var accountInfo = await accountTask;
-                 var ebankingInfo = await ebankingTask;
-
-                 if ( accountInfo.Status == ResponseStatus.NetworkError || ebankingInfo.Status == ResponseStatus.NetworkError )
-                 {
-                     throw new Exception( "Server error while getting the account or e-banking info." );
-                 }
-                 if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
-                 {
-                     _requestHandler.Authenticate<MainViewModel>();
-                     return;
-                 }
-
-                 if ( !token.IsCancellationRequested )
-                 {
-                     AccountInfo = accountInfo;
-                     EbankingInfo = ebankingInfo;
-                 }
-             } );
         }
     }
 }

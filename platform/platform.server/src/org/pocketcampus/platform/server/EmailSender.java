@@ -1,22 +1,15 @@
 package org.pocketcampus.platform.server;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 public class EmailSender {
 
@@ -150,8 +143,7 @@ public class EmailSender {
 			multipart.addBodyPart(messageBodyPart);
 			// Create the html part
 			messageBodyPart = new MimeBodyPart();
-			String htmlMessage = htmlBody;
-			messageBodyPart.setContent(htmlMessage, "text/html");
+			messageBodyPart.setContent(htmlBody, "text/html");
 			// Add html part to multi part
 			multipart.addBodyPart(messageBodyPart);
 			// Associate multi-part with message
@@ -160,9 +152,7 @@ public class EmailSender {
 			Transport.send(message);
 
 			return true;
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (MessagingException | IOException e) {
 			e.printStackTrace();
 		}
 		return false;

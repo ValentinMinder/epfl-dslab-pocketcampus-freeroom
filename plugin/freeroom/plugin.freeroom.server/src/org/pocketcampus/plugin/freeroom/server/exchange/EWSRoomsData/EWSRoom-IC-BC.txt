@@ -1,1 +1,0 @@
-BC 010 <bc010@intranet.epfl.ch>, BC 129 <bc129@intranet.epfl.ch>, BC 229 <bc229@intranet.epfl.ch>, BC 329 <bc329@intranet.epfl.ch>, BC 410 <bc410@intranet.epfl.ch>, BC 420 <bc420@intranet.epfl.ch>, INF 211 <inf211@intranet.epfl.ch>

@@ -254,11 +254,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/EventsPlugin/Controllers/EventItemViewController.m"
-            timestampString = "433936943.588697"
+            timestampString = "442926764.805192"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "-error"
             landmarkType = "5">
          </BreakpointContent>

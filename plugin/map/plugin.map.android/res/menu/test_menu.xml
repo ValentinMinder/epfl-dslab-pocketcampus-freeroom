@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/test_menu_item"
+        android:title="Yo"
+        android:showAsAction="always"
+        android:actionLayout="@layout/test_layout"  />
+</menu>

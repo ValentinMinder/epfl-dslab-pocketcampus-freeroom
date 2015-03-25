@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,10 +14,8 @@ namespace PocketCampus.Directory.Services
 {
     public sealed class DirectoryService : ThriftServiceImplementation<IDirectoryService>, IDirectoryService
     {
-        public DirectoryService( IServerAccess access )
-            : base( access.CreateCommunication( "directory" ) )
-        {
-        }
+        public DirectoryService( IServerAccess access ) : base( access.CreateCommunication( "directory" ) ) { }
+
 
         public Task<SearchResponse> SearchAsync( SearchRequest request, CancellationToken cancellationToken )
         {

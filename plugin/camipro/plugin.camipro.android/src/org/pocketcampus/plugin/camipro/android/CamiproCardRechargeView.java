@@ -8,20 +8,18 @@ import java.util.Map.Entry;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 
-import com.markupartist.android.widget.Action;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
+
+import com.markupartist.android.widget.Action;
 
 /**
  * CamiproCardRechargeView - View that shows Camipro recharge with e-banking.

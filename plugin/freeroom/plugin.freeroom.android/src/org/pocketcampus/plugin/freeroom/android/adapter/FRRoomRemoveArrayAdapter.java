@@ -25,20 +25,18 @@ import android.widget.TextView;
  *            used by FRRoom / editRoomDialog.
  */
 public class FRRoomRemoveArrayAdapter<T> extends ArrayAdapter<FRRoom> {
-	private FreeRoomHomeView caller;
 
-	public FRRoomRemoveArrayAdapter(FreeRoomHomeView caller, Context context,
+	public FRRoomRemoveArrayAdapter(Context context,
 			int row, int label, List<FRRoom> items) {
 		super(context, row, label, items);
-		this.caller = caller;
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View row = super.getView(position, convertView, parent);
 
 		// remove click listener
-		ImageView removeRoom = (ImageView) row
-				.findViewById(R.id.freeroom_layout_selected_remove);
+//		ImageView removeRoom = (ImageView) row
+//				.findViewById(R.id.freeroom_layout_selected_remove);
 
 		// there is already a clicklistener for the whole line, and removing
 		// from here cause an UI issue.

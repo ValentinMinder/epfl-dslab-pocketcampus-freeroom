@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B1780E96-7E18-47C0-9E93-1086D9491815}</ProjectGuid>
@@ -10,11 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PocketCampus.Authentication</RootNamespace>
     <AssemblyName>PocketCampus.Authentication</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile151</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -43,11 +43,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenticationAttemptStatus.cs" />
+    <Compile Include="AuthenticationStatus.cs" />
     <Compile Include="AuthenticationRequest.cs" />
     <Compile Include="Models\LogoutRequest.cs" />
     <Compile Include="Models\LogoutResponse.cs" />
-    <Compile Include="Models\AuthenticationStatus.cs" />
+    <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Models\SessionRequest.cs" />
     <Compile Include="Models\SessionResponse.cs" />
     <Compile Include="Models\TokenResponse.cs" />
@@ -56,37 +56,24 @@
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\Design\DesignAuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\SecureRequestHandler.cs" />
     <Compile Include="Services\TequilaAuthenticator.cs" />
-    <Compile Include="ViewModels\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Design\Design.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ThinMvvm">
-      <HintPath>..\..\packages\ThinMvvm.0.9.23.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.dll</HintPath>
     </Reference>
     <Reference Include="ThinMvvm.Logging">
-      <HintPath>..\..\packages\ThinMvvm.Logging.0.9.23.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
+      <HintPath>..\..\packages\ThinMvvm.Logging.0.10.4.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThinMvvm.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ThriftSharp">
-      <HintPath>..\..\packages\ThriftSharp.2.1.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
+      <HintPath>..\..\packages\ThriftSharp.2.3.1.0\lib\portable-net45+win+WindowsPhoneApp81+wp80\ThriftSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

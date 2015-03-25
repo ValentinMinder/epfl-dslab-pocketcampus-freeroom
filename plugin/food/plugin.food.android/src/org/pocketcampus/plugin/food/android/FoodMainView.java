@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +28,7 @@ import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.platform.android.ui.adapter.MultiListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.StickyHeaderListAdapter;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
 import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
@@ -45,6 +44,7 @@ import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -65,7 +65,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,7 +100,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	Long foodDay;
 	MealTime foodTime = MealTime.LUNCH;
 
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 
 	@Override
@@ -181,7 +180,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	public void foodUpdated() {
 
 		setContentView(R.layout.food_main);
-		mList = (ListView) findViewById(R.id.food_main_list);
+		mList = (StickyListHeadersListView) findViewById(R.id.food_main_list);
 		displayingList = false;
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
@@ -356,9 +355,10 @@ public class FoodMainView extends PluginView implements IFoodView {
 
 		// SeparatedListAdapter adapter = new SeparatedListAdapter(this,
 		// R.layout.food_list_header);
-		MultiListAdapter adapter = new MultiListAdapter();
+		StickyHeaderListAdapter adapter = new StickyHeaderListAdapter();
 		List<AResto> restoList = new ArrayList<AResto>(mController.getRestos().values());
 		Collections.sort(restoList, getRestoComp4sort());
+		List<AResto> displayedResto = new LinkedList<AResto>();
 		for (AResto r : restoList) {
 			if (!filteredRestos.contains(r.id))
 				continue;
@@ -367,36 +367,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 										// tags)
 				continue; // then skip it
 
-			Preparated<AResto> pH = new Preparated<AResto>(Arrays.asList(new AResto[] { r }), new Preparator<AResto>() {
-				public int[] resources() {
-					return new int[] { R.id.food_list_header_title, R.id.food_list_header_satisfaction,
-							R.id.food_list_header_map };
-				}
-
-				public Object content(int res, final AResto e) {
-					switch (res) {
-					case R.id.food_list_header_title:
-						return e.name;
-					case R.id.food_list_header_satisfaction:
-						return e.satisfaction;
-					case R.id.food_list_header_map:
-						return e.location != null ? new Actuated(getString(R.string.food_button_seemap_inline),
-								new Actuator() {
-									public void triggered() {
-										showOnMap(e);
-									}
-								}) : null;
-					default:
-						return null;
-					}
-				}
-
-				public void finalize(Map<String, Object> map, AResto item) {
-					map.put(LazyAdapter.NOT_SELECTABLE, "1");
-				}
-			});
-			adapter.addSection(new LazyAdapter(this, pH.getMap(), R.layout.food_list_header_row, pH.getKeys(), pH
-					.getResources()));
+			displayedResto.add(r); // add headers later
 
 			Collections.sort(categEvents, getMealComp4sort());
 			Preparated<AMeal> p = new Preparated<AMeal>(categEvents, new Preparator<AMeal>() {
@@ -443,6 +414,38 @@ public class FoodMainView extends PluginView implements IFoodView {
 			adapter.addSection(new LazyAdapter(this, p.getMap(), R.layout.food_list_row, p.getKeys(), p.getResources()));
 
 		}
+		
+		Preparated<AResto> pH = new Preparated<AResto>(displayedResto, new Preparator<AResto>() {
+			public int[] resources() {
+				return new int[] { R.id.food_list_header_title, R.id.food_list_header_satisfaction,
+						R.id.food_list_header_map };
+			}
+
+			public Object content(int res, final AResto e) {
+				switch (res) {
+				case R.id.food_list_header_title:
+					return e.name;
+				case R.id.food_list_header_satisfaction:
+					return e.satisfaction;
+				case R.id.food_list_header_map:
+					return e.location != null ? new Actuated(getString(R.string.food_button_seemap_inline),
+							new Actuator() {
+								public void triggered() {
+									showOnMap(e);
+								}
+							}) : null;
+				default:
+					return null;
+				}
+			}
+
+			public void finalize(Map<String, Object> map, AResto item) {
+				map.put(LazyAdapter.NOT_SELECTABLE, "1");
+			}
+		});
+		adapter.setHeaders(new LazyAdapter(this, pH.getMap(), R.layout.food_list_header_row, pH.getKeys(), pH
+				.getResources()));
+
 
 		if (mController.getMeals().size() == 0) {
 			displayingList = false;
@@ -456,7 +459,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		} else {
 			if (!displayingList) {
 				setContentView(R.layout.food_main);
-				mList = (ListView) findViewById(R.id.food_main_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.food_main_list);
 				displayingList = true;
 			}
 			// TextView headerTitle = (TextView)

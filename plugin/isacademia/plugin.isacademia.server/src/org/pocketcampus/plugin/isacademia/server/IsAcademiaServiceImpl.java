@@ -1,10 +1,13 @@
 package org.pocketcampus.plugin.isacademia.server;
 
+import org.apache.thrift.TException;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.pocketcampus.platform.server.Authenticator;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
-import org.pocketcampus.plugin.isacademia.shared.*;
-import org.apache.thrift.TException;
-import org.joda.time.*;
+import org.pocketcampus.plugin.isacademia.shared.IsAcademiaService;
+import org.pocketcampus.plugin.isacademia.shared.ScheduleRequest;
+import org.pocketcampus.plugin.isacademia.shared.ScheduleResponse;
 
 /**
  * Implementation of IsAcademiaService.

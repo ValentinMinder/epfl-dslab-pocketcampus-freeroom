@@ -1,16 +1,16 @@
 package org.pocketcampus.plugin.moodle.server;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.servlet.http.*;
-
 import org.apache.commons.io.IOUtils;
 import org.pocketcampus.platform.shared.utils.PostDataBuilder;
 import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.moodle.shared.Constants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Implementation of FileService using Moodle's web service API.

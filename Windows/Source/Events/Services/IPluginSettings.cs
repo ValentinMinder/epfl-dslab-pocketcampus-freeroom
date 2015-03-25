@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -16,9 +16,7 @@ namespace PocketCampus.Events.Services
         /// <summary>
         /// Gets or sets the stored user tickets.
         /// </summary>
-        // TODO once we stop using WP8's dumb serializer, make that an ObservableCollection, 
-        // currently it can't because the serialized form is the same as string[] which is already used...
-        string[] UserTickets { get; set; }
+        ObservableCollection<string> UserTickets { get; set; }
 
         /// <summary>
         /// Gets or sets the search period for events.

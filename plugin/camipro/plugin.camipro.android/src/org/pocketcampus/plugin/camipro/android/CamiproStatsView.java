@@ -8,8 +8,6 @@ import java.util.Map.Entry;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
-import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.camipro.R;
@@ -18,7 +16,6 @@ import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 /**

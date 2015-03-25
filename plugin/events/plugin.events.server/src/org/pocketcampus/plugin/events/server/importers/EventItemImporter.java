@@ -1,5 +1,11 @@
 package org.pocketcampus.plugin.events.server.importers;
 
+import com.google.gson.Gson;
+import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.plugin.events.server.utils.MyQuery;
+import org.pocketcampus.plugin.events.server.utils.Utils;
+import org.pocketcampus.plugin.events.shared.Constants;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -10,13 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.plugin.events.server.utils.MyQuery;
-import org.pocketcampus.plugin.events.server.utils.Utils;
-import org.pocketcampus.plugin.events.shared.Constants;
-
-import com.google.gson.Gson;
 
 public class EventItemImporter {
 
@@ -71,24 +70,24 @@ public class EventItemImporter {
 			e.printStackTrace();
 		}
 		if(json == null) {
-			System.out.println("failed to get events from Memento... aborting");
+			System.out.println("Events: failed to get events from Memento... aborting");
 			return;
 		}
 		Gson gson = new Gson();
 		MementoEvent [] events = gson.fromJson(json, MementoEvent[].class);
-		System.out.println("received " + events.length + " events from Memento");
+		System.out.println("Events: received " + events.length + " events from Memento");
 		for(MementoEvent e : events) {
 			try {
 				insertUpdateEventItem(e, conn);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				System.out.println("failed to insert/update event " + e.slug + "... skipping");
+				System.out.println("Events: failed to insert/update event " + e.slug + "... skipping");
 			} catch (ParseException e2) {
 				e2.printStackTrace();
-				System.out.println("couldn't parse date of event " + e.slug + "... skipping");
+				System.out.println("Events: couldn't parse date of event " + e.slug + "... skipping");
 			}
 		}
-		System.out.println("finished importing events");
+		System.out.println("Events: finished importing events");
 	}
 	
 	private static void insertUpdateEventItem(MementoEvent e, Connection conn) throws SQLException, ParseException {
@@ -110,7 +109,7 @@ public class EventItemImporter {
 		PreparedStatement stm = q.getPreparedStatement(conn);
 		stm.executeUpdate();
 		stm.close();
-		System.out.println("inserted/updated event " + e.slug);
+		System.out.println("Events: inserted/updated event " + e.slug);
 	}
 	
 	private static void fixBrokenEvent(MementoEvent e) {

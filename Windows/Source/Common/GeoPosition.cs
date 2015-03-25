@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -11,8 +11,7 @@ namespace PocketCampus.Common
     /// </summary>
     public sealed class GeoPosition
     {
-        // Constants for distance computation.
-        private const double EarthRadiusInKilometers = 6367.0;
+        private const double EarthRadiusInMeters = 6371000; // mean radius, of course
         private const double RadianCoeff = Math.PI / 180;
 
         /// <summary>
@@ -25,34 +24,28 @@ namespace PocketCampus.Common
         /// </summary>
         public double Longitude { get; private set; }
 
-        /// <summary>
-        /// Gets the heading, if there is one.
-        /// </summary>
-        public double? Heading { get; private set; }
-
 
         /// <summary>
         /// Creates a new GeoPosition.
         /// </summary>
-        public GeoPosition( double latitude, double longitude, double? heading = null )
+        public GeoPosition( double latitude, double longitude )
         {
             Latitude = latitude;
             Longitude = longitude;
-            Heading = heading;
         }
 
 
         /// <summary>
-        /// Computes the distance to another GeoPosition.
+        /// Computes the distance to another GeoPosition, in meters.
         /// </summary>
         public double DistanceTo( GeoPosition other )
         {
-            double lat1 = this.Latitude * RadianCoeff,
+            double lat1 = Latitude * RadianCoeff,
                    lat2 = other.Latitude * RadianCoeff,
-                   lon1 = this.Longitude * RadianCoeff,
+                   lon1 = Longitude * RadianCoeff,
                    lon2 = other.Longitude * RadianCoeff;
 
-            return EarthRadiusInKilometers * 2 * Math.Asin( Math.Min( 1, Math.Sqrt( ( Math.Pow( Math.Sin( ( lat2 - lat1 ) / 2.0 ), 2.0 ) + Math.Cos( lat1 ) * Math.Cos( lat2 ) * Math.Pow( Math.Sin( ( lon2 - lon1 ) / 2.0 ), 2.0 ) ) ) ) );
+            return EarthRadiusInMeters * 2 * Math.Asin( Math.Min( 1, Math.Sqrt( ( Math.Pow( Math.Sin( ( lat2 - lat1 ) / 2.0 ), 2.0 ) + Math.Cos( lat1 ) * Math.Cos( lat2 ) * Math.Pow( Math.Sin( ( lon2 - lon1 ) / 2.0 ), 2.0 ) ) ) ) );
         }
     }
 }

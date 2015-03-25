@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -11,9 +11,6 @@ using ThinMvvm;
 
 namespace PocketCampus.Transport
 {
-    /// <summary>
-    /// Information about trips to a station.
-    /// </summary>
     // HACK: Inherit from DataViewModel since it has everything we need
     public sealed class StationTrips : DataViewModel<NoParameter>
     {
@@ -22,14 +19,9 @@ namespace PocketCampus.Transport
 
         private Trip[] _trips;
 
-        /// <summary>
-        /// Gets the station that is the destination of the trips.
-        /// </summary>
+
         public Station Destination { get; private set; }
 
-        /// <summary>
-        /// Gets the trips.
-        /// </summary>
         public Trip[] Trips
         {
             get { return _trips; }
@@ -37,9 +29,6 @@ namespace PocketCampus.Transport
         }
 
 
-        /// <summary>
-        /// Creates a new StationTrips.
-        /// </summary>
         public StationTrips( ITransportService transportService, Station from, Station to )
         {
             _transportService = transportService;
@@ -47,7 +36,8 @@ namespace PocketCampus.Transport
             Destination = to;
         }
 
-        public async void StartRefresh()
+
+        public async void Refresh()
         {
             await TryRefreshAsync( true );
         }

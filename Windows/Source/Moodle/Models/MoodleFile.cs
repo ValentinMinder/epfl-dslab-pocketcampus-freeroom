@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -23,13 +23,7 @@ namespace PocketCampus.Moodle.Models
         public string IconUrl { get; set; }
 
 
-        /// <summary>
-        /// Components of the file's path, from the Moodle root, not including the file name.
-        /// For instance, { "Algorithms", "General", "Books" }.
-        /// </summary>
-        /// <remarks>
-        /// Not in the Thrift interface.
-        /// </remarks>
+        // e.g. { "Algorithms", "General", "Books" }.
         [IgnoreDataMember]
         public string[] PathComponents { get; set; }
     }

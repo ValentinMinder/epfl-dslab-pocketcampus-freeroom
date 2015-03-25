@@ -1,15 +1,16 @@
 package org.pocketcampus.plugin.transport.server;
 
+import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.server.XElement;
+import org.pocketcampus.plugin.transport.shared.TransportGeoPoint;
+import org.pocketcampus.plugin.transport.shared.TransportStation;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.platform.server.XElement;
-import org.pocketcampus.plugin.transport.shared.*;
 
 /**
  * Implementation of StationService using the SBB's API (HAFAS).
@@ -119,15 +120,15 @@ public final class StationServiceImpl implements StationService {
 
 		// haven't seen it in the wild, but the XSD allows it
 		if (responseElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportStation>();
+			return new ArrayList<>();
 		}
 
 		final XElement containerElem = responseElem.child(RESPONSE_CONTAINER);
 		if (containerElem.child(RESPONSE_ERROR_ELEMENT) != null) {
-			return new ArrayList<TransportStation>();
+			return new ArrayList<>();
 		}
 
-		final List<TransportStation> result = new ArrayList<TransportStation>();
+		final List<TransportStation> result = new ArrayList<>();
 		for (XElement stationElem : containerElem.children(RESPONSE_STATION_ELEMENT)) {
 			result.add(HafasUtil.parseStation(stationElem));
 		}

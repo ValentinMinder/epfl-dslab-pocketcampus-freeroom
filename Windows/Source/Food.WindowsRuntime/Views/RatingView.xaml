@@ -1,0 +1,70 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Food.Views.RatingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:myc="using:PocketCampus.Food.Controls"
+             DesignDataContext="{Binding Rating, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary Source="../Resources.xaml" />
+    </cc:PageBase.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Page header & title -->
+        <StackPanel Background="{StaticResource AppHeaderBackgroundBrush}">
+            <TextBlock Text="{CustomResource PagesHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}" />
+
+            <TextBlock Text="{CustomResource Rating.ViewTitle}"
+                       Style="{StaticResource AppTitleTextBlockStyle}" />
+        </StackPanel>
+
+        <!-- Meal name -->
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Meal.Name}"
+                   Style="{StaticResource AppLargeTextBlockStyle}"
+                   Margin="19,0" />
+
+        <!-- Restaurant name -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding Meal.Restaurant.Name}"
+                   Style="{StaticResource AppLargeTextBlockStyle}"
+                   Foreground="{StaticResource AppSubtleBrush}"
+                   Margin="19,0" />
+
+        <!-- Rating -->
+        <myc:RatingPicker Grid.Row="3"
+                          Value="{Binding Rating, 
+                                          Mode=TwoWay}" />
+
+        <!-- Status -->
+        <TextBlock Grid.Row="4"
+                   Text="{Binding Status, 
+                                  Converter={StaticResource EnumToString}}"
+                   Style="{StaticResource AppCenterTextBlockStyle}"
+                   Foreground="{StaticResource AppAccentBrush}"
+                   Margin="19,0" />
+
+        <!-- Loading and error -->
+        <!--<cc:LoadingAndError Grid.Row="4" />-->
+
+        <!-- "Rate" button -->
+        <Button Grid.Row="5"
+                Command="{Binding RateCommand}"
+                Content="{CustomResource Rating.Vote}"
+                HorizontalAlignment="Stretch"
+                Margin="19,0" />
+    </Grid>
+</cc:PageBase>

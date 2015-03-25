@@ -30,8 +30,8 @@ import android.widget.TextView;
  * ExpandableSimpleListViewAdapter<T> and, ExpandableListViewFavoriteAdapter<T>
  * <p>
  * 
- * <code>ExpandableListViewOccupancyAdapter<T></code> is a simple adapter to use with
- * <code>ExpandableListView</code>.
+ * <code>ExpandableListViewOccupancyAdapter<T></code> is a simple adapter to use
+ * with <code>ExpandableListView</code>.
  * 
  * Data are stored in user-defined class <code>OrderMapList</code>. You can use
  * <code>OrderMapListFew</code> if you want to limit the number or elements
@@ -57,8 +57,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	 */
 	private int focusedGroup = -1;
 
-	public ExpandableListViewOccupancyAdapter(Context c,
-			OrderMapListFew<String, List<?>, FRRoomOccupancy> data,
+	public ExpandableListViewOccupancyAdapter(Context c, OrderMapListFew<String, List<?>, FRRoomOccupancy> data,
 			FreeRoomController controller, FreeRoomHomeView homeView) {
 		this.context = c;
 		this.data = data;
@@ -98,31 +97,20 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	}
 
 	@Override
-	public View getChildView(final int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, final ViewGroup parent) {
+	public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView,
+			final ViewGroup parent) {
 		if (groupPosition >= data.size()) {
 			return null;
 		}
 
 		ViewHolderChild vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_room_home, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.freeroom_layout_room_home, null);
 			vholder = new ViewHolderChild();
-			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_roomname));
-			vholder.setImageViewStar((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_fav));
-			vholder.setImageViewShare((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_share));
-			vholder.setImageViewPeople((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_people));
-			vholder.setViewSeparator2((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_separator_2));
-			vholder.setViewSeparator3((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_separator_3));
-			vholder.setViewSeparator4((TextView) convertView
-					.findViewById(R.id.freeroom_layout_roomslist_separator_4));
+			vholder.setTextView((TextView) convertView.findViewById(R.id.freeroom_layout_roomslist_roomname));
+			vholder.setImageViewStar((ImageView) convertView.findViewById(R.id.freeroom_layout_roomslist_fav));
+			vholder.setImageViewShare((ImageView) convertView.findViewById(R.id.freeroom_layout_roomslist_share));
+			vholder.setImageViewPeople((ImageView) convertView.findViewById(R.id.freeroom_layout_roomslist_people));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderChild) convertView.getTag();
@@ -174,15 +162,12 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		OnClickListener onClickDirectServerShare = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				homeView.shareDirectWithServer(occupancy.getTreatedPeriod(),
-						mRoom);
+				homeView.shareDirectWithServer(occupancy.getTreatedPeriod(), mRoom);
 			}
 		};
 
 		if (occupancy.isIsFreeAtLeastOnce()) {
-			people.setImageResource(mModel
-					.getImageFromRatioOccupation(occupancy
-							.getRatioWorstCaseProbableOccupancy()));
+			people.setImageResource(mModel.getImageFromRatioOccupation(occupancy.getRatioWorstCaseProbableOccupancy()));
 			people.setOnClickListener(onClickDirectServerShare);
 		} else if (occupancy.isIsOccupiedAtLeastOnce()) {
 			people.setImageResource(R.drawable.freeroom_ic_occupation_occupied);
@@ -206,8 +191,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 
 			@Override
 			public void onClick(View arg0) {
-				FRWhoIsWorkingRequest req = new FRWhoIsWorkingRequest(uid,
-						occupancy.getTreatedPeriod());
+				FRWhoIsWorkingRequest req = new FRWhoIsWorkingRequest(uid, occupancy.getTreatedPeriod());
 				mController.prepareCheckWhoIsWorking(req);
 				mController.checkWhoIsWorking(homeView);
 			}
@@ -216,8 +200,7 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		// uncomment this
 		// people.setOnClickListener(ocl_checkWorking);
 		convertView.setBackgroundColor(mModel.getColorLine(occupancy));
-		tv.setCompoundDrawablesWithIntrinsicBounds(
-				mModel.getColoredDotDrawable(occupancy), 0, 0, 0);
+		tv.setCompoundDrawablesWithIntrinsicBounds(mModel.getColoredDotDrawable(occupancy), 0, 0, 0);
 
 		vholder.setImageViewPeople(people);
 		vholder.setImageViewShare(share);
@@ -252,29 +235,23 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	}
 
 	@Override
-	public View getGroupView(final int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		if (groupPosition >= data.size()) {
 			return null;
 		}
 
 		ViewHolderGroup vholder = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(
-					R.layout.freeroom_layout_building_header, null);
+			convertView = LayoutInflater.from(context).inflate(R.layout.freeroom_layout_building_header, null);
 			vholder = new ViewHolderGroup();
-			vholder.setTextView((TextView) convertView
-					.findViewById(R.id.freeroom_layout_building_header_title));
-			vholder.setImageView((ImageView) convertView
-					.findViewById(R.id.freeroom_layout_building_header_show_more));
+			vholder.setTextView((TextView) convertView.findViewById(R.id.freeroom_layout_building_header_title));
+			vholder.setImageView((ImageView) convertView.findViewById(R.id.freeroom_layout_building_header_show_more));
 			vholder.setTextViewMore((TextView) convertView
 					.findViewById(R.id.freeroom_layout_building_header_show_more_txt));
 			vholder.setRelativeLayoutMore((RelativeLayout) convertView
 					.findViewById(R.id.freeroom_layout_building_header_show_more_header));
 			vholder.setLinearLayoutLeft((LinearLayout) convertView
 					.findViewById(R.id.freeroom_layout_building_header_title_wrapper));
-			vholder.setViewSeparator((TextView) convertView
-					.findViewById(R.id.freeroom_layout_building_header_separator));
 			convertView.setTag(vholder);
 		} else {
 			vholder = (ViewHolderGroup) convertView.getTag();
@@ -341,10 +318,8 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		} else {
 			// color of the first child, as it's the less occupied.
 			// the get color method handles null values.
-			convertView.setBackgroundColor(mModel.getColorLine(getChildObject(
-					groupPosition, 0)));
-			tv.setCompoundDrawablesWithIntrinsicBounds(mModel
-					.getColoredDotDrawable(getChildObject(groupPosition, 0)),
+			convertView.setBackgroundColor(mModel.getColorLine(getChildObject(groupPosition, 0)));
+			tv.setCompoundDrawablesWithIntrinsicBounds(mModel.getColoredDotDrawable(getChildObject(groupPosition, 0)),
 					0, 0, 0);
 		}
 
@@ -370,11 +345,9 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 	 * @param groupPosition
 	 *            the index of the header we are interested in
 	 */
-	private void updateClick(TextView more, ImageView iv,
-			ExpandableListView ev, int groupPosition) {
+	private void updateClick(TextView more, ImageView iv, ExpandableListView ev, int groupPosition) {
 		// if the group is collapsed, then the rooms available must be reduced
-		if (!ev.isGroupExpanded(groupPosition)
-				&& data.getAvailable(groupPosition)) {
+		if (!ev.isGroupExpanded(groupPosition) && data.getAvailable(groupPosition)) {
 			data.switchAvailable(groupPosition);
 		}
 
@@ -382,11 +355,9 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		// if the group doesn't exceed the limit
 		// we display the number of room available
 		// and the arrows works for collapse/expend the listView
-		if (!ev.isGroupExpanded(groupPosition)
-				|| !data.isOverLimit(groupPosition)) {
+		if (!ev.isGroupExpanded(groupPosition) || !data.isOverLimit(groupPosition)) {
 			int roomNumber = data.getChildCountTotal(groupPosition);
-			more.setText(context.getResources().getQuantityString(
-					R.plurals.freeroom_results_room_header, roomNumber,
+			more.setText(context.getResources().getQuantityString(R.plurals.freeroom_results_room_header, roomNumber,
 					roomNumber));
 
 			if (ev.isGroupExpanded(groupPosition)) {
@@ -399,14 +370,12 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 			// else, if the group is expanded and reach the limit
 			// if everything available, arrow up to reduce
 			if (data.getAvailable(groupPosition)) {
-				more.setText(context
-						.getString(R.string.freeroom_results_room_header_reduce));
+				more.setText(context.getString(R.string.freeroom_results_room_header_reduce));
 				iv.setImageResource(R.drawable.freeroom_ic_action_collapse);
 			} else {
 				// else, if not everything available, arrow down to see more
-				more.setText(context
-						.getString(R.string.freeroom_results_room_header_more)
-						+ ": " + data.getChildCountNonAvailable(groupPosition));
+				more.setText(context.getString(R.string.freeroom_results_room_header_more) + ": "
+						+ data.getChildCountNonAvailable(groupPosition));
 				iv.setImageResource(R.drawable.freeroom_ic_action_expand);
 			}
 		}
@@ -451,9 +420,6 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 		private ImageView star = null;
 		private ImageView share = null;
 		private ImageView people = null;
-		private View viewSeparator2 = null;
-		private View viewSeparator3 = null;
-		private View viewSeparator4 = null;
 
 		public void setTextView(TextView tv) {
 			this.tv = tv;
@@ -485,18 +451,6 @@ public class ExpandableListViewOccupancyAdapter<T> extends BaseExpandableListAda
 
 		public void setImageViewPeople(ImageView iv) {
 			this.people = iv;
-		}
-
-		public void setViewSeparator2(View separator) {
-			this.viewSeparator2 = separator;
-		}
-
-		public void setViewSeparator3(View separator) {
-			this.viewSeparator3 = separator;
-		}
-
-		public void setViewSeparator4(View separator) {
-			this.viewSeparator4 = separator;
 		}
 	}
 

@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -12,9 +12,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Satellite.ViewModels
 {
-    /// <summary>
-    /// The main (and only) ViewModel.
-    /// </summary>
     [LogId( "/satellite" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, BeersResponse>
     {
@@ -22,9 +19,7 @@ namespace PocketCampus.Satellite.ViewModels
 
         private Dictionary<BeerContainer, BeerMenuPart> _beerMenu;
 
-        /// <summary>
-        /// Gets the beer menu.
-        /// </summary>
+
         public Dictionary<BeerContainer, BeerMenuPart> BeerMenu
         {
             get { return _beerMenu; }
@@ -32,9 +27,6 @@ namespace PocketCampus.Satellite.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, ISatelliteService beerService )
             : base( cache )
         {

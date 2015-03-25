@@ -2,21 +2,14 @@
 <!-- Layout for the information popup footer (list footer) -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/background_light"
-    android:orientation="vertical" >
+    style="@style/PocketCampusRow" >
 
     <!-- display the detailed informations about a room (capacity, size, ...) -->
 
     <TextView
         android:id="@+id/freeroom_layout_dialog_info_details"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:paddingTop="5dp"
-        android:text="mock text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/darker_gray" />
+        style="@style/PocketCampusListItemSubTitle"
+        android:maxLines="2"
+        android:text="mock text" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -10,6 +10,6 @@ namespace PocketCampus.Authentication.Models
     public sealed class LogoutResponse
     {
         [ThriftField( 1, true, "statusCode" )]
-        public AuthenticationStatus Status { get; set; }
+        public ResponseStatus Status { get; set; }
     }
 }

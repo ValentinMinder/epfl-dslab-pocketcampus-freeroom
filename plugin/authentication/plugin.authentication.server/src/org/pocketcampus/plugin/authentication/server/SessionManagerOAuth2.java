@@ -14,12 +14,12 @@ import org.pocketcampus.platform.shared.utils.StringUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 public class SessionManagerOAuth2 extends SessionManagerImpl {
 	
-	private static final String OAUTH2_USERINFO_URL = "https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/userinfo?access_token=";
+	private static final String OAUTH2_USERINFO_URL = "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/userinfo?access_token=";
+	public static final String OAUTH2_TOKEN_URL = "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/token?client_id=1b74e3837e50e21afaf2005f@epfl.ch&client_secret=603dc99ce2cc0eee7cc4040baccca9ed&redirect_uri=https://pocketcampus.epfl.ch/&grant_type=authorization_code";
 	
 	@Override
 	public List<String> getFields(String sessionId, List<String> fields) {

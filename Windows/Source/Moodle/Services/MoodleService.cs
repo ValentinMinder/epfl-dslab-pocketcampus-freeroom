@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -25,6 +25,11 @@ namespace PocketCampus.Moodle.Services
         public Task<CourseSectionsResponse> GetSectionsAsync( CourseSectionsRequest request, CancellationToken token )
         {
             return CallAsync<CourseSectionsRequest, CancellationToken, CourseSectionsResponse>( x => x.GetSectionsAsync, request, token );
+        }
+
+        public Task<PrintFileResponse> PrintFileAsync( PrintFileRequest request, CancellationToken token )
+        {
+            return CallAsync<PrintFileRequest, CancellationToken, PrintFileResponse>( x => x.PrintFileAsync, request, token );
         }
     }
 }

@@ -1,11 +1,11 @@
 package org.pocketcampus.platform.server.tests;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+import org.pocketcampus.platform.server.HttpClientImpl;
 
 import java.nio.charset.Charset;
 
-import org.pocketcampus.platform.server.HttpClientImpl;
+import static org.junit.Assert.assertEquals;
 
 /** 
  * Tests for HttpClientImpl.

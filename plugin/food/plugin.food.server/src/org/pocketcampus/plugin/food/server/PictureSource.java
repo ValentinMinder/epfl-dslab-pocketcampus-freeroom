@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.util.Map;
-
 import org.pocketcampus.plugin.food.shared.MealType;
+
+import java.util.Map;
 
 public interface PictureSource {
 	/** Gets the picture URLs of all meal types. */

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Dialog"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
      
     
 
-    <LinearLayout
-        android:id="@+id/authentication_dialog_top"
-        style="@style/Dialog.Top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+<!--     <LinearLayout -->
+<!--         android:id="@+id/authentication_dialog_top" -->
+<!--         style="@style/Dialog.Top" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:orientation="vertical" > -->
 
-            <TextView
-            android:id="@+id/authentication_dialog_title"
-            style="@style/DialogText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/authentication_plugin_title" />
-    </LinearLayout>
+<!--             <TextView -->
+<!--             android:id="@+id/authentication_dialog_title" -->
+<!--             style="@style/DialogText.Title" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="@string/authentication_plugin_title" /> -->
+<!--     </LinearLayout> -->
 
     <WebView
         android:id="@+id/authWebView"

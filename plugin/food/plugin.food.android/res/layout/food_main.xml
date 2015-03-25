@@ -21,7 +21,7 @@
             android:textSize="22sp" />
     </LinearLayout> -->
 
-    <ListView
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/food_main_list"
         style="@style/PocketCampusListViewStyle" />
 

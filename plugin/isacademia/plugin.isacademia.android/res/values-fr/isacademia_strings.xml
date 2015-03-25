@@ -13,7 +13,7 @@
     <string name="isacademia_period_type_ORAL_EXAM">Oral</string>
     <string name="isacademia_period_type_WRITTEN_EXAM">Ecrit</string>
     <string name="isacademia_show_on_map">Visualiser sur la carte</string>
-    <string name="isacademia_error_isacademia_down">PocketCampus a essayé de se connecter aux serveurs IsAcademia, mais ils semblent hors-ligne.</string>
+    <string name="isacademia_error_isacademia_down">PocketCampus a essayé de se connecter aux serveurs IS-Academia, mais ils semblent hors-ligne.</string>
     <string name="isacademia_yesterday">See yesterday\'s schedule</string>
     <string name="isacademia_tomorrow">See tomorrow\'s schedule</string>
 

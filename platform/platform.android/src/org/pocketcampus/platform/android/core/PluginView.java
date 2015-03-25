@@ -9,13 +9,13 @@ import org.pocketcampus.R;
 import org.pocketcampus.platform.android.core.PluginController.ControllerBinder;
 import org.pocketcampus.platform.android.tracker.GATracker;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +34,7 @@ import com.markupartist.android.widget.Action;
  * @author Florian <florian.laurent@epfl.ch>
  * @author Amer <amer.chamseddine@epfl.ch>
  */
-public abstract class PluginView extends Activity {
+public abstract class PluginView extends FragmentActivity {
 
 	private ServiceConnection mServiceConnection;
 	private ArrayList<PluginController> mControllers = new ArrayList<PluginController>();

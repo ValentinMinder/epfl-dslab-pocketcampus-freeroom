@@ -1,22 +1,10 @@
 package org.pocketcampus.plugin.events.server;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.thrift.TException;
 import org.pocketcampus.platform.server.EmailSender;
-import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
 import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
+import org.pocketcampus.platform.server.StateChecker;
 import org.pocketcampus.platform.server.database.ConnectionManager;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.events.server.decoders.EventItemDecoder;
@@ -24,20 +12,14 @@ import org.pocketcampus.plugin.events.server.decoders.EventPoolDecoder;
 import org.pocketcampus.plugin.events.server.importers.MementoImporter;
 import org.pocketcampus.plugin.events.server.utils.DBUtils;
 import org.pocketcampus.plugin.events.server.utils.Utils;
-import org.pocketcampus.plugin.events.shared.AdminSendRegEmailReply;
-import org.pocketcampus.plugin.events.shared.AdminSendRegEmailRequest;
-import org.pocketcampus.plugin.events.shared.Constants;
-import org.pocketcampus.plugin.events.shared.EventItem;
-import org.pocketcampus.plugin.events.shared.EventItemReply;
-import org.pocketcampus.plugin.events.shared.EventItemRequest;
-import org.pocketcampus.plugin.events.shared.EventPool;
-import org.pocketcampus.plugin.events.shared.EventPoolReply;
-import org.pocketcampus.plugin.events.shared.EventPoolRequest;
-import org.pocketcampus.plugin.events.shared.EventsService;
-import org.pocketcampus.plugin.events.shared.ExchangeReply;
-import org.pocketcampus.plugin.events.shared.ExchangeRequest;
-import org.pocketcampus.plugin.events.shared.SendEmailReply;
-import org.pocketcampus.plugin.events.shared.SendEmailRequest;
+import org.pocketcampus.plugin.events.shared.*;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 
@@ -52,7 +34,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 	private ConnectionManager connMgr;
 	
 	public EventsServiceImpl() {
-		System.out.println("Starting Events plugin server ...");
 		connMgr = new ConnectionManager(PocketCampusServer.CONFIG.getString("DB_URL"),
 				PocketCampusServer.CONFIG.getString("DB_USERNAME"), PocketCampusServer.CONFIG.getString("DB_PASSWORD"));
 	}
@@ -70,7 +51,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 	
 	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
-		System.out.println("getEventItem id=" + req.getEventItemId());
 		MementoImporter.importFromMemento(connMgr);
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		Utils.registerForPush(tokens);
@@ -90,7 +70,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 			reply.setChildrenPools(childrenPools);
 			reply.setTags(DBUtils.getTagsFromDb(conn, false, req.getLang()));
 			reply.setCategs(DBUtils.getCategsFromDb(conn, req.getLang()));
-			System.out.println("returned " + reply.getChildrenPools().size() + " pools");
 			return reply;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,7 +79,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	@Override
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
-		System.out.println("getEventPool id=" + req.getEventPoolId());
 		MementoImporter.importFromMemento(connMgr);
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		Utils.registerForPush(tokens);
@@ -133,7 +111,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 			reply.setChildrenItems(childrenItems);
 			reply.setTags(DBUtils.getTagsFromDb(conn, false, req.getLang()));
 			reply.setCategs(DBUtils.getCategsFromDb(conn, req.getLang()));
-			System.out.println("returned " + reply.getChildrenItems().size() + " items");
 			return reply;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -143,7 +120,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	@Override
 	public SendEmailReply sendStarredItemsByEmail(SendEmailRequest req) throws TException {
-		System.out.println("sendStarredItemsByEmail");
 		try {
 			Connection conn = connMgr.getConnection();
 			EventPool pool = EventPoolDecoder.eventPoolFromDb(conn, req.getEventPoolId());
@@ -219,7 +195,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	@Override
 	public AdminSendRegEmailReply adminSendRegistrationEmail(final AdminSendRegEmailRequest iRequest) throws TException {
-		System.out.println("adminSendRegistrationEmail");
 		Runnable sender = new Runnable() {
 			public void run() {
 				try {
@@ -275,7 +250,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 	@Override
 	@Deprecated
 	public ExchangeReply exchangeContacts(ExchangeRequest req) throws TException {
-		System.out.println("exchangeContacts");
 		try {
 			Connection conn = connMgr.getConnection();
 			String userToken = DBUtils.userTokenFromExchangeToken(conn, req.getExchangeToken());

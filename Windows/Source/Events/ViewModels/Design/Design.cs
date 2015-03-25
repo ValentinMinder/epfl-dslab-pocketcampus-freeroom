@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -37,7 +37,7 @@ namespace PocketCampus.Events.ViewModels.Design
                                                 itemRequest );
             EventPool = new EventPoolViewModel( new DesignDataCache(), new DesignNavigationService(), new DesignEventsService(),
                                                 new DesignPluginSettings(), new DesignEmailPrompt(), new DesignCodeScanner(),
-                                                -1 );
+                                                Models.EventPool.RootId );
             Settings = new SettingsViewModel( new DesignPluginSettings() );
             TagFilter = new TagFilterViewModel( new DesignPluginSettings(), pool );
 

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,8 +45,6 @@ import com.google.gson.JsonParser;
  */
 public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 
-	private static final String OAUTH2_TOKEN_URL = "https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/token?client_id=1b74e3837e50e21afaf2005f@epfl.ch&client_secret=603dc99ce2cc0eee7cc4040baccca9ed&redirect_uri=https://pocketcampus.epfl.ch/&grant_type=authorization_code";
-	
 	private final SessionManager _manager;
 
 	public AuthenticationServiceImpl() {
@@ -68,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 		try {
 			JsonObject map = new JsonObject();
 			for (String scope : authenticationConstants.OAUTH2_SCOPES) {
-				HttpURLConnection conn = (HttpURLConnection) new URL(OAUTH2_TOKEN_URL + "&scope=" + scope + "&code=" + req.getTequilaToken()).openConnection();
+				HttpURLConnection conn = (HttpURLConnection) new URL(SessionManagerOAuth2.OAUTH2_TOKEN_URL + "&scope=" + scope + "&code=" + req.getTequilaToken()).openConnection();
 				JsonObject obj = new JsonParser().parse(StringUtils.fromStream(conn.getInputStream(), "UTF-8")).getAsJsonObject();
 				if(obj.get("error") != null) {
 					return new AuthSessionResponse(AuthStatusCode.INVALID_SESSION);
@@ -150,6 +149,14 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface {
 	
 	public String getSciperFromSession(String sess) {
 		return getFieldFromSession(sess, "`sciper`");
+	}
+	
+	public static String getAccessTokenForScope(String scope) {
+		String pcSessionId = PocketCampusServer.getRequestHeaders().get(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
+		if (pcSessionId == null) return null;
+		Map<String, String> map = SessionManagerOAuth2.parseOAuth2Session(pcSessionId);
+		if(map == null) return null;
+		return map.get(scope);
 	}
 	
 	/**

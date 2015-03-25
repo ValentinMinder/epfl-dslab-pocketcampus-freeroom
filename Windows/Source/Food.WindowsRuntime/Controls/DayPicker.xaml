@@ -1,0 +1,49 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<UserControl x:Class="PocketCampus.Food.Controls.DayPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls">
+    <UserControl.Resources>
+        <c:StringFormatConverter x:Key="StringFormat" />
+    </UserControl.Resources>
+    
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- "Previous" button -->
+        <cc:SimpleButton Command="{Binding PreviousCommand}">
+            <TextBlock Text="◀"
+                       Style="{Binding TextStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="10,4" />
+        </cc:SimpleButton>
+
+        <!-- Current day -->
+        <TextBlock Grid.Column="1"
+                   Text="{Binding Value, 
+                                  Converter={StaticResource StringFormat}, 
+                                  ConverterParameter='M'}"
+                   Style="{Binding TextStyle}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+
+        <!-- "Next" button -->
+        <cc:SimpleButton Grid.Column="2"
+                         Command="{Binding NextCommand}">
+            <TextBlock Text="▶"
+                       Style="{Binding TextStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="10,4" />
+        </cc:SimpleButton>
+    </Grid>
+</UserControl>

@@ -106,7 +106,7 @@ public class AuthenticationController extends PluginController implements IAuthe
 		}
 	};
 	
-	public static final String OAUTH2_AUTH_URL = "https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" + TextUtils.join(",", authenticationConstants.OAUTH2_SCOPES);
+	public static final String OAUTH2_AUTH_URL = "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" + TextUtils.join(",", authenticationConstants.OAUTH2_SCOPES);
 
 	/**
 	 *  This name must match given in the Server.java file in plugin.launcher.server.

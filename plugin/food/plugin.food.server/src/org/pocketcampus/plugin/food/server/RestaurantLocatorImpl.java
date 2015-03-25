@@ -1,10 +1,10 @@
 package org.pocketcampus.plugin.food.server;
 
-import java.text.Normalizer;
-import java.util.List;
-
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.map.shared.MapItem;
+
+import java.text.Normalizer;
+import java.util.List;
 
 public class RestaurantLocatorImpl implements RestaurantLocator {
 	@SuppressWarnings("unchecked")
@@ -14,13 +14,13 @@ public class RestaurantLocatorImpl implements RestaurantLocator {
 			String compatibleName = compatibleRestaurantNameForMap(restaurantName);
 			List<MapItem> searchResults = (List<MapItem>) PocketCampusServer.invokeOnPlugin("map", "search", compatibleName);
 			if (searchResults == null || searchResults.size() == 0) {
-				System.err.println("INFO: map plugin returned 0 result for restaurant " + restaurantName);
+				System.err.println("Food: map plugin returned 0 result for restaurant " + restaurantName);
 				return null;
 			} else {
 				return searchResults.get(0); // assuming first result is the right one
 			}
 		} catch (Exception e) {
-			System.err.println("Exception while querying map plugin for location of restaurant " + restaurantName);
+			System.err.println("Food: Exception while querying map plugin for location of restaurant " + restaurantName);
 			e.printStackTrace();
 			return null;
 		}

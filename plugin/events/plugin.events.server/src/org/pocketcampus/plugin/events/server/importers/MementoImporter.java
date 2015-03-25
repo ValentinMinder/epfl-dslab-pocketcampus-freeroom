@@ -1,12 +1,12 @@
 package org.pocketcampus.plugin.events.server.importers;
 
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.server.launcher.PocketCampusServer;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 
 public class MementoImporter {
 
@@ -28,7 +28,7 @@ public class MementoImporter {
 		dateLastImport = date;
 		new Thread(new Runnable() {
 			public void run() {
-				System.out.println("Started Async Import from Memento on " + dateLastImport);
+				System.out.println("Events: Started Async Import from Memento on " + dateLastImport);
 				Connection conn = null;
 				try {
 					conn = connMgr.getConnection();
@@ -36,14 +36,14 @@ public class MementoImporter {
 					e.printStackTrace();
 				}
 				if(conn == null) {
-					System.out.println("couldn't connect to db... aborting");
+					System.out.println("Events: couldn't connect to db... aborting");
 					return;
 				}
 				EventCategImporter.importCategsFromMemento(conn);
 				EventTagImporter.importTagsFromMemento(conn);
 				EventItemImporter.importEventsFromMemento(conn);
 				EventItemSyncer.syncWithMemento(conn);
-				System.out.println("Finished Async Import on " + dateLastImport);
+				System.out.println("Events: Finished Async Import on " + dateLastImport);
 			}
 		}).start();
 	}
