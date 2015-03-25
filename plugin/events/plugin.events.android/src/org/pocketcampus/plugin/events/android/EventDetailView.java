@@ -74,8 +74,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 
 		// The ActionBar is added automatically when you call setContentView
 		//disableActionBar();
-		setContentView(R.layout.events_main);
-		mList = (ListView) findViewById(R.id.events_main_list);
+		setContentView(R.layout.events_main2);
+		mList = (ListView) findViewById(R.id.events_main_list2);
 		
 
 		setActionBarTitle(getString(R.string.events_plugin_title));
