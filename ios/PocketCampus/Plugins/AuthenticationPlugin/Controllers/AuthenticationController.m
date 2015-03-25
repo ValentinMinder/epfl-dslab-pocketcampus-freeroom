@@ -244,32 +244,15 @@ static AuthenticationController* instance __strong = nil;
  * Step 0 (new-style authentication only)
  * Called when new tequila token was successfully requested
  */
-- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response {
-    switch (response.statusCode) {
-        case AuthStatusCode_OK:
-        {
-            if (response.tequilaToken) {
-                [self startAuthenticationForToken:response.tequilaToken];
-            } else {
-                [self dismissAuthenticationViewControllerCompletion:^{
-                    [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
-                }];
-            }
-            break;
-        }
-        default:
-            [self dismissAuthenticationViewControllerCompletion:^{
-                [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
-            }];
-            break;
-    }
+- (void)getOAuth2TequilaTokenDidReturn:(NSString *)token {
+    [self startAuthenticationForToken:token];
 }
 
 /**
  * Step 0 (new-style authentication only)
  * Called when new tequila token request failed
  */
-- (void)getAuthTequilaTokenFailed {
+- (void)getOAuth2TequilaTokenFailed {
     [self dismissAuthenticationViewControllerCompletion:^{
         [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
     }];
@@ -354,16 +337,14 @@ static AuthenticationController* instance __strong = nil;
             }
         });
     } else { //new-style (PocketCampus session) authentication
-        if (!self.tequilaToken) {
+        if (!token) {
             CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
             [self dismissAuthenticationViewControllerCompletion:^{
                 [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
             }];
             return;
         }
-        BOOL savePassword = self.authenticationViewController ? self.authenticationViewController.savePasswordSwitchValue : YES;
-        AuthSessionRequest* request = [[AuthSessionRequest alloc] initWithTequilaToken:self.tequilaToken rememberMe:savePassword];
-        [self.authService getAuthSessionWithRequest:request delegate:self];
+        [self.authService getOAuth2CodeForTequilaToken:token delegate:self];
     }
 }
 
@@ -390,10 +371,37 @@ static AuthenticationController* instance __strong = nil;
 }
 
 /**
- * Step 3 (new-style authentication only)
+ * Step 3.1 Success (new-style authentication only)
+ * Called when a getting OAuth2 code for a tequila token succeded
+ */
+- (void)getOAuth2CodeForTequilaToken:(NSString *)tequilaToken didReturn:(NSString *)codeString {
+    if (!tequilaToken) {
+        CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
+        [self dismissAuthenticationViewControllerCompletion:^{
+            [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
+        }];
+        return;
+    }
+    BOOL savePassword = self.authenticationViewController ? self.authenticationViewController.savePasswordSwitchValue : YES;
+    AuthSessionRequest* request = [[AuthSessionRequest alloc] initWithTequilaToken:codeString rememberMe:savePassword];
+    [self.authService getOAuth2TokensFromCodeWithRequest:request delegate:self];
+}
+
+/**
+ * Step 3.1 Failure (new-style authentication only)
+ * Called when a getting OAuth2 code for a tequila token failed
+ */
+- (void)getOAuth2CodeFailedForTequilaToken:(NSString *)tequilaToken {
+    [self dismissAuthenticationViewControllerCompletion:^{
+        [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
+    }];
+}
+
+/**
+ * Step 3.2 Success (new-style authentication only)
  * Called when a PocketCampus session was successfully returned by PC server
  */
-- (void)getAuthSessionForRequest:(AuthSessionRequest *)request didReturn:(AuthSessionResponse *)response {
+- (void)getOAuth2TokensFromCodeForRequest:(AuthSessionRequest *)request didReturn:(AuthSessionResponse *)response {
     switch (response.statusCode) {
         case AuthStatusCode_OK:
         {
@@ -429,10 +437,10 @@ static AuthenticationController* instance __strong = nil;
 }
 
 /**
- * Step 3 (new-style authentication only)
+ * Step 3.2 Failure (new-style authentication only)
  * Called when PocketCampus session request failed
  */
-- (void)getAuthSessionFailedForRequest:(AuthSessionRequest *)request {
+- (void)getOAuth2TokensFromCodeFailedForRequest:(AuthSessionRequest *)request {
     [self dismissAuthenticationViewControllerCompletion:^{
         [self cleanAndNotifyFailureToObserversWithErrorCode:kAuthenticationErrorCodeOther];
     }];
@@ -464,41 +472,12 @@ static AuthenticationController* instance __strong = nil;
     }
 }
 
-/*#pragma mark - AuthenticationDelegate
-
-- (void)authenticationSucceededUserChoseToSavePassword:(BOOL)userChoseToRememberPassword {
-    if (!self.tequilaToken) {
-        CLSNSLog(@"!! ERROR: authentication succeeded but no saved tequila token. Notifying failure to observers.");
-        [self cleanAndNotifyFailureToObservers];
-        return;
-    }
-    AuthSessionRequest* request = [[AuthSessionRequest alloc] initWithTequilaToken:self.tequilaToken rememberMe:userChoseToRememberPassword];
-    [self.authService getAuthSessionWithRequest:request delegate:self];
-}
-
-- (void)authenticationFailedWithReason:(AuthenticationFailureReason)reason {
-    switch (reason) {
-        case AuthenticationFailureReasonUserCancelled:
-            [self cleanAndNotifyUserCancelledToObservers];
-            break;
-        case AuthenticationFailureReasonInvalidToken:
-            [self cleanAndNotifyFailureToObservers];
-            break;
-        case AuthenticationFailureReasonInternalError:
-            [self cleanAndNotifyFailureToObservers];
-            break;
-        default:
-            [self cleanAndNotifyFailureToObservers];
-            break;
-    }
-}*/
-
 #pragma mark - Private
 
 - (void)restartAuthenticationProcessIfNeeded {
     if (!self.observerAuthenticationStarted && self.loginObservers.count > 0) {
         self.observerAuthenticationStarted = YES;
-        [self.authService getAuthTequilaTokenWithDelegate:self];
+        [self.authService getOAuth2TequilaTokenWithDelegate:self];
     }
 }
 

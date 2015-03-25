@@ -1,0 +1,5 @@
+<Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:drawable/ic_menu_report_image"
+    android:entries="@array/map_epfl_layers_array" />

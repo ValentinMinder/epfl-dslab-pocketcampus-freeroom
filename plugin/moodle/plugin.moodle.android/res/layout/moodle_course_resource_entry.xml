@@ -1,80 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    style="@style/PocketCampusRow"
+    android:orientation="horizontal" >
 
-    android:orientation="horizontal"
-    android:padding="5dip" >
+    <!-- ListRow Left sied Thumbnail image -->
 
-	<!--  ListRow Left sied Thumbnail image -->
-	<LinearLayout android:id="@+id/moodle_resource_icon_container" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="3dip"		
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/pocketcampus_image_border" 
-	    android:layout_marginRight="5dip">
-        
-		<ImageView     
-			android:id="@+id/moodle_resource_icon"   
-	        android:layout_width="50dip"
-	        android:layout_height="50dip"/>
-        
-	</LinearLayout>
-    
-	<!-- Title Of Song-->
+    <ImageView
+        android:id="@+id/moodle_resource_icon"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="50dip"
+        android:layout_height="50dip" />
+
+    <!-- Title Of Song -->
+
     <TextView
         android:id="@+id/moodle_resource_title"
-        android:singleLine="true"
-        android:scrollHorizontally="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/moodle_resource_icon_container"
-        android:layout_toRightOf="@+id/moodle_resource_icon_container"
-        android:text="Rihanna Love the way lie"
-        android:textColor="#040404"
-        android:typeface="sans" 
-        android:layout_marginRight="30dip"
-        android:layout_marginTop="-5dip"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        style="@style/PocketCampusListItemTitle"
+        android:layout_alignTop="@id/moodle_resource_icon"
+        android:layout_toRightOf="@id/moodle_resource_icon"
+        android:text="Rihanna Love the way lie" />
 
-	<!-- Artist Name -->
+    <!-- Artist Name -->
+
     <TextView
         android:id="@+id/moodle_resource_second_line"
-        android:singleLine="true"
-        android:scrollHorizontally="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        style="@style/PocketCampusListItemSubTitle"
         android:layout_below="@id/moodle_resource_title"
-        android:textColor="#343434"
-        android:textSize="13sp"
-        android:layout_marginTop="1dip"
-        android:layout_marginRight="15dip"
-        android:layout_toRightOf="@+id/moodle_resource_icon_container"
+        android:layout_toRightOf="@id/moodle_resource_icon"
         android:text="Just gona stand there and ..." />
 
-	<!-- Rightend Duration -->
+    <!-- Rightend Duration -->
+
     <TextView
         android:id="@+id/moodle_resource_status"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="right"
+        android:text="5:45"
+        android:textColor="#10bcc9" />
+
+    <!-- Rightend Arrow -->
+
+    <ImageView
+        android:id="@+id/moodle_resource_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/moodle_resource_icon_container"
-        android:gravity="right"
-        android:text="5:45"
-        android:layout_marginRight="5dip"
-        android:textSize="13sp"
-        android:textColor="#10bcc9"
-        android:textStyle="bold"/>
-      
-     <!-- Rightend Arrow -->    
-     <ImageView 
-        android:id="@+id/moodle_resource_arrow"
-        android:layout_width="wrap_content"
-     	android:layout_height="wrap_content"
-     	android:src="@drawable/pocketcampus_list_arrow"
-     	android:layout_alignParentRight="true"
-     	android:layout_centerVertical="true"/>
-     
+        android:layout_centerVertical="true"
+        android:src="@drawable/pocketcampus_list_arrow" />
+
 </RelativeLayout>

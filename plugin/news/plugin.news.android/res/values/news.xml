@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="news_plugin_title">News</string>
 
-	<string name="news_preferences_rss_title">RSS Options</string>
-	<string name="news_preferences_other_title">Options</string>
+    <string name="news_plugin_title">News</string>
+    <string name="news_preferences_rss_title">RSS Options</string>
+    <string name="news_preferences_other_title">Options</string>
+    <string name="news_settings">Preferences</string>
+    <string name="news_no_news">Could not connect.</string>
+    <string name="news_loading">Loading news...</string>
+    <string name="news_string_filter">Filter</string>
+    <string name="news_header_last_day">Last 24 hours</string>
+    <string name="news_header_last_week">Last 7 days</string>
+    <string name="news_header_last_month">Last 30 days</string>
+    <string name="news_header_last_year">Last 12 months</string>
+    <string name="news_no_feed_selected">No feed selected.</string>
+    <string name="news_readmore"><u>Read more...</u></string>
 
-	<string name="news_settings">Preferences</string>
-	<string name="news_no_news">Could not connect.</string>
-	<string name="news_loading">Loading news...</string>
-	
-	<string name="news_string_filter">Filter</string>
-	<string name="news_header_last_day">Last 24 hours</string>
-	<string name="news_header_last_week">Last 7 days</string>
-	<string name="news_header_last_month">Last 30 days</string>	
-	<string name="news_header_last_year">Last 12 months</string>
-				
-	<string name="news_no_feed_selected">No feed selected.</string>
-	<string name="news_readmore">
-		<u>Read more...</u>
-	</string>
-
-	<!-- Preferences -->
-	<string name="news_preferences">Preferences</string>
-
+    <!-- Preferences -->
+    <string name="news_preferences">Preferences</string>
+    <string name="news_view_in_browser">View in browser</string>
 
 </resources>

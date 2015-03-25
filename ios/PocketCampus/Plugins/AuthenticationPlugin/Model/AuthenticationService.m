@@ -40,17 +40,32 @@
 NSString* const kAuthenticationTequilaCookieName = @"tequila_key";
 NSString* const kAuthenticationLogoutNotification = @"kAuthenticationLogoutNotification";
 
+static NSString* kTequilaOAuth2AuthURL = nil;
+static NSString* kTequilaOAuth2RequestKey = @"requestkey";
+static NSString* kTequilaOAuth2AuthApproveURL = nil;
+static NSString* kTequilaOAuth2ReqCookieName = @"Tequila_req_OAuth2IdP";
+static NSString* kTequilaOAuth2CodeKey = @"code";
 static NSString* const kTequilaLoginURL = @"https://tequila.epfl.ch/cgi-bin/tequila/login";
 static NSString* const kTequilaAuthURL = @"https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
 
 static NSString* const kLastUsedUseramesKey = @"lastUsedUsernames";
 static NSString* const kKeychainServiceKey = @"PCGasparPassword";
 static NSString* const kSavedUsernameKey = @"savedUsername";
-//static NSString* const kSavePasswordSwitchStateKey = @"savePasswordSwitch";
+
+static NSString* const kOperationUserInfoDelegateKey = @"delegate";
 
 static AuthenticationService* instance __weak = nil;
 
 #pragma mark - Init
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* commaSeparatedScopes = [[authenticationConstants OAUTH2_SCOPES] componentsJoinedByString:@","];
+        kTequilaOAuth2AuthURL = [@"https://dev-tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" stringByAppendingString:commaSeparatedScopes];
+        kTequilaOAuth2AuthApproveURL = [kTequilaOAuth2AuthURL stringByAppendingString:@"&doauth=Approve"];
+    });
+}
 
 - (id)init {
     @synchronized(self) {
@@ -120,17 +135,69 @@ static AuthenticationService* instance __weak = nil;
     return [SSKeychain deletePasswordForService:kKeychainServiceKey account:username];
 }
 
-/*+ (NSNumber*)savePasswordSwitchWasOn {
-    return (NSNumber*)[PCObjectArchiver objectForKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
-}
-
-+ (BOOL)savePasswordSwitchState:(BOOL)isOn {
-    return [PCObjectArchiver saveObject:[NSNumber numberWithBool:isOn] forKey:kSavePasswordSwitchStateKey andPluginName:@"authentication"];
-}*/
-
 + (void)enqueueLogoutNotification {
     NSNotification* notification = [NSNotification notificationWithName:kAuthenticationLogoutNotification object:nil userInfo:nil];
     [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil]; //NSNotificationCoalescingOnName so that only 1 notif is added
+}
+
+- (void)getOAuth2TequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaOAuth2AuthURL parameters:nil error:nil];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+    request.HTTPShouldHandleCookies = NO;
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    id weakDelegate __weak = delegate;
+    operation.userInfo = @{kOperationUserInfoDelegateKey:weakDelegate};
+    void (^failedBlock)() = ^void () {
+        if ([weakDelegate respondsToSelector:@selector(getOAuth2TequilaTokenFailed)]) {
+            [weakDelegate getOAuth2TequilaTokenFailed];
+        }
+    };
+    /*
+     * We need the request to return 302 to succeed (=> we got a token)
+     * Any other code is considered as failed.
+     */
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request2, NSURLResponse *redirectResponse) {
+        /*
+         * Redirect block is actually called for original request as well.
+         * This logic allows the first request to pursue but not the second one
+         * => prevents redirect
+         */
+        if (!redirectResponse && connection.originalRequest == connection.currentRequest) {
+            // Means request2 is the original request
+            return request2;
+        }
+        return nil;
+    }];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        /*
+         * Completion block handles all responses with status code in the range 2xx,
+         * which is a failure in our case (see above)
+         */
+        failedBlock();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        switch (operation.response.statusCode) {
+            case 302:
+            {
+                NSString* redirectURLString = operation.response.allHeaderFields[@"Location"];
+                if (!redirectURLString) {
+                    // Should not be possible if statusCode is 302
+                    failedBlock();
+                }
+                NSString* requestkey = [PCUtils parametersDictionaryForURLString:redirectURLString][kTequilaOAuth2RequestKey];
+                if (![requestkey isKindOfClass:[NSString class]]) {
+                    failedBlock();
+                }
+                if ([weakDelegate respondsToSelector:@selector(getOAuth2TequilaTokenDidReturn:)]) {
+                    [weakDelegate getOAuth2TequilaTokenDidReturn:requestkey];
+                }
+                break;
+            }
+            default:
+                failedBlock();
+                break;
+        }
+    }];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id)delegate {    
@@ -140,6 +207,7 @@ static AuthenticationService* instance __weak = nil;
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     id weakDelegate __weak = delegate;
+    operation.userInfo = @{kOperationUserInfoDelegateKey:weakDelegate};
     void (^failedBlock)(AuthenticationTequilaLoginFailureReason) = ^void (AuthenticationTequilaLoginFailureReason reason) {
         if ([weakDelegate respondsToSelector:@selector(loginToTequilaFailedWithReason:)]) {
             [weakDelegate loginToTequilaFailedWithReason:reason];
@@ -177,6 +245,68 @@ static AuthenticationService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+- (void)getOAuth2CodeForTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:tequilaToken notKindOfClass:[NSString class]];
+    NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:kTequilaOAuth2AuthApproveURL parameters:nil error:nil];
+    [request addValue:[NSString stringWithFormat:@"%@=%@", kTequilaOAuth2ReqCookieName, tequilaToken] forHTTPHeaderField:@"Cookie"];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    request.HTTPShouldHandleCookies = NO;
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    id weakDelegate __weak = delegate;
+    operation.userInfo = @{kOperationUserInfoDelegateKey:weakDelegate};
+    void (^failedBlock)() = ^void () {
+        if ([weakDelegate respondsToSelector:@selector(getOAuth2CodeFailedForTequilaToken:)]) {
+            [weakDelegate getOAuth2CodeFailedForTequilaToken:tequilaToken];
+        }
+    };
+    /*
+     * We need the request to return 302 to succeed (=> we got a code)
+     * Any other code is considered as failed.
+     */
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request2, NSURLResponse *redirectResponse) {
+        /*
+         * Redirect block is actually called for original request as well.
+         * This logic allows the first request to pursue but not the second one
+         * => prevents redirect
+         */
+        if (!redirectResponse && connection.originalRequest == connection.currentRequest) {
+            // Means request2 is the original request
+            return request2;
+        }
+        return nil;
+    }];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        /*
+         * Completion block handles all responses with status code in the range 2xx,
+         * which is a failure in our case (see above)
+         */
+        failedBlock();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        switch (operation.response.statusCode) {
+            case 302:
+            {
+                NSString* redirectURLString = operation.response.allHeaderFields[@"Location"];
+                if (!redirectURLString) {
+                    // Should not be possible if statusCode is 302
+                    failedBlock();
+                }
+                NSString* codeString = [PCUtils parametersDictionaryForURLString:redirectURLString][kTequilaOAuth2CodeKey];
+                if (![codeString isKindOfClass:[NSString class]]) {
+                    failedBlock();
+                }
+                if ([weakDelegate respondsToSelector:@selector(getOAuth2CodeForTequilaToken:didReturn:)]) {
+                    [weakDelegate getOAuth2CodeForTequilaToken:tequilaToken didReturn:codeString];
+                }
+                break;
+            }
+            default:
+                failedBlock();
+                break;
+        }
+    }];
+    [self.operationQueue addOperation:operation];
+}
+
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id)delegate {
     [PCUtils throwExceptionIfObject:token notKindOfClass:[NSString class]];
     [PCUtils throwExceptionIfObject:tequilaCookie notKindOfClass:[NSHTTPCookie class]];
@@ -186,7 +316,7 @@ static AuthenticationService* instance __weak = nil;
     [request addValue:[NSString stringWithFormat:@"%@=%@", kAuthenticationTequilaCookieName, tequilaCookie.value] forHTTPHeaderField:@"Cookie"];
     AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     id weakDelegate __weak = delegate;
-    
+    operation.userInfo = @{kOperationUserInfoDelegateKey:weakDelegate};
     VoidBlock failedBlock = ^() {
         if ([weakDelegate respondsToSelector:@selector(authenticateFailedForToken:tequilaCookie:)]) {
             [weakDelegate authenticateFailedForToken:token tequilaCookie:tequilaCookie];
@@ -231,6 +361,17 @@ static AuthenticationService* instance __weak = nil;
 
 #pragma mark - Service methods
 
+- (void)getOAuth2TokensFromCodeWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[AuthSessionRequest class]];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getOAuth2TokensFromCode:);
+    operation.delegateDidReturnSelector = @selector(getOAuth2TokensFromCodeForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getOAuth2TokensFromCodeFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate {
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthTequilaToken);
@@ -241,6 +382,7 @@ static AuthenticationService* instance __weak = nil;
 }
 
 - (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[AuthSessionRequest class]];
     PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
     operation.serviceClientSelector = @selector(getAuthSession:);
     operation.delegateDidReturnSelector = @selector(getAuthSessionForRequest:didReturn:);
@@ -255,7 +397,11 @@ static AuthenticationService* instance __weak = nil;
 - (void)cancelOperationsForDelegate:(id<PCServiceDelegate>)delegate {
     for (NSOperation* operation in self.operationQueue.operations) {
         if ([operation isKindOfClass:[AFHTTPRequestOperation class]]) {
-            [(AFHTTPRequestOperation*)operation setCompletionBlockWithSuccess:NULL failure:NULL];
+            AFHTTPRequestOperation* httpOperation = (AFHTTPRequestOperation*)operation;
+            if (httpOperation.userInfo[kOperationUserInfoDelegateKey] == delegate) {
+                [httpOperation setCompletionBlockWithSuccess:NULL failure:NULL];
+                [httpOperation cancel];
+            }
         }
     }
     [super cancelOperationsForDelegate:delegate];

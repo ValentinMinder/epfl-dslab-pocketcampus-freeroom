@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for the search dialog. -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/freeroom_layout_search_main"
+    style="@style/PocketCampusRow"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/freeroom_search_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- Date and timepickers row -->
+            <!-- LANDSCAPE: this gets horizontal and weighted -->
+
+            <LinearLayout
+                android:id="@+id/freeroom_layout_dialog_search_upper_main"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dip" >
+
+                <TextView
+                    android:id="@+id/freeroom_layout_dialog_search_time_summary"
+                    style="@style/PocketCampusListItemTitle"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_search_upper_first"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <!-- Button that display the date selected, with picker associated to set specific date -->
+
+                    <Button
+                        android:id="@+id/freeroom_layout_dialog_search_date"
+                        style="@style/PocketCampusButton"
+                        android:layout_gravity="right"
+                        android:text="date (mock text)"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_search_upper_second"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal" >
+
+                    <!-- Button that display the start hour selected, with picker associated to set specific hour -->
+
+                    <Button
+                        android:id="@+id/freeroom_layout_dialog_search_hour_start"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="4"
+                        android:text="h_s (mock)" />
+
+                    <!-- Button that display the end hour selected, with picker associated to set specific hour -->
+
+                    <Button
+                        android:id="@+id/freeroom_layout_dialog_search_hour_end"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_gravity="right"
+                        android:layout_weight="4"
+                        android:text="h_f (mock)" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_search_upper_third"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <!-- Image button to switch start hour to the first hour possible -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_start_tostart"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_first_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_down_down" />
+
+                    <!-- Image button to switch start hour to previous hour -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_start_minus"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_down" />
+
+                    <Button
+                        android:id="@+id/freeroom_layout_dialog_search_hour_start_short"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="6"
+                        android:text="h_s" />
+
+                    <!-- Image button to switch start hour to next hour -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_start_plus"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_next_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_up" />
+
+                    <!-- Image button to switch end hour to previous hour -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_end_minus"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_prev_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_down" />
+
+                    <Button
+                        android:id="@+id/freeroom_layout_dialog_search_hour_end_short"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="6"
+                        android:text="h_e" />
+
+                    <!-- Image button to switch end hour to next hour -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_end_plus"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_next_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_up" />
+
+                    <!-- Image button to switch end hour to the last hour possible -->
+
+                    <ImageButton
+                        android:id="@+id/freeroom_layout_dialog_search_hour_end_toend"
+                        style="@style/PocketCampusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="3"
+                        android:contentDescription="@string/freeroom_layout_search_last_hour_img"
+                        android:src="@drawable/freeroom_ic_action_hour_up_up" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Line to choose between any rooms or specific rooms -->
+            <!-- LANDSCAPE: this gets horizontal -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dip"
+                android:paddingTop="10dip" >
+
+                <RadioGroup
+                    android:id="@+id/freeroom_layout_dialog_search_any_vs_spec"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+                    <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_any_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- Button to choose any free room -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_dialog_search_any"
+                            style="@style/PocketCampusListItemTitle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onRadioButtonClicked"
+                            android:paddingRight="10dp"
+                            android:text="@string/freeroom_search_any" />
+                    </LinearLayout>
+
+                    <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+                    <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_spec_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- Button to choose specific rooms -->
+
+                        <RadioButton
+                            android:id="@+id/freeroom_layout_dialog_search_spec"
+                            style="@style/PocketCampusListItemTitle"
+                            android:onClick="onRadioButtonClicked"
+                            android:paddingRight="10dp"
+                            android:text="@string/freeroom_search_spec" />
+                    </LinearLayout>
+                </RadioGroup>
+
+                <!-- LANDSCAPE: this gets horizontal -->
+                <!-- Line to choose more options (only free rooms, favorites, user-defined list of rooms) -->
+                <!-- optionnal layout that appear only when "choose room" is checked -->
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_search_opt_line_wrapper_1st"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+                    <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_fav_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- Button to choose your favorites -->
+
+                        <CheckBox
+                            android:id="@+id/freeroom_layout_dialog_search_fav"
+                            style="@style/PocketCampusListItemTitle"
+                            android:layout_marginLeft="20dip"
+                            android:text="@string/freeroom_search_favorites" />
+                    </LinearLayout>
+
+                    <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+                    <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_user_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- Button to choose specific user-defined rooms (open a menu to choose them) -->
+
+                        <CheckBox
+                            android:id="@+id/freeroom_layout_dialog_search_user"
+                            style="@style/PocketCampusListItemTitle"
+                            android:layout_marginLeft="20dip"
+                            android:text="@string/freeroom_search_userdef" />
+                    </LinearLayout>
+
+                    <!-- Layout to change the horizontal weight when hoizontal mode (tablet) -->
+                    <!-- ONLY ONE CHILD: Children cannot have weight -->
+
+                    <LinearLayout
+                        android:id="@+id/freeroom_layout_dialog_search_non_free_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <!-- Button to choose whether non-free rooms should be displayed -->
+
+                        <CheckBox
+                            android:id="@+id/freeroom_layout_dialog_search_non_free"
+                            style="@style/PocketCampusListItemTitle"
+                            android:layout_marginLeft="20dip"
+                            android:text="@string/freeroom_search_only_free" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- optionnal layout that appear only when "user-defined list	" is checked -->
+
+                <LinearLayout
+                    android:id="@+id/freeroom_layout_dialog_search_opt_line_wrapper_2nd"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <!-- Summary of chosen rooms. -->
+
+                    <TextView
+                        android:id="@+id/freeroom_layout_dialog_search_text_summary"
+                        style="@style/PocketCampusListItemTitle"
+                        android:text="(mock data text)" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <!-- Button to add more rooms -->
+
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_add"
+                            style="@style/PocketCampusButtonSmall"
+                            android:layout_width="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="2dp"
+                            android:layout_weight="5"
+                            android:drawableLeft="@drawable/sdk_add_white"
+                            android:maxLines="1"
+                            android:text="@string/freeroom_search_userdef_add" />
+
+                        <!-- Button to edit chosen rooms -->
+
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_edit"
+                            style="@style/PocketCampusButtonSmall"
+                            android:layout_width="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="2dp"
+                            android:layout_weight="5"
+                            android:drawableLeft="@drawable/freeroom_ic_action_edit_white"
+                            android:maxLines="1"
+                            android:text="@string/freeroom_search_userdef_edit" />
+
+                        <!-- Button to remove ALL chosen rooms -->
+
+                        <Button
+                            android:id="@+id/freeroom_layout_dialog_search_user_reset"
+                            style="@style/PocketCampusButtonSmall"
+                            android:layout_width="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="2dp"
+                            android:layout_weight="5"
+                            android:drawableLeft="@drawable/freeroom_ic_action_discard_white"
+                            android:maxLines="1"
+                            android:text="@string/freeroom_search_userdef_reset" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Validity check -->
+
+        </LinearLayout>
+    </ScrollView>
+    <!-- subtitle for previous searches -->
+
+    <LinearLayout
+        android:id="@+id/freeroom_search_search_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="10dip"
+        android:showDividers="middle" >
+
+        <Button
+            android:id="@+id/freeroom_layout_search_search_button"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.33"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/freeroom_search_search" />
+
+        <Button
+            android:id="@+id/freeroom_layout_search_reset_button"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/freeroom_search_reset" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/freeroom_search_previous_requests"
+        style="@style/PocketCampusRow"
+        android:layout_height="125dp"
+        android:layout_above="@id/freeroom_search_search_buttons"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/freeroom_layout_dialog_search_validation"
+            style="@style/PocketCampusListItemSubTitle"
+            android:text="Request: (mock text)" />
+
+        <TextView
+            android:id="@+id/freeroom_layout_dialog_search_prev_search_title"
+            style="@style/PocketCampusListItemTitle"
+            android:text="@string/freeroom_search_previous_search" />
+
+        <ListView
+            android:id="@+id/freeroom_layout_search_prev_search_list"
+            style="@style/PocketCampusListViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+    </LinearLayout>
+
+</RelativeLayout>

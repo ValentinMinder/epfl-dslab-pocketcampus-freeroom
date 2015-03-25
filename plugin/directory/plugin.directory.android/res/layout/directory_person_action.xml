@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    style="@style/PocketCampusRow" >
 
-    android:orientation="horizontal"
-    android:padding="5dip" >
+    <ImageView
+        android:id="@+id/directory_person_action_icon"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="30dip"
+        android:layout_height="30dip" />
 
+    <TextView
+        android:id="@+id/directory_person_action_text"
+        style="@style/PocketCampusListItemSubTitle"
+        android:text="@string/actionbar_activity_not_found" />
 
-		<ImageView     
-			android:id="@+id/directory_person_action_icon"   
-			android:layout_margin="5dip"
-	        android:layout_width="50dip"
-	        android:layout_height="50dip"/>
-        
-        
-	    <TextView
-	        android:id="@+id/directory_person_action_text"
-	        android:singleLine="true"
-	        android:scrollHorizontally="true"
-	        android:text="@string/actionbar_activity_not_found"
-	        android:textColor="#040404"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-	        android:typeface="sans" 
-	        android:gravity="center_vertical"
-	        android:layout_margin="5dip"
-	        android:textSize="18sp"
-	        android:textStyle="bold"/>
-	
-	    
-	    
-     
 </LinearLayout>

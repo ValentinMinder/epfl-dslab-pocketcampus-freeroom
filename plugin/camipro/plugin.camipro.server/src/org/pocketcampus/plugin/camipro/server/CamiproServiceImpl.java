@@ -1,15 +1,8 @@
 package org.pocketcampus.plugin.camipro.server;
 
-import com.google.gson.*;
-import org.apache.thrift.TException;
-import org.eclipse.jetty.util.MultiMap;
-import org.eclipse.jetty.util.UrlEncoded;
-import org.pocketcampus.platform.shared.utils.Cookie;
-import org.pocketcampus.platform.shared.utils.StringUtils;
-import org.pocketcampus.plugin.camipro.shared.*;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -17,6 +10,34 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import org.apache.thrift.TException;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
+import org.pocketcampus.platform.shared.utils.Cookie;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
+import org.pocketcampus.plugin.camipro.shared.BalanceAndTransactions;
+import org.pocketcampus.plugin.camipro.shared.CamiproRequest;
+import org.pocketcampus.plugin.camipro.shared.CamiproService;
+import org.pocketcampus.plugin.camipro.shared.CamiproSession;
+import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
+import org.pocketcampus.plugin.camipro.shared.CardStatistics;
+import org.pocketcampus.plugin.camipro.shared.SendMailResult;
+import org.pocketcampus.plugin.camipro.shared.StatsAndLoadingInfo;
+import org.pocketcampus.plugin.camipro.shared.TequilaToken;
+import org.pocketcampus.plugin.camipro.shared.Transaction;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * CamiproServiceImpl
@@ -36,24 +57,24 @@ public class CamiproServiceImpl implements CamiproService.Iface {
     @Override
     public TequilaToken getTequilaTokenForCamipro() throws TException {
         try {
-            String cmdLine = "curl --include https://cmp2www.epfl.ch/ws/balance";
-            String resp = executeCommand(cmdLine, "UTF-8");
-            Cookie cookie = new Cookie();
+            Map<String, List<String>> headers = getHttpHeaders("https://cmp2www.epfl.ch/ws/balance");
             TequilaToken teqToken = new TequilaToken();
-            for (String header : resp.split("\r\n")) {
-                String shdr[] = header.split(":", 2);
-                if (shdr.length != 2)
-                    continue;
-                if ("Set-Cookie".equalsIgnoreCase(shdr[0])) {
-                    cookie.addFromHeader(shdr[1].trim());
-                } else if ("Location".equalsIgnoreCase(shdr[0])) {
-                    URL url = new URL(shdr[1].trim());
+            if(headers.containsKey("Set-Cookie")) {
+                Cookie cookie = new Cookie();
+            	for(String s : headers.get("Set-Cookie")) {
+                    cookie.addFromHeader(s);
+            	}
+                teqToken.setLoginCookie(cookie.cookie());
+            }
+            if(headers.containsKey("Location")) {
+            	for(String s : headers.get("Location")) {
+                    URL url = new URL(s);
                     MultiMap<String> params = new MultiMap<>();
                     UrlEncoded.decodeTo(url.getQuery(), params, "UTF-8");
                     teqToken.setITequilaKey(params.getString("requestkey"));
-                }
+                    break;
+            	}
             }
-            teqToken.setLoginCookie(cookie.cookie());
             return teqToken;
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,27 +247,36 @@ public class CamiproServiceImpl implements CamiproService.Iface {
         return builder.create();
     }
 
-    private String executeCommand(String cmd, String encoding)
-            throws IOException {
-        Runtime run = Runtime.getRuntime();
-        Process pr = run.exec(cmd);
-        try {
-            pr.waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new IOException("Camipro executeCommand: waitFor Interrupted");
-        }
+    private String getPageWithCookie(String url, Cookie cookie) throws IOException {
+    	String accessToken = AuthenticationServiceImpl.getAccessTokenForScope("Camipro.read");
 
-        return StringUtils.fromStream(pr.getInputStream(), encoding);
+    	HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setInstanceFollowRedirects(false);
+        if(accessToken != null) {
+            conn.addRequestProperty("Authorization", accessToken);
+        } else {
+            conn.addRequestProperty("Cookie", cookie.cookie());
+        }
+        String page = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
+        
+        if (page.length() == 0)
+            return null; // cookie case: not auth
+        
+        if(accessToken != null) {
+        	JsonElement json = new JsonParser().parse(page);
+        	JsonElement err = json.getAsJsonObject().get("error");
+        	if(err != null && err.getAsString().toLowerCase().contains("oauth"))
+        		return null; // oauth case: not auth
+        }
+    	
+        return page;
     }
 
-    private String getPageWithCookie(String url, Cookie cookie)
-            throws IOException {
-        String resp = executeCommand("curl --cookie " + cookie.cookie() + " "
-                + url, "UTF-8");
-        if (resp.length() == 0)
-            return null;
-        return resp;
+    private Map<String, List<String>> getHttpHeaders(String url) throws IOException {
+    	HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setInstanceFollowRedirects(false);
+        //String page = StringUtils.fromStream(conn.getInputStream(), "UTF-8");
+        return conn.getHeaderFields();
     }
 
     private String transcribeDate(String date) {

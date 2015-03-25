@@ -7,7 +7,7 @@
      <!-- Dialog buttons -->
      <string name="directory_dialog_button_call">Appeler</string>
      <string name="directory_dialog_button_web">Web</string>
-     <string name="directory_dialog_button_map">Sur la carte</string>
+     <string name="directory_dialog_button_map">Sur le plan</string>
      <string name="directory_dialog_button_mail">Email</string>
      <string name="directory_dialog_button_import">Importer</string>
      
@@ -33,5 +33,6 @@
      <string name="directory_ambiguous_query">Requête ambiguë</string>
      <string name="directory_popup_title">Coordonnées</string>
      
+     <string name="directory_add_to_contacts">Ajouter aux contacts</string>
      
 </resources>

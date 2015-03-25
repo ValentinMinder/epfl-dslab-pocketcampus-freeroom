@@ -91,7 +91,7 @@ NSString* const kPocketCampusURLNoPluginSpecified = @"no_plugin";
     if (![self isValidPocketCampusURL:url]) {
         return nil;
     }
-    NSMutableDictionary* params = [[PCUtils urlStringParameters:url.absoluteString] mutableCopy];
+    NSMutableDictionary* params = [[PCUtils parametersDictionaryForURLString:url.absoluteString] mutableCopy];
     
     return [params copy]; //non-mutable copy
 }

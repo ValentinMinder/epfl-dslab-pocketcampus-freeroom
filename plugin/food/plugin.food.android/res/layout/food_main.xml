@@ -2,63 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-	
-    
-    
-    
-	    
-	    
-	<LinearLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:background="@android:color/darker_gray"
-	    android:padding="0dip" >
-	    
-	        
-			    
-			<TextView  
-				android:id="@+id/food_header_title"  
-				android:layout_width="fill_parent"   
-				android:layout_height="wrap_content"
-				android:padding="5dip"
-				android:textSize="15sp"  
-				android:textColor="@android:color/primary_text_dark"
-				android:text="Helo"
-			/>      
-			
-			
-			<TextView  
-				android:id="@+id/food_header_date"
-				android:layout_width="wrap_content"   
-				android:layout_height="wrap_content"  
-				android:layout_marginLeft="10dip"  
-				android:layout_marginBottom="3dip"  
-				android:paddingTop="0dip"  
-				android:visibility="gone"
-				android:paddingBottom="3dip"  
-				android:paddingLeft="0dip"
-				android:textColor="@android:color/white"
-				android:background="@color/smoke"
-				android:text="Alo"
-			/>      
-		    
-			
-	
-	</LinearLayout>    
-    
-    
-    
-    
-    
-    
-    <ListView
-        android:id="@+id/food_main_list"
+    android:orientation="vertical" >
+
+<!--     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/pocketcampus_list_selector" />
+        android:layout_height="40dip"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal"
+        android:padding="0dip" >
+
+        <TextView
+            android:id="@+id/food_header_title"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dip"
+            android:text="Helo"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="22sp" />
+    </LinearLayout> -->
+
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+        android:id="@+id/food_main_list"
+        style="@style/PocketCampusListViewStyle" />
 
 </LinearLayout>

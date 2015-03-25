@@ -2,53 +2,44 @@
 <!-- Layout for the add room dialog window. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
 
     <!-- headers for title and close button -->
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
         android:orientation="horizontal" >
 
         <!-- Button to go out (adding done) -->
 
         <Button
             android:id="@+id/freeroom_layout_dialog_edit_room_add"
+            style="@style/PocketCampusButtonSmall"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_marginRight="3dip"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/freeroom_ic_action_new_small"
-            android:text="@string/freeroom_dialog_edit_room_add_other"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black" />
+            android:drawableLeft="@drawable/freeroom_ic_action_new_white"
+            android:text="@string/freeroom_dialog_edit_room_add_other" />
 
         <!-- Button to go out (adding done) -->
 
         <Button
             android:id="@+id/freeroom_layout_dialog_edit_room_done"
+            style="@style/PocketCampusButtonSmall"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_marginLeft="3dip"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/freeroom_ic_action_accept_small"
-            android:text="@string/freeroom_dialog_edit_room_done"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black" />
+            android:drawableLeft="@drawable/freeroom_ic_action_accept_white"
+            android:text="@string/freeroom_dialog_edit_room_done" />
     </LinearLayout>
 
     <!-- List of selected rooms -->
 
     <ListView
         android:id="@+id/freeroom_layout_dialog_edit_room_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:orientation="horizontal" >
+        style="@style/PocketCampusListViewStyle" >
     </ListView>
 
 </LinearLayout>

@@ -8,14 +8,14 @@
     <string name="news_no_news">Impossible de se connecter.</string>
     <string name="news_loading">Chargement des nouvelles...</string>
     <string name="news_no_feed_selected">Aucun flux sélectionné.</string>
-    
-	<string name="news_string_filter">Filtrer</string>
-	<string name="news_header_last_day">Dernières 24 heures</string>
-	<string name="news_header_last_week">7 derniers jours</string>
-	<string name="news_header_last_month">30 derniers jours</string>
-	<string name="news_header_last_year">12 derniers mois</string>
-	
+    <string name="news_string_filter">Filtrer</string>
+    <string name="news_header_last_day">Dernières 24 heures</string>
+    <string name="news_header_last_week">7 derniers jours</string>
+    <string name="news_header_last_month">30 derniers jours</string>
+    <string name="news_header_last_year">12 derniers mois</string>
+
     <!-- Preferences -->
     <string name="news_preferences">Préférences</string>
+    <string name="news_view_in_browser">Voir in navigateur</string>
 
 </resources>

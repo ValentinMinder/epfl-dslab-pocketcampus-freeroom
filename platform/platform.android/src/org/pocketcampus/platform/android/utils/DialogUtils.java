@@ -8,14 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.pocketcampus.R;
 import org.pocketcampus.platform.android.ui.dialog.StyledDialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,6 +33,12 @@ public class DialogUtils {
 		void gotText(String s);
 	}
 	
+	public static <T> void showSingleChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler, Comparator<? super T> comparator) {
+		List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList, comparator);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
+	}
 	public static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, T selected, final SingleChoiceHandler<T> handler) {
 		List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
@@ -47,10 +51,10 @@ public class DialogUtils {
 		List<String> valuesList = res.s;
 		showSingleChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
+	private static <T> void showSingleChoiceDialog(Context context, CharSequence title, T selected, final SingleChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		int selPos = keysList.indexOf(selected);
 		AlertDialog dialog = new AlertDialog.Builder(context)
-				.setCustomTitle(buildDialogTitle(context, title))
+				.setTitle(title)
 				.setSingleChoiceItems(
 						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new DialogInterface.OnClickListener() {
@@ -64,6 +68,12 @@ public class DialogUtils {
 		dialog.show();
 	}
 	
+	public static <T> void showMultiChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, Comparator<? super T> comparator) {
+		final List<T> keysList = new LinkedList<T>(map.keySet());
+		Collections.sort(keysList, comparator);
+		List<? extends CharSequence> valuesList = MapUtils.extractValuesInOrder(map, keysList);
+		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
+	}
 	public static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, Map<T, ? extends CharSequence> map, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler) {
 		final List<T> keysList = new LinkedList<T>(map.keySet());
 		Collections.sort(keysList);
@@ -76,13 +86,13 @@ public class DialogUtils {
 		List<String> valuesList = res.s;
 		showMultiChoiceDialog(context, title, selected, handler, keysList, valuesList);
 	}
-	private static <T extends Comparable<? super T>> void showMultiChoiceDialog(Context context, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
+	private static <T> void showMultiChoiceDialog(Context context, CharSequence title, Set<T> selected, final MultiChoiceHandler<T> handler, final List<T> keysList, List<? extends CharSequence> valuesList) {
 		boolean[] selPos = new boolean[keysList.size()];
 		for(int i = 0; i < keysList.size(); i++) {
 			selPos[i] = selected.contains(keysList.get(i));
 		}
 		AlertDialog dialog = new AlertDialog.Builder(context)
-				.setCustomTitle(buildDialogTitle(context, title))
+				.setTitle(title)
 				.setMultiChoiceItems(
 						valuesList.toArray(new CharSequence[]{}), selPos, 
 						new OnMultiChoiceClickListener() {
@@ -96,11 +106,12 @@ public class DialogUtils {
 	}
 
 	public static View buildDialogTitle(Context con, CharSequence title) {
-		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(con));
-		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
-		tv.setText(title);
-		return v;
+//		LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		View v = inflater.inflate(R.layout.sdk_actionbar_dialog, new LinearLayout(con));
+//		TextView tv = (TextView) v.findViewById(R.id.actionbar_title);
+//		tv.setText(title);
+//		return v;
+		return null;
 	}
 
 	public static void showInputDialog(Context context, CharSequence title, CharSequence message, String buttonText, final TextInputHandler handler) {
@@ -112,21 +123,22 @@ public class DialogUtils {
         ll.addView(tv);
         ll.addView(input);
 		
-        StyledDialog.Builder sdb = new StyledDialog.Builder(context);
-        sdb.setTitle(title);
-        sdb.setContentView(ll);
-        sdb.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+        AlertDialog sdb = new AlertDialog.Builder(context)
+        .setTitle(title)
+        .setView(ll)
+        .setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
 				handler.gotText(input.getText().toString());
 				dialogInterface.dismiss();
             }
-        });
+        })
+        .create();
         sdb.setCanceledOnTouchOutside(true);
-        sdb.create().show();
+        sdb.show();
 	}
 	
 	public static void alert(Context c, CharSequence title, CharSequence message) {
-        StyledDialog.Builder sdb = new StyledDialog.Builder(c);
+        AlertDialog.Builder sdb = new AlertDialog.Builder(c);
         sdb.setTitle(title);
         sdb.setMessage(message);
         sdb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -134,7 +146,6 @@ public class DialogUtils {
             	dialogInterface.dismiss();
             }
         });
-        sdb.setCanceledOnTouchOutside(true);
         sdb.create().show();
 	}
 	

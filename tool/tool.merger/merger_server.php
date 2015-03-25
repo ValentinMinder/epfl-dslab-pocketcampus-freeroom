@@ -22,6 +22,7 @@ $libs_to_export = array( // keep this alphabetical
 		"org.json-20120521.jar",
 		"httpclient-4.1.2.jar", "httpcore-4.1.2.jar",
 		"javapns_2.2.jar",
+		"jce.jar",
 		"jetty-ajp-8.0.0.M3.jar", "jetty-annotations-8.0.0.M3.jar", "jetty-client-8.0.0.M3.jar", "jetty-continuation-8.0.0.M3.jar", "jetty-deploy-8.0.0.M3.jar", "jetty-http-8.0.0.M3.jar", "jetty-io-8.0.0.M3.jar", "jetty-jmx-8.0.0.M3.jar", "jetty-jndi-8.0.0.M3.jar", "jetty-overlay-deployer-8.0.0.M3.jar", "jetty-plus-8.0.0.M3.jar", "jetty-policy-8.0.0.M3.jar", "jetty-rewrite-8.0.0.M3.jar", "jetty-security-8.0.0.M3.jar", "jetty-server-8.0.0.M3.jar", "jetty-servlet-8.0.0.M3.jar", "jetty-servlets-8.0.0.M3.jar", "jetty-util-8.0.0.M3.jar", "jetty-webapp-8.0.0.M3.jar", "jetty-websocket-8.0.0.M3.jar", "jetty-xml-8.0.0.M3.jar",
 		"joda-time-2.3.jar", "json_simple-1.1.jar", "jsoup-1.7.2.jar",
 		"libthrift-0.9.2.jar", "log4j-1.2.16.jar",

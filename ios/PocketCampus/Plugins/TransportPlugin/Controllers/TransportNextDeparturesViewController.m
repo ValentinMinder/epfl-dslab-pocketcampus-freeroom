@@ -25,11 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
-
-
 //  Created by Loïc Gardiol on 23.03.12.
-
 
 #import "TransportNextDeparturesViewController.h"
 
@@ -205,7 +201,7 @@ static double kSchedulesValidy = 20.0; //number of seconds that a schedule is co
 #pragma mark - Refresh & requests start
 
 - (void)refreshIfNeeded {
-    if (self.lastRefreshTimestamp && abs([self.lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
+    if (self.lastRefreshTimestamp && fabs([self.lastRefreshTimestamp timeIntervalSinceNow]) < kSchedulesValidy) {
         if (!(self.locationState == LocationStateErrorUserDenied && [PCUtils hasAppAccessToLocation])) {
             //last refresh date is recent enough that we don't need to refresh
             //AND

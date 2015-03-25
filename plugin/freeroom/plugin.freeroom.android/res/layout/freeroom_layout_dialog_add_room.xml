@@ -3,53 +3,43 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_dialog_add_layout_main"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
 
     <!-- headers for title and close button -->
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
         android:orientation="horizontal" >
 
         <!-- Button to go out (adding done) -->
 
         <Button
             android:id="@+id/freeroom_layout_dialog_add_room_edit"
+            style="@style/PocketCampusButtonSmall"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_marginRight="3dip"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/freeroom_ic_action_edit_small"
-            android:text="@string/freeroom_dialog_edit_room_title"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black" />
+            android:drawableLeft="@drawable/freeroom_ic_action_edit_white"
+            android:text="@string/freeroom_dialog_edit_room_title" />
 
         <!-- Button to go out (adding done) -->
 
         <Button
             android:id="@+id/freeroom_layout_dialog_add_room_done"
+            style="@style/PocketCampusButtonSmall"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_marginLeft="3dip"
             android:layout_weight="5"
-            android:drawableLeft="@drawable/freeroom_ic_action_accept_small"
-            android:text="@string/freeroom_dialog_edit_room_done"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black" />
+            android:drawableLeft="@drawable/freeroom_ic_action_accept_white"
+            android:text="@string/freeroom_dialog_edit_room_done" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/freeroom_layout_dialog_add_room_status"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
+        style="@style/PocketCampusListItemSubTitle"
         android:text="@string/freeroom_dialog_add_autocomplete_typein"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/darker_gray"
         android:visibility="visible" />
 
     <!-- InputBar should be added programmatically here -->

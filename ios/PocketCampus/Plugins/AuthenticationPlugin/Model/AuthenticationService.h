@@ -46,17 +46,25 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 @optional
 
+- (void)getOAuth2TequilaTokenDidReturn:(NSString*)token;
+- (void)getOAuth2TequilaTokenFailed;
 - (void)loginToTequilaDidSuceedWithTequilaCookie:(NSHTTPCookie*)tequilaCookie;
 - (void)loginToTequilaFailedWithReason:(AuthenticationTequilaLoginFailureReason)reason;
+- (void)getOAuth2CodeForTequilaToken:(NSString*)tequilaToken didReturn:(NSString*)codeString;
+- (void)getOAuth2CodeFailedForTequilaToken:(NSString*)tequilaToken;
+
 - (void)authenticateDidSucceedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
 - (void)authenticateFailedForToken:(NSString*)token tequilaCookie:(NSHTTPCookie*)tequilaCookie;
 
 #pragma mark - Service methods delegation
 
-- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response;
-- (void)getAuthTequilaTokenFailed;
-- (void)getAuthSessionForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response;
-- (void)getAuthSessionFailedForRequest:(AuthSessionRequest*)request;
+- (void)getOAuth2TokensFromCodeForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response;
+- (void)getOAuth2TokensFromCodeFailedForRequest:(AuthSessionRequest*)request;
+
+- (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response __attribute__((deprecated));
+- (void)getAuthTequilaTokenFailed __attribute__((deprecated));
+- (void)getAuthSessionForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response __attribute__((deprecated));
+- (void)getAuthSessionFailedForRequest:(AuthSessionRequest*)request __attribute__((deprecated));
 
 @end
 
@@ -73,21 +81,28 @@ extern NSString* const kAuthenticationLogoutNotification;
 + (BOOL)deleteSavedPasswordForUsername:(NSString*)username;
 + (void)enqueueLogoutNotification;
 
+
+- (void)getOAuth2TequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;
 - (void)loginToTequilaWithUser:(NSString*)user password:(NSString*)password delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getOAuth2CodeForTequilaToken:(NSString*)tequilaToken delegate:(id<AuthenticationServiceDelegate>)delegate;
+
 - (void)authenticateToken:(NSString*)token withTequilaCookie:(NSHTTPCookie*)tequilaCookie delegate:(id<AuthenticationServiceDelegate>)delegate;
 
 #pragma mark - Service methods
 
 /*
+ - (AuthSessionResponse *) getOAuth2TokensFromCode: (AuthSessionRequest *) req;  // throws TException
  - (AuthTokenResponse *) getAuthTequilaToken;  // throws TException
  - (AuthSessionResponse *) getAuthSession: (AuthSessionRequest *) req;  // throws TException
  - (LogoutResponse *) destroyAllUserSessions: (LogoutRequest *) req;  // throws TException
  - (UserAttributesResponse *) getUserAttributes: (UserAttributesRequest *) req;  // throws TException
- - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException //DEPRECATED
+ - (AuthSessionResponse *) getAuthSessionId: (NSString *) tequilaToken;  // throws TException
  */
 
-- (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate;
-- (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getOAuth2TokensFromCodeWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
+
+- (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));
+- (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));
 
 
 @end

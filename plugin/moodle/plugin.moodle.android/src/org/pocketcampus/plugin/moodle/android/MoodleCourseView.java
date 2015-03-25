@@ -200,10 +200,9 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 				mList = (ListView) findViewById(R.id.moodle_course_list);
 				displayingList = true;
 			}
-			
-			TextView header = (TextView) findViewById(R.id.moodle_course_header_title);
-			header.setText(courseTitle);
-			
+
+			setActionBarTitle(courseTitle);
+
 			mList.setAdapter(adapter);
 			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 			mList.setOnItemClickListener(new OnItemClickListener() {

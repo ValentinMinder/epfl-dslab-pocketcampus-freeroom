@@ -128,7 +128,7 @@ static MapController* instance __weak = nil;
     if (![webURL.host isEqualToString:@"plan.epfl.ch"] && ![webURL.host isEqualToString:@"map.epfl.ch"]) {
         return nil;
     }
-    NSDictionary* params = [PCUtils urlStringParameters:webURL.absoluteString];
+    NSDictionary* params = [PCUtils parametersDictionaryForURLString:webURL.absoluteString];
     NSString* query = params[@"room"];
     if (![query isKindOfClass:[NSString class]]) {
         return nil;

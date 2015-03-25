@@ -1212,10 +1212,325 @@
 
 @end
 
+static NSMutableArray * OAUTH2_SCOPES;
 
 @implementation authenticationConstants
 + (void) initialize {
+  OAUTH2_SCOPES = [[NSMutableArray alloc] initWithCapacity:3];
+  [OAUTH2_SCOPES addObject:@"Tequila.profile"];
+  [OAUTH2_SCOPES addObject:@"Moodle.read"];
+  [OAUTH2_SCOPES addObject:@"ISA.read"];
+
+;
 }
++ (NSMutableArray *) OAUTH2_SCOPES{
+  return OAUTH2_SCOPES;
+}
+@end
+
+@interface getOAuth2TokensFromCode_args : NSObject <TBase, NSCoding> {
+  AuthSessionRequest * __req;
+
+  BOOL __req_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=req, setter=setReq:) AuthSessionRequest * req;
+#endif
+
+- (id) init;
+- (id) initWithReq: (AuthSessionRequest *) req;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (AuthSessionRequest *) req;
+- (void) setReq: (AuthSessionRequest *) req;
+#endif
+- (BOOL) reqIsSet;
+
+@end
+
+@implementation getOAuth2TokensFromCode_args
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithReq: (AuthSessionRequest *) req
+{
+  self = [super init];
+  __req = [req retain_stub];
+  __req_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"req"])
+  {
+    __req = [[decoder decodeObjectForKey: @"req"] retain_stub];
+    __req_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__req_isset)
+  {
+    [encoder encodeObject: __req forKey: @"req"];
+  }
+}
+
+- (void) dealloc
+{
+  [__req release_stub];
+  [super dealloc_stub];
+}
+
+- (AuthSessionRequest *) req {
+  return [[__req retain_stub] autorelease_stub];
+}
+
+- (void) setReq: (AuthSessionRequest *) req {
+  [req retain_stub];
+  [__req release_stub];
+  __req = req;
+  __req_isset = YES;
+}
+
+- (BOOL) reqIsSet {
+  return __req_isset;
+}
+
+- (void) unsetReq {
+  [__req release_stub];
+  __req = nil;
+  __req_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          AuthSessionRequest *fieldValue = [[AuthSessionRequest alloc] init];
+          [fieldValue read: inProtocol];
+          [self setReq: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getOAuth2TokensFromCode_args"];
+  if (__req_isset) {
+    if (__req != nil) {
+      [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+      [__req write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getOAuth2TokensFromCode_args("];
+  [ms appendString: @"req:"];
+  [ms appendFormat: @"%@", __req];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetOAuth2TokensFromCode_result : NSObject <TBase, NSCoding> {
+  AuthSessionResponse * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) AuthSessionResponse * success;
+#endif
+
+- (id) init;
+- (id) initWithSuccess: (AuthSessionResponse *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (AuthSessionResponse *) success;
+- (void) setSuccess: (AuthSessionResponse *) success;
+#endif
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetOAuth2TokensFromCode_result
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithSuccess: (AuthSessionResponse *) success
+{
+  self = [super init];
+  __success = [success retain_stub];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain_stub];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release_stub];
+  [super dealloc_stub];
+}
+
+- (AuthSessionResponse *) success {
+  return [[__success retain_stub] autorelease_stub];
+}
+
+- (void) setSuccess: (AuthSessionResponse *) success {
+  [success retain_stub];
+  [__success release_stub];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release_stub];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          AuthSessionResponse *fieldValue = [[AuthSessionResponse alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetOAuth2TokensFromCode_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetOAuth2TokensFromCode_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
 @end
 
 @interface getAuthTequilaToken_args : NSObject <TBase, NSCoding> {
@@ -2683,6 +2998,46 @@
   [super dealloc_stub];
 }
 
+- (void) send_getOAuth2TokensFromCode: (AuthSessionRequest *) req
+{
+  [outProtocol writeMessageBeginWithName: @"getOAuth2TokensFromCode" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getOAuth2TokensFromCode_args"];
+  if (req != nil)  {
+    [outProtocol writeFieldBeginWithName: @"req" type: TType_STRUCT fieldID: 1];
+    [req write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (AuthSessionResponse *) recv_getOAuth2TokensFromCode
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetOAuth2TokensFromCode_result * result = [[[GetOAuth2TokensFromCode_result alloc] init] autorelease_stub];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getOAuth2TokensFromCode failed: unknown result"];
+}
+
+- (AuthSessionResponse *) getOAuth2TokensFromCode: (AuthSessionRequest *) req
+{
+  [self send_getOAuth2TokensFromCode : req];
+  return [self recv_getOAuth2TokensFromCode];
+}
+
 - (void) send_getAuthTequilaToken
 {
   [outProtocol writeMessageBeginWithName: @"getAuthTequilaToken" type: TMessageType_CALL sequenceID: 0];
@@ -2891,6 +3246,14 @@
   mService = [service retain_stub];
   mMethodMap = [[NSMutableDictionary dictionary] retain_stub];
   {
+    SEL s = @selector(process_getOAuth2TokensFromCode_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getOAuth2TokensFromCode"];
+  }
+  {
     SEL s = @selector(process_getAuthTequilaToken_withSequenceID:inProtocol:outProtocol:);
     NSMethodSignature * sig = [self methodSignatureForSelector: s];
     NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
@@ -2969,6 +3332,23 @@
   [i setTarget: self];
   [i invoke];
   return YES;
+}
+
+- (void) process_getOAuth2TokensFromCode_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getOAuth2TokensFromCode_args * args = [[getOAuth2TokensFromCode_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetOAuth2TokensFromCode_result * result = [[GetOAuth2TokensFromCode_result alloc] init];
+  [result setSuccess: [mService getOAuth2TokensFromCode: [args req]]];
+  [outProtocol writeMessageBeginWithName: @"getOAuth2TokensFromCode"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release_stub];
+  [args release_stub];
 }
 
 - (void) process_getAuthTequilaToken_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
