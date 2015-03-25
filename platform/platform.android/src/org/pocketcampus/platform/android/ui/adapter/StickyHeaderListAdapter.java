@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,25 +11,25 @@ import android.widget.BaseAdapter;
 public class StickyHeaderListAdapter extends BaseAdapter implements StickyListHeadersAdapter {  
     
 	private final List<BaseAdapter> sections = new LinkedList<BaseAdapter>();
-	private BaseAdapter headers;
+	protected BaseAdapter headers;
       
     public StickyHeaderListAdapter() {
     }  
+
+    public void setHeaders(BaseAdapter adapter) {  
+        this.headers = adapter;  
+    }
     
+    public void addSection(BaseAdapter adapter) {  
+        this.sections.add(adapter);  
+    }  
+      
     private void audit() {
     	if(headers == null)
     		throw new IllegalStateException("headers adapter not set");
     	if(headers.getCount() != sections.size())
     		throw new IllegalStateException("number of sections doesn't match number of headers");
     }
-      
-    public void setHeaders(BaseAdapter adapter) {  
-        this.headers = adapter;  
-    }  
-    
-    public void addSection(BaseAdapter adapter) {  
-        this.sections.add(adapter);  
-    }  
       
     public Object getItem(int position) {  
     	audit();
