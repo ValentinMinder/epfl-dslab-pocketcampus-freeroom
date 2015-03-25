@@ -6,9 +6,10 @@
     <uses-sdk android:minSdkVersion="15" />
 
     <application android:label="@string/app_name"
-        android:theme="@style/PocketCampusTheme"
         android:icon="@drawable/recommendedapps_icon"
-        android:name="org.pocketcampus.platform.android.core.GlobalContext">
+        android:name="org.pocketcampus.platform.android.core.GlobalContext"
+        android:theme="@style/PocketCampusActionBarTheme"
+        >
         
         
 		<activity android:name="org.pocketcampus.plugin.recommendedapps.android.RecommendedAppsMainView"

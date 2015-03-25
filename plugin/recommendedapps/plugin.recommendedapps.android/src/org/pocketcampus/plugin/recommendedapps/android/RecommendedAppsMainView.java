@@ -138,6 +138,12 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 				((TextView) appThumbLayout.findViewById(R.id.recommendedAppDescription)).setText(app
 						.getAppDescription());
 
+				if(app.getAppLogoURL() != null) {
+					ImageLoader.getInstance().displayImage(app.getAppLogoURL(),
+							(ImageView) appThumbLayout.findViewById(R.id.recommendedAppLogo));
+				}
+
+				
 				appLayout.addView(appThumbLayout);
 				appThumbLayout.setOnClickListener(new OnClickListener() {
 
@@ -176,7 +182,7 @@ public class RecommendedAppsMainView extends PluginView implements IRecommendedA
 						HttpURLConnection connection = null;
 						try {
 							URL url = new URL(
-									"https://42matters.com/api/1/apps/lookup.json?access_token=e1f2f56694733a945fd0f773b426c50c9c74c9e7&p="
+									"https://42matters.com/api/1/apps/lookup.json?access_token=1a2b7871681674476ca1f7a13498bdeddb9720a5&p="
 											+ params[0]);
 							connection = (HttpURLConnection) url.openConnection();
 							connection.connect();
