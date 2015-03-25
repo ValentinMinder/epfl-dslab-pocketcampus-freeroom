@@ -164,7 +164,7 @@ public class DashboardView extends PluginView {
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_DOWN) {
 						launcherText.setTextColor(0x80808080);
-						launcherImage.setAlpha(0x80);
+						launcherImage.setAlpha(0x60);
 					} else if (event.getAction() == MotionEvent.ACTION_UP) {
 						launcherText.setTextColor(0xff000000);
 						launcherImage.setAlpha(0xff);
@@ -180,9 +180,9 @@ public class DashboardView extends PluginView {
 				public void onClick(View v) {
 					trackEvent("OpenPlugin", pluginInfo.getId());
 					((GlobalContext) mContext.getApplicationContext()).displayPlugin(mContext, pluginInfo);
-//					launcherView.setBackgroundColor(0x80808080);
+//					launcherView.setBackgroundColor(0xfcfcfcfc);
 					launcherText.setTextColor(0x00000000);
-					launcherImage.setAlpha(0x00);
+//					launcherImage.setAlpha(0x00);
 				}
 			});
 		}
