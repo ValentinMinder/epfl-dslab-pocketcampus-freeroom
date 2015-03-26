@@ -34,7 +34,7 @@
     <string name="authentication_string_logout">Logout</string>
     <string name="authentication_string_failed">Failed</string>
     <string name="authentication_signed_out">Signed out %d session(s)</string>
-    <string name="authentication_signed_out_all">Sign out all PocketCampus sessions</string>
+    <string name="authentication_signed_out_all">Sign out</string>
     <string name="authentication_logged_in_as">You are logged in as&lt;br&gt;&lt;b&gt;%s&lt;/b&gt;</string>
     <string name="authentication_not_logged_in">You are not logged in</string>
     <string name="authentication_session_will_time_out">Your session will time out after&lt;br&gt;&lt;b&gt;1 hour of inactivity&lt;/b&gt;</string>

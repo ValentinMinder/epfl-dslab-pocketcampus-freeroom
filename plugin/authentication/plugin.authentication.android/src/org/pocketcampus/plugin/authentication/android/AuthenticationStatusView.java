@@ -104,12 +104,12 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 	}
 	
 	public void logout() {
-		boolean signingOut = false;
-		if(mModel.getPcSessionId() != null) {
-			signingOut = true;
-			LogoutRequest req = new LogoutRequest(mModel.getPcSessionId());
-			new LogoutAllSessions(this).start(mController, mController.getThriftClient(), req);
-		}
+//		boolean signingOut = false;
+//		if(mModel.getPcSessionId() != null) {
+//			signingOut = true;
+//			LogoutRequest req = new LogoutRequest(mModel.getPcSessionId());
+//			new LogoutAllSessions(this).start(mController, mController.getThriftClient(), req);
+//		}
 		
 		mModel.setSavedGasparPassword(null);
 		mModel.setGasparUsername(null);
@@ -122,8 +122,9 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 		intent.setAction("org.pocketcampus.plugin.authentication.LOGOUT");
 		sendBroadcast(intent, "org.pocketcampus.permissions.AUTHENTICATE_WITH_TEQUILA");
 		
-		if(!signingOut)
-			refreshView();
+//		if(!signingOut)
+//			refreshView();
+		refreshView();
 	}
 	
 	@Override
