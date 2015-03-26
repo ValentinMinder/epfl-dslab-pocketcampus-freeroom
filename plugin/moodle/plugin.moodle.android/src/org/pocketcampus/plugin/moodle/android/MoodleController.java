@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.platform.android.cache.RequestCache;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.LogoutListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.moodle.R;
@@ -28,7 +29,6 @@ import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -51,9 +51,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 public class MoodleController extends PluginController implements IMoodleController{
 
-	public static class Logouter extends BroadcastReceiver {
+	public static class Logouter extends LogoutListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
 			Log.v("DEBUG", "MoodleController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://moodle.plugin.pocketcampus.org/logout"));

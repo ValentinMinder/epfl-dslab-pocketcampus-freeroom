@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.LogoutListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.platform.shared.PCConstants;
@@ -28,7 +29,6 @@ import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Client;
 import org.pocketcampus.plugin.cloudprint.shared.CloudPrintService.Iface;
 import org.pocketcampus.plugin.cloudprint.shared.PrintDocumentRequest;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -52,9 +52,10 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 public class CloudPrintController extends PluginController implements ICloudPrintController{
 
 
-	public static class Logouter extends BroadcastReceiver {
+	public static class Logouter extends LogoutListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
 			Log.v("DEBUG", "CloudPrintController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://cloudprint.plugin.pocketcampus.org/logout"));

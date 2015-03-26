@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.LogoutListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
@@ -15,7 +16,6 @@ import org.pocketcampus.plugin.camipro.shared.CamiproService.Client;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
 import org.pocketcampus.plugin.camipro.shared.SessionId;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -35,9 +35,10 @@ import android.util.Log;
  */
 public class CamiproController extends PluginController implements ICamiproController{
 	
-	public static class Logouter extends BroadcastReceiver {
+	public static class Logouter extends LogoutListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
 			Log.v("DEBUG", "CamiproController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://camipro.plugin.pocketcampus.org/logout"));
