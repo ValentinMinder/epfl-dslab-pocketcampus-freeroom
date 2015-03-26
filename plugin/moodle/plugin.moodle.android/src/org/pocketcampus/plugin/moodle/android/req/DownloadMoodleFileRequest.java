@@ -40,6 +40,12 @@ public class DownloadMoodleFileRequest extends Request<MoodleController, Default
 	}
 	
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		caller.showLoading();
+	}
+	
+	@Override
 	protected Integer runInBackground(DefaultHttpClient client, String param) throws Exception {
 		List<NameValuePair> params = new LinkedList<NameValuePair>();
 		params.add(new BasicNameValuePair(Constants.MOODLE_RAW_ACTION_KEY, Constants.MOODLE_RAW_ACTION_DOWNLOAD_FILE));
@@ -57,6 +63,7 @@ public class DownloadMoodleFileRequest extends Request<MoodleController, Default
 
 	@Override
 	protected void onResult(MoodleController controller, Integer result) {
+		caller.hideLoading();
 		if(result == 200) {
 			caller.downloadComplete(localFile);
 			
@@ -71,6 +78,7 @@ public class DownloadMoodleFileRequest extends Request<MoodleController, Default
 	
 	@Override
 	protected void onError(MoodleController controller, Exception e) {
+		caller.hideLoading();
 		caller.networkErrorHappened();
 		if(localFile != null && localFile.exists())
 			localFile.delete();

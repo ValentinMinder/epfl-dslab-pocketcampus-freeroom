@@ -28,6 +28,8 @@
 	<string name="sdk_upstream_server_down">Le serveur est inaccessible</string>
 	<string name="sdk_connection_no_cache_yes">Erreur de connexion, affichage des données à partir du cache</string>		
 	<string name="sdk_server_failed">Une erreur inattendue s\'est produite</string>
+	
+	<string name="sdk_loading">Chargement</string>
 	<string name="sdk_please_wait_loading">Chargement\nMerci de patienter...</string>
 		
 </resources>

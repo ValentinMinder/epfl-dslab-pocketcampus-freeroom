@@ -235,6 +235,14 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 		 * R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();
 		 */
 	}
+	
+	@Override
+	public synchronized void showLoading() {
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+	}	
 
 	@Override
 	public void networkErrorCacheExists() {

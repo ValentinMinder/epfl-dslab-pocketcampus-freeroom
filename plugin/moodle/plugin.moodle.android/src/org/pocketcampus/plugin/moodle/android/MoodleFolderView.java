@@ -17,6 +17,7 @@ import org.pocketcampus.plugin.moodle.shared.MoodleFile2;
 import org.pocketcampus.plugin.moodle.shared.MoodleFolder2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,7 +30,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -58,6 +58,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 
 	ListView mList;
 	ScrollStateSaver scrollState;
+	ProgressDialog loading;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -247,6 +248,20 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	@Override
 	public void downloadComplete(File localFile) {
 		MoodleController.openFile(this, localFile);
+	}
+	
+	@Override
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
 	}
 
 	@Override

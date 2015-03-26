@@ -20,6 +20,7 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourseSection2;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,7 +30,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,10 +60,12 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	private int courseId;
 	private String courseTitle;
 	
+	
 	List<MoodleCourseSection2> sections = null;
 	
 	ListView mList;
 	ScrollStateSaver scrollState;
+	ProgressDialog loading;
 
 	
 	@Override
@@ -267,6 +269,19 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 	
+	@Override
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
+	}
 
 	@Override
 	public void networkErrorCacheExists() {

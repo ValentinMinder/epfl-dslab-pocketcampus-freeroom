@@ -37,6 +37,8 @@ public interface IMoodleView extends IView {
 	void moodleServersDown();
 	void notLoggedIn();
 	void downloadComplete(File localFile);	
+	void showLoading();
+	void hideLoading();
 
 	/**
 	 * Authentication callbacks.

@@ -34,6 +34,7 @@
 	<string name="sdk_reload_title">Reload</string>
 
 	<string name="sdk_share">Share</string>
-
+	
+	<string name="sdk_loading">Loading</string>
 	<string name="sdk_please_wait_loading">Please wait...\nLoading data.</string>
 </resources>
