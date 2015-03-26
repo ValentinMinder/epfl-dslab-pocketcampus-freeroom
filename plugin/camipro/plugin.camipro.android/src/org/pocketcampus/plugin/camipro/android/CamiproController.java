@@ -41,6 +41,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 			Log.v("DEBUG", "CamiproController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://camipro.plugin.pocketcampus.org/logout"));
+			authIntent.setClassName(context.getApplicationContext(), CamiproController.class.getName());
 			context.startService(authIntent);
 		}
 	};
@@ -57,6 +58,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 				intenteye.putExtra("selfauthok", 1);
 			if(intent.getIntExtra("usercancelled", 0) != 0)
 				intenteye.putExtra("usercancelled", 1);
+			intenteye.setClassName(context.getApplicationContext(), CamiproController.class.getName());
 			context.startService(intenteye);
 		}
 	};
@@ -99,7 +101,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "CamiproController::onStartCommand logout");
-			// nothing to do
+			createThriftClients();
 		}
 		stopSelf();
 		return START_NOT_STICKY;
@@ -165,6 +167,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
 		authIntent.putExtra("selfauth", true);
+		authIntent.setClassName(context.getApplicationContext(), "org.pocketcampus.plugin.authentication.android.AuthenticationController");
 		context.startService(authIntent);
 	}
 	

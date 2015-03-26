@@ -15,6 +15,8 @@
  */
 package org.pocketcampus.plugin.pushnotif.gcm;
 
+import org.pocketcampus.plugin.pushnotif.android.PushNotifController;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -95,14 +97,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 			regIntent.putExtra("registrationid", regId);
 		if(extra != null)
 			regIntent.putExtra(extra, 1); // error
+		regIntent.setClassName(context.getApplicationContext(), PushNotifController.class.getName());
 		context.startService(regIntent);
 	}
 	
+	/***
+	 * Requires plugin to be CamelCase
+	 */
 	private void sendPluginMessage(Context context, String plugin, Intent message) {
 		Log.i(TAG, "Sending message to '" + plugin + "' plugin");
 		Intent regIntent = new Intent("org.pocketcampus.plugin.pushnotif.PUSHNOTIF_MESSAGE",
-				Uri.parse("pocketcampus://" + plugin + ".plugin.pocketcampus.org/pushnotif_message"));
+				Uri.parse("pocketcampus://" + plugin.toLowerCase() + ".plugin.pocketcampus.org/pushnotif_message"));
 		regIntent.putExtras(message);
+		regIntent.setClassName(context.getApplicationContext(), "org.pocketcampus.plugin." + plugin.toLowerCase() + ".android." + plugin + "Controller");
 		context.startService(regIntent);
 	}
 	

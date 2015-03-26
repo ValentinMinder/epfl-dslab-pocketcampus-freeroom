@@ -33,7 +33,7 @@
     <string name="authentication_string_logout">Déconnexion</string>
     <string name="authentication_string_failed">Échec</string>
     <string name="authentication_signed_out">Déconnecté %d session(s)</string>
-    <string name="authentication_signed_out_all">Déconnecter toutes les sessions PocketCampus</string>
+    <string name="authentication_signed_out_all">Déconnexion</string>
     <string name="authentication_logged_in_as">Vous êtes connecté en tant que&lt;br&gt;&lt;b&gt;%s&lt;/b&gt;</string>
     <string name="authentication_not_logged_in">Vous n\'êtes pas connecté</string>
     <string name="authentication_session_will_time_out">Votre session expirera après&lt;br&gt;&lt;b&gt;1 heure d\'inactivité&lt;/b&gt;</string>
