@@ -282,6 +282,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 			public void performAction(View view) {
 				foodTime = (foodTime == MealTime.DINNER ? MealTime.LUNCH : MealTime.DINNER);
 				trackEvent((foodTime == MealTime.DINNER ? "ViewDinner" : "ViewLunch"), null);
+				setLoadingContentScreen();
 				mController.refreshFood(FoodMainView.this, foodDay, foodTime, false);
 			}
 

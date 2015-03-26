@@ -399,7 +399,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 	@Override
 	public void networkErrorHappened() {
-		setUnrecoverableErrorOccurred(getString(R.string.isacademia_network_error));
+		setUnrecoverableErrorOccurred(formatStringWithDate(R.string.isacademia_network_error));
 	}
 
 	private void showOnlySingleMessage(String message) {

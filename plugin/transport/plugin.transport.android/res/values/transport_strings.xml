@@ -48,7 +48,9 @@
     <string name="transport_platform">at platform</string>
     <string name="transport_using">Take</string>
     <string name="transport_loading">Loading</string>
+    <string name="transport_search_failed">Searching for %s failed.</string>
     <string name="transport_locating_you">Finding the public transport station closest to you.</string>
+    <string name="transport_locating_you_failed">Finding the public transport station closest to you failed. Setting it to %s.</string>
     <string name="transport_get_default_stations">Retrieving the default public transport stations.</string>
     
     <string name="transport_automatic">Automatically select the closest one</string>

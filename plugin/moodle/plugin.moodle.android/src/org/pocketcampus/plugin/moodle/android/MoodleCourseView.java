@@ -80,7 +80,8 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 
 
 		displayingList = false;
-		setContentView(new StandardLayout(this));
+		
+		setLoadingContentScreen();
 
 		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
@@ -133,11 +134,9 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	
 	@Override
 	public void sectionsListUpdated() {
+		setContentView(new StandardLayout(this));
 		sections = mModel.getSections();
-		
 		updateDisplay();
-		
-
 	}
 
 	public void updateDisplay() {

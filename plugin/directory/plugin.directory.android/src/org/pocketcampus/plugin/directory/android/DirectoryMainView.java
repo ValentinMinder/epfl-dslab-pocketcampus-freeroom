@@ -118,6 +118,9 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	}
 
 	private void performSearchIfNeeded() {
+		if(findViewById(R.id.directory_searchinput) == null){
+			return;
+		}
 		String s = ((EditText) findViewById(R.id.directory_searchinput))
 				.getText().toString();
 		if (mController.search(this, s)) {

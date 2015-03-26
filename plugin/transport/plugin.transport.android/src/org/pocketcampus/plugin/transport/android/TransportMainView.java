@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.markupartist.android.widget.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -512,6 +513,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 	@Override
 	public void searchForStationsFailed(String searchQuery, ErrorCause cause) {
+		Toast.makeText(this, String.format(getString(R.string.transport_search_failed), searchQuery), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -604,6 +606,12 @@ public class TransportMainView extends PluginView implements ITransportView {
 			}
 
 			public void onProviderDisabled(String provider) {
+				TransportStation station = mModel.getPersistedTransportStations().get(0);
+				String text = String.format(getString(R.string.transport_locating_you_failed), station.getName());
+				Toast.makeText(TransportMainView.this, text, Toast.LENGTH_LONG).show();
+				mModel.departureStationChangedTo(station);
+				setUpLayout();
+				locationManager.removeUpdates(this);
 			}
 		};
 
