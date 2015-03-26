@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -34,12 +36,15 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.Action;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * CloudPrintMainView - Main view that shows CloudPrint courses.
@@ -221,14 +226,50 @@ public class CloudPrintMainView extends PluginView implements ICloudPrintView {
 		tv.setText(Html.fromHtml(getString(R.string.cloudprint_dialog_text_pagenumber, mModel.getCurrPage() + 1,
 				mModel.getPageCount())));
 
-		ImageView iv = (ImageView) findViewById(R.id.cloudprint_printpreview_image);
+		final ImageView iv = (ImageView) findViewById(R.id.cloudprint_printpreview_image);
+		final ProgressBar pb = (ProgressBar) findViewById(R.id.cloudprint_printpreview_loading);
 
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(android.R.drawable.ic_popup_sync)
 				.showImageForEmptyUri(android.R.drawable.ic_menu_gallery)
 				.showImageOnFail(android.R.drawable.ic_menu_report_image).cacheInMemory(false).cacheOnDisk(false)
 				.extraForDownloader(((GlobalContext) getApplicationContext()).getPcSessionId()).build();
-		CloudPrintImageLoader.getInstance().displayImage(mController.getPageThumbnailUrl(), iv, options);
+		CloudPrintImageLoader.getInstance().displayImage(mController.getPageThumbnailUrl(), iv, options, new ImageLoadingListener() {
+			
+			@Override
+			public void onLoadingStarted(String arg0, View arg1) {
+				iv.setVisibility(View.GONE);
+				pb.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+				pb.setVisibility(View.GONE);
+				iv.setVisibility(View.VISIBLE);
+				iv.setImageResource(android.R.drawable.ic_menu_report_image);
+				iv.setPadding(0, 0, 0, 0);
+				
+			}
+			
+			@Override
+			public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+				pb.setVisibility(View.GONE);
+				iv.setVisibility(View.VISIBLE);
+				iv.setImageBitmap(arg2);
+				iv.setPadding(1, 1, 1, 1);
+				iv.setBackgroundColor(Color.GRAY);
+				
+			}
+			
+			@Override
+			public void onLoadingCancelled(String arg0, View arg1) {
+				pb.setVisibility(View.GONE);
+				iv.setVisibility(View.VISIBLE);
+				iv.setImageResource(R.drawable.sdk_transparent);
+				iv.setPadding(0, 0, 0, 0);
+				
+			}
+		});
 
 		Button p = (Button) findViewById(R.id.cloudprint_previouspage_button);
 
