@@ -33,4 +33,16 @@
 	<string name="events_email_success">E-mail envoyé avec succès</string>
 	<string name="events_email_failure">Échec de l\'envoi</string>
 		
+	<string name="events_show_past">Afficher les événements passés</string>
+	<string name="events_show_future">Afficher les événements futurs</string>					
+		
+
+	<string name="events_periods_oneday">Un jour</string>
+	<string name="events_periods_twodays">Deux jours</string>	
+	<string name="events_periods_oneweek">Une semaine</string>
+	<string name="events_periods_twoweeks">Deux semaines</string>
+	<string name="events_periods_onemonth">Un mois</string>
+	<string name="events_periods_sixmonths">Six mois</string>
+	<string name="events_periods_oneyear">Une année</string>
+							
 </resources>

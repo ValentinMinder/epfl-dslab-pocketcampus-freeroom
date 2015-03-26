@@ -46,6 +46,9 @@
 
 	<string name="events_email_success">Email sent successfully</string>
 	<string name="events_email_failure">Failed to send email</string>
-						
+
+	<string name="events_show_past">Show past events</string>
+	<string name="events_show_future">Show future events</string>					
+	
 	<string name="events_past_events_title">Past events</string>
 </resources>

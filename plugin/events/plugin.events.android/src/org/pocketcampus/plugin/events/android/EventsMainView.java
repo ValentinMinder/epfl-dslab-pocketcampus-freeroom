@@ -309,7 +309,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					}
 
 					public int getDrawable() {
-						return R.drawable.pocketcampus_filter;
+						return R.drawable.events_filter_categ;
 					}
 
 					@Override
@@ -338,7 +338,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 					}
 
 					public int getDrawable() {
-						return R.drawable.pocketcampus_tags;
+						return R.drawable.events_filter_tags;
 					}
 
 					@Override
@@ -357,7 +357,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 				}
 
 				public int getDrawable() {
-					return R.drawable.events_camera;
+					return R.drawable.events_scan;
 				}
 
 				@Override
@@ -396,11 +396,13 @@ public class EventsMainView extends PluginView implements IEventsView {
 			addActionToActionBar(new Action() {
 				@Override
 				public void performAction(View view) {
-					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, "Choose period",
+					showSingleChoiceDialog(EventsMainView.this, Constants.EVENTS_PERIODS, getString(R.string.events_choose_period),
 							mModel.getPeriodInHours(), new SingleChoiceHandler<Integer>() {
 								public void saveSelection(Integer t) {
 									mModel.setPeriodInHours(t);
 									trackEvent("ChangePeriod", "" + t);
+									setLoadingContentScreen();
+									removeAllActionsFromActionBar();
 									mController.refreshEventPool(EventsMainView.this, eventPoolId, happeningNow,
 											fetchPast, false);
 								}
@@ -409,7 +411,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 
 				@Override
 				public int getDrawable() {
-					return R.drawable.events_menu_choose_period;
+					return R.drawable.events_period;
 				}
 
 				@Override
@@ -429,17 +431,19 @@ public class EventsMainView extends PluginView implements IEventsView {
 					} else {
 						setActionBarTitle(getString(R.string.events_plugin_title));
 					}
+					setLoadingContentScreen();
+					removeAllActionsFromActionBar();
 					mController.refreshEventPool(EventsMainView.this, eventPoolId, happeningNow, fetchPast, false);
 				}
 
 				@Override
 				public int getDrawable() {
-					return fetchPast ? R.drawable.events_future_events : R.drawable.events_past_events;
+					return fetchPast ? R.drawable.events_future : R.drawable.events_past;
 				}
 
 				@Override
 				public String getDescription() {
-					return getString(R.string.events_past_events);
+					return fetchPast ? getString(R.string.events_show_future) : getString(R.string.events_show_past);
 				}
 			});
 		}
