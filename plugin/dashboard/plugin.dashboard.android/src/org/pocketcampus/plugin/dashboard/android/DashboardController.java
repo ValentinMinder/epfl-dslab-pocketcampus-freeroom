@@ -41,6 +41,7 @@ public class DashboardController extends PluginController {
 				intenteye.putExtra("failed", 1);
 			if(intent.getIntExtra("networkerror", 0) != 0)
 				intenteye.putExtra("networkerror", 1);
+			intenteye.setClassName(context.getApplicationContext(), DashboardController.class.getName());
 			context.startService(intenteye);
 		}
 	}
@@ -88,6 +89,7 @@ public class DashboardController extends PluginController {
 	public void registerPushNotif() {
         Intent authIntent = new Intent("org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH",
                         Uri.parse("pocketcampus://pushnotif.plugin.pocketcampus.org/reg_for_push"));
+        authIntent.setClassName(getApplicationContext(), "org.pocketcampus.plugin.pushnotif.android.PushNotifController");
         startService(authIntent);
 	}
 	

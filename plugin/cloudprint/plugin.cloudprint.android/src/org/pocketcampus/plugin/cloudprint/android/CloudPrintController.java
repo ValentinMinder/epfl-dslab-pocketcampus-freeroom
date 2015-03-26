@@ -58,6 +58,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 			Log.v("DEBUG", "CloudPrintController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://cloudprint.plugin.pocketcampus.org/logout"));
+			authIntent.setClassName(context.getApplicationContext(), CloudPrintController.class.getName());
 			context.startService(authIntent);
 		}
 	};
@@ -74,6 +75,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 				intenteye.putExtra("selfauthok", 1);
 			if(intent.getIntExtra("usercancelled", 0) != 0)
 				intenteye.putExtra("usercancelled", 1);
+			intenteye.setClassName(context.getApplicationContext(), CloudPrintController.class.getName());
 			context.startService(intenteye);
 		}
 	};
@@ -203,6 +205,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
 		authIntent.putExtra("selfauth", true);
+		authIntent.setClassName(context.getApplicationContext(), "org.pocketcampus.plugin.authentication.android.AuthenticationController");
 		context.startService(authIntent);
 	}
 	
