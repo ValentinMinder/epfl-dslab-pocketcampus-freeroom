@@ -323,6 +323,14 @@ public class EventDetailView extends PluginView implements IEventsView {
 	}
 	
 	@Override
+	public synchronized void showLoading() {
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+	}
+	
+	@Override
 	public void networkErrorCacheExists() {
 		Toast.makeText(getApplicationContext(), getResources().getString(
 				R.string.sdk_connection_no_cache_yes), Toast.LENGTH_SHORT).show();

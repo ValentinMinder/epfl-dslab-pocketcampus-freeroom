@@ -25,17 +25,25 @@ public class SendFavoritesByEmailRequest extends Request<EventsController, Iface
 	}
 	
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		caller.showLoading();
+	}
+	
+	@Override
 	protected SendEmailReply runInBackground(Iface client, SendEmailRequest param) throws Exception {
 		return client.sendStarredItemsByEmail(param);
 	}
 
 	@Override
 	protected void onResult(EventsController controller, SendEmailReply result) {
+		caller.hideLoading();
 		caller.sendEmailRequestFinished(result.getStatus() == 200);
 	}
 
 	@Override
 	protected void onError(EventsController controller, Exception e) {
+		caller.hideLoading();
 		caller.networkErrorHappened();
 		e.printStackTrace();
 	}

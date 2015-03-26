@@ -36,6 +36,7 @@ import org.pocketcampus.plugin.events.shared.EventItem;
 import org.pocketcampus.plugin.events.shared.EventPool;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -89,6 +90,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 
 	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
+	ProgressDialog loading;
 
 	protected Class<? extends PluginController> getMainControllerClass() {
 		return EventsController.class;
@@ -636,6 +638,21 @@ public class EventsMainView extends PluginView implements IEventsView {
 	// return true;
 	// }
 
+	
+	@Override
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
+	}
+
 	@Override
 	public void networkErrorCacheExists() {
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.sdk_connection_no_cache_yes),
@@ -668,15 +685,15 @@ public class EventsMainView extends PluginView implements IEventsView {
 	@Override
 	public void sendEmailRequestFinished(boolean success) {
 		if (success) {
-			Toast.makeText(getApplicationContext(), "Email sent successfully", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), getString(R.string.events_email_success), Toast.LENGTH_SHORT).show();
 		} else {
-			Toast.makeText(getApplicationContext(), "Failed to send email", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), getString(R.string.events_email_failure), Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	@Override
 	public void sendAdminRegEmailFinished(boolean success) {
-		Toast.makeText(getApplicationContext(), (success ? "Emails sent successfully" : "Error while sending emails"),
+		Toast.makeText(getApplicationContext(), (success ? getString(R.string.events_email_success) : getString(R.string.events_email_failure)),
 				Toast.LENGTH_SHORT).show();
 	}
 

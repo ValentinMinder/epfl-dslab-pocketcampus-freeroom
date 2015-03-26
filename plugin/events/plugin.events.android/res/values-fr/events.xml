@@ -25,9 +25,12 @@
     <string name="events_email">Envoyer par email</string>
     <string name="events_choose_period">Changer la période</string>
     <string name="events_past_events">Voir les evènements passés</string>
-    <string name="events_past_events_title">Évènements passés</string>
+    <string name="events_past_events_title">Evènements passés</string>
 
 	<string name="events_mark_as_favorite">Marquer comme favori</string>
 	<string name="events_remove_from_favorites">Supprimer des favoris</string>
-    
+
+	<string name="events_email_success">E-mail envoyé avec succès</string>
+	<string name="events_email_failure">Échec de l\'envoi</string>
+		
 </resources>

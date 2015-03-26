@@ -43,6 +43,9 @@
 
 	<string name="events_mark_as_favorite">Mark as favorite</string>
 	<string name="events_remove_from_favorites">Remove from favorites</string>
-			
+
+	<string name="events_email_success">Email sent successfully</string>
+	<string name="events_email_failure">Failed to send email</string>
+						
 	<string name="events_past_events_title">Past events</string>
 </resources>
