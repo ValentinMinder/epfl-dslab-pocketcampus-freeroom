@@ -140,6 +140,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "MoodleController::onStartCommand logout");
+			mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
 			deleteRecursive(new File(getMoodleFilesPath()));

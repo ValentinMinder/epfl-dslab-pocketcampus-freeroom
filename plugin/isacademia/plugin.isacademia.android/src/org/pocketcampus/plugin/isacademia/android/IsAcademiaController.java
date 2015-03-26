@@ -101,6 +101,7 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "IsAcademiaController::onStartCommand logout");
+			mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 			RequestCache.invalidateCache(this, GetScheduleRequest.class.getCanonicalName());
 		}
 		stopSelf();

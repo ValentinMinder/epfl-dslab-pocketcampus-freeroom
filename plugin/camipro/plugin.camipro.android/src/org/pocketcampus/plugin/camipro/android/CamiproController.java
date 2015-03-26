@@ -101,7 +101,7 @@ public class CamiproController extends PluginController implements ICamiproContr
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "CamiproController::onStartCommand logout");
-			// nothing to do
+			createThriftClients();
 		}
 		stopSelf();
 		return START_NOT_STICKY;

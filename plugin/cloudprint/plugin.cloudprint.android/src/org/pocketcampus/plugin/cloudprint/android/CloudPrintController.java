@@ -164,7 +164,7 @@ public class CloudPrintController extends PluginController implements ICloudPrin
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "CloudPrintController::onStartCommand logout");
-			// do nothing
+			mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 		}
 		stopSelf();
 		return START_NOT_STICKY;
