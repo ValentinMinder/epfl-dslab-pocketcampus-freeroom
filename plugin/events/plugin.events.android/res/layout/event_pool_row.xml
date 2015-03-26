@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PocketCampusRow"
-    android:orientation="horizontal" >
+    style="@style/PocketCampusRow" >
+
+    <!-- ListRow Left sied Thumbnail image -->
 
     <ImageView
         android:id="@+id/event_thumbnail"
         style="@style/PocketCampusThumbnail"
         android:layout_width="50dip"
-        android:layout_height="50dip" />
+        android:layout_height="50dip"
+        android:layout_centerVertical="true"
+        android:src="@drawable/events_icon" />
+
+    <!-- Title Of Song -->
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_alignBottom="@+id/event_thumbnail_container"
-        android:layout_alignTop="@+id/event_thumbnail_container"
-        android:layout_toRightOf="@+id/event_thumbnail_container"
-        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/event_thumbnail"
         android:orientation="vertical" >
-
-        <!-- Title Of Song -->
 
         <TextView
             android:id="@+id/event_title"
             style="@style/PocketCampusListItemTitle"
-            android:layout_marginRight="30dip"
-            android:layout_marginTop="-5dip"
             android:text="Rihanna Love the way lie" />
 
-        <!-- Artist Name -->
-
         <TextView
-            android:id="@+id/event_place"
+            android:id="@+id/event_second_line"
             style="@style/PocketCampusListItemSubTitle"
-            android:layout_marginTop="1dip"
-            android:text="Just gona stand there and ..." />
+            android:text="Second line i love you god!" />
     </LinearLayout>
-
-    <!-- Rightend Arrow -->
 
     <ImageView
         android:layout_width="wrap_content"

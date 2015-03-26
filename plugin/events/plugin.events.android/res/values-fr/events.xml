@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="events_plugin_title">Évènements</string>
+    <string name="events_plugin_title">Evènements</string>
     <string name="events_preferences_rss_title">Options de flux RSS</string>
     <string name="events_preferences_other_title">Options</string>
     <string name="events_settings">Préférences</string>
@@ -27,4 +27,7 @@
     <string name="events_past_events">Voir les evènements passés</string>
     <string name="events_past_events_title">Évènements passés</string>
 
+	<string name="events_mark_as_favorite">Marquer comme favori</string>
+	<string name="events_remove_from_favorites">Supprimer des favoris</string>
+    
 </resources>

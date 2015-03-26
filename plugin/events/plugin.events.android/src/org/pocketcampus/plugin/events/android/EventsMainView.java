@@ -6,7 +6,6 @@ import static org.pocketcampus.platform.android.utils.DialogUtils.showSingleChoi
 import static org.pocketcampus.platform.android.utils.MapUtils.subMap;
 import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 import static org.pocketcampus.platform.android.utils.SetUtils.intersect;
-import static org.pocketcampus.plugin.events.android.EventDetailView.EXTRAS_KEY_EVENTITEMID;
 import static org.pocketcampus.plugin.events.android.EventsController.getEventItemComp4sort;
 
 import java.util.ArrayList;
@@ -183,7 +182,7 @@ public class EventsMainView extends PluginView implements IEventsView {
 			trackEvent("MarkFavoriteInURL", fav);
 			mModel.markFavorite(Long.parseLong(fav), true);
 			Intent i = new Intent(EventsMainView.this, EventDetailView.class);
-			i.putExtra(EXTRAS_KEY_EVENTITEMID, fav);
+			i.putExtra(EventDetailView.EXTRAS_KEY_EVENTITEMID, fav);
 			EventsMainView.this.startActivity(i);
 		}
 		if (aData.getQueryParameter(QUERYSTRING_KEY_EXCHANGETOKEN) != null) {
@@ -517,15 +516,15 @@ public class EventsMainView extends PluginView implements IEventsView {
 						else
 							return startDay + " - " + startTime;
 						// case R.id.event_fav_star:
-						// if(thisEventPool.isDisableStar())
+						// if (thisEventPool.isDisableStar())
 						// return R.drawable.sdk_transparent;
 						// Integer fav = R.drawable.sdk_star_off;
-						// if(e.getEventCateg() == -2)
+						// if (e.getEventCateg() == -2)
 						// fav = R.drawable.sdk_star_on;
 						// return new Actuated(fav, new Actuator() {
 						// public void triggered() {
-						// System.out.println("toggle fav event: " +
-						// e.getEventTitle());
+						// System.out.println("toggle fav event: "
+						// + e.getEventTitle());
 						// scrollState = null;
 						// mModel.markFavorite(e.getEventId(),
 						// (e.getEventCateg() != -2));
@@ -577,7 +576,8 @@ public class EventsMainView extends PluginView implements IEventsView {
 						String eId = ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMID).toString();
 						String eTitle = ((Map<?, ?>) o).get(MAP_KEY_EVENTITEMTITLE).toString();
 						Intent i = new Intent(EventsMainView.this, EventDetailView.class);
-						i.putExtra(EXTRAS_KEY_EVENTITEMID, eId);
+						i.putExtra(EventDetailView.EXTRAS_KEY_EVENTITEMID, eId);
+						i.putExtra(EventDetailView.EXTRAS_KEY_DISABLESTAR, thisEventPool.isDisableStar());
 						EventsMainView.this.startActivity(i);
 						trackEvent("ShowEventItem", eId + "-" + eTitle);
 					} else {

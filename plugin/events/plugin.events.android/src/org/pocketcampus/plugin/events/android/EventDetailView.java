@@ -27,6 +27,9 @@ import org.pocketcampus.plugin.events.shared.EventPool;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -48,6 +51,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	private EventsModel mModel;
 	
 	public static final String EXTRAS_KEY_EVENTITEMID = "eventItemId";
+	public static final String EXTRAS_KEY_DISABLESTAR = "disableStar";
 	public static final String QUERYSTRING_KEY_EVENTITEMID = "eventItemId";
     public final static String MAP_KEY_EVENTPOOLID = "EVENT_POOL_ID";
     public final static String MAP_KEY_EVENTPOOLTITLE = "EVENT_POOL_TITLE";
@@ -59,6 +63,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 	private List<Long> displayedPools = new LinkedList<Long>();
 	
 	ScrollStateSaver scrollState;
+	boolean starrable = true;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -94,6 +99,8 @@ public class EventDetailView extends PluginView implements IEventsView {
 			Uri aData = aIntent.getData();
 			if(aExtras != null && aExtras.containsKey(EXTRAS_KEY_EVENTITEMID)) {
 				eventItemId = Long.parseLong(aExtras.getString(EXTRAS_KEY_EVENTITEMID));
+				if(aExtras.containsKey(EXTRAS_KEY_DISABLESTAR))
+					starrable = !aExtras.getBoolean(EXTRAS_KEY_DISABLESTAR);
 				System.out.println("Started with intent to display event " + eventItemId);
 			} else if(aData != null && aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID) != null) {
 				eventItemId = Long.parseLong(aData.getQueryParameter(QUERYSTRING_KEY_EVENTITEMID));
@@ -107,6 +114,7 @@ public class EventDetailView extends PluginView implements IEventsView {
 		
 		mController.refreshEventItem(this, eventItemId, false);
 		eventItemsUpdated(null);
+		invalidateOptionsMenu();
 	}
 
 	@Override
@@ -223,13 +231,13 @@ public class EventDetailView extends PluginView implements IEventsView {
 			Collections.sort(eventPools, getEventPoolComp4sort());
 			Preparated<EventPool> p4 = new Preparated<EventPool>(eventPools, new Preparator<EventPool>() {
 				public int[] resources() {
-					return new int[] { R.id.event_title, R.id.event_place, R.id.event_thumbnail };
+					return new int[] { R.id.event_title, R.id.event_second_line, R.id.event_thumbnail };
 				}
 				public String content(int res, EventPool e) {
 					switch (res) {
 					case R.id.event_title:
 						return e.getPoolTitle();
-					case R.id.event_place:
+					case R.id.event_second_line:
 						return e.getPoolPlace();
 					case R.id.event_thumbnail:
 						return e.getPoolPicture();
@@ -292,6 +300,27 @@ public class EventDetailView extends PluginView implements IEventsView {
 			eventItemsUpdated(null);
 	}
 	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		
+		if(starrable) {
+			MenuItem i1 = menu.add("star");
+			i1.setIcon(mModel.getFavorites().contains(eventItemId) ? R.drawable.sdk_star_on_white : R.drawable.sdk_star_off_white);
+			i1.setTitle(mModel.getFavorites().contains(eventItemId) ? R.string.events_remove_from_favorites : R.string.events_mark_as_favorite);
+			i1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem arg0) {
+					mModel.markFavorite(eventItemId, !mModel.getFavorites().contains(eventItemId));
+					invalidateOptionsMenu();
+					return true;
+				}
+			});
+			i1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		
+		return true;
+	}
 	
 	@Override
 	public void networkErrorCacheExists() {

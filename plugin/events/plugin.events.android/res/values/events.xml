@@ -40,6 +40,9 @@
 	<string name="events_email">Send by email</string>
 	<string name="events_choose_period">Choose time period</string>
 	<string name="events_past_events">See past events</string>
-	
+
+	<string name="events_mark_as_favorite">Mark as favorite</string>
+	<string name="events_remove_from_favorites">Remove from favorites</string>
+			
 	<string name="events_past_events_title">Past events</string>
 </resources>
