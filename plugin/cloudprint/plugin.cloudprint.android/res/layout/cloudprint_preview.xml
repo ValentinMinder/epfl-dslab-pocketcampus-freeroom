@@ -17,6 +17,7 @@
 	        style="?android:attr/progressBarStyleLarge"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"
 	        android:layout_gravity="center_horizontal" />
 	    
 	    <ImageView
@@ -27,6 +28,7 @@
 	        android:adjustViewBounds="true"
 	        android:maxHeight="250dip"
 	        android:maxWidth="250dip"
+	        android:layout_marginTop="10dip"
 	        android:padding="1dp"
 	        android:background="@color/blue"
 	        android:src="@drawable/cloudprint_icon" />

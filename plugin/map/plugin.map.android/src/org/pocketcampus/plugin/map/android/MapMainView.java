@@ -545,6 +545,7 @@ public class MapMainView extends PluginView implements IMapView {
     	
     	showEpfl();
     	handleSearchIntent(getIntent());
+    	invalidateOptionsMenu();
     }
     
 	private void searchDirectory(String str) {
@@ -566,6 +567,10 @@ public class MapMainView extends PluginView implements IMapView {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
+		
+		if(mModel == null || mController == null || mMap == null) {
+			return true;
+		}
 		
 		if(!searchMode) {
 			MenuItem i5 = menu.add("search");
