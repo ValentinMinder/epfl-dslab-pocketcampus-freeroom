@@ -48,7 +48,7 @@ public class FoodServiceImpl implements FoodService.Iface {
 
     public FoodServiceImpl() {
         this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
-                CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
+                CachingProxy.create(new DatabaseInsertingMenu(new MenuImpl(new HttpClientImpl()), new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS)), MENU_CACHE_DURATION, true),
                 CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
                 CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
                 new AuthenticatorImpl(),
@@ -73,7 +73,6 @@ public class FoodServiceImpl implements FoodService.Iface {
             throw new TException("An exception occurred while getting the menu", e);
         }
         try {
-            _ratingDatabase.insertMenu(response.getMenu(), date, time);
             _ratingDatabase.setRatings(response.getMenu());
         } catch (SQLException e) {
             throw new TException("An exception occurred while inserting and fetching the ratings", e);

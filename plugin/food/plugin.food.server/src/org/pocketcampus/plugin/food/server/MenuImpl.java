@@ -1,7 +1,6 @@
 package org.pocketcampus.plugin.food.server;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
 import org.joda.time.LocalDate;
 import org.pocketcampus.platform.server.HttpClient;
 import org.pocketcampus.plugin.food.shared.*;
@@ -72,7 +71,7 @@ public final class MenuImpl implements Menu {
 	}
 
 	/** Parses the menu from the official meal list's HTML. */
-	public FoodResponse get(MealTime time, LocalDate date) throws JsonParseException {
+	public FoodResponse get(MealTime time, LocalDate date) {
 
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
