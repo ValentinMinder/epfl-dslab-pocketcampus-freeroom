@@ -147,6 +147,10 @@ public class EventsMainView extends PluginView implements IEventsView {
 			scrollState.restore(mList);
 		if (thisEventPool != null && thisEventPool.isRefreshOnBack())
 			mController.refreshEventPool(this, eventPoolId, happeningNow, fetchPast, false);
+		if(displayingList) {
+			updateActionBar();
+			updateDisplay(true);
+		}
 	}
 
 	@Override
