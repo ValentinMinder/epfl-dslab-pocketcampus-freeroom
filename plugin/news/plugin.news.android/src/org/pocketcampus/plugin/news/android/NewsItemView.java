@@ -133,7 +133,7 @@ public class NewsItemView extends PluginView implements INewsView {
 				startActivity(sendIntent);
 			}
 			public int getDrawable() {
-				return R.drawable.sdk_share;
+				return R.drawable.sdk_share_white;
 			}
 			@Override
 			public String getDescription() {
