@@ -267,6 +267,8 @@ public class CloudPrintModel extends PluginModel implements ICloudPrintModel {
 		} else if (uriString.startsWith("file://")) {
 			File myFile = new File(uriString);
 			fileName = myFile.getName();
+		} else if (uriString.startsWith("dummy://")) {
+			fileName = file.getLastPathSegment();
 		}
 		fileToPrint = file;
 	}

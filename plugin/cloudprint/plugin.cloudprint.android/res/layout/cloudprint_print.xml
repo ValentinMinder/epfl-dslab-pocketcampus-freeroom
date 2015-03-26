@@ -6,7 +6,8 @@
     <TextView
         android:id="@+id/cloudprint_preview_print"
         style="@style/PocketCampusListItemTitle"
-        android:text="@string/cloudprint_plugin_title" />
+        android:text="@string/cloudprint_plugin_title"
+        android:maxLines="3" />
 
     <ScrollView
         android:layout_marginBottom="35dp"
