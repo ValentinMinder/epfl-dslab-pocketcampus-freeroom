@@ -43,7 +43,6 @@ public class CamiproStatsView extends PluginView implements ICamiproView {
 		// Get and cast the controller and model
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
-		setContentView(R.layout.camipro_listview);
 
 		setActionBarTitle(getString(R.string.camipro_statistics_section_title));
 
@@ -89,6 +88,8 @@ public class CamiproStatsView extends PluginView implements ICamiproView {
 
 		if (stats == null)
 			return;
+
+		setContentView(R.layout.camipro_listview);
 
 		ArrayList<Map.Entry<String, String>> einfos = new ArrayList<Map.Entry<String, String>>();
 

@@ -51,9 +51,6 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		mController = (CamiproController) controller;
 		mModel = (CamiproModel) controller.getModel();
 
-		setContentView(R.layout.camipro_listview);
-		
-		addActionToActionBar(new EmailDetailsAction());
 		
 		setActionBarTitle(getString(R.string.camipro_ebanking_section_title));
 
@@ -95,11 +92,17 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	}
 
 	private void updateDisplay() {
+		removeAllActionsFromActionBar();
 		CardLoadingWithEbankingInfo ebanking = mModel
 				.getCardLoadingWithEbankingInfo();
 
 		if (ebanking == null)
 			return;
+		
+		setContentView(R.layout.camipro_listview);
+		
+		addActionToActionBar(new EmailDetailsAction());
+
 
 		ArrayList<Map.Entry<String, String>> einfos = new ArrayList<Map.Entry<String, String>>();
 
