@@ -12,7 +12,6 @@ import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.plugin.transport.android.iface.ErrorCause;
-import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
@@ -20,6 +19,7 @@ import org.pocketcampus.plugin.transport.shared.TransportTrip;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -74,6 +74,12 @@ public class TransportAddView extends PluginView implements ITransportView {
 		setActionBarTitle(getResources().getString(R.string.transport_add_station));
 		setKeyListener();
 	}
+	
+	@Override
+	protected void onPreCreate() {
+		super.onPreCreate();
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+	}
 
 	@Override
 	protected String screenName() {
@@ -97,7 +103,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 
 	private void performSearchIfNeeded() {
 		String s = ((EditText) findViewById(R.id.transport_add_searchinput)).getText().toString();
-		if (mController.searchForStations(s)) {
+		if (mController.searchForStations(TransportAddView.this, s)) {
 			trackEvent("Search", s);
 		}
 	}
@@ -130,7 +136,7 @@ public class TransportAddView extends PluginView implements ITransportView {
 
 	@Override
 	public void searchForStationsFinished(String searchQuery, List<TransportStation> result) {
-		final ITransportModel model = (ITransportModel) mController.getModel();
+		final TransportModel model = (TransportModel) mController.getModel();
 		result.removeAll(model.getPersistedTransportStations());
 		Preparated<TransportStation> preparated = new Preparated<TransportStation>(result,
 				new Preparator<TransportStation>() {
@@ -203,6 +209,14 @@ public class TransportAddView extends PluginView implements ITransportView {
 		super.onPause();
 
 		stopRefresh = true;
+	}
+
+	public synchronized void showLoading() {
+		setProgressBarIndeterminateVisibility(Boolean.TRUE);
+	}
+
+	public synchronized void hideLoading() {
+		setProgressBarIndeterminateVisibility(Boolean.FALSE);
 	}
 
 }

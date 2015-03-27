@@ -3,7 +3,6 @@ package org.pocketcampus.plugin.transport.android;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.transport.android.iface.ITransportController;
-import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.android.req.GetDefaultStationsRequest;
 import org.pocketcampus.plugin.transport.android.req.SearchForStationsRequest;
 import org.pocketcampus.plugin.transport.android.req.SearchForTripsRequest;
@@ -52,13 +51,11 @@ public class TransportController extends PluginController implements ITransportC
 		return mModel;
 	}
 
-	@Override
 	public void getDefaultStations() {
 		new GetDefaultStationsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), null);
 	}
 
-	@Override
-	public boolean searchForStations(String stationName) {
+	public boolean searchForStations(TransportAddView caller, String stationName) {
 		if (stationName.trim().length() == 0) {
 			return false;
 		}
@@ -67,16 +64,15 @@ public class TransportController extends PluginController implements ITransportC
 		if (query != null && query.equals(stationName))
 			return false;
 		query = stationName;
-		request = new SearchForStationsRequest();
+		request = new SearchForStationsRequest(caller);
 		TransportStationSearchRequest req = new TransportStationSearchRequest(stationName);
 		request.start(this, (Iface) getClient(new Client.Factory(), mPluginName), req);
 		return true;
 	}
 
-	@Override
 	public void searchForTrips(TransportStation from, TransportStation to) {
 		TransportTripSearchRequest request = new TransportTripSearchRequest(from, to);
-		ITransportModel model = (ITransportModel) getModel();
+		TransportModel model = (TransportModel) getModel();
 		model.getTripsFor(request).setLoading(true);
 		new SearchForTripsRequest().start(this, (Iface) getClient(new Client.Factory(), mPluginName), request);
 

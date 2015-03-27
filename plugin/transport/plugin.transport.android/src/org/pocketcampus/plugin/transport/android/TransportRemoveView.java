@@ -9,7 +9,6 @@ import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.transport.R;
-import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 
 import android.app.AlertDialog;
@@ -23,7 +22,7 @@ import android.widget.ListView;
  * @author silviu@pocketcampus.org
  */
 public class TransportRemoveView extends PluginView {
-	private ITransportModel model;
+	private TransportModel model;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -39,7 +38,7 @@ public class TransportRemoveView extends PluginView {
 	 */
 	@Override
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
-		model = (ITransportModel) controller.getModel();
+		model = (TransportModel) controller.getModel();
 		setContentView(R.layout.transport_remove);
 		setActionBarTitle(getString(R.string.transport_remove_station));
 		updateStationsToRemoveList();

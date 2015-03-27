@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.transport.android.req;
 
 import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
-import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
+import org.pocketcampus.plugin.transport.android.TransportModel;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 import org.pocketcampus.plugin.transport.shared.TransportTripSearchRequest;
 import org.pocketcampus.plugin.transport.shared.TransportTripSearchResponse;
@@ -23,13 +23,13 @@ public class SearchForTripsRequest
 	@Override
 	protected void onResult(TransportController controller,
 			TransportTripSearchResponse result) {
-		ITransportModel model = (ITransportModel) controller.getModel();
+		TransportModel model = (TransportModel) controller.getModel();
 		model.setTransportTripSearchResponse(request, result);
 	}
 
 	@Override
 	protected void onError(TransportController controller, Exception e) {
-		ITransportModel model = (ITransportModel) controller.getModel();
+		TransportModel model = (TransportModel) controller.getModel();
 		model.setTransportTripSearchResponse(request, null);
 		e.printStackTrace();
 	}

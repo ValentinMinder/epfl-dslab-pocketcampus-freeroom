@@ -2,7 +2,7 @@ package org.pocketcampus.plugin.transport.android.req;
 
 import org.pocketcampus.platform.android.io.Request;
 import org.pocketcampus.plugin.transport.android.TransportController;
-import org.pocketcampus.plugin.transport.android.iface.ITransportModel;
+import org.pocketcampus.plugin.transport.android.TransportModel;
 import org.pocketcampus.plugin.transport.shared.TransportDefaultStationsResponse;
 import org.pocketcampus.plugin.transport.shared.TransportService.Iface;
 
@@ -26,13 +26,13 @@ public class GetDefaultStationsRequest
 	@Override
 	protected void onResult(TransportController controller,
 			TransportDefaultStationsResponse result) {
-		ITransportModel model = (ITransportModel) controller.getModel();
+		TransportModel model = (TransportModel) controller.getModel();
 		model.setTransportDefaultStationsResponse(result);
 	}
 
 	@Override
 	protected void onError(TransportController controller, Exception e) {
-		ITransportModel model = (ITransportModel) controller.getModel();
+		TransportModel model = (TransportModel) controller.getModel();
 		model.setTransportDefaultStationsResponse(null);
 		e.printStackTrace();
 	}

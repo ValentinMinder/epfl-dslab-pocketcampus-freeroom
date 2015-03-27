@@ -103,7 +103,6 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		return ITransportView.class;
 	}
 
-	@Override
 	public void setTransportDefaultStationsResponse(TransportDefaultStationsResponse response) {
 		if (response != null) {
 			switch (response.getStatusCode()) {
@@ -121,12 +120,10 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		}
 	}
 
-	@Override
 	public List<TransportStation> getPersistedTransportStations() {
 		return userTransportStations;
 	}
 
-	@Override
 	public void setTransportTripSearchResponse(TransportTripSearchRequest request, TransportTripSearchResponse response) {
 		if (response != null) {
 			switch (response.getStatusCode()) {
@@ -162,7 +159,6 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		}
 	}
 
-	@Override
 	public void setTransportStationSearchResponse(TransportStationSearchRequest request,
 			TransportStationSearchResponse response) {
 		if (response != null) {
@@ -183,7 +179,6 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		return this.cachedQueryTrips.values();
 	}
 
-	@Override
 	public void departureStationChangedTo(TransportStation station) {
 		cachedQueryTrips.clear();
 		if (station == null) {
@@ -201,22 +196,18 @@ public class TransportModel extends PluginModel implements ITransportModel {
 		}
 	}
 
-	@Override
 	public List<TransportStation> getArrivalStations() {
 		return arrivalStations;
 	}
 
-	@Override
 	public TransportStation getDepartureStation() {
 		return departureStation;
 	}
 
-	@Override
 	public TransportTrips getTripsFor(TransportTripSearchRequest request) {
 		return cachedQueryTrips.get(request);
 	}
 
-	@Override
 	public void removeTransportStationFromPersistedStorage(TransportStation station) {
 		Set<String> stations = mStationPrefs.getStringSet(STATION_NAMES, new HashSet<String>());
 		String stationName = station.getName();
