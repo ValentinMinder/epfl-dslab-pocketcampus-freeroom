@@ -119,7 +119,6 @@ public class TransportDestinationTripsView extends PluginView {
 					@Override
 					public void finalize(Map<String, Object> map,
 							TransportTrip item) {
-						// TODO Auto-generated method stub
 
 					}
 				});
@@ -134,8 +133,7 @@ public class TransportDestinationTripsView extends PluginView {
 
 	@Override
 	protected String screenName() {
-		// TODO Auto-generated method stub
-		return "Trip details";
+		return "/transport/trips";
 	}
 
 }

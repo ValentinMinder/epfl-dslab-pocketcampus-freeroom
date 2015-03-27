@@ -96,7 +96,7 @@ public class TransportTripView extends PluginView {
 
 	@Override
 	protected String screenName() {
-		return "tripView";
+		return "/transport/trips/parts";
 	}
 
 }

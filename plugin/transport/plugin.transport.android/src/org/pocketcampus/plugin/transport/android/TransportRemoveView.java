@@ -41,13 +41,13 @@ public class TransportRemoveView extends PluginView {
 	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 		model = (ITransportModel) controller.getModel();
 		setContentView(R.layout.transport_remove);
-		setActionBarTitle(getString(R.string.transport_remove_stations));
+		setActionBarTitle(getString(R.string.transport_remove_station));
 		updateStationsToRemoveList();
 	}
 
 	@Override
 	protected String screenName() {
-		return "/transport/removeStations";
+		return "/transport/removeStation";
 	}
 
 	private void updateStationsToRemoveList() {

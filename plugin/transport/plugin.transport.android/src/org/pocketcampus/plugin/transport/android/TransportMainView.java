@@ -16,7 +16,7 @@ import org.pocketcampus.platform.android.utils.Callback;
 import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
-import org.pocketcampus.R;
+import org.pocketcampus.plugin.transport.R;
 import org.pocketcampus.plugin.transport.android.iface.ErrorCause;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
 import org.pocketcampus.plugin.transport.android.iface.TransportTrips;
@@ -129,7 +129,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			@Override
 			public void performAction(View view) {
-				trackEvent("UserStations", null);
+				trackEvent("AddStation", null);
 				Intent i = new Intent(TransportMainView.this, TransportAddView.class);
 				startActivity(i);
 			}
@@ -149,7 +149,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			@Override
 			public void performAction(View view) {
-				trackEvent("UserStations", null);
+				trackEvent("RemoveStation", null);
 				Intent i = new Intent(TransportMainView.this, TransportRemoveView.class);
 				startActivity(i);
 			}
@@ -161,8 +161,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 
 			@Override
 			public String getDescription() {
-				// TODO Auto-generated method stub
-				return null;
+				return getString(R.string.transport_remove_station);
 			}
 		});
 
@@ -459,7 +458,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
-			trackEvent("ChangeDirection", null);
+			trackEvent("SelectDeparture", null);
 
 			Map<Integer, String> mapFromIndexToName = new HashMap<Integer, String>();
 			mapFromIndexToName.put(0, getString(R.string.transport_automatic));

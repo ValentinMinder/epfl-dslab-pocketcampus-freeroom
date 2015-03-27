@@ -7,7 +7,7 @@
     <string name="transport_set_stations_message">Search station</string>
     <string name="transport_edit_stations">Edit your stations</string>
     <string name="transport_add_station">Add a station</string>
-    <string name="transport_remove_stations">Remove stations</string>
+    <string name="transport_remove_station">Remove a station</string>
     <string name="transport_new_station">New station</string>
     <string name="transport_confirmation">Confirmation</string>
     <string name="transport_confirmation_delete_station_start">Are you sure you want to remove</string>
