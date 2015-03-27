@@ -14,6 +14,7 @@ import org.pocketcampus.plugin.camipro.R;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -35,6 +36,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 
 	CamiproController mController;
 	private CamiproModel mModel;
+	ProgressDialog loading;
 
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -56,7 +58,8 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		setActionBarTitle(getString(R.string.camipro_ebanking_section_title));
 
 		mController.refreshStatsAndLoadingInfo();
-		updateDisplay();
+		setLoadingContentScreen();
+		//updateDisplay();
 	}
 
 	@Override
@@ -186,6 +189,18 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 	public void userCancelledAuthentication() {
 		finish();
 	}
+	
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
+	}
 
 	private class EmailDetailsAction implements Action {
 
@@ -197,7 +212,7 @@ public class CamiproCardRechargeView extends PluginView implements ICamiproView 
 		@Override
 		public void performAction(View view) {
 			trackEvent("RequestEmail", null);
-			mController.sendEmailWithLoadingDetails();
+			mController.sendEmailWithLoadingDetails(CamiproCardRechargeView.this);
 		}
 
 		@Override

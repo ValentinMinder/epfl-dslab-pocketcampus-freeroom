@@ -8,6 +8,7 @@ import org.pocketcampus.platform.android.core.LogoutListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproController;
+import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.android.req.BalanceAndTransactionsRequest;
 import org.pocketcampus.plugin.camipro.android.req.SendLoadingInfoByEmailRequest;
 import org.pocketcampus.plugin.camipro.android.req.StatsAndLoadingInfoRequest;
@@ -124,8 +125,8 @@ public class CamiproController extends PluginController implements ICamiproContr
 		new StatsAndLoadingInfoRequest().start(this, mClientSL, buildCamiproRequest());
 	}
 	
-	public void sendEmailWithLoadingDetails() {
-		new SendLoadingInfoByEmailRequest().start(this, mClientLE, buildCamiproRequest());
+	public void sendEmailWithLoadingDetails(CamiproCardRechargeView caller) {
+		new SendLoadingInfoByEmailRequest(caller).start(this, mClientLE, buildCamiproRequest());
 	}
 	
 	private CamiproRequest buildCamiproRequest() {

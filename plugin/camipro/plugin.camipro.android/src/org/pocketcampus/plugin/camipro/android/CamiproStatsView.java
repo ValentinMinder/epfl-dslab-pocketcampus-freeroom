@@ -48,7 +48,8 @@ public class CamiproStatsView extends PluginView implements ICamiproView {
 		setActionBarTitle(getString(R.string.camipro_statistics_section_title));
 
 		mController.refreshStatsAndLoadingInfo();
-		updateDisplay();
+		setLoadingContentScreen();
+		//updateDisplay();
 	}
 
 	@Override
