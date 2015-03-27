@@ -8,8 +8,8 @@
 	<string name="food_menu_view_lunch_menus">Menus de midi</string>
 	<string name="food_menu_view_evening_menus">Menus du soir</string>
 	
-	<string name="food_dialog_resto">Filtrer par restaurant</string>
-	<string name="food_dialog_types">Filtrer par types</string>
+	<string name="food_dialog_resto">Filtrer par restaurants</string>
+	<string name="food_dialog_ingredients">Filtrer par types de plats</string>
 	<string name="food_dialog_prices">Afficher les prix pour</string>
 	<string name="food_dialog_vote">Noter</string>
 	
