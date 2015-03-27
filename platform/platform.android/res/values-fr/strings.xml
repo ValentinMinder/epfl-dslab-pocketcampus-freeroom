@@ -32,4 +32,6 @@
 	<string name="sdk_loading">Chargement</string>
 	<string name="sdk_please_wait_loading">Chargement\nMerci de patienter...</string>
 		
+	<string name="sdk_reload_title">Rafraîchir</string>
+	
 </resources>
