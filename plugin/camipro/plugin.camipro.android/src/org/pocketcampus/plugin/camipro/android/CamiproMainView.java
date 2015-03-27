@@ -360,7 +360,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 			Intent i = new Intent(CamiproMainView.this,
 					CamiproCardRechargeView.class);
 			startActivity(i);
-			trackEvent("OpenRefill", null);
+			trackEvent("Refill", null);
 		}
 
 		@Override
@@ -380,7 +380,7 @@ public class CamiproMainView extends PluginView implements ICamiproView {
 		public void performAction(View view) {
 			Intent i = new Intent(CamiproMainView.this, CamiproStatsView.class);
 			startActivity(i);
-			trackEvent("OpenRefill", null);
+			trackEvent("Stats", null);
 		}
 
 		@Override
