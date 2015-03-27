@@ -82,7 +82,7 @@ public class DirectoryController extends PluginController implements IDirectoryC
 	/**
 	 * Initiate search
 	 */
-	synchronized public boolean search(IDirectoryView caller, String q) {
+	synchronized public boolean search(DirectoryMainView caller, String q) {
 		if(request != null && !request.getStatus().equals(AsyncTask.Status.FINISHED))
 			return false;
 		if(query != null && query.equals(q))

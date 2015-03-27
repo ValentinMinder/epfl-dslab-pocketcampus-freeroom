@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -65,8 +66,14 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	}
 
 	@Override
+	protected void onPreCreate() {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+	}
+	
+	@Override
 	protected void onDisplay(Bundle savedInstanceState,
 			PluginController controller) {
+		
 
 		// Get and cast the controller and model
 		mController = (DirectoryController) controller;
@@ -87,16 +94,16 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 	private void showMsg() {
 		RelativeLayout mainView = (RelativeLayout) findViewById(R.id.directory_main);
 		mainView.removeAllViews();
-		mainView.addView(msgView, new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT));
+		mainView.addView(msgView, new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
 
 	}
 
 	private void showList() {
 		RelativeLayout mainView = (RelativeLayout) findViewById(R.id.directory_main);
 		mainView.removeAllViews();
-		mainView.addView(listView, new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT));
+		mainView.addView(listView, new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
 
 	}
 
@@ -323,6 +330,14 @@ public class DirectoryMainView extends PluginView implements IDirectoryView {
 
 	@Override
 	public void ambiguousQuery() {
+	}
+
+	public synchronized void showLoading() {
+		setProgressBarIndeterminateVisibility(Boolean.TRUE);
+	}
+
+	public synchronized void hideLoading() {
+		setProgressBarIndeterminateVisibility(Boolean.FALSE);
 	}
 
 }

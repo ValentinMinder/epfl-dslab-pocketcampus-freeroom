@@ -1,9 +1,11 @@
 package org.pocketcampus.plugin.directory.android.req;
 
 import org.pocketcampus.platform.android.io.Request;
-import org.pocketcampus.plugin.directory.android.*;
-import org.pocketcampus.plugin.directory.android.iface.IDirectoryView;
-import org.pocketcampus.plugin.directory.shared.*;
+import org.pocketcampus.plugin.directory.android.DirectoryController;
+import org.pocketcampus.plugin.directory.android.DirectoryMainView;
+import org.pocketcampus.plugin.directory.android.DirectoryModel;
+import org.pocketcampus.plugin.directory.shared.DirectoryRequest;
+import org.pocketcampus.plugin.directory.shared.DirectoryResponse;
 import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
 
 /**
@@ -17,10 +19,16 @@ import org.pocketcampus.plugin.directory.shared.DirectoryService.Iface;
  */
 public class SearchDirectoryRequest extends Request<DirectoryController, Iface, DirectoryRequest, DirectoryResponse> {
 
-	private IDirectoryView caller;
+	private DirectoryMainView caller;
 	
-	public SearchDirectoryRequest(IDirectoryView caller) {
+	public SearchDirectoryRequest(DirectoryMainView caller) {
 		this.caller = caller;
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		caller.showLoading();
 	}
 	
 	@Override
@@ -32,6 +40,7 @@ public class SearchDirectoryRequest extends Request<DirectoryController, Iface, 
 
 	@Override
 	protected void onResult(DirectoryController controller, DirectoryResponse result) {
+		caller.hideLoading();
 		if(result.getStatus() == 200) {
 			if(result.isSetResults())
 				((DirectoryModel) controller.getModel()).setResults(result.getResults());
@@ -44,6 +53,7 @@ public class SearchDirectoryRequest extends Request<DirectoryController, Iface, 
 
 	@Override
 	protected void onError(DirectoryController controller, Exception e) {
+		caller.hideLoading();
 		caller.networkErrorHappened();
 		e.printStackTrace();
 	}
