@@ -21,6 +21,5 @@ public interface IAuthenticationView extends IView {
 	
 	void shouldFinish();
 	void gotUserAttributes(List<String> attr);
-	void deletedSessions(Integer c);
 	
 }

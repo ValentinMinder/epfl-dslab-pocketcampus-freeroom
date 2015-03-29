@@ -5,12 +5,9 @@ import java.util.List;
 import org.pocketcampus.platform.android.cache.RequestCache;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
-import org.pocketcampus.platform.android.utils.DialogUtils;
 import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.iface.IAuthenticationView;
 import org.pocketcampus.plugin.authentication.android.req.FetchUserAttributes;
-import org.pocketcampus.plugin.authentication.android.req.LogoutAllSessions;
-import org.pocketcampus.plugin.authentication.shared.LogoutRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,8 +30,8 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 	private AuthenticationController mController;
 	private AuthenticationModel mModel;
 	
-	private Button logoutButton;
-	private TextView statusText;
+//	private Button logoutButton;
+//	private TextView statusText;
 	
 	@Override
 	protected Class<? extends PluginController> getMainControllerClass() {
@@ -49,31 +46,25 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 		mModel = (AuthenticationModel) controller.getModel();
 
 		
-		setContentView(R.layout.authentication_status);
-		logoutButton = (Button) findViewById(R.id.authentication_logout_button);
-		statusText = (TextView) findViewById(R.id.authentication_status_text);
-		
-		logoutButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				trackEvent("LogOut", null);
-				logout();
-			}
-		});
-		logoutButton.setText(getString(R.string.authentication_signed_out_all));
 		
 		setActionBarTitle(getString(R.string.authentication_plugin_title));
 
-		refreshView();
-	}
-	
-	public void refreshView() {
+//		refreshView();
 		if(mModel.getPcSessionId() == null) {
 			updateDisplay(null);
-			return;
+		} else {
+			setLoadingContentScreen();
+			mController.getUserAttributes(this, true);
 		}
-		mController.getUserAttributes(this, true);
 	}
+	
+//	public void refreshView() {
+//		if(mModel.getPcSessionId() == null) {
+//			updateDisplay(null);
+//			return;
+//		}
+//		mController.getUserAttributes(this, true);
+//	}
 
 	
 
@@ -87,6 +78,20 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 
 	
 	private void updateDisplay(String name) {
+		setContentView(R.layout.authentication_status);
+		Button logoutButton = (Button) findViewById(R.id.authentication_logout_button);
+		TextView statusText = (TextView) findViewById(R.id.authentication_status_text);
+		
+		logoutButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				trackEvent("LogOut", null);
+				logout();
+			}
+		});
+		logoutButton.setText(getString(R.string.authentication_signed_out_all));
+		
+		
 		String account = null;
 		if(mModel.getSavedGasparPassword() != null)
 			account = mModel.getGasparUsername();
@@ -124,18 +129,18 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 		
 //		if(!signingOut)
 //			refreshView();
-		refreshView();
+		updateDisplay(null);
 	}
 	
-	@Override
-	public void deletedSessions(Integer c) {
-		if(c == null) {
-			DialogUtils.alert(this, getString(R.string.authentication_string_logout), getString(R.string.authentication_string_failed));
-		} else {
-			DialogUtils.alert(this, getString(R.string.authentication_string_logout), String.format(getString(R.string.authentication_signed_out), c));
-		}
-		refreshView();
-	}
+//	@Override
+//	public void deletedSessions(Integer c) {
+//		if(c == null) {
+//			DialogUtils.alert(this, getString(R.string.authentication_string_logout), getString(R.string.authentication_string_failed));
+//		} else {
+//			DialogUtils.alert(this, getString(R.string.authentication_string_logout), String.format(getString(R.string.authentication_signed_out), c));
+//		}
+//		refreshView();
+//	}
 	
 
 	

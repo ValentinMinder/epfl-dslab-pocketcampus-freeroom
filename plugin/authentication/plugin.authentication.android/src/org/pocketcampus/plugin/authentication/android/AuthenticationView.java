@@ -336,8 +336,4 @@ public class AuthenticationView extends PluginView implements IAuthenticationVie
 	public void gotUserAttributes(List<String> attr) {
 	}
 
-	@Override
-	public void deletedSessions(Integer c) {
-	}
-
 }
