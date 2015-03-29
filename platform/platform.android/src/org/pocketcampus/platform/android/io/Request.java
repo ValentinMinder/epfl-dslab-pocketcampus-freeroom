@@ -43,11 +43,13 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 		mClient = client;
 
 		// Increments the global request operation counter.
-		mHandler.post(new Runnable() {
-		    public void run() {
-		    	mGlobalContext.incrementRequestCounter();
-		    }
-		});
+		if(shouldCountRequest()) {
+			mHandler.post(new Runnable() {
+			    public void run() {
+			    	mGlobalContext.incrementRequestCounter();
+			    }
+			});
+		}
 		
 		try {
 			execute(param);
@@ -87,11 +89,13 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	}
 
 	protected final void onPostExecute(final ResultType result) {
-		mHandler.post(new Runnable() {
-		    public void run() {
-		    	mGlobalContext.decrementRequestCounter();
-		    }
-		});
+		if(shouldCountRequest()) {
+			mHandler.post(new Runnable() {
+			    public void run() {
+			    	mGlobalContext.decrementRequestCounter();
+			    }
+			});
+		}
 
 		if(mException != null) {
 			mHandler.post(new Runnable() {
@@ -114,11 +118,13 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	
 	@Override
 	protected final void onCancelled() {
-		mHandler.post(new Runnable() {
-		    public void run() {
-		    	mGlobalContext.decrementRequestCounter();
-		    }
-		});
+		if(shouldCountRequest()) {
+			mHandler.post(new Runnable() {
+			    public void run() {
+			    	mGlobalContext.decrementRequestCounter();
+			    }
+			});
+		}
 	};
 	
 	/**
@@ -164,6 +170,10 @@ public abstract class Request<ControllerType extends PluginController, ClientTyp
 	protected abstract ResultType runInBackground(ClientType client, SentType param) throws Exception;
 	protected abstract void onResult(ControllerType controller, ResultType result);
 	protected abstract void onError(ControllerType controller, Exception e);
+	
+	protected boolean shouldCountRequest() {
+		return true;
+	}
 }
 
 

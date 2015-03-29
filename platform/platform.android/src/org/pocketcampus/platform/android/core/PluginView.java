@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -70,6 +71,10 @@ public abstract class PluginView extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		onPreCreate();
+		
+		if(shouldShowProgressBar()) {
+			requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		}
 
 		Class<? extends Service> controllerClass = getMainControllerClass();
 
@@ -142,34 +147,32 @@ public abstract class PluginView extends FragmentActivity {
 	 */
 	protected void onPreCreate() {
 	}
+	
+	protected boolean shouldShowProgressBar() {
+		return false;
+	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		// Register a request activity listener that shows a spinner in the
-		// ActionBar when a request is running.
-		// // RequestActivityListener activityListener = new
-		// RequestActivityListener() {
-		// // @Override
-		// // public void requestsChanged(int count) {
-		// // if (mActionBar == null) {
-		// // return;
-		// // }
-		// //
-		// // mActionBar.setProgressBarVisibility(count == 0 ? View.GONE :
-		// View.VISIBLE);
-		// // }
-		// //
-		// // };
-		//
-		// GlobalContext globalContext = (GlobalContext)
-		// getApplicationContext();
-		// globalContext.setRequestActivityListener(activityListener);
-		//
-		// // update the action bar in case a request is already running from
-		// another plugin
-		// activityListener.requestsChanged(globalContext.getRequestsCount());
+		if(shouldShowProgressBar()) {
+			// Register a request activity listener that shows a spinner in the
+			// ActionBar when a request is running.
+			RequestActivityListener activityListener = new RequestActivityListener() {
+				@Override
+				public void requestsChanged(int count) {
+					setProgressBarIndeterminateVisibility(count == 0 ? Boolean.FALSE
+							: Boolean.TRUE);
+				}
+
+			};
+			GlobalContext globalContext = (GlobalContext) getApplicationContext();
+			globalContext.setRequestActivityListener(activityListener);
+			// update the action bar in case a request is already running from
+			// another plugin
+			activityListener.requestsChanged(globalContext.getRequestsCount());
+		}
 
 		GATracker.getInstance().sendScreen(screenName());
 	}
