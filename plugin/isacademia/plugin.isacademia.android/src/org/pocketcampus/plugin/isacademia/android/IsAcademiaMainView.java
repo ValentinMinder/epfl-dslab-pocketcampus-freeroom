@@ -14,7 +14,7 @@ import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
@@ -23,6 +23,7 @@ import org.pocketcampus.plugin.isacademia.R;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
 import org.pocketcampus.plugin.isacademia.shared.StudyPeriod;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -35,17 +36,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markupartist.android.widget.Action;
@@ -70,7 +65,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 	private boolean displayingList;
 
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 
 	private long currentTime;
@@ -261,7 +256,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 
 	public void updateDisplay() {
 		setContentView(R.layout.isacademia_main_container);
-		mList = (ListView) findViewById(R.id.isacademia_main_list);
+		mList = (StickyListHeadersListView) findViewById(R.id.isacademia_main_list);
 		displayingList = true;
 
 		updateActionBar();
@@ -278,7 +273,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		if (displayingList)
 			scrollState = new ScrollStateSaver(mList);
 
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this,
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this,
 				R.layout.sdk_separated_list_header2);
 
 		Preparated<StudyPeriod> p = new Preparated<StudyPeriod>(courses,
@@ -336,7 +331,7 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		} else {
 			if (!displayingList) {
 				setContentView(R.layout.isacademia_main_container);
-				mList = (ListView) findViewById(R.id.isacademia_main_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.isacademia_main_list);
 				displayingList = true;
 			}
 			mList.setAdapter(adapter);
