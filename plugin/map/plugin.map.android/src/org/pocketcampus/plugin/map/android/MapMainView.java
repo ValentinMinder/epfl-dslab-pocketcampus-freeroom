@@ -927,8 +927,7 @@ public class MapMainView extends PluginView implements IMapView {
 			return;
 		};
 		trackEvent("Search", query);
-		mController.search(query);
-		loading = ProgressDialog.show(this, null, getString(R.string.map_searching), true, false);
+		mController.search(this, query);
 		
 	}
 	
@@ -959,12 +958,10 @@ public class MapMainView extends PluginView implements IMapView {
 		Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.sdk_connection_error_happened),
 				Toast.LENGTH_SHORT); 
 		toast.show();
-		loading.dismiss();
 	}
 
 	@Override
 	public void searchResultsUpdated() {
-		loading.dismiss();
 		
 		showMarkers(mModel.getSearchResults());
 		adaptCamera();
@@ -975,6 +972,19 @@ public class MapMainView extends PluginView implements IMapView {
 	}
 	
 	
+	
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
+	}
+
 
     public void onTrafficToggled(View v) {
         mMap.setTrafficEnabled(((CheckBox) v).isChecked());
