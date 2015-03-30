@@ -8,7 +8,7 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
@@ -17,13 +17,13 @@ import org.pocketcampus.plugin.moodle.R;
 import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourse2;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -52,7 +52,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	// private Map<String, String> feedsInRS = new HashMap<String, String>();
 	// private Set<String> filteredFeeds = new HashSet<String>();
 
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 
 	@Override
@@ -116,7 +116,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 	@Override
 	public void coursesListUpdated() {
 		setContentView(R.layout.moodle_main_container);
-		mList = (ListView) findViewById(R.id.moodle_main_list);
+		mList = (StickyListHeadersListView) findViewById(R.id.moodle_main_list);
 		displayingList = true;
 		updateDisplay();
 	}
@@ -130,7 +130,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 				scrollState = new ScrollStateSaver(mList);
 			}
 		}
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this, R.layout.sdk_separated_list_header2);
 
 		Collections.sort(courses, MoodleController.getMoodleCourseItemComp4sort());
 
@@ -165,7 +165,7 @@ public class MoodleMainView extends PluginView implements IMoodleView {
 
 			if (!displayingList) {
 				setContentView(R.layout.moodle_main_container);
-				mList = (ListView) findViewById(R.id.moodle_main_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.moodle_main_list);
 				displayingList = true;
 			}
 			mList.setAdapter(adapter);

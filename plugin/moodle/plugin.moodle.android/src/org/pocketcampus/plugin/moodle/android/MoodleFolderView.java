@@ -6,7 +6,7 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
@@ -16,20 +16,19 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleFile2;
 import org.pocketcampus.plugin.moodle.shared.MoodleFolder2;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -56,7 +55,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 	private MoodleFolder2 folderObj;
 	private String courseTitle;
 
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 	ProgressDialog loading;
 
@@ -135,7 +134,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 		if (displayingList)
 			scrollState = new ScrollStateSaver(mList);
 
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this,
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this,
 				R.layout.sdk_separated_list_header2);
 
 		Preparated<MoodleFile2> p = new Preparated<MoodleFile2>(
@@ -185,7 +184,7 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 
 			if (!displayingList) {
 				setContentView(R.layout.moodle_course_container);
-				mList = (ListView) findViewById(R.id.moodle_course_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.moodle_course_list);
 				displayingList = true;
 			}
 
@@ -377,8 +376,6 @@ public class MoodleFolderView extends PluginView implements IMoodleView {
 			final T context, final MoodleController controller,
 			final MoodleFile2 item, final File file, final ListAdapter adapter,
 			final DialogInterface.OnClickListener listener) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setTitle(item.getName()).setAdapter(adapter, listener)
 				.setInverseBackgroundForced(true).create();

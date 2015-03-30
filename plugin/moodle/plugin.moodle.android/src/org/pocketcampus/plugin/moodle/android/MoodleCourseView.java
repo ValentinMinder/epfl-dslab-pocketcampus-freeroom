@@ -10,7 +10,7 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
@@ -20,6 +20,7 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourseSection2;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource2;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -63,7 +63,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	
 	List<MoodleCourseSection2> sections = null;
 	
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 	ProgressDialog loading;
 
@@ -151,7 +151,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 		
 
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this, R.layout.sdk_separated_list_header2);
 		
 		boolean atLeastOneSection = false;
 
@@ -198,7 +198,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 			
 			if(!displayingList) {
 				setContentView(R.layout.moodle_course_container);
-				mList = (ListView) findViewById(R.id.moodle_course_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.moodle_course_list);
 				displayingList = true;
 			}
 
