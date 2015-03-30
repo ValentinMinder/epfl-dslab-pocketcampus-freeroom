@@ -89,7 +89,7 @@ public class AuthenticationStatusView extends PluginView implements IAuthenticat
 				logout();
 			}
 		});
-		logoutButton.setText(getString(R.string.authentication_signed_out_all));
+		logoutButton.setText(getString(R.string.authentication_string_logout));
 		
 		
 		String account = null;
