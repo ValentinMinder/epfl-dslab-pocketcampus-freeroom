@@ -3,11 +3,10 @@
 // File author: Solal Pirelli
 
 using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using PocketCampus.Authentication.Models;
 using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
@@ -18,162 +17,87 @@ namespace PocketCampus.Authentication.Services
 {
     public sealed class SecureRequestHandler : ISecureRequestHandler
     {
-        private readonly IServerSettings _mainSettings;
+        private static readonly string[] OAuth2Scopes = 
+        {
+            "Tequila.profile", "Moodle.read", "ISA.read", "Camipro.read", "Camipro.write"
+        };
+        private static readonly string TokenRequestUrl =
+            "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/auth?response_type=code&redirect_uri=https%3A%2F%2Fpocketcampus.epfl.ch%2F&client_id=1b74e3837e50e21afaf2005f%40epfl.ch&scope=" + string.Join( ",", OAuth2Scopes );
+        private static readonly string CodeRequestUrl =
+            TokenRequestUrl + "&doauth=Approve"; // Tequila stuff...
+        private const string TequilaRequestKeyParameter = "requestkey";
+        private const string TequilaCodeParameter = "code";
+
+
+        private readonly IServerSettings _serverSettings;
         private readonly ICredentialsStorage _credentials;
         private readonly INavigationService _navigationService;
         private readonly IAuthenticator _authenticator;
         private readonly IAuthenticationService _authenticationService;
 
 
-        public SecureRequestHandler( IServerSettings mainSettings, ICredentialsStorage credentials, INavigationService navigationService,
+        public SecureRequestHandler( IServerSettings serverSettings, ICredentialsStorage credentials, INavigationService navigationService,
                                      IAuthenticator authenticator, IAuthenticationService authenticationService )
         {
-            _mainSettings = mainSettings;
+            _serverSettings = serverSettings;
             _credentials = credentials;
             _navigationService = navigationService;
             _authenticator = authenticator;
             _authenticationService = authenticationService;
         }
 
-
-        // New HTTP header-based auth.
+        // New OAuth2 auth
         public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
-            where T : class
         {
-            if ( _mainSettings.Session == null )
+            if ( _serverSettings.Session == null )
             {
-                var tokenResponse = await _authenticationService.GetTokenAsync();
+                var client = new HttpClient();
+                var keyResponse = await client.GetAsync( TokenRequestUrl );
+                keyResponse.EnsureSuccessStatusCode();
+                string requestKey = GetUrlParameterValue( keyResponse.RequestMessage.RequestUri, TequilaRequestKeyParameter );
 
-                if ( tokenResponse.Status == ResponseStatus.Success
-                  && await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, tokenResponse.Token ) )
+                if ( await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, requestKey ) )
                 {
+                    var codeResponse = await client.GetAsync( CodeRequestUrl );
+                    codeResponse.EnsureSuccessStatusCode();
+                    string code = GetUrlParameterValue( codeResponse.RequestMessage.RequestUri, TequilaCodeParameter );
+
                     var sessionRequest = new SessionRequest
                     {
-                        TequilaToken = tokenResponse.Token,
-                        RememberMe = _mainSettings.SessionStatus == SessionStatus.LoggedIn
+                        TequilaToken = code,
+                        RememberMe = _serverSettings.SessionStatus == SessionStatus.LoggedIn
                     };
                     var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
 
                     if ( sessionResponse.Status == ResponseStatus.Success )
                     {
-                        _mainSettings.Session = sessionResponse.Session;
+                        _serverSettings.Session = sessionResponse.Session;
                     }
                 }
                 else
                 {
-                    _mainSettings.SessionStatus = SessionStatus.NotLoggedIn;
-                    return null;
+                    _serverSettings.SessionStatus = SessionStatus.NotLoggedIn;
+                    return default( T );
                 }
             }
 
             return await attempt();
         }
 
-        // Deprecated two-step auth.
-        public async Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
-            where TViewModel : ViewModel<NoParameter>
-            where TToken : IAuthenticationToken
-            where TSession : class
-        {
-            var session = LoadSession<TSession>( typeof( TViewModel ) );
-
-            if ( session == null )
-            {
-                var token = await authenticator.GetTokenAsync();
-                if ( await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, token.AuthenticationKey ) )
-                {
-                    session = await authenticator.GetSessionAsync( token );
-                    SaveSession( typeof( TViewModel ), session );
-                }
-                else
-                {
-                    _mainSettings.SessionStatus = SessionStatus.NotLoggedIn;
-                    return;
-                }
-            }
-
-            await attempt( session );
-        }
-
-
         public void Authenticate<TViewModel>()
             where TViewModel : ViewModel<NoParameter>
         {
-            // Destroy all sessions, since this is called when credentials have been declared invalid
-            _mainSettings.Session = null;
-            _mainSettings.Sessions = new Dictionary<string, string>();
+            // Destroy the session, since this is called when credentials have been declared invalid
+            _serverSettings.Session = null;
 
             var authRequest = new AuthenticationRequest( () => _navigationService.NavigateTo<TViewModel>() );
             _navigationService.RemoveCurrentFromBackStack();
             _navigationService.NavigateTo<MainViewModel, AuthenticationRequest>( authRequest );
         }
 
-
-        private TSession LoadSession<TSession>( Type typeKey )
-            where TSession : class
+        private static string GetUrlParameterValue( Uri url, string parameterKey )
         {
-            string key = typeKey.FullName;
-            var sessions = _mainSettings.Sessions;
-            if ( sessions.ContainsKey( key ) )
-            {
-                return DeserializeSession<TSession>( sessions[key] );
-            }
-            return null;
-        }
-
-        private void SaveSession( Type typeKey, object session )
-        {
-            string key = typeKey.FullName;
-            string value = SerializeSession( session );
-            var sessions = _mainSettings.Sessions;
-            if ( sessions.ContainsKey( key ) )
-            {
-                sessions[key] = value;
-            }
-            else
-            {
-                sessions.Add( key, value );
-            }
-            _mainSettings.Sessions = sessions; // force a save, since dictionaries aren't observable
-        }
-
-
-        // HACK: Since objects can't be (de)serialized into "object"s (because of the known types magic),
-        //       convert them to strings and then save them.
-
-        /// <summary>
-        /// Deserializes an object of the specified type from the specified string.
-        /// </summary>
-        private static T DeserializeSession<T>( string serialized )
-        {
-            if ( serialized == "" )
-            {
-                return default( T );
-            }
-            using ( var reader = new StringReader( serialized ) )
-            {
-                return (T) new XmlSerializer( typeof( T ) ).Deserialize( reader );
-            }
-        }
-
-        /// <summary>
-        /// Serializes the specified object into a string.
-        /// </summary>
-        private static string SerializeSession( object session )
-        {
-            if ( session == null )
-            {
-                return "";
-            }
-
-            using ( var writer = new StringWriter() )
-            {
-                // Ensure that the BOM isn't saved - weird, but it works
-                var emptyNs = new XmlSerializerNamespaces( new[] { new XmlQualifiedName( "", "" ) } );
-
-                new XmlSerializer( session.GetType() ).Serialize( writer, session, emptyNs );
-                return writer.ToString();
-            }
+            return WebUtility.UrlDecode( url.Query.Split( '&' ).Select( s => s.Split( '=' ) ).Single( s => s[0] == parameterKey )[1] );
         }
     }
 }

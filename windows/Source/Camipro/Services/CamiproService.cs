@@ -16,16 +16,6 @@ namespace PocketCampus.Camipro.Services
     {
         public CamiproService( IServerAccess config ) : base( config.CreateCommunication( "camipro" ) ) { }
 
-        public Task<TequilaToken> GetTokenAsync()
-        {
-            return CallAsync<TequilaToken>( x => x.GetTokenAsync );
-        }
-
-        public Task<CamiproSession> GetSessionAsync( TequilaToken token )
-        {
-            return CallAsync<TequilaToken, CamiproSession>( x => x.GetSessionAsync, token );
-        }
-
         public Task<AccountInfo> GetAccountInfoAsync( CamiproRequest request, CancellationToken cancellationToken )
         {
             return CallAsync<CamiproRequest, CancellationToken, AccountInfo>( x => x.GetAccountInfoAsync, request, cancellationToken );

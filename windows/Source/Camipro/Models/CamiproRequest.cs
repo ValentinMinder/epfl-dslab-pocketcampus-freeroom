@@ -9,8 +9,13 @@ namespace PocketCampus.Camipro.Models
     [ThriftStruct( "CamiproRequest" )]
     public sealed class CamiproRequest
     {
+        // Required but unused
         [ThriftField( 1, true, "iSessionId" )]
-        public SessionId Session { get; set; }
+        public SessionId Session
+        {
+            get { return new SessionId(); }
+            set { }
+        }
 
         [ThriftField( 2, true, "iLanguage" )]
         public string Language { get; set; }

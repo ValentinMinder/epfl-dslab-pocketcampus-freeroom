@@ -15,17 +15,10 @@ namespace PocketCampus.Authentication.Services
     public interface IAuthenticationService
     {
         /// <summary>
-        /// Asynchronously gets a token.
-        /// </summary>
-        [ThriftMethod( "getAuthTequilaToken" )]
-        Task<TokenResponse> GetTokenAsync();
-
-        /// <summary>
         /// Asynchronously gets a session for the specified token (once it has been authenticated).
         /// </summary>
-        [ThriftMethod( "getAuthSession" )]
+        [ThriftMethod( "getOAuth2TokensFromCode" )]
         Task<SessionResponse> GetSessionAsync( [ThriftParameter( 1, "req" )] SessionRequest request );
-
 
         /// <summary>
         /// Asynchronously requests that all user sessions for PocketCampus be destroyed.

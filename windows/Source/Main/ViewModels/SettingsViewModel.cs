@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using PocketCampus.Authentication;
 using PocketCampus.Authentication.Models;
@@ -68,7 +67,6 @@ namespace PocketCampus.Main.ViewModels
         {
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
-            Settings.Sessions = new Dictionary<string, string>();
             Credentials.DeleteCredentials();
             await _authenticator.LogOffAsync();
         }

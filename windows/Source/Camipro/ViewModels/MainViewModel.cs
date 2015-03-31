@@ -67,13 +67,11 @@ namespace PocketCampus.Camipro.ViewModels
                 return;
             }
 
-            await _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
+            var accountAndEbanking = await _requestHandler.ExecuteAsync( async () =>
             {
                 var request = new CamiproRequest
                 {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    // HACK to make design data work :(
-                    Session = new SessionId { CamiproCookie = session == null ? null : session.Cookie }
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
 
                 var accountTask = _camiproService.GetAccountInfoAsync( request, token );
@@ -90,38 +88,39 @@ namespace PocketCampus.Camipro.ViewModels
                 if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
                 {
                     _requestHandler.Authenticate<MainViewModel>();
-                    return;
+                    return null;
                 }
 
-                if ( !token.IsCancellationRequested )
-                {
-                    AccountInfo = accountInfo;
-                    EbankingInfo = ebankingInfo;
-                }
+                return Tuple.Create( accountInfo, ebankingInfo );
             } );
+
+            if ( accountAndEbanking != null && !token.IsCancellationRequested )
+            {
+                AccountInfo = accountAndEbanking.Item1;
+                EbankingInfo = accountAndEbanking.Item2;
+            }
         }
 
 
-        private Task RequestEbankingEmailAsync()
+        private async Task RequestEbankingEmailAsync()
         {
-            return _requestHandler.ExecuteAsync<MainViewModel, TequilaToken, CamiproSession>( _camiproService, async session =>
-            {
-                EmailStatus = EmailSendingStatus.Requested;
+            EmailStatus = EmailSendingStatus.Requested;
 
+            EmailStatus = await _requestHandler.ExecuteAsync( async () =>
+            {
                 var request = new CamiproRequest
                 {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    Session = new SessionId { CamiproCookie = session.Cookie }
+                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                 };
 
                 try
                 {
                     var result = await _camiproService.RequestEBankingEMailAsync( request );
-                    EmailStatus = result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
+                    return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
                 }
                 catch
                 {
-                    EmailStatus = EmailSendingStatus.Error;
+                    return EmailSendingStatus.Error;
                 }
             } );
         }

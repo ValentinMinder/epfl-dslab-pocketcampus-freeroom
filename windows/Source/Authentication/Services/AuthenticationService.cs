@@ -15,11 +15,6 @@ namespace PocketCampus.Authentication.Services
     {
         public AuthenticationService( IServerAccess access ) : base( access.CreateCommunication( "authentication" ) ) { }
 
-        public Task<TokenResponse> GetTokenAsync()
-        {
-            return CallAsync<TokenResponse>( x => x.GetTokenAsync );
-        }
-
         public Task<SessionResponse> GetSessionAsync( SessionRequest request )
         {
             return CallAsync<SessionRequest, SessionResponse>( x => x.GetSessionAsync, request );

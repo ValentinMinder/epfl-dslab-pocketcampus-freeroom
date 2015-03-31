@@ -14,21 +14,9 @@ namespace PocketCampus.Common.Services
     public interface ISecureRequestHandler
     {
         /// <summary>
-        /// Asynchronously executes the specified request for the specified ViewModel type.
+        /// Asynchronously executes the specified request.
         /// </summary>
-        /// <remarks>
-        /// For use with the new, HTTP header based authentication.
-        /// </remarks>
-        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
-            where T : class;
-
-        /// <summary>
-        /// Asynchronously executes the specified request, with the specified authenticator, for the specified ViewModel type.
-        /// </summary>
-        Task ExecuteAsync<TViewModel, TToken, TSession>( ITwoStepAuthenticator<TToken, TSession> authenticator, Func<TSession, Task> attempt )
-            where TViewModel : ViewModel<NoParameter>
-            where TToken : IAuthenticationToken
-            where TSession : class;
+        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt );
 
         /// <summary>
         /// Requests new credentials from the user.

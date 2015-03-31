@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,7 +46,6 @@
     <Compile Include="Models\CardStatistics.cs" />
     <Compile Include="Models\PaymentInfo.cs" />
     <Compile Include="Models\SessionId.cs" />
-    <Compile Include="Models\TequilaToken.cs" />
     <Compile Include="Models\Thrift\CamiproDateConverter.cs" />
     <Compile Include="Services\CamiproService.cs" />
     <Compile Include="Models\EbankingInfo.cs" />
@@ -54,7 +53,6 @@
     <Compile Include="Services\ICamiproService.cs" />
     <Compile Include="Models\MailRequestResult.cs" />
     <Compile Include="Models\ResponseStatus.cs" />
-    <Compile Include="Models\Tokens.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
