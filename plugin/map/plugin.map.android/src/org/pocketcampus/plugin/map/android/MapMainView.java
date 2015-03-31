@@ -278,6 +278,17 @@ public class MapMainView extends PluginView implements IMapView {
 			}
 		});
         
+//        // http://stackoverflow.com/questions/14489880/how-to-change-the-position-of-maps-apis-get-my-location-button
+//		View locationButton = ((View) mapFragment.getView().findViewById(1)
+//				.getParent()).findViewById(2);
+//		// and next place it, for exemple, on bottom right (as Google Maps app)
+//		RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton
+//				.getLayoutParams();
+//		// position on right bottom
+//		rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+//		rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+//		rlp.setMargins(0, 0, 30, 30);
+        
         EditText searchField = (EditText) findViewById(R.id.map_search_edittext);
         searchField.setOnEditorActionListener(new OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -315,12 +326,14 @@ public class MapMainView extends PluginView implements IMapView {
 	        searchField.setVisibility(View.VISIBLE);
 	        searchField.setText("");
 	        searchField.requestFocus();
-	        mMap.setMyLocationEnabled(false);
+//	        mMap.setMyLocationEnabled(false);
+	        mMap.setPadding(0, 150, 0, 0);
 	        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 			
 		} else {
 	        searchField.setVisibility(View.GONE);
-	        mMap.setMyLocationEnabled(true);
+//	        mMap.setMyLocationEnabled(true);
+	        mMap.setPadding(0, 0, 0, 0);
 	        imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0); 
 	        showMarkers(null);
 			
