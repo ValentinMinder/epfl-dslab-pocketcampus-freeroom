@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Authentication;
 using PocketCampus.Camipro.Models;
 using PocketCampus.Camipro.Services;
 using PocketCampus.Common;
@@ -18,8 +19,9 @@ namespace PocketCampus.Camipro.ViewModels
     [LogId( "/camipro" )]
     public sealed class MainViewModel : DataViewModel<NoParameter>
     {
-        private readonly ICamiproService _camiproService;
+        private readonly INavigationService _navigationService;
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly ICamiproService _camiproService;
 
 
         private AccountInfo _accountInfo;
@@ -53,10 +55,11 @@ namespace PocketCampus.Camipro.ViewModels
         }
 
 
-        public MainViewModel( ICamiproService camiproService, ISecureRequestHandler requestHandler )
+        public MainViewModel( INavigationService navigationService, ISecureRequestHandler requestHandler, ICamiproService camiproService )
         {
-            _camiproService = camiproService;
+            _navigationService = navigationService;
             _requestHandler = requestHandler;
+            _camiproService = camiproService;
         }
 
 
@@ -87,7 +90,7 @@ namespace PocketCampus.Camipro.ViewModels
                 }
                 if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
                 {
-                    // TODO auth
+                    _navigationService.ForceAuthentication<MainViewModel>();
                     return null;
                 }
 
@@ -102,29 +105,27 @@ namespace PocketCampus.Camipro.ViewModels
         }
 
 
-        private /*async*/ Task RequestEbankingEmailAsync()
+        private async Task RequestEbankingEmailAsync()
         {
             EmailStatus = EmailSendingStatus.Requested;
 
-            // TODO EmailStatus
-            return Task.FromResult( 0 );
-            //EmailStatus = await _requestHandler.ExecuteAsync( async () =>
-            //{
-            //    var request = new CamiproRequest
-            //    {
-            //        Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
-            //    };
+            try
+            {
+                EmailStatus = await _requestHandler.ExecuteAsync( async () =>
+                {
+                    var request = new CamiproRequest
+                    {
+                        Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+                    };
 
-            //    try
-            //    {
-            //        var result = await _camiproService.RequestEBankingEMailAsync( request );
-            //        return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
-            //    }
-            //    catch
-            //    {
-            //        return EmailSendingStatus.Error;
-            //    }
-            //} );
+                    var result = await _camiproService.RequestEBankingEMailAsync( request );
+                    return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
+                } );
+            }
+            catch
+            {
+                EmailStatus = EmailSendingStatus.Error;
+            }
         }
     }
 }

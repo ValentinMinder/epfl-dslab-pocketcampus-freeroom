@@ -63,6 +63,10 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Authentication\PocketCampus.Authentication.csproj">
+      <Project>{b1780e96-7e18-47c0-9e93-1086d9491815}</Project>
+      <Name>PocketCampus.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CloudPrint\PocketCampus.CloudPrint.csproj">
       <Project>{dccdead5-49b4-47ff-a78b-56c01f9a25c5}</Project>
       <Name>PocketCampus.CloudPrint</Name>

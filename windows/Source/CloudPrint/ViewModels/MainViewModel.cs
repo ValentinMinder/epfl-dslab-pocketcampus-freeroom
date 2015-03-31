@@ -88,7 +88,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 }
                 catch ( AuthenticationRequiredException )
                 {
-                    ForceAuthentication();
+                    _navigationService.ForceAuthentication<MainViewModel, PrintRequest>( new PrintRequest( _request, Settings ) );
                     return;
                 }
                 catch
@@ -113,7 +113,7 @@ namespace PocketCampus.CloudPrint.ViewModels
                 }
                 if ( response.Status == ResponseStatus.AuthenticationError )
                 {
-                    ForceAuthentication();
+                    _navigationService.ForceAuthentication<MainViewModel, PrintRequest>( new PrintRequest( _request, Settings ) );
                     return;
                 }
             }
@@ -129,13 +129,6 @@ namespace PocketCampus.CloudPrint.ViewModels
             }
 
             Status = PrintRequestStatus.Success;
-        }
-
-        private void ForceAuthentication()
-        {
-            var newRequest = new PrintRequest( _request, Settings );
-            _navigationService.RemoveCurrentFromBackStack();
-            Messenger.Send( new AuthenticationRequest( () => _navigationService.NavigateTo<MainViewModel, PrintRequest>( newRequest ) ) );
         }
     }
 }

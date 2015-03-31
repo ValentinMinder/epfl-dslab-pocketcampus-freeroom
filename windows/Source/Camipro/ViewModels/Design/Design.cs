@@ -7,6 +7,7 @@
 #if DEBUG
 using PocketCampus.Camipro.Services.Design;
 using PocketCampus.Common.Services.Design;
+using ThinMvvm.Design;
 #endif
 
 namespace PocketCampus.Camipro.ViewModels.Design
@@ -18,7 +19,7 @@ namespace PocketCampus.Camipro.ViewModels.Design
 
         public Design()
         {
-            Main = new MainViewModel( new DesignCamiproService(), new DesignSecureRequestHandler() );
+            Main = new MainViewModel( new DesignNavigationService(), new DesignSecureRequestHandler(), new DesignCamiproService() );
 
             Main.OnNavigatedToAsync();
         }

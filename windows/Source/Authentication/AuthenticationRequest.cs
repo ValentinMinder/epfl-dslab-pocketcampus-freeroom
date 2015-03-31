@@ -14,7 +14,7 @@ namespace PocketCampus.Authentication
         public Action SuccessAction { get; private set; }
 
 
-        public AuthenticationRequest( Action successAction = null )
+        public AuthenticationRequest( Action successAction )
         {
             SuccessAction = successAction;
         }

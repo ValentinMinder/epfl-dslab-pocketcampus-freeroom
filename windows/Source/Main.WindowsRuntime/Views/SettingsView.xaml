@@ -27,24 +27,10 @@
             </StackPanel>
         </Border>
 
-        <cc:Switch Value="{Binding Settings.SessionStatus}" 
-                   Margin="19,16">
-            <!-- Not logged in -->
-            <cc:SwitchCase Values="NotLoggedIn">
-                <StackPanel>
-                    <!-- Text -->
-                    <TextBlock Text="{CustomResource Settings.NotLoggedIn}"
-                               Style="{StaticResource AppNormalTextBlockStyle}" />
-
-                    <!-- "Log in" button -->
-                    <Button Content="{CustomResource Settings.LogIn}"
-                            Command="{Binding LogInCommand}" />
-                </StackPanel>
-            </cc:SwitchCase>
-
+        <cc:Switch Value="{Binding Settings.SessionStatus}">
             <!-- Logged in temporarily -->
             <cc:SwitchCase Values="LoggedInTemporarily">
-                <StackPanel>
+                <StackPanel Margin="19,16">
                     <!-- Text -->
                     <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
                         <Run Text="{CustomResource Settings.LoggedIn}" />
@@ -66,7 +52,7 @@
             
             <!-- Logged in -->
             <cc:SwitchCase Values="LoggedIn">
-                <StackPanel>
+                <StackPanel Margin="19,16">
                     <!-- Text -->
                     <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
                         <Run Text="{CustomResource Settings.LoggedIn}" />
@@ -79,14 +65,6 @@
                     <!-- "Log out" button -->
                     <Button Content="{CustomResource Settings.LogOut}"
                             Command="{Binding LogOutCommand}" />
-
-
-                    <!-- "Destroy sessions" button -->
-                    <Button Content="{CustomResource Settings.DestroyAllSessions}"
-                            Command="{Binding DestroySessionsCommand}" />
-
-                    <TextBlock Text="{CustomResource Settings.DestroyAllSessionsExplanation}"
-                               Style="{StaticResource AppSubtleTextBlockStyle}" />
                 </StackPanel>
             </cc:SwitchCase>
         </cc:Switch>

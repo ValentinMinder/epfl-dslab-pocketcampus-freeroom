@@ -25,18 +25,13 @@ namespace PocketCampus.Authentication.Services
 
 
         public async Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
-            where T : class
         {
-            if ( _serverSettings.Session == null )
+            if ( _serverSettings.Session == null && _credentials.UserName != null )
             {
-                var session = await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, _serverSettings.SessionStatus == SessionStatus.LoggedIn );
-                if ( session == null )
-                {
-                    _serverSettings.Session = null;
-                    return null;
-                }
+                _serverSettings.Session = await _authenticator.AuthenticateAsync( _credentials.UserName, _credentials.Password, _serverSettings.SessionStatus == SessionStatus.LoggedIn );
             }
 
+            // Even if the session is null, attempt anyway; that way consumers only have to deal with the "auth error from server" case
             return await attempt();
         }
     }

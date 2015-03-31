@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PocketCampus.Authentication;
 using PocketCampus.Common.Services;
 using PocketCampus.IsAcademia.Models;
 using PocketCampus.IsAcademia.Services;
@@ -23,8 +24,9 @@ namespace PocketCampus.IsAcademia.ViewModels
         private const int DaysInWeek = 7;
         private const int MinimumDaysInWeek = 5;
 
-        private readonly IIsAcademiaService _isaService;
+        private readonly INavigationService _navigationService;
         private readonly ISecureRequestHandler _requestHandler;
+        private readonly IIsAcademiaService _isaService;
 
         private StudyDay[] _days;
         private DateTime _weekDate;
@@ -51,11 +53,13 @@ namespace PocketCampus.IsAcademia.ViewModels
         }
 
 
-        public MainViewModel( IDataCache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
+        public MainViewModel( IDataCache cache, INavigationService navigationService, ISecureRequestHandler requestHandler,
+                              IIsAcademiaService isaService )
             : base( cache )
         {
-            _isaService = isaService;
+            _navigationService = navigationService;
             _requestHandler = requestHandler;
+            _isaService = isaService;
 
             _weekDate = GetWeekStart( DateTime.Now );
         }
@@ -93,13 +97,9 @@ namespace PocketCampus.IsAcademia.ViewModels
 
         protected override bool HandleData( ScheduleResponse data, CancellationToken token )
         {
-            if ( data == null )
-            {
-                return false;
-            }
             if ( data.Status == ResponseStatus.AuthenticationError )
             {
-                // TODO Authenticate
+                _navigationService.ForceAuthentication<MainViewModel>();
                 return false;
             }
             if ( data.Status != ResponseStatus.Success )

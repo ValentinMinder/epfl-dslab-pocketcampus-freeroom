@@ -15,10 +15,5 @@ namespace PocketCampus.Common.Services
         /// Authenticates with the specified credentials, and returns a session or null if the authentication failed.
         /// </summary>
         Task<string> AuthenticateAsync( string userName, string password, bool rememberMe );
-
-        /// <summary>
-        /// Logs off all devices for the specified session.
-        /// </summary>
-        Task LogOutAsync( string session );
     }
 }

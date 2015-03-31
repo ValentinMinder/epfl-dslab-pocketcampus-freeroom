@@ -5,7 +5,6 @@
 // Design data for ViewModels
 
 #if DEBUG
-using PocketCampus.Authentication.Services.Design;
 using PocketCampus.Common.Services.Design;
 using ThinMvvm.Design;
 #endif
@@ -21,7 +20,7 @@ namespace PocketCampus.Authentication.ViewModels.Design
         {
             Main = new MainViewModel( new DesignAuthenticator(), new DesignNavigationService(),
                                       new DesignServerSettings(), new DesignCredentialsStorage(),
-                                      new AuthenticationRequest() );
+                                      new AuthenticationRequest( () => { } ) );
 
             Main.OnNavigatedTo();
         }

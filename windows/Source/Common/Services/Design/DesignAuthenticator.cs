@@ -15,11 +15,6 @@ namespace PocketCampus.Common.Services.Design
         {
             return Task.FromResult( "" );
         }
-
-        public Task LogOutAsync( string session )
-        {
-            return Task.FromResult( 0 );
-        }
     }
 }
 #endif

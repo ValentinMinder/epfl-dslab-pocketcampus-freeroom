@@ -19,7 +19,7 @@ namespace PocketCampus.IsAcademia.ViewModels.Design
 
         public Design()
         {
-            Main = new MainViewModel( new DesignDataCache(), new DesignIsAcademiaService(), new DesignSecureRequestHandler() );
+            Main = new MainViewModel( new DesignDataCache(), new DesignNavigationService(), new DesignSecureRequestHandler(), new DesignIsAcademiaService() );
 
             Main.OnNavigatedToAsync();
         }

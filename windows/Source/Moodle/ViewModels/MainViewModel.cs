@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using PocketCampus.Authentication;
 using PocketCampus.Common.Services;
 using PocketCampus.Moodle.Models;
 using PocketCampus.Moodle.Services;
@@ -71,7 +72,7 @@ namespace PocketCampus.Moodle.ViewModels
         {
             if ( data.Status == MoodleStatus.AuthenticationError )
             {
-                // TODO Authenticate
+                _navigationService.ForceAuthentication<MainViewModel>();
                 return false;
             }
             if ( data.Status != MoodleStatus.Success )

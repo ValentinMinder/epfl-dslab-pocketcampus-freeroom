@@ -15,7 +15,6 @@ namespace PocketCampus.Common.Services
         /// <summary>
         /// Asynchronously executes the specified request and returns the request's result, or null if authentication failed.
         /// </summary>
-        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
-            where T : class;
+        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt );
     }
 }

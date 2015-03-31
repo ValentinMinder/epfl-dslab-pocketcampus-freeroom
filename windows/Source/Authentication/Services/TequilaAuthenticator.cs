@@ -2,7 +2,6 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -75,20 +74,6 @@ namespace PocketCampus.Authentication.Services
                 }
             }
             return null;
-        }
-
-        public async Task LogOutAsync( string session )
-        {
-            var request = new LogoutRequest
-            {
-                Session = session
-            };
-            var response = await _authenticationService.DestroyAllSessionsAsync( request );
-
-            if ( response.Status != ResponseStatus.Success )
-            {
-                throw new Exception( "An error occurred while destroying sessions." );
-            }
         }
 
         private async Task<bool> AuthenticateAsync( string userName, string password, string key )
