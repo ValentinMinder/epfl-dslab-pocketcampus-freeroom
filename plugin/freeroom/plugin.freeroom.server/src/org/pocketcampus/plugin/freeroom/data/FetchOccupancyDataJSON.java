@@ -1,22 +1,24 @@
 package org.pocketcampus.plugin.freeroom.data;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.pocketcampus.platform.server.HttpClient;
-import org.pocketcampus.platform.server.HttpClientImpl;
-import org.pocketcampus.platform.server.database.ConnectionManager;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
-import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
-import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
-import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
-
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
+
+import org.pocketcampus.platform.server.database.ConnectionManager;
+import org.pocketcampus.platform.shared.utils.StringUtils;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl;
+import org.pocketcampus.plugin.freeroom.server.FreeRoomServiceImpl.OCCUPANCY_TYPE;
+import org.pocketcampus.plugin.freeroom.shared.FRPeriod;
+import org.pocketcampus.plugin.freeroom.shared.utils.FRTimes;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Fetch, insert, update rooms and/or occupancies from the ISA webservice
@@ -26,7 +28,6 @@ import java.util.logging.Level;
  * @author Valentin MINDER <valentin.minder@epfl.ch>
  */
 public class FetchOccupancyDataJSON {
-    // TODO: when turning production to real ISA server, change the URL.
     private String URL_DATA;
 
     private final String KEY_ALIAS = "name";
@@ -315,9 +316,10 @@ public class FetchOccupancyDataJSON {
      * @return The JSON page located at the given URL, null if none
      */
     private String fetch(String URL) {
-        HttpClient client = new HttpClientImpl();
         try {
-            return client.get(URL, Charset.forName("UTF-8"));
+    		URLConnection conn = new URL(URL).openConnection();
+    		conn.addRequestProperty("Accept", "application/json");
+    		return StringUtils.fromStream(conn.getInputStream(), Charset.forName("UTF-8").name());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
