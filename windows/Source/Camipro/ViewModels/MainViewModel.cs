@@ -87,7 +87,7 @@ namespace PocketCampus.Camipro.ViewModels
                 }
                 if ( accountInfo.Status == ResponseStatus.AuthenticationError || ebankingInfo.Status == ResponseStatus.AuthenticationError )
                 {
-                    _requestHandler.Authenticate<MainViewModel>();
+                    // TODO auth
                     return null;
                 }
 
@@ -102,27 +102,29 @@ namespace PocketCampus.Camipro.ViewModels
         }
 
 
-        private async Task RequestEbankingEmailAsync()
+        private /*async*/ Task RequestEbankingEmailAsync()
         {
             EmailStatus = EmailSendingStatus.Requested;
 
-            EmailStatus = await _requestHandler.ExecuteAsync( async () =>
-            {
-                var request = new CamiproRequest
-                {
-                    Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
-                };
+            // TODO EmailStatus
+            return Task.FromResult( 0 );
+            //EmailStatus = await _requestHandler.ExecuteAsync( async () =>
+            //{
+            //    var request = new CamiproRequest
+            //    {
+            //        Language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            //    };
 
-                try
-                {
-                    var result = await _camiproService.RequestEBankingEMailAsync( request );
-                    return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
-                }
-                catch
-                {
-                    return EmailSendingStatus.Error;
-                }
-            } );
+            //    try
+            //    {
+            //        var result = await _camiproService.RequestEBankingEMailAsync( request );
+            //        return result.Status == ResponseStatus.Success ? EmailSendingStatus.Success : EmailSendingStatus.Error;
+            //    }
+            //    catch
+            //    {
+            //        return EmailSendingStatus.Error;
+            //    }
+            //} );
         }
     }
 }

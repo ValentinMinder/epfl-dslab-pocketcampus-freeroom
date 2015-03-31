@@ -14,6 +14,7 @@ namespace PocketCampus.Common.Services.Design
     public sealed class DesignSecureRequestHandler : ISecureRequestHandler
     {
         public Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
+            where T : class
         {
             return attempt();
         }

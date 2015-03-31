@@ -11,14 +11,9 @@ namespace PocketCampus.Common.Services.Design
 {
     public sealed class DesignAuthenticator : IAuthenticator
     {
-        public Task<bool> AuthenticateAsync( string userName, string password )
+        public Task<string> AuthenticateAsync( string userName, string password, bool rememberMe )
         {
-            return Task.FromResult( true );
-        }
-
-        public Task<bool> AuthenticateAsync( string userName, string password, string serviceKey )
-        {
-            return Task.FromResult( true );
+            return Task.FromResult( "" );
         }
 
         public Task LogOffAsync()

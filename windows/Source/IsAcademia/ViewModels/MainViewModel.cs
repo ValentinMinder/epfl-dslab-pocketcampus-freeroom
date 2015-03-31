@@ -99,7 +99,7 @@ namespace PocketCampus.IsAcademia.ViewModels
             }
             if ( data.Status == ResponseStatus.AuthenticationError )
             {
-                _requestHandler.Authenticate<MainViewModel>();
+                // TODO Authenticate
                 return false;
             }
             if ( data.Status != ResponseStatus.Success )

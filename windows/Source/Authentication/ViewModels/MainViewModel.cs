@@ -2,9 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
 using System.Threading.Tasks;
-using PocketCampus.Authentication.Models;
 using PocketCampus.Authentication.Services;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
@@ -85,29 +83,14 @@ namespace PocketCampus.Authentication.ViewModels
 
             try
             {
-                var tokenResponse = await _authenticationService.GetTokenAsync();
-
-                if ( tokenResponse.Status != ResponseStatus.Success )
+                var session = await _authenticator.AuthenticateAsync( UserName, Password, SaveCredentials );
+                if ( session == null )
                 {
-                    throw new Exception( "An error occurred while getting a token." );
+                    AuthenticationStatus = AuthenticationStatus.WrongCredentials;
                 }
-
-                if ( await _authenticator.AuthenticateAsync( UserName, Password, tokenResponse.Token ) )
+                else
                 {
-                    var sessionRequest = new SessionRequest
-                    {
-                        TequilaToken = tokenResponse.Token,
-                        RememberMe = SaveCredentials
-                    };
-
-                    var sessionResponse = await _authenticationService.GetSessionAsync( sessionRequest );
-
-                    if ( sessionResponse.Status != ResponseStatus.Success )
-                    {
-                        throw new Exception( "An error occurred while getting a session." );
-                    }
-
-                    _settings.Session = sessionResponse.Session;
+                    _settings.Session = session;
                     _settings.SessionStatus = SaveCredentials ? SessionStatus.LoggedIn : SessionStatus.LoggedInTemporarily;
                     _credentials.SetCredentials( UserName, Password );
                     AuthenticationStatus = AuthenticationStatus.Success;
@@ -121,10 +104,6 @@ namespace PocketCampus.Authentication.ViewModels
                         _navigationService.RemoveCurrentFromBackStack();
                         _request.SuccessAction();
                     }
-                }
-                else
-                {
-                    AuthenticationStatus = AuthenticationStatus.WrongCredentials;
                 }
             }
             catch

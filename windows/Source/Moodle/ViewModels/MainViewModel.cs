@@ -71,7 +71,7 @@ namespace PocketCampus.Moodle.ViewModels
         {
             if ( data.Status == MoodleStatus.AuthenticationError )
             {
-                _requestHandler.Authenticate<MainViewModel>();
+                // TODO Authenticate
                 return false;
             }
             if ( data.Status != MoodleStatus.Success )

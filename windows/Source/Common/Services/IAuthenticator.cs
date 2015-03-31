@@ -12,14 +12,9 @@ namespace PocketCampus.Common.Services
     public interface IAuthenticator
     {
         /// <summary>
-        /// Asynchronously attempts to authenticate using the specified user name and password.
+        /// Authenticates with the specified credentials, and returns a session or null if the authentication failed.
         /// </summary>
-        Task<bool> AuthenticateAsync( string userName, string password );
-
-        /// <summary>
-        /// Asynchronously attempts to authenticate using the specified user name and password, for the service specified by a key.
-        /// </summary>
-        Task<bool> AuthenticateAsync( string userName, string password, string serviceKey );
+        Task<string> AuthenticateAsync( string userName, string password, bool rememberMe );
 
         /// <summary>
         /// Asynchronously logs off.

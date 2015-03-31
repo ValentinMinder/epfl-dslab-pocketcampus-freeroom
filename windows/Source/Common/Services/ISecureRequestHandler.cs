@@ -4,7 +4,6 @@
 
 using System;
 using System.Threading.Tasks;
-using ThinMvvm;
 
 namespace PocketCampus.Common.Services
 {
@@ -14,15 +13,9 @@ namespace PocketCampus.Common.Services
     public interface ISecureRequestHandler
     {
         /// <summary>
-        /// Asynchronously executes the specified request.
+        /// Asynchronously executes the specified request and returns the request's result, or null if authentication failed.
         /// </summary>
-        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt );
-
-        /// <summary>
-        /// Requests new credentials from the user.
-        /// If authentication is successful, comes back to a new instance of the ViewModel.
-        /// </summary>
-        void Authenticate<TViewModel>()
-            where TViewModel : ViewModel<NoParameter>;
+        Task<T> ExecuteAsync<T>( Func<Task<T>> attempt )
+            where T : class;
     }
 }

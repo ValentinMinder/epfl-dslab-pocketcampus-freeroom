@@ -14,16 +14,6 @@ namespace PocketCampus.Camipro.Services.Design
 {
     public sealed class DesignCamiproService : ICamiproService
     {
-        public Task<TequilaToken> GetTokenAsync()
-        {
-            return Task.FromResult( new TequilaToken() );
-        }
-
-        public Task<CamiproSession> GetSessionAsync( TequilaToken token )
-        {
-            return Task.FromResult( new CamiproSession() );
-        }
-
         public Task<AccountInfo> GetAccountInfoAsync( CamiproRequest request, CancellationToken token )
         {
             return Task.FromResult
