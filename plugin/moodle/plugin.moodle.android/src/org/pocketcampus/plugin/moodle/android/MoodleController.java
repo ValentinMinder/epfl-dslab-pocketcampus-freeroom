@@ -188,17 +188,17 @@ public class MoodleController extends PluginController implements IMoodleControl
 	
 
 	public static void openFile(Context c, File file) {
-		Uri uri = Uri.fromFile(file);
-		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
-		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
-		if(guessedContentType == null) {
-			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
-					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		viewFileIntent.setDataAndType(uri, guessedContentType);
-		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		try {
+			Uri uri = Uri.fromFile(file);
+			Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
+			String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+			if(guessedContentType == null) {
+				Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+						R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			viewFileIntent.setDataAndType(uri, guessedContentType);
+			viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			c.startActivity(viewFileIntent);
 		} catch(Exception e) {
 			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
@@ -207,14 +207,14 @@ public class MoodleController extends PluginController implements IMoodleControl
 	}
 
 	public static void shareFile(Context c, File file) {
-		Uri uri = Uri.fromFile(file);
-		Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
-		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
-		if(guessedContentType == null)
-			guessedContentType = "*/*";
-		shareFileIntent.setType(guessedContentType);
-		shareFileIntent.putExtra(Intent.EXTRA_STREAM, uri);
 		try {
+			Uri uri = Uri.fromFile(file);
+			Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
+			String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+			if(guessedContentType == null)
+				guessedContentType = "*/*";
+			shareFileIntent.setType(guessedContentType);
+			shareFileIntent.putExtra(Intent.EXTRA_STREAM, uri);
 			c.startActivity(shareFileIntent);
 		} catch(Exception e) {
 			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
