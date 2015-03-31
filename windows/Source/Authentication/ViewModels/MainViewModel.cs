@@ -3,7 +3,6 @@
 // File author: Solal Pirelli
 
 using System.Threading.Tasks;
-using PocketCampus.Authentication.Services;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using ThinMvvm;
@@ -14,7 +13,6 @@ namespace PocketCampus.Authentication.ViewModels
     [LogId( "/authentication" )]
     public sealed class MainViewModel : ViewModel<AuthenticationRequest>
     {
-        private readonly IAuthenticationService _authenticationService;
         private readonly IAuthenticator _authenticator;
         private readonly INavigationService _navigationService;
         private readonly IServerSettings _settings;
@@ -62,11 +60,10 @@ namespace PocketCampus.Authentication.ViewModels
         }
 
 
-        public MainViewModel( IAuthenticationService authenticationService, IAuthenticator authenticator,
-                              INavigationService navigationService, IServerSettings settings, ICredentialsStorage credentials,
+        public MainViewModel( IAuthenticator authenticator, INavigationService navigationService,
+                              IServerSettings settings, ICredentialsStorage credentials,
                               AuthenticationRequest request )
         {
-            _authenticationService = authenticationService;
             _authenticator = authenticator;
             _navigationService = navigationService;
             _settings = settings;

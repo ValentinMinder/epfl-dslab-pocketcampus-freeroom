@@ -2,6 +2,7 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,14 +15,12 @@ namespace PocketCampus.Authentication.Services
     /// <summary>
     /// Authenticates users to Tequila.
     /// </summary>
-    public class TequilaAuthenticator : IAuthenticator
+    public sealed class TequilaAuthenticator : IAuthenticator
     {
         private const string LogInUrl = "https://tequila.epfl.ch/cgi-bin/tequila/requestauth";
-        private const string LogOffUrl = "https://tequila.epfl.ch/cgi-bin/tequila/LogOff";
         private const string UserNameParameter = "username", PasswordParameter = "password", KeyParameter = "requestkey";
 
-        private static readonly string OAuth2Url =
-            "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/auth";
+        private static readonly string OAuth2Url = "https://tequila.epfl.ch/cgi-bin/OAuth2IdP/auth";
         private static readonly string[] OAuth2Scopes = 
         {
             "Tequila.profile", "Moodle.read", "ISA.read", "Camipro.read", "Camipro.write"
@@ -78,12 +77,18 @@ namespace PocketCampus.Authentication.Services
             return null;
         }
 
-        /// <summary>
-        /// Asynchronously logs off from Tequila.
-        /// </summary>
-        public Task LogOffAsync()
+        public async Task LogOutAsync( string session )
         {
-            return _client.GetAsync( LogOffUrl );
+            var request = new LogoutRequest
+            {
+                Session = session
+            };
+            var response = await _authenticationService.DestroyAllSessionsAsync( request );
+
+            if ( response.Status != ResponseStatus.Success )
+            {
+                throw new Exception( "An error occurred while destroying sessions." );
+            }
         }
 
         private async Task<bool> AuthenticateAsync( string userName, string password, string key )

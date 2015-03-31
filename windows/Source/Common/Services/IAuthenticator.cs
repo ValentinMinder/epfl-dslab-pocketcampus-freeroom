@@ -17,8 +17,8 @@ namespace PocketCampus.Common.Services
         Task<string> AuthenticateAsync( string userName, string password, bool rememberMe );
 
         /// <summary>
-        /// Asynchronously logs off.
+        /// Logs off all devices for the specified session.
         /// </summary>
-        Task LogOffAsync();
+        Task LogOutAsync( string session );
     }
 }

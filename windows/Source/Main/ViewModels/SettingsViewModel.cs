@@ -4,8 +4,6 @@
 
 using System.Threading.Tasks;
 using PocketCampus.Authentication;
-using PocketCampus.Authentication.Models;
-using PocketCampus.Authentication.Services;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
@@ -19,7 +17,6 @@ namespace PocketCampus.Main.ViewModels
     {
         private readonly IAuthenticator _authenticator;
         private readonly INavigationService _navigationService;
-        private readonly IAuthenticationService _authenticationService;
 
 
         public IMainSettings Settings { get; private set; }
@@ -38,9 +35,9 @@ namespace PocketCampus.Main.ViewModels
         }
 
         [LogId( "LogOff" )]
-        public AsyncCommand LogOutCommand
+        public Command LogOutCommand
         {
-            get { return this.GetAsyncCommand( LogOutAsync ); }
+            get { return this.GetCommand( LogOut ); }
         }
 
         [LogId( "DestroySessions" )]
@@ -51,35 +48,33 @@ namespace PocketCampus.Main.ViewModels
 
 
         public SettingsViewModel( IMainSettings settings, IAuthenticator authenticator, INavigationService navigationService,
-                                  IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
+                                  ICredentialsStorage credentials, ITileService tileService )
         {
             Settings = settings;
             Credentials = credentials;
             _authenticator = authenticator;
             _navigationService = navigationService;
-            _authenticationService = authenticationService;
 
             Settings.ListenToProperty( x => x.TileColoring, () => tileService.SetTileColoring( Settings.TileColoring ) );
         }
 
+        // TODO what if logout fails
 
-        private async Task LogOutAsync()
+        private void LogOut()
         {
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
             Credentials.DeleteCredentials();
-            await _authenticator.LogOffAsync();
         }
 
         private async Task DestroySessionsAsync()
         {
             if ( Settings.Session != null )
             {
-                var request = new LogoutRequest { Session = Settings.Session };
-                await _authenticationService.DestroyAllSessionsAsync( request );
+                await _authenticator.LogOutAsync( Settings.Session );
             }
 
-            await LogOutAsync();
+            LogOut();
         }
     }
 }

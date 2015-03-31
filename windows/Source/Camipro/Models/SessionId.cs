@@ -6,10 +6,10 @@ using ThriftSharp;
 
 namespace PocketCampus.Camipro.Models
 {
+    // Required, but unused
     [ThriftStruct( "SessionId" )]
     public sealed class SessionId
     {
-        // Required, but unused
         [ThriftField( 1, true, "tos" )]
         public int Intention
         {
@@ -18,6 +18,10 @@ namespace PocketCampus.Camipro.Models
         }
 
         [ThriftField( 4, false, "camiproCookie" )]
-        public string CamiproCookie { get; set; }
+        public string CamiproCookie
+        {
+            get { return ""; }
+            set { }
+        }
     }
 }
