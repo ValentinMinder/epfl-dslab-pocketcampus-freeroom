@@ -829,6 +829,7 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 		homeSetTitleUpdating();
 		String subtitle = "";
 		initActionBar();
+		setContentView(homeMainContentLayout);
 		if (mModel.getOccupancyResults().isEmpty()) {
 			// popup with no results message
 
@@ -836,7 +837,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 			errorDialogShowMessage(subtitle);
 			homeSetTitleNoResults();
 		} else {
-			setContentView(homeMainContentLayout);
 			FROccupancyRequest request = mModel.getFRRequestDetails();
 
 			String title = "";
