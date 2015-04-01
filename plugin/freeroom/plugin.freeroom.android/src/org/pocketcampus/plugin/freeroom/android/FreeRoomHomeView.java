@@ -785,7 +785,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 	 */
 	private void homeSetTitleError() {
 		homeSetTitle(getString(R.string.freeroom_title_main_title_error));
-		setUnrecoverableErrorOccurred(getString(R.string.freeroom_title_main_title_error));
 	}
 
 	/**
