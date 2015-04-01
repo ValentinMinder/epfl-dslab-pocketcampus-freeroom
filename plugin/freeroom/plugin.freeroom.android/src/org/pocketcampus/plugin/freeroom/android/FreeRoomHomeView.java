@@ -785,7 +785,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 	 */
 	private void homeSetTitleError() {
 		homeSetTitle(getString(R.string.freeroom_title_main_title_error));
-		setUnrecoverableErrorOccurred(getString(R.string.freeroom_title_main_title_error));
 	}
 
 	/**
@@ -797,7 +796,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 	 */
 	private void homeSetTitleNoResults() {
 		homeSetTitle(getString(R.string.freeroom_title_main_title_no_result));
-		setUnrecoverableErrorOccurred(getString(R.string.freeroom_title_main_title_no_result));
 	}
 
 	/**
@@ -835,7 +833,6 @@ public class FreeRoomHomeView extends FreeRoomAbstractView implements IFreeRoomV
 			// popup with no results message
 
 			subtitle = getString(R.string.freeroom_home_error_no_results);
-			super.setUnrecoverableErrorOccurred(subtitle);
 			errorDialogShowMessage(subtitle);
 			homeSetTitleNoResults();
 		} else {
