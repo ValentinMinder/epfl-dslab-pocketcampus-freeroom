@@ -13,4 +13,12 @@ INSERT INTO `maplayers` (`layerId`, `nameForQuery`, `nameForQueryAllFloors`, `na
 (5, 'restauration{floor}', 'restaurationall', 'Restaurants', 'Restauration'),
 (6, 'bancomat{floor}', 'bancomatall', 'ATMs', 'Bancomats'),
 (7, 'information{floor}', 'informationall', 'Information', 'Information'),
-(8, 'douches{floor}', 'douchesall', 'Showers', 'Douches')
+(8,'douches{floor}','douchesall','Showers','Douches'),
+(9,'parkings{floor}','parkingsall','Parking lots','Parkings'),
+(10,'arrets_metro{floor}','arrets_metroall','Metro stop','Arrêts de métro'),
+(11,'transports_publics{floor}','transports_publicsall','Public transportation','Transports publics'),
+(12,'commerces{floor}','commercesall','Shops','Commerce'),
+(13,'stations_postales{floor}','stations_postalesall','Post stations','Stations postales'),
+(14,'photocopieuses{floor}','photocopieusesall','Photocopiers','Photocopieuses'),
+(15,'telephones{floor}','telephonesall','Phones','Téléphones'),
+(16,'wifi{floor}','wifiall','WiFi','WiFi');
