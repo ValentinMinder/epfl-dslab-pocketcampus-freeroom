@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.pocketcampus.platform.server.BackgroundChecker;
+import org.pocketcampus.platform.server.BackgroundTasker;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +39,8 @@ public abstract class ServerBase {
 		initializePlugins();
 
 		new Thread(BackgroundChecker.getChecker(plugins)).start();
+		
+		new Thread(new BackgroundTasker(plugins).getRunnable()).start();
 		
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.setHandlers(new Handler[] { getServicesHandler(), getLogHandler() });

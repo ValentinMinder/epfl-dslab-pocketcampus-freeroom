@@ -4,6 +4,7 @@ import org.apache.thrift.TProcessor;
 import org.joda.time.LocalDateTime;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.platform.shared.PCConfig;
 import org.pocketcampus.platform.shared.PCConstants;
 
@@ -93,8 +94,9 @@ public class PocketCampusServer extends ServerBase {
 
             final HttpServlet rawProcessor = getRawProcessor(pluginService);
             final StateChecker stateChecker = getStateChecker(pluginService);
+            final TaskRunner taskRunner = getTaskRunner(pluginService);
 
-            processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker));
+            processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker, taskRunner));
             plugins.put(pluginName.toLowerCase(), pluginService);
             System.out.println(pluginName + " plugin started.");
         }
@@ -186,5 +188,12 @@ public class PocketCampusServer extends ServerBase {
      */
     private StateChecker getStateChecker(final Object pluginService) {
         return pluginService instanceof StateChecker ? ((StateChecker) pluginService) : null;
+    }
+    
+    /**
+     * Gets a task runner, if any, for the plugin with the specified service.
+     */
+    private TaskRunner getTaskRunner(final Object pluginService) {
+        return pluginService instanceof TaskRunner ? ((TaskRunner) pluginService) : null;
     }
 }
