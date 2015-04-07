@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.BackgroundTasker;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.plugin.authentication.server.AuthenticationServiceImpl;
 import org.pocketcampus.plugin.cloudprint.shared.*;
@@ -28,16 +30,29 @@ import java.util.*;
  * @author Amer <amer.chamseddine@epfl.ch>
  *
  */
-public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin, StateChecker {
+public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin, StateChecker, TaskRunner {
 	
 	private static final int PRINT_PREVIEW_TIMEOUT = 30000;
 	
 	public CloudPrintServiceImpl() {
 	}
+	
+	@Override
+	public void schedule(BackgroundTasker.Scheduler tasker) {
+		tasker.addTask(60 * 1000, false, new Runnable() {
+			public void run() {
+				TempFileCleaner.cleanupIfNeeded();
+				try {
+					verifyPrintersAndJobsAndTakeAction();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+	}
 
 	@Override
 	public int checkState() throws IOException {
-		TempFileCleaner.cleanupIfNeeded();
 		int status = checkPrintersAndJobs();
 		status = ((status == 0) ? 200 : (status + 500));
 		if(!checkStorage())
@@ -417,14 +432,20 @@ public class CloudPrintServiceImpl implements CloudPrintService.Iface, RawPlugin
 		int status = 0, id = 0;
 		for(Map.Entry<String, PrintJobChecker> e : jobCheckers.entrySet()) {
 			id++;
-			if(!PrinterStateChecker.checkPrinterAndTakeAction(e.getKey())) {
+			if(!PrinterStateChecker.checkPrinterEnabled(e.getKey())) {
 				status += id;
 			}
-			if(!e.getValue().checkJobAndTakeAction()) {
+			if(e.getValue().checkJobStuck(5l) != null) {
 				status += 10 * id;
 			}
 		}
 		return status;
+	}
+	private void verifyPrintersAndJobsAndTakeAction() throws IOException {
+		for(Map.Entry<String, PrintJobChecker> e : jobCheckers.entrySet()) {
+			PrinterStateChecker.verifyPrinterAndTakeAction(e.getKey());
+			e.getValue().verifyJobAndTakeAction(3l);
+		}
 	}
 	private boolean checkStorage() throws IOException {
 		Process proc = Runtime.getRuntime().exec(new String[]{ "df", "-h" });

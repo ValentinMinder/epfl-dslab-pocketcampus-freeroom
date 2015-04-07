@@ -5,7 +5,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 
 public class PrinterStateChecker {
-	private static boolean checkPrinterEnabled(String printerName) throws IOException {
+	public static boolean checkPrinterEnabled(String printerName) throws IOException {
 		Process proc = Runtime.getRuntime().exec(new String[]{"lpstat", "-p", printerName});
 		String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
 		boolean enabled = status.contains("enabled");
@@ -23,12 +23,10 @@ public class PrinterStateChecker {
 		}
 		return succeeded;
 	}
-	public static boolean checkPrinterAndTakeAction(String printerName) throws IOException {
-		boolean enabled = checkPrinterEnabled(printerName);
-		if(!enabled) {
+	public static void verifyPrinterAndTakeAction(String printerName) throws IOException {
+		if(!checkPrinterEnabled(printerName)) {
 			boolean result = enablePrinter(printerName);
 			System.out.println("PRINTER WAS DISABLED. TRIED TO RE-ENABLE IT. result=" + result);
 		}
-		return enabled;
 	}
 }
