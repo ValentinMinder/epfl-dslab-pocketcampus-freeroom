@@ -23,3 +23,6 @@ CREATE TABLE IF NOT EXISTS `mealratings` (
   PRIMARY KEY (`DeviceId`, `MealId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE INDEX `idx_meals_TimeIndependentId`  ON `meals` (TimeIndependentId)
+
+CREATE INDEX `idx_meals_Time_Date`  ON `meals` (Time, Date)

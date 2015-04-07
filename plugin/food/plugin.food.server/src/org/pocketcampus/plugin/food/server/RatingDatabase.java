@@ -22,5 +22,5 @@ public interface RatingDatabase {
 	SubmitStatus vote(String deviceId, long mealId, double rating) throws SQLException;
 	
 	/** Sets the ratings of the specified menu from the database. */
-	void setRatings(List<EpflRestaurant> menu) throws SQLException;
+	void setRatings(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws SQLException;
 }

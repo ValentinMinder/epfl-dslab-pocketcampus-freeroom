@@ -73,7 +73,7 @@ public class FoodServiceImpl implements FoodService.Iface {
             throw new TException("An exception occurred while getting the menu", e);
         }
         try {
-            _ratingDatabase.setRatings(response.getMenu());
+            _ratingDatabase.setRatings(response.getMenu(), date, time);
         } catch (SQLException e) {
             throw new TException("An exception occurred while inserting and fetching the ratings", e);
         }
