@@ -1,7 +1,9 @@
 package org.pocketcampus.plugin.events.server;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.BackgroundTasker.Scheduler;
 import org.pocketcampus.platform.server.EmailSender;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.platform.server.EmailSender.EmailTemplateInfo;
 import org.pocketcampus.platform.server.EmailSender.SendEmailInfo;
 import org.pocketcampus.platform.server.StateChecker;
@@ -29,7 +31,7 @@ import java.util.*;
  * @author Amer C <amer.chamseddine@epfl.ch>
  * 
  */
-public class EventsServiceImpl implements EventsService.Iface, StateChecker {
+public class EventsServiceImpl implements EventsService.Iface, StateChecker, TaskRunner {
 
 	private ConnectionManager connMgr;
 	
@@ -50,8 +52,16 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 	}
 	
 	@Override
+	public void schedule(Scheduler tasker) {
+		tasker.addTask(60 * 60 * 1000, false, new Runnable() {
+			public void run() {
+				MementoImporter.importFromMemento(connMgr);
+			}
+		});
+	}
+	
+	@Override
 	public EventItemReply getEventItem(EventItemRequest req) throws TException {
-		MementoImporter.importFromMemento(connMgr);
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		Utils.registerForPush(tokens);
 		long parentId = req.getEventItemId();
@@ -79,7 +89,6 @@ public class EventsServiceImpl implements EventsService.Iface, StateChecker {
 
 	@Override
 	public EventPoolReply getEventPool(EventPoolRequest req) throws TException {
-		MementoImporter.importFromMemento(connMgr);
 		List<String> tokens = (req.isSetUserTickets() ? req.getUserTickets() : new LinkedList<String>());
 		Utils.registerForPush(tokens);
 		long parentId = req.getEventPoolId();
