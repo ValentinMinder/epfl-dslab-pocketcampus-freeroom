@@ -7,8 +7,10 @@ import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.platform.server.BackgroundTasker;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
@@ -21,7 +23,7 @@ import java.util.Map;
 /**
  * Provides information about the meals, and allows users to rate them.
  */
-public class FoodServiceImpl implements FoodService.Iface {
+public class FoodServiceImpl implements FoodService.Iface, TaskRunner {
     private static final Days PAST_VOTE_MAX_DAYS = Days.days(5);
     private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
     private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
@@ -53,6 +55,19 @@ public class FoodServiceImpl implements FoodService.Iface {
                 CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
                 new AuthenticatorImpl(),
                 getLdapObject());
+    }
+    
+    @Override
+    public void schedule(BackgroundTasker.Scheduler tasker) {
+    	tasker.addTask(60 * 1000, true, new Runnable() {
+			public void run() {
+				// prefetch things that take time (resto location, mostly)
+				FoodResponse response = _menu.get(MealTime.LUNCH, LocalDate.now());
+				for (EpflRestaurant restaurant : response.getMenu()) {
+		            _locator.findByName(restaurant.getRName());
+		        }
+			}
+		});
     }
 
     @Override
