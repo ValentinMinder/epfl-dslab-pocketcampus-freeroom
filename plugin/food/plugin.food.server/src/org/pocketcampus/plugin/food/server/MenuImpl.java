@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 
 /**
  * Parses meals from the official meal list's HTML.
- * 
+ *
  * @author Solal Pirelli <solal.pirelli@epfl.ch>
  */
 public final class MenuImpl implements Menu {
@@ -72,7 +72,6 @@ public final class MenuImpl implements Menu {
 
 	/** Parses the menu from the official meal list's HTML. */
 	public FoodResponse get(MealTime time, LocalDate date) {
-
 		String timeVal = time == MealTime.LUNCH ? URL_TIME_VALUE_LUNCH : URL_TIME_VALUE_DINNER;
 		String dateVal = date.toString(URL_DATE_VALUE_FORMAT);
 		String url = String.format("%s?%s=%s&%s=%s", MEAL_LIST_URL, URL_TIME_PARAMETER, timeVal, URL_DATE_PARAMETER, dateVal);
@@ -129,7 +128,7 @@ public final class MenuImpl implements Menu {
 			meal.setMPrices(prices);
 
 			meal.setMRating(new EpflRating(0.0, 0));
-			meal.setMId(generateMealId(meal.getMName(), meal.getMDescription(), jmeal.restoName, date, time));
+			meal.setMId(Meals.computeId(meal.getMName(), meal.getMDescription(), jmeal.restoName, date, time));
 
 			fix(meal, jmeal.restoName);
 
@@ -174,19 +173,7 @@ public final class MenuImpl implements Menu {
 			}
 		}
 	}
-
-	/** Generates a meal ID (a hashcode) for the specified meal. */
-	private static long generateMealId(String name, String description, String restaurantName, LocalDate date, MealTime time) {
-		final long prime = 31;
-		long result = 1;
-		result = prime * result + name.hashCode();
-		result = prime * result + description.hashCode();
-		result = prime * result + restaurantName.hashCode();
-		result = prime * result + date.hashCode();
-		result = prime * result + time.hashCode();
-		return result;
-	}
-
+	
 	/** Pretty-prints the specified string, capitalizing and trimming it. */
 	private static String prettyPrint(String s) {
 		s = s.trim();
