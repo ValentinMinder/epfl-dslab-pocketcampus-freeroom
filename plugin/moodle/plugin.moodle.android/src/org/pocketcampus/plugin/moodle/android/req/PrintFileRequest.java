@@ -29,6 +29,12 @@ public class PrintFileRequest extends Request<MoodleController, Iface, MoodlePri
 	}
 	
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		caller.showLoading();
+	}
+	
+	@Override
 	protected MoodlePrintFileResponse2 runInBackground(Iface client, MoodlePrintFileRequest2 param) throws Exception {
 		fileName = Uri.parse(param.getFileUrl()).getLastPathSegment();
 		return client.printFile(param);
@@ -36,6 +42,7 @@ public class PrintFileRequest extends Request<MoodleController, Iface, MoodlePri
 
 	@Override
 	protected void onResult(MoodleController controller, MoodlePrintFileResponse2 result) {
+		caller.hideLoading();
 		if(result.getStatusCode() == MoodleStatusCode2.OK) {
 			MoodleController.openPrintDialog(controller, result.getPrintJobId(), fileName);
 			
@@ -50,6 +57,7 @@ public class PrintFileRequest extends Request<MoodleController, Iface, MoodlePri
 
 	@Override
 	protected void onError(MoodleController controller, Exception e) {
+		caller.hideLoading();
 		caller.networkErrorHappened();
 		e.printStackTrace();
 	}

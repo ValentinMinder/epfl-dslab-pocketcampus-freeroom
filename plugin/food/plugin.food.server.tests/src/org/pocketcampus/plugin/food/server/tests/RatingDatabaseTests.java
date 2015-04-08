@@ -134,7 +134,7 @@ public final class RatingDatabaseTests {
 		_database.vote("A", 0, 4.0);
 		_database.vote("B", 0, 2.0);
 		_database.vote("C", 1, 2.0);
-		_database.setRatings(menu);
+		_database.setRatings(menu, LocalDate.now(), MealTime.LUNCH);
 
 		assertEquals(new EpflRating(8.0 / 3.0, 3), menu.get(0).getRRating());
 	}
@@ -149,7 +149,7 @@ public final class RatingDatabaseTests {
 		_database.vote("A", 0, 4.0);
 		_database.vote("B", 0, 2.0);
 		_database.vote("C", 1, 2.0);
-		_database.setRatings(menu);
+		_database.setRatings(menu, LocalDate.now(), MealTime.LUNCH);
 
 		assertEquals(new EpflRating(3.0, 2), menu.get(0).getRMeals().get(0).getMRating());
 	}

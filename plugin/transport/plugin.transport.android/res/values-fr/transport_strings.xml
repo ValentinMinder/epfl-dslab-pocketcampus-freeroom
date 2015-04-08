@@ -7,7 +7,7 @@
     <string name="transport_set_stations_message">Chercher une station</string>
     <string name="transport_edit_stations">Gérer vos stations</string>
     <string name="transport_add_station">Ajouter une station</string>
-    <string name="transport_remove_stations">Supprimer les stations</string>
+    <string name="transport_remove_station">Supprimer une station</string>
     <string name="transport_new_station">Nouvelle station</string>
     <string name="transport_confirmation">Confirmation</string>
     <string name="transport_confirmation_delete_station_start">Êtes-vous sûr de vouloir supprimer</string>
@@ -34,10 +34,24 @@
 
     <!-- Error -->
     <string name="transport_network_error">Impossible de se connecter.</string>
-
+    <string name="transport_loading">Attendre</string>
     <!-- From last year -->
     <string name="transport_to">à</string>
     <string name="transport_walk_in_min">min. de marche</string>
     <string name="transport_by_feet">À pied</string>
+    <string name="transport_select_departure_station">Sélectionner station de départ</string>
+    <string name="transport_dep_short">Dep.</string>
+    <string name="transport_arr_short">Arr.</string>
+    <string name="transport_dur_short">Dur.</string>
+    <string name="transport_chg_short">Chg.</string>
+    <string name="transport_line_short">1ére ligne</string>
+    <string name="transport_platform">voie</string>
+    <string name="transport_using">Prendre</string>
+    <string name="transport_search_failed">Échec de la recherche pour %s.</string>
+    <string name="transport_locating_you">Recherche de votre station la plus proche.</string>
+    <string name="transport_locating_you_failed">Échec de la recherche de votre station la plus proche. %s choisie.</string>
+    <string name="transport_get_default_stations">Chargement des stations par default.</string>
+    <string name="transport_automatic">La plus proche des stations ci-dessous</string>
+    <string name="transport_departure_from">De</string>
 
 </resources>

@@ -33,7 +33,6 @@ public final class Meals {
         long result = 17;
         result = prime * result + normalize(meal.getMName()).hashCode();
         result = prime * result + normalize(meal.getMDescription()).hashCode();
-        result = prime * result + restaurantId;
         return result;
     }
 

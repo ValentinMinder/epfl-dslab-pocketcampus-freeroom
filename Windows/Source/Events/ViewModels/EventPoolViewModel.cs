@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -15,9 +15,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
-    /// <summary>
-    /// ViewModel for pool details.
-    /// </summary>
     [LogId( "/events/pool" )]
     public sealed class EventPoolViewModel : CachedDataViewModel<long, EventPoolResponse>
     {
@@ -37,36 +34,25 @@ namespace PocketCampus.Events.ViewModels
         private Tuple<SearchPeriod, bool> _previousSettings;
 
 
-        /// <summary>
-        /// Gets the pool.
-        /// </summary>
         public EventPool Pool
         {
             get { return _pool; }
             private set { SetProperty( ref _pool, value ); }
         }
 
-        /// <summary>
-        /// Gets the pool's child items, grouped by category.
-        /// </summary>
         public EventItemGroup[] ItemGroups
         {
             get { return _itemGroups; }
             private set { SetProperty( ref _itemGroups, value ); }
         }
 
-        /// <summary>
-        /// Gets the status of the e-mail with the user's favorites.
-        /// </summary>
         public EmailSendingStatus EmailStatus
         {
             get { return _emailStatus; }
             private set { SetProperty( ref _emailStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view a child item.
-        /// </summary>
+
         [LogId( "ShowEventItem" )]
         [LogParameter( "$Param.LogId" )]
         public Command<EventItem> ViewItemCommand
@@ -81,64 +67,43 @@ namespace PocketCampus.Events.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the command executed to show current events only.
-        /// </summary>
         [LogId( "RightNow" )]
         public Command ShowCurrentEventsCommand
         {
             get { return this.GetCommand( ShowCurrentEvents ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to show the category filters.
-        /// </summary>
         [LogId( "ShowCategories" )]
         public Command FilterByCategoryCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool.DisableCategoryFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<CategoryFilterViewModel, EventPool>( Pool ), () => Pool != null && Pool.DisableCategoryFiltering != true ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to show the tag filters.
-        /// </summary>
         [LogId( "ShowTags" )]
         public Command FilterByTagCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool.DisableTagFiltering != true ); }
+            get { return this.GetCommand( () => _navigationService.NavigateTo<TagFilterViewModel, EventPool>( Pool ), () => Pool != null && Pool.DisableTagFiltering != true ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to show the settings.
-        /// </summary>
         [LogId( "ShowSettings" )]
         public Command ViewSettingsCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to request the e-mail with the user's favorite events.
-        /// </summary>
         [LogId( "RequestEmail" )]
         public AsyncCommand RequestFavoriteEmailCommand
         {
-            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool.EnableFavoriteEmailRequest == true ); }
+            get { return this.GetAsyncCommand( RequestFavoriteEmailAsync, () => Pool != null && Pool.EnableFavoriteEmailRequest == true ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to let the user scan QR codes.
-        /// </summary>
         [LogId( "ShowCodeScanner" )]
         public Command ScanCodeCommand
         {
-            get { return this.GetCommand( _codeScanner.ScanCode, () => Pool.EnableCodeScanning == true ); }
+            get { return this.GetCommand( _codeScanner.ScanCode, () => Pool != null && Pool.EnableCodeScanning == true ); }
         }
 
 
-        /// <summary>
-        /// Creates a new EventPoolViewModel.
-        /// </summary>
         public EventPoolViewModel( IDataCache cache, INavigationService navigationService, IEventsService eventsService,
                                    IPluginSettings settings, IEmailPrompt emailPrompt, ICodeScanner codeScanner,
                                    long poolId )
@@ -155,11 +120,18 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
+        public override async Task OnNavigatedToAsync()
+        {
+            await base.OnNavigatedToAsync();
+            // Always launch a filter, to make sure favorites are moved around correctly.
+            FilterGroups();
+        }
+
         protected override CachedTask<EventPoolResponse> GetData( bool force, CancellationToken token )
         {
             if ( force
               || Pool == null
-              || ( Pool != null && Pool.AlwaysRefresh == true )
+              || Pool.AlwaysRefresh == true
               || ( _previousSettings.Item1 != _settings.SearchPeriod || _previousSettings.Item2 != _settings.SearchInPast ) )
             {
                 if ( !_settings.ExcludedCategoriesByPool.ContainsKey( _poolId ) )
@@ -199,8 +171,13 @@ namespace PocketCampus.Events.ViewModels
 
             Pool = data.Pool;
             Pool.Items = data.ChildrenItems == null ? new EventItem[0] : data.ChildrenItems.Values.ToArray();
+            FilterGroups();
 
+            return true;
+        }
 
+        private void FilterGroups()
+        {
             var groups = from item in Pool.Items
                          where item.CategoryId == null
                             || !_settings.ExcludedCategoriesByPool[_poolId].Contains( item.CategoryId.Value )
@@ -220,8 +197,6 @@ namespace PocketCampus.Events.ViewModels
                          select new EventItemGroup( categName, itemGroup );
 
             ItemGroups = groups.ToArray();
-
-            return true;
         }
 
         private void ShowCurrentEvents()
@@ -231,15 +206,11 @@ namespace PocketCampus.Events.ViewModels
             RefreshAsync( true, CurrentCancellationToken );
         }
 
-
-        /// <summary>
-        /// Asynchronously requests an e-mail with the user's favorite items.
-        /// </summary>
         private async Task RequestFavoriteEmailAsync()
         {
-            EmailStatus = EmailSendingStatus.NoneRequested;
+            EmailStatus = EmailSendingStatus.NotRequested;
 
-            string emailAddress = _emailPrompt.GetEmail();
+            string emailAddress = await _emailPrompt.GetEmailAsync();
 
             if ( emailAddress == null )
             {

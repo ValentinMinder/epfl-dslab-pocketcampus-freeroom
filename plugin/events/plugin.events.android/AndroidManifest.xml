@@ -4,62 +4,64 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="15" />
 
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:label="@string/app_name"
         android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:icon="@drawable/events_icon"
-        android:theme="@style/PocketCampusTheme" >
-
+        android:label="@string/app_name"
+        android:theme="@style/PocketCampusActionBarTheme" >
         <activity
             xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.events.android.EventsMainView"
             android:icon="@drawable/events_icon"
             android:label="@string/events_plugin_title"
+            android:logo="@drawable/events_icon_white"
             android:screenOrientation="nosensor"
-            android:name="org.pocketcampus.plugin.events.android.EventsMainView" >
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <intent-filter >
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus"
-				    android:host="events.plugin.pocketcampus.org"
-				    android:pathPrefix="/showEventPool" />
-			</intent-filter>
-
-
+                <data
+                    android:host="events.plugin.pocketcampus.org"
+                    android:pathPrefix="/showEventPool"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
         </activity>
-
-        <activity android:name="org.pocketcampus.plugin.events.android.EventDetailView"
+        <activity
+            android:name="org.pocketcampus.plugin.events.android.EventDetailView"
+            android:logo="@drawable/events_icon_white"
             android:screenOrientation="nosensor" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="pocketcampus"
-				    android:host="events.plugin.pocketcampus.org"
-				    android:pathPrefix="/showEventItem" />
-			</intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-		</activity>
+                <data
+                    android:host="events.plugin.pocketcampus.org"
+                    android:pathPrefix="/showEventItem"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+        </activity>
 
         <service
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="org.pocketcampus.plugin.events.android.EventsController" />
-
     </application>
 
 </manifest>

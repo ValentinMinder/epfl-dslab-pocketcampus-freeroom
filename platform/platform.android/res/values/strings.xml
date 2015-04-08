@@ -30,5 +30,11 @@
 	<string name="sdk_server_failed">An unexpected server error has occurred</string>
 						
 	<string name="actionbar_activity_not_found">Failed to open intent...</string>
+	
+	<string name="sdk_reload_title">Reload</string>
 
+	<string name="sdk_share">Share</string>
+	
+	<string name="sdk_loading">Loading</string>
+	<string name="sdk_please_wait_loading">Please wait...\nLoading data.</string>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/recommendedAppCategoryName"
+        style="@style/PocketCampusListSectionHeader"
+        android:text="Category name" />
+
+    <TextView
+        android:id="@+id/recommendedAppCategoryDescription"
+        style="@style/PocketCampusListItemSubTitle"
+        android:paddingLeft="5dip"
+        android:text="Category description" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip" >
+
+        <LinearLayout
+            android:id="@+id/recommendedAppCategoryApps"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+</LinearLayout>

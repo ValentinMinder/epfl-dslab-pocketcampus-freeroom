@@ -1,0 +1,8 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:String x:Key="PluginIcon">F1 M68,0L68,12 32,12 32,0 24,0 24,12C24,12 9,12 7,12 4,12 4,12 4,15 4,18 4,24 4,24L96,24 96,15C96,12 96,12 93,12 89,12 76,12 76,12L76,0z M4,97C4,100 4,100 7,100 12,100 84,100 93,100 96,100 96,100 96,97 96,74 96,28 96,28L4,28C4,51,4,76,4,97z M12,36L28,36 28,52 12,52z M48,36L48,52 32,52 32,36z M52,36L68,36 68,52 52,52z M72,36L88,36 88,52 72,52z M12,56L28,56 28,72 12,72z M32,56L48,56 48,72 32,72z M52,56L68,56 68,72 52,72z M72,56L88,56 88,72 72,72z M12,76L28,76 28,92 12,92z M32,76L48,76 48,92 32,92z M52,76L68,76 68,92 52,92z M72,76L88,76 88,92 72,92z</x:String>
+</ResourceDictionary>

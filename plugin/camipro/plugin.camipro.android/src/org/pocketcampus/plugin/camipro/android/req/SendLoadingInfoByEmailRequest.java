@@ -1,6 +1,7 @@
 package org.pocketcampus.plugin.camipro.android.req;
 
 import org.pocketcampus.platform.android.io.Request;
+import org.pocketcampus.plugin.camipro.android.CamiproCardRechargeView;
 import org.pocketcampus.plugin.camipro.android.CamiproController;
 import org.pocketcampus.plugin.camipro.android.CamiproModel;
 import org.pocketcampus.plugin.camipro.shared.CamiproService.Iface;
@@ -19,6 +20,18 @@ import org.pocketcampus.plugin.camipro.shared.SendMailResult;
  */
 public class SendLoadingInfoByEmailRequest extends Request<CamiproController, Iface, CamiproRequest, SendMailResult> {
 
+	CamiproCardRechargeView caller;
+	
+	public SendLoadingInfoByEmailRequest(CamiproCardRechargeView caller) {
+		this.caller = caller;
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		caller.showLoading();
+	}
+	
 	@Override
 	protected SendMailResult runInBackground(Iface client, CamiproRequest param) throws Exception {
 		System.out.println("Requesting to SendLoadingInfoByEmail");
@@ -27,6 +40,7 @@ public class SendLoadingInfoByEmailRequest extends Request<CamiproController, If
 
 	@Override
 	protected void onResult(CamiproController controller, SendMailResult result) {
+		caller.hideLoading();
 		if(result.getIStatus() == 404) {
 			((CamiproModel) controller.getModel()).getListenersToNotify().camiproServersDown();
 		} else if(result.getIStatus() == 407) {
@@ -38,6 +52,7 @@ public class SendLoadingInfoByEmailRequest extends Request<CamiproController, If
 
 	@Override
 	protected void onError(CamiproController controller, Exception e) {
+		caller.hideLoading();
 		controller.getModel().notifyNetworkError();
 		e.printStackTrace();
 	}

@@ -1,0 +1,304 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.IsAcademia.Views.MainView"
+             x:Name="Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.IsAcademia"
+             xmlns:myc="using:PocketCampus.IsAcademia.Controls"
+             DesignDataContext="{Binding Main, Source={StaticResource Design}}"
+             SupportsLandscape="True">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <my:PeriodTypeToBrushConverter x:Key="PeriodTypeToBrush" />
+
+            <!-- Empty slot brushes -->
+            <SolidColorBrush x:Key="EmptyPeriodBackgroundBrush" Color="#29707070" />
+            <SolidColorBrush x:Key="EmptyPeriodBorderBrush" Color="#59707070" />
+
+            <!-- Horizontal items panel -->
+            <ItemsPanelTemplate x:Key="WrappingItemsPanel">
+                <WrapGrid Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+            
+            <!-- Special style for large text in the header, used in the landscape week picker -->
+            <Style x:Key="AppHeaderLargeTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource AppLargeTextBlockStyle}">
+                <Setter Property="Foreground" Value="{StaticResource AppHeaderForegroundBrush}" />
+            </Style>
+
+            <!-- Period container style -->
+            <Style x:Key="PeriodContainerStyle" TargetType="ContentControl">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            </Style>
+
+            <!-- Empty period container portrait style -->
+            <Style x:Key="PeriodEmptyContainerPortraitStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource EmptyPeriodBackgroundBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EmptyPeriodBorderBrush}" />
+                <Setter Property="BorderThickness" Value="3,0.5,0,0.5" />
+            </Style>
+
+            <!-- Empty period container landscape style -->
+            <Style x:Key="PeriodEmptyContainerLandscapeStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource EmptyPeriodBackgroundBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EmptyPeriodBorderBrush}" />
+                <Setter Property="BorderThickness" Value="1,0.5,0,0.5" />
+            </Style>
+
+            <!-- Room template -->
+            <DataTemplate x:Key="PeriodRoomTemplate">
+                <!-- HACK: The following code only works when it's shown in a popup in landscape mode, for some reason.
+                           The "Root" element can't be found otherwise. Framework bug?
+                                 Command="{Binding DataContext.ViewRoomOnMapCommand, 
+                                                   ElementName=Root}"
+                                 CommandParameter="{Binding}" -->
+                <HyperlinkButton Tapped="OnRoomHyperlinkTapped"
+                                 Margin="0,0,16,8">
+                    <TextBlock Style="{StaticResource AppSubtleTextBlockStyle}">
+                        <Underline>
+                            <Run Text="{Binding}" />
+                        </Underline>
+                    </TextBlock>
+                </HyperlinkButton>
+            </DataTemplate>
+
+            <!-- Full period template -->
+            <DataTemplate x:Key="FullPeriodTemplate">
+                <Grid Background="{StaticResource PhoneBackgroundBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Left color band -->
+                    <Rectangle Grid.RowSpan="2"
+                               Fill="{Binding PeriodType, 
+                                              Converter={StaticResource PeriodTypeToBrush}}" />
+
+                    <!-- Color background -->
+                    <Rectangle Grid.ColumnSpan="3"
+                               Grid.RowSpan="2"
+                               Fill="{Binding PeriodType, 
+                                              Converter={StaticResource PeriodTypeToBrush}}"
+                               Opacity="0.65" />
+
+                    <!-- Course name -->
+                    <Viewbox Grid.ColumnSpan="2"
+                             Grid.Column="1"
+                             StretchDirection="DownOnly"
+                             HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding CourseName}"
+                                   Style="{StaticResource AppLargeTextBlockStyle}" />
+                    </Viewbox>
+
+                    <!-- Rooms -->
+                    <ItemsControl Grid.Column="1"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding Rooms}"
+                                  ItemTemplate="{StaticResource PeriodRoomTemplate}"
+                                  ItemsPanel="{StaticResource WrappingItemsPanel}"
+                                  VerticalAlignment="Top" />
+
+                    <!-- Period type -->
+                    <TextBlock Grid.Column="2"
+                               Grid.Row="1"
+                               Text="{Binding PeriodType, Converter={StaticResource EnumToString}}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}"
+                               VerticalAlignment="Bottom"
+                               Opacity="0.5" />
+                </Grid>
+            </DataTemplate>
+
+            <!-- Basic period template -->
+            <DataTemplate x:Key="BasicPeriodTemplate">
+                <cc:SimpleButton>
+                    <Grid Background="{StaticResource PhoneBackgroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left color band -->
+                        <Rectangle Fill="{Binding PeriodType, Converter={StaticResource PeriodTypeToBrush}}" />
+
+                        <!-- Color background -->
+                        <Rectangle Grid.Column="1"
+                                   Fill="{Binding PeriodType, Converter={StaticResource PeriodTypeToBrush}}"
+                                   Opacity="0.65" />
+
+                        <!-- Course name -->
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding CourseName}"
+                                   Style="{StaticResource AppNormalTextBlockStyle}"
+                                   TextWrapping="Wrap"
+                                   TextTrimming="WordEllipsis" />
+                    </Grid>
+
+                    <!-- More info on tap -->
+                    <cc:SimpleButton.TappedFlyout>
+                        <Flyout>
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource FullPeriodTemplate}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch" />
+                        </Flyout>
+                    </cc:SimpleButton.TappedFlyout>
+                </cc:SimpleButton>
+
+            </DataTemplate>
+
+            <!-- Portrait day template -->
+            <DataTemplate x:Key="PortraitDayTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- Day name -->
+                    <TextBlock Grid.ColumnSpan="2" 
+                               Text="{Binding Day, 
+                                              Converter={StaticResource StringFormat},
+                                              ConverterParameter='dddd'}"
+                               Style="{StaticResource AppGroupHeaderTextBlockStyle}"
+                               Margin="4,8,8,4" />
+
+                    <!-- Day schedule -->
+                    <!-- It must have a height -->
+                    <myc:DayDisplay Grid.Column="1"
+                                    Grid.Row="1"
+                                    Height="800"
+                                    HorizontalAlignment="Stretch"
+                                    Day="{Binding}"
+                                    Days="{Binding DataContext.Days,
+                                                   ElementName=Root}"
+                                    PeriodTemplate="{StaticResource FullPeriodTemplate}"
+                                    ContainerStyle="{StaticResource PeriodContainerStyle}"
+                                    EmptyContainerStyle="{StaticResource PeriodEmptyContainerPortraitStyle}" />
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header -->
+        <Grid Background="{StaticResource AppHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{CustomResource Main.ViewHeader}"
+                       Style="{StaticResource AppHeaderTextBlockStyle}"
+                       VerticalAlignment="Center" />
+
+            <!-- Landscape week picker -->
+            <myc:WeekPicker x:Name="LandscapeWeekPicker"
+                            Grid.Column="1"
+                            Value="{Binding WeekDate, 
+                                            Mode=TwoWay}"
+                            Visibility="Collapsed"
+                            TextStyle="{StaticResource AppHeaderLargeTextBlockStyle}"
+                            Margin="4,2" />
+        </Grid>
+
+        <!-- Portrait week picker -->
+        <Border x:Name="PortraitWeekPicker"
+                Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <myc:WeekPicker Value="{Binding WeekDate, 
+                                            Mode=TwoWay}"
+                            TextStyle="{StaticResource AppLargeTextBlockStyle}"
+                            Margin="19,4" />
+        </Border>
+
+        <!-- Cache status -->
+        <cc:CacheStatusDisplay Grid.Row="2"
+                               Status="{Binding CacheStatus}"
+                               RetryCommand="{Binding RefreshCommand}" />
+
+        <!-- Portrait schedule -->
+        <ListView x:Name="PortraitDays"
+                  Grid.Row="3"
+                  ItemsSource="{Binding Days}"
+                  ItemTemplate="{StaticResource PortraitDayTemplate}" />
+
+        <!-- Landscape schedule -->
+        <myc:DayDisplay x:Name="LandscapeDays"
+                        Grid.Row="3"
+                        Days="{Binding Days}"
+                        HourIncrement="2"
+                        PeriodTemplate="{StaticResource BasicPeriodTemplate}"
+                        ContainerStyle="{StaticResource PeriodContainerStyle}"
+                        EmptyContainerStyle="{StaticResource PeriodEmptyContainerLandscapeStyle}" 
+                        Visibility="Collapsed" />
+
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="3"
+                              Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="OrientationStates">
+                <VisualState x:Name="Portrait" />
+                <VisualState x:Name="Landscape">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Page"
+                                                       Storyboard.TargetProperty="ShowStatusBar"
+                                                       Duration="0">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LandscapeWeekPicker"
+                                                       Storyboard.TargetProperty="Visibility"
+                                                       Duration="0">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LandscapeDays"
+                                                       Storyboard.TargetProperty="Visibility"
+                                                       Duration="0">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PortraitWeekPicker"
+                                                       Storyboard.TargetProperty="Visibility"
+                                                       Duration="0">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PortraitDays"
+                                                       Storyboard.TargetProperty="Visibility"
+                                                       Duration="0">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</cc:PageBase>

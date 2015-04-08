@@ -58,4 +58,5 @@
 "AddLinkToFavorites" = "Add this link to favorites";
 "RemoveLinkFromFavorites" = "Remove this link from favorites";
 "DeleteDocumentFromLocalStorage" = "Delete this document from local storage";
+"Print" = "Print";
 "PrintThisDocumentAtEPFL" = "Print this document at EPFL";

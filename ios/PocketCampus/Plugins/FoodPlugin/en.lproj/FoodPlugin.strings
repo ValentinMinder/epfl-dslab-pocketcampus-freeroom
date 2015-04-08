@@ -51,6 +51,8 @@
 
 /* Accessiblity */
 
+"Options" = "Options";
+"ShowOptionsForDinnerAndOtherMenus" = "Allows to see evening menus or for another day";
 "ShowsMenuForThisRestaurant" = "Shows menu for this restaurant";
 "AddRestaurantToFavorites" = "Add this restaurant to favorites";
 "RemoveRestaurantFromFavorites" = "Remove this restaurant from favorites";

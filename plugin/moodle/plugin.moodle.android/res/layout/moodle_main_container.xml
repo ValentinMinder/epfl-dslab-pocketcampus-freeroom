@@ -4,12 +4,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 	
-    <ListView
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/moodle_main_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/pocketcampus_list_selector" />
+        style="@style/PocketCampusListViewStyle" />
 
 </LinearLayout>

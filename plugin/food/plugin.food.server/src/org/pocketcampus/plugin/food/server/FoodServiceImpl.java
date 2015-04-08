@@ -7,8 +7,10 @@ import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.pocketcampus.platform.server.Authenticator;
+import org.pocketcampus.platform.server.BackgroundTasker;
 import org.pocketcampus.platform.server.CachingProxy;
 import org.pocketcampus.platform.server.HttpClientImpl;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.plugin.authentication.server.AuthenticatorImpl;
 import org.pocketcampus.plugin.food.shared.*;
 
@@ -21,7 +23,7 @@ import java.util.Map;
 /**
  * Provides information about the meals, and allows users to rate them.
  */
-public class FoodServiceImpl implements FoodService.Iface {
+public class FoodServiceImpl implements FoodService.Iface, TaskRunner {
     private static final Days PAST_VOTE_MAX_DAYS = Days.days(5);
     private static final Duration MENU_CACHE_DURATION = Duration.standardHours(1);
     private static final Duration PICTURES_CACHE_DURATION = Duration.standardDays(1);
@@ -48,12 +50,25 @@ public class FoodServiceImpl implements FoodService.Iface {
 
     public FoodServiceImpl() {
         this(new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS),
-                CachingProxy.create(new MenuImpl(new HttpClientImpl()), MENU_CACHE_DURATION, true),
+                CachingProxy.create(new DatabaseInsertingMenu(new MenuImpl(new HttpClientImpl()), new RatingDatabaseImpl(PAST_VOTE_MAX_DAYS)), MENU_CACHE_DURATION, true),
                 CachingProxy.create(new PictureSourceImpl(), PICTURES_CACHE_DURATION, false),
                 CachingProxy.create(new RestaurantLocatorImpl(), LOCATIONS_CACHE_DURATION, false),
                 new AuthenticatorImpl(),
                 getLdapObject());
     }
+    
+	@Override
+	public void schedule(BackgroundTasker.Scheduler tasker) {
+		tasker.addTask(60 * 1000, true, new Runnable() {
+			public void run() {
+				// prefetch things that take time (resto location, mostly)
+				FoodResponse response = _menu.get(MealTime.LUNCH, LocalDate.now());
+				for (EpflRestaurant restaurant : response.getMenu()) {
+					_locator.findByName(restaurant.getRName());
+				}
+			}
+		});
+	}
 
     @Override
     public FoodResponse getFood(FoodRequest foodReq) throws TException {
@@ -73,8 +88,7 @@ public class FoodServiceImpl implements FoodService.Iface {
             throw new TException("An exception occurred while getting the menu", e);
         }
         try {
-            _ratingDatabase.insertMenu(response.getMenu(), date, time);
-            _ratingDatabase.setRatings(response.getMenu());
+            _ratingDatabase.setRatings(response.getMenu(), date, time);
         } catch (SQLException e) {
             throw new TException("An exception occurred while inserting and fetching the ratings", e);
         }

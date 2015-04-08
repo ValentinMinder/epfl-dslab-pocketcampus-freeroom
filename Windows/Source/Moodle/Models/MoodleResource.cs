@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -6,6 +6,7 @@ using ThriftSharp;
 
 namespace PocketCampus.Moodle.Models
 {
+    // Union type: exactly 1 property is set.
     [ThriftStruct( "MoodleResource2" )]
     public sealed class MoodleResource
     {

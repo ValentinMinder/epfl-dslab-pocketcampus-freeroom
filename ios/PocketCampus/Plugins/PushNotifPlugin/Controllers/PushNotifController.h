@@ -65,7 +65,7 @@ typedef void (^PushNotifDeviceRegistrationFailureBlock)(PushNotifDeviceRegistrat
  * registered and success or failure is immediately executed, user having accepted or 
  * rejected the first time respectively.
  * You may display a message telling the user what he is missing in your failure message.
- * Note: if the user has denied the "buffert" alert for notifications, it will be displayed again
+ * Note: if the user has denied the "buffer" alert for notifications, it will be displayed again
  * when you call this method. It is *your* responsability to not spam user multiple times
  * if failure is PushNotifRegistrationErrorUserDeniedBufferAlert.
  * To know wether you have to register, you can check if [PushNotifController notificationsDeviceToken] is nil.

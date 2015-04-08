@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Layout for the favorites dialog window. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:padding="5dp" >
-    
-    <!-- TextView to summarize the number of favorites -->
-    
-    <TextView
-        android:id="@+id/freeroom_layout_dialog_fav_status"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:text="@string/freeroom_dialog_fav_status_no"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/darker_gray"
-        android:visibility="visible" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow" >
 
     <!-- ListView that contains all the favorites by buildings -->
 
     <ExpandableListView
         android:id="@+id/freeroom_layout_dialog_fav_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        style="@style/PocketCampusListViewStyle"
+        android:layout_marginBottom="55dip"
+        android:childDivider="@color/white"
+        android:paddingBottom="10dip" />
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <!-- Button to add more rooms -->
+
+        <Button
+            android:id="@+id/freeroom_layout_fav_add"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.33"
+            android:drawableLeft="@drawable/sdk_add_white"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/freeroom_dialog_fav_add" />
+
+        <!-- Button to remove ALL chosen rooms -->
+
+        <Button
+            android:id="@+id/freeroom_layout_fav_user_reset"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
+            android:drawableLeft="@drawable/freeroom_ic_action_discard_white"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/freeroom_dialog_fav_reset" />
+    </LinearLayout>
+
+</RelativeLayout>

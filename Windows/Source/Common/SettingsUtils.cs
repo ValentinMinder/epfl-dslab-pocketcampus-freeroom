@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -32,7 +32,6 @@ namespace PocketCampus.Common
         {
             return pairs.Where( pair => pair.Item2 )
                         .Select( pair => pair.Item1 )
-                        .Cast<T>()
                         .ToArray();
         }
     }

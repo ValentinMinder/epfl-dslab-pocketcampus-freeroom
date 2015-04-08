@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -17,9 +17,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.IsAcademia.ViewModels
 {
-    /// <summary>
-    /// The main (and only) ViewModel.
-    /// </summary>
     [LogId( "/isacademia" )]
     public sealed class MainViewModel : CachedDataViewModel<NoParameter, ScheduleResponse>
     {
@@ -32,27 +29,20 @@ namespace PocketCampus.IsAcademia.ViewModels
         private StudyDay[] _days;
         private DateTime _weekDate;
 
-        /// <summary>
-        /// Gets the available days.
-        /// </summary>
+
         public StudyDay[] Days
         {
             get { return _days; }
             private set { SetProperty( ref _days, value ); }
         }
 
-        /// <summary>
-        /// Gets or sets the current week, as a DateTime.
-        /// </summary>
         public DateTime WeekDate
         {
             get { return _weekDate; }
             set { SetProperty( ref _weekDate, value ); OnWeekDateChanged(); }
         }
 
-        /// <summary>
-        /// Gets the command executed to view a room.
-        /// </summary>
+
         [LogId( "ViewRoomOnMap" )]
         [LogParameter( "$Param" )]
         public Command<string> ViewRoomOnMapCommand
@@ -61,9 +51,6 @@ namespace PocketCampus.IsAcademia.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
         public MainViewModel( IDataCache cache, IIsAcademiaService isaService, ISecureRequestHandler requestHandler )
             : base( cache )
         {
@@ -74,9 +61,6 @@ namespace PocketCampus.IsAcademia.ViewModels
         }
 
 
-        /// <summary>
-        /// Occurs when the WeekDate changes.
-        /// </summary>
         private async void OnWeekDateChanged()
         {
             await TryRefreshAsync( true );
@@ -145,25 +129,17 @@ namespace PocketCampus.IsAcademia.ViewModels
             return true;
         }
 
-        /// <summary>
-        /// Gets the start of the week the specified date is in.
-        /// </summary>
+
         private static DateTime GetWeekStart( DateTime date )
         {
             return date.Date.Subtract( TimeSpan.FromDays( GetDayIndex( date.DayOfWeek ) - GetDayIndex( DayOfWeek.Monday ) ) );
         }
 
-        /// <summary>
-        /// Gets the Monday-based day index for the specified day of week.
-        /// </summary>
         private static int GetDayIndex( DayOfWeek dow )
         {
             return dow == DayOfWeek.Sunday ? 6 : (int) dow - 1;
         }
 
-        /// <summary>
-        /// Ensures that all periods in the specified sequence begin and end on the same day, splitting them in two if needed.
-        /// </summary>
         private static IEnumerable<Period> ForceSameStartAndEndDays( IEnumerable<Period> periods )
         {
             foreach ( var period in periods )

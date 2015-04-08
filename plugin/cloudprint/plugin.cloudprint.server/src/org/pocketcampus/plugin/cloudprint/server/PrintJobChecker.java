@@ -6,14 +6,13 @@ import org.apache.commons.lang.StringUtils;
 import java.io.IOException;
 
 public class PrintJobChecker {
-	private static final long STUCK_JOB_CHECK_PERIOD = 3l; // in minutes (if a job lasts for more than x minutes, it is considered stuck)
 	private String printerName;
 	private String lastState = "";
 	private long lastChanged = 0;
 	public PrintJobChecker(String printerName) {
 		this.printerName = printerName;
 	}
-	private synchronized String checkJobStuck() throws IOException {
+	public synchronized String checkJobStuck(final long STUCK_JOB_CHECK_PERIOD) throws IOException {
 		Process proc = Runtime.getRuntime().exec(new String[]{"lpstat", "-p", printerName});
 		String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
 		long now = System.currentTimeMillis();
@@ -36,12 +35,11 @@ public class PrintJobChecker {
 		}
 		return succeeded;
 	}
-	public boolean checkJobAndTakeAction() throws IOException {
-		String jobId = checkJobStuck();
+	public void verifyJobAndTakeAction(final long STUCK_JOB_CHECK_PERIOD) throws IOException {
+		String jobId = checkJobStuck(STUCK_JOB_CHECK_PERIOD);
 		if(jobId != null) {
 			boolean result = cancelJob(jobId);
 			System.out.println("JOB WAS STUCK. TRIED TO CANCEL IT. result=" + result);
 		}
-		return jobId == null;
 	}
 }

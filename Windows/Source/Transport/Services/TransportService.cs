@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,11 +14,7 @@ namespace PocketCampus.Transport.Services
 {
     public sealed class TransportService : ThriftServiceImplementation<ITransportService>, ITransportService
     {
-        public TransportService( IServerAccess access )
-            : base( access.CreateCommunication( "transport" ) )
-        {
-
-        }
+        public TransportService( IServerAccess access ) : base( access.CreateCommunication( "transport" ) ) { }
 
         public Task<StationSearchResponse> SearchStationsAsync( StationSearchRequest request, CancellationToken cancellationToken )
         {

@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -13,9 +13,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.News.ViewModels
 {
-    /// <summary>
-    /// The ViewModel for feed items.
-    /// </summary>
     [LogId( "/news/item" )]
     public sealed class FeedItemViewModel : CachedDataViewModel<FeedItem, FeedItemContentResponse>
     {
@@ -26,20 +23,16 @@ namespace PocketCampus.News.ViewModels
 
         private FeedItemContent _itemContent;
 
+
         public FeedItem Item { get; private set; }
 
-        /// <summary>
-        /// Gets the feed item's content.
-        /// </summary>
         public FeedItemContent ItemContent
         {
             get { return _itemContent; }
             private set { SetProperty( ref _itemContent, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to open the feed item in the browser.
-        /// </summary>
+
         [LogId( "ViewInBrowser" )]
         [LogParameter( "Item.LogId" )]
         public Command OpenInBrowserCommand
@@ -48,9 +41,6 @@ namespace PocketCampus.News.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new FeedItemViewModel.
-        /// </summary>
         public FeedItemViewModel( IDataCache cache, INewsService newsService, IBrowserService browserService,
                                   FeedItem item )
             : base( cache )

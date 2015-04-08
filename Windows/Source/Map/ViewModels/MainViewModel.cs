@@ -1,11 +1,10 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
 using System;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Map.Models;
@@ -15,14 +14,11 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Map.ViewModels
 {
-    /// <summary>
-    /// The main ViewModel, with the map and search functionality.
-    /// </summary>
     [LogId( "/map" )]
-    public sealed class MainViewModel : DataViewModel<MapSearchRequest>
+    public sealed class MainViewModel : DataViewModel<MapSearchRequest>, IDisposable
     {
-        // The default zoom level.
-        private const int DefaultZoomLevel = 17;
+        // If the user toggled centering the map on their position, moving this far will toggle it off (in meters)
+        private const double StopCenterOnUserThreshold = 5.0;
         // The zoom level used when centering the map on the campus.
         private const int CampusZoomLevel = 16;
         // The coordinates of the campus center.
@@ -33,179 +29,194 @@ namespace PocketCampus.Map.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IPluginSettings _settings;
 
+        private string _query;
+        private SearchStatus _searchStatus;
+        private MapItem[] _searchResults;
         private GeoLocationStatus _locationStatus;
-        private MapLayer[] _mapLayers;
+        private bool _isCenteredOnUser;
 
-        /// <summary>
-        /// Gets the map properties.
-        /// </summary>
+
         public MapProperties Properties { get; private set; }
 
-        /// <summary>
-        /// Gets the search provider.
-        /// </summary>
-        public SearchProvider SearchProvider { get; private set; }
+        public string Query
+        {
+            get { return _query; }
+            set { SetProperty( ref _query, value ); }
+        }
 
-        /// <summary>
-        /// Gets the geo-location status.
-        /// </summary>
+        public SearchStatus SearchStatus
+        {
+            get { return _searchStatus; }
+            private set { SetProperty( ref _searchStatus, value ); }
+        }
+
+        public MapItem[] SearchResults
+        {
+            get { return _searchResults; }
+            private set { SetProperty( ref _searchResults, value ); }
+        }
+
         public GeoLocationStatus LocationStatus
         {
             get { return _locationStatus; }
             private set { SetProperty( ref _locationStatus, value ); }
         }
 
-        /// <summary>
-        /// Gets the map layers.
-        /// </summary>
-        public MapLayer[] MapLayers
+        public bool IsCenteredOnUser
         {
-            get { return _mapLayers; }
-            private set { SetProperty( ref _mapLayers, value ); }
+            get { return _isCenteredOnUser; }
+            set { SetProperty( ref _isCenteredOnUser, value ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to center the map on the campus.
-        /// </summary>
         [LogId( "CenterOnCampus" )]
         public Command CenterOnCampusCommand
         {
             get { return this.GetCommand( CenterOnCampus ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to center the map on the user's position.
-        /// </summary>
-        [LogId( "CenterOnSelf" )]
-        public ICommand CenterOnPositionCommand
-        {
-            get { return this.GetCommand( CenterOnPosition, () => _settings.UseGeolocation ); }
-        }
-
-        /// <summary>
-        /// Gets the command executed to show the settings page.
-        /// </summary>
         [LogId( "OpenSettings" )]
         public Command ViewSettingsCommand
         {
             get { return this.GetCommand( _navigationService.NavigateTo<SettingsViewModel> ); }
         }
 
+        [LogId( "Search" )]
+        [LogParameter( "Query" )]
+        public AsyncCommand SearchCommand
+        {
+            get { return this.GetAsyncCommand( () => SearchAsync( Query ) ); }
+        }
 
-        /// <summary>
-        /// Creates a new MainViewModel.
-        /// </summary>
+
         public MainViewModel( ILocationService locationService, INavigationService navigationService,
                               IMapService mapService, IPluginSettings settings,
-                              SearchProvider searchProvider,
                               MapSearchRequest request )
         {
             _mapService = mapService;
             _locationService = locationService;
             _navigationService = navigationService;
             _settings = settings;
-            SearchProvider = searchProvider;
 
             _locationService.Ready += LocationService_Ready;
             _locationService.LocationChanged += LocationService_LocationChanged;
             _locationService.Error += LocationService_Error;
 
-            Properties = new MapProperties { ZoomLevel = DefaultZoomLevel };
+            Properties = new MapProperties();
 
-            SearchProvider.ExecuteRequest( request );
+            ExecuteRequest( request );
+
+            this.ListenToProperty( x => x.IsCenteredOnUser, IsCenterdOnUserChanged );
+            Properties.ListenToProperty( x => x.Center, OnCenterChanged );
         }
 
 
-        /// <summary>
-        /// Executed when the user opens the plugin, or comes back from the settings page.
-        /// </summary>
-        protected override async Task RefreshAsync( bool force, CancellationToken token )
+        public override Task OnNavigatedToAsync()
         {
-            if ( force )
-            {
-                // TODO: Find a correct way to display that
-                await Task.Delay( 0 ); // make the compiler happy for now
-                //var layers = (IEnumerable<MapLayer>) await _mapService.GetLayersAsync();
-                //layers = layers.Where( l => l.CanDisplay );
-                //foreach ( var layer in layers )
-                //{
-                //    layer.Items = await _mapService.GetLayerItemsAsync( layer.Id, token );
-                //    foreach ( var item in layer.Items )
-                //    {
-                //        item.ImageUrl = "http://pocketcampus.epfl.ch/" + layer.ImageUrl;
-                //    }
-                //}
-
-                //MapLayers = layers.ToArray();
-            }
+            // HACK: No call to base, we don't want the "try to refresh on the first navigation" behavior here
+            //       Inheriting from DataViewModel is weird anyway...
 
             if ( Properties.Center == null )
             {
-                Properties.Center = CampusPosition;
+                CenterOnCampus();
             }
 
-            if ( _settings.UseGeolocation )
+            _locationService.IsEnabled = _settings.UseGeolocation;
+            if ( !_settings.UseGeolocation )
             {
-                _locationService.IsEnabled = true;
-
-                // This task should not be awaited; assigning it to a variable removes the compiler warning
-                var _ = _locationService.GetLocationAsync().ContinueWith( task =>
-                {
-                    Properties.UserPosition = task.Result.Item1;
-                    LocationStatus = task.Result.Item2;
-
-                    Properties.Center = Properties.UserPosition;
-                } );
-            }
-            else
-            {
-                _locationService.IsEnabled = false;
                 Properties.UserPosition = null;
                 LocationStatus = GeoLocationStatus.NotRequested;
             }
+
+            return Task.FromResult( 0 );
         }
 
-        /// <summary>
-        /// Centers the map on the EPFL campus.
-        /// </summary>
+        private async void ExecuteRequest( MapSearchRequest request )
+        {
+            if ( request.Query != null )
+            {
+                Query = request.Query;
+                await SearchAsync( request.Query );
+            }
+            else if ( request.Item != null )
+            {
+                SearchResults = new[] { request.Item };
+            }
+        }
+
+        private Task SearchAsync( string query )
+        {
+            return TryExecuteAsync( async token =>
+            {
+                var results = await _mapService.SearchAsync( query, token );
+                var uniqueResult = results.FirstOrDefault( r => NameNormalizer.AreRoomNamesEqual( r.Name, query ) );
+
+                if ( !token.IsCancellationRequested )
+                {
+                    SearchStatus = results.Length == 0 ? SearchStatus.NoResults : SearchStatus.Finished;
+                    SearchResults = uniqueResult == null ? results : new[] { uniqueResult };
+                }
+            } );
+        }
+
         private void CenterOnCampus()
         {
+            IsCenteredOnUser = false;
             Properties.ZoomLevel = CampusZoomLevel;
             Properties.Center = CampusPosition;
         }
 
-        /// <summary>
-        /// Centers the map on the user's position.
-        /// </summary>
-        private void CenterOnPosition()
+        private void IsCenterdOnUserChanged()
         {
-            Properties.ZoomLevel = DefaultZoomLevel;
-            Properties.Center = Properties.UserPosition;
+            Messenger.Send( new EventLogRequest( "ToggleCenterOnUser", IsCenteredOnUser.ToString() ) );
+
+            if ( IsCenteredOnUser )
+            {
+                Properties.UserPosition = _locationService.LastKnownLocation;
+                Properties.Center = Properties.UserPosition;
+            }
         }
 
-        /// <summary>
-        /// Executed when the location service is ready to track the user.
-        /// </summary>
+        private void OnCenterChanged()
+        {
+            if ( Properties.Center == null || Properties.UserPosition == null )
+            {
+                // when loading the map, or if geolocation is disabled
+                return;
+            }
+
+            if ( Properties.Center.DistanceTo( Properties.UserPosition ) >= StopCenterOnUserThreshold )
+            {
+                IsCenteredOnUser = false;
+            }
+        }
+
         private void LocationService_Ready( object sender, EventArgs e )
         {
             LocationStatus = GeoLocationStatus.Success;
         }
 
-        /// <summary>
-        /// Executed when the user's position changes.
-        /// </summary>
         private void LocationService_LocationChanged( object sender, LocationChangedEventArgs e )
         {
             Properties.UserPosition = e.Location;
+            if ( IsCenteredOnUser )
+            {
+                Properties.Center = Properties.UserPosition;
+            }
         }
 
-        /// <summary>
-        /// Executed when the location service encounters a problem.
-        /// </summary>
         private void LocationService_Error( object sender, EventArgs e )
         {
             Properties.UserPosition = null;
             LocationStatus = GeoLocationStatus.Error;
+        }
+
+        // Avoid memory leaks
+        public new void Dispose()
+        {
+            base.Dispose();
+            _locationService.Ready -= LocationService_Ready;
+            _locationService.LocationChanged -= LocationService_LocationChanged;
+            _locationService.Error -= LocationService_Error;
         }
     }
 }

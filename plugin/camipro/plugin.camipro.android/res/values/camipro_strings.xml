@@ -29,7 +29,6 @@
     <string name="camipro_string_logout">Logout</string>
     
     <string name="camipro_error_camipro_down">PocketCampus tried to connect to Camipro servers, but they seem down.</string>
-    <string name="camipro_connection_error_happened">We cannot fetch Camipro data right now, because you are not connected to the Internet.</string>
         
     <string name="camipro_menu_send_by_email">Send by email</string>
         

@@ -2,10 +2,7 @@
 <!-- Layout to hold room details in the popup info. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_room_occupancies_details"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="2dip" >
+    style="@style/PocketCampusRow" >
 
     <!-- Image to say you're going to work there -->
 
@@ -19,11 +16,6 @@
         android:contentDescription="@string/freeroom_layout_roomslist_img_share"
         android:src="@drawable/freeroom_ic_action_share_enabled" />
 
-    <TextView
-        android:id="@+id/freeroom_layout_details_separator_1"
-        style="@style/Vertical_Divider"
-        android:layout_toLeftOf="@id/freeroom_layout_details_share" />
-
     <!-- Image to show how many people are working there -->
 
     <ImageView
@@ -31,28 +23,22 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/freeroom_layout_details_separator_1"
+        android:layout_marginRight="10dip"
+        android:layout_toLeftOf="@id/freeroom_layout_details_share"
         android:contentDescription="@string/freeroom_layout_roomslist_img_people"
         android:gravity="center"
         android:src="@drawable/freeroom_ic_occupation_unknown" />
-
-    <TextView
-        android:id="@+id/freeroom_layout_details_separator_2"
-        style="@style/Vertical_Divider"
-        android:layout_toLeftOf="@id/freeroom_layout_details_people" />
 
     <!-- TextView to hold the time period -->
 
     <TextView
         android:id="@+id/freeroom_layout_details_text"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/freeroom_layout_details_separator_2"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_marginRight="10dip"
+        android:layout_toLeftOf="@id/freeroom_layout_details_people"
         android:drawableLeft="@drawable/freeroom_ic_dot_grey"
         android:gravity="left|center_vertical"
         android:maxLines="1"
-        android:text="mock time data"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:text="mock time data" />
 
 </RelativeLayout>

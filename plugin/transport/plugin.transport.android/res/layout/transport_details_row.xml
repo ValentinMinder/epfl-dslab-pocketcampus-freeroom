@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- For each row. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/transport_trip_details_station"
+        style="@style/PocketCampusListItemTitle"
+        android:maxLines="100"
+        android:text="EPFL → Lausanne-Flon" />
+
+    <TextView
+        android:id="@+id/transport_trip_details_means"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_width="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="@string/transport_using" />
+
+    <TextView
+        android:id="@+id/transport_trip_details_dep_time"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_width="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="@string/transport_departure_at" />
+
+    <TextView
+        android:id="@+id/transport_trip_details_arr_time"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_width="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="@string/transport_arrival_at" />
+
+</LinearLayout>

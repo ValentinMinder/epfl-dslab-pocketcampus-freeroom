@@ -20,8 +20,7 @@ $libs_to_export = array(
 		"commons-io-2.0.1.jar", "commons-lang-2.6.jar", "commons-lang3-3.0.1.jar",
 		"gcm.jar",
 		"httpclient-4.3.5.jar", "httpcore-4.3.2.jar", "httpmime-4.3.5.jar",
-		"libGoogleAnalyticsServices.jar", "libthrift-0.7.0.jar",
-		"osmdroid-android-3.0.3.jar",
+		"libGoogleAnalyticsServices.jar", "libthrift-0.9.2.jar", "javax.annotation.jar", 
 		"popup-menu-compat-lib.jar",
 		"servlet-api-3.0.jar", "slf4j-api-1.6.2.jar", 
 		"universal-image-loader-1.9.3.jar");
@@ -30,8 +29,8 @@ $path_to_plugin_dir = "../../plugin";
 $path_to_platform_dir = "../../platform";
 $path_to_lib_dir = "../../platform/platform.android/libs";
 
-$versionCode = "30";
-$versionName = "2.4";
+$versionCode = "37";
+$versionName = "3.0.1";
 
 function import_nodes($file, $tag, $doc, $parent_node, $nodes_to_remove) {
 	$doc2 = new DOMDocument();
@@ -79,17 +78,18 @@ function generate_android_manifest($output_dir, $is_lib){
 	$app = $doc->createElement("application");
 	$manif->appendChild($app);
 	$app->setAttribute("android:label", "@string/app_name");
-	$app->setAttribute("android:theme", "@style/PocketCampusTheme");
+	$app->setAttribute("android:theme", "@style/PocketCampusActionBarTheme");
 	$app->setAttribute("android:icon", "@drawable/app_icon");
 	$app->setAttribute("android:name", "org.pocketcampus.platform.android.core.GlobalContext");
 
 	$sdk = $doc->createElement("uses-sdk");
 	$manif->appendChild($sdk);
-	$sdk->setAttribute("android:minSdkVersion", "8");
+	$sdk->setAttribute("android:minSdkVersion", "15");
 
 	if(!$is_lib) {
 		foreach($plugins_to_merge as $plgn) {
 			$plugin = strtolower($plgn);
+			echo "Merging ".$plugin."\n";
 			$manifest_file = "$path_to_plugin_dir/$plugin/plugin.$plugin.android/AndroidManifest.xml";
 			import_nodes($manifest_file, "/manifest/application/activity", $doc, $app, ($plugin == "dashboard" ? "" : "//category[@android:name='android.intent.category.LAUNCHER']"));
 			import_nodes($manifest_file, "/manifest/application/service", $doc, $app, "");
@@ -98,6 +98,17 @@ function generate_android_manifest($output_dir, $is_lib){
 			import_nodes($manifest_file, "/manifest/permission-group", $doc, $manif, "");
 			import_nodes($manifest_file, "/manifest/permission", $doc, $manif, "");
 			import_nodes($manifest_file, "/manifest/uses-permission", $doc, $manif, "");
+
+			if($plugin == "map"){
+				$keyMetaData = $doc->createElement("meta-data");
+				$keyMetaData->setAttribute("android:name", "com.google.android.maps.v2.API_KEY");
+				$keyMetaData->setAttribute("android:value", "AIzaSyBxjrH9IRyVCTJrHdcTtNGIKtuZSlXcRTE");
+				$app->appendChild($keyMetaData);
+				$keyMetaData = $doc->createElement("meta-data");
+				$keyMetaData->setAttribute("android:name", "com.google.android.gms.version");
+				$keyMetaData->setAttribute("android:value", "@integer/google_play_services_version");
+				$app->appendChild($keyMetaData);
+			}
 		}
 	}
 
@@ -213,7 +224,7 @@ EOS;
 }
 
 function generate_project_properties($output_dir, $is_lib, $refs){
-	$content = "target=android-10\n";
+	$content = "target=android-15\n";
 	if($is_lib)
 		$content .= "android.library=true\n";
 	$i = 1;
@@ -452,7 +463,7 @@ generate_ant_properties($output_dir);
 generate_build_xml($output_dir, "$project_name");
 generate_proguard_cfg($output_dir);
 //generate_project_properties($output_dir, false, array("../PocketCampusLib"));
-generate_project_properties($output_dir, false, array());
+generate_project_properties($output_dir, false, array("../google_play_services/libproject/google-play-services_lib"));
 generate_dot_classpath($output_dir);
 generate_dot_project($output_dir, "$project_name");
 // need to manually generate local.properties;

@@ -72,30 +72,45 @@
         for (NSItemProvider *itemProvider in item.attachments) {
             if ([itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypePDF]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePDF options:nil completionHandler:^(NSURL* pdfURL, NSError *error) {
-                    if (welf && pdfURL && !error) {
-                        welf.loadedUTType = (NSString*)kUTTypePDF;
-                        [welf loadItemWithURL:pdfURL];
+                    if (!welf) {
+                        return;
                     }
+                    if (!pdfURL || error) {
+                        [welf showUnknownError];
+                        return;
+                    }
+                    welf.loadedUTType = (NSString*)kUTTypePDF;
+                    [welf loadItemWithURL:pdfURL];
                 }];
                 itemFound = YES;
                 break;
             }
             if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeFileURL]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* fileURL, NSError *error) {
-                    if (welf && fileURL && !error) {
-                        welf.loadedUTType = (NSString*)kUTTypeFileURL;
-                        [welf loadItemWithURL:fileURL];
+                    if (!welf) {
+                        return;
                     }
+                    if (!fileURL || error) {
+                        [welf showUnknownError];
+                        return;
+                    }
+                    welf.loadedUTType = (NSString*)kUTTypeFileURL;
+                    [welf loadItemWithURL:fileURL];
                 }];
                 itemFound = YES;
                 break;
             }
             if (!itemFound && [itemProvider hasItemConformingToTypeIdentifier:(NSString *)kUTTypeURL]) {
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypeURL options:nil completionHandler:^(NSURL* url, NSError *error) {
-                    if (welf && url && !error) {
-                        welf.loadedUTType = (NSString*)kUTTypeURL;
-                        [welf loadItemWithURL:url];
+                    if (!welf) {
+                        return;
                     }
+                    if (!url || error) {
+                        [welf showUnknownError];
+                        return;
+                    }
+                    welf.loadedUTType = (NSString*)kUTTypeURL;
+                    [welf loadItemWithURL:url];
                 }];
                 itemFound = YES;
                 break;
@@ -140,6 +155,11 @@
             [self presentViewController:viewController animated:NO completion:NULL];
         }
     });
+}
+
+- (void)showUnknownError {
+    [self.loadingIndicator stopAnimating];
+    self.centerMessageLabel.text = NSLocalizedStringFromTable(@"SorryErrorOccured", @"CloudPrintPlugin", nil);
 }
 
 - (void)showUnsupportedFileFormatError {

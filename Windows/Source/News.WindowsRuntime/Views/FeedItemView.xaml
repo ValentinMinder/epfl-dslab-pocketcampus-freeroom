@@ -1,0 +1,73 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.News.Views.FeedItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             xmlns:my="using:PocketCampus.News"
+             DesignDataContext="{Binding FeedItem, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <my:ImageDisplayConverter x:Key="ImageDisplay"
+                                      Width="384"
+                                      Height="400" />
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+
+    <Grid>
+        <ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Border Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+                    <TextBlock Text="{Binding Item.Title}"
+                               Style="{StaticResource AppSecondaryTitleTextBlockStyle}"
+                               TextWrapping="WrapWholeWords" />
+                </Border>
+                
+                <cc:CacheStatusDisplay Grid.Row="1"
+                                       Status="{Binding CacheStatus}"
+                                       RetryCommand="{Binding RefreshCommand}" />
+                
+                <Image Grid.Row="2"
+                       Source="{Binding Item.ImageUrl,
+                                        Converter={StaticResource ImageDisplay}}"
+                       Width="384" />
+                
+                <RichTextBlock Grid.Row="3"
+                               c:RichTextBlockEx.Html="{Binding ItemContent.Content}"
+                               Style="{StaticResource AppNormalRichTextBlockStyle}"
+                               TextAlignment="Justify"
+                               FontFamily="Sitka Text"
+                               FontSize="{StaticResource TextStyleLargeFontSize}"
+                               Margin="19,16,19,95" />
+            </Grid>
+        </ScrollViewer>
+        
+        <cc:DataStatusDisplay Data="{Binding DataStatus}"
+                              Cache="{Binding CacheStatus}"
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+    
+    <cc:PageBase.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Command="{Binding OpenInBrowserCommand}"
+                              Icon="NewWindow"
+                              Label="{CustomResource FeedItem.ViewInBrowser}" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </cc:PageBase.BottomAppBar>
+</cc:PageBase>

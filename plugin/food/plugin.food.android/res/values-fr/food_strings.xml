@@ -8,10 +8,10 @@
 	<string name="food_menu_view_lunch_menus">Menus de midi</string>
 	<string name="food_menu_view_evening_menus">Menus du soir</string>
 	
-	<string name="food_dialog_resto">Filtrer par restaurant</string>
-	<string name="food_dialog_types">Filtrer par types</string>
+	<string name="food_dialog_resto">Filtrer par restaurants</string>
+	<string name="food_dialog_ingredients">Filtrer par types de plats</string>
 	<string name="food_dialog_prices">Afficher les prix pour</string>
-	<string name="food_dialog_vote">Voter</string>
+	<string name="food_dialog_vote">Noter</string>
 	
 	<string name="food_title_lunch_menus">Menus de midi du %s</string>
 	<string name="food_title_evening_menus">Menus du soir du %s</string>
@@ -20,12 +20,12 @@
 	<string name="food_string_no_evening_menus">Pas de menus du soir pour le %s</string>
 
 	<string name="food_text_satisfaction">satisfaction</string>
-	<string name="food_text_vote">vote</string>
-	<string name="food_text_votes">votes</string>
+	<string name="food_text_vote">note</string>
+	<string name="food_text_votes">notes</string>
 	<string name="food_text_novotes">pas de votes</string>
 					
 	<string name="food_button_vote_inline">voter</string>
-	<string name="food_button_seemap_inline">afficher dans plan</string>
+	<string name="food_button_seemap_inline">Voir sur plan</string>
 	<string name="food_button_vote">Voter</string>
 	<string name="food_button_send">Soumettre</string>
 	<string name="food_button_googletranslate">Traduire avec Google Translate</string>

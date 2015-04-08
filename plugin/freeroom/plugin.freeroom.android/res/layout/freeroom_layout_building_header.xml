@@ -2,10 +2,10 @@
 <!-- Layout for header (building names) in home view, with collapse/extend/reduce capabilities. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/freeroom_layout_roomslist"
+    style="@style/PocketCampusRow"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="2dip" >
+    android:orientation="horizontal" >
 
     <LinearLayout
         android:id="@+id/freeroom_layout_building_header_title_wrapper"
@@ -14,22 +14,13 @@
         android:layout_weight="1"
         android:orientation="horizontal" >
 
-        <!-- Text to display the name of the room -->
-
         <TextView
             android:id="@+id/freeroom_layout_building_header_title"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            style="@style/PocketCampusListItemTitle"
             android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="35dip"
-            android:text="XXXXX"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black" />
+            android:layout_marginLeft="25dip"
+            android:text="XXXXX" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/freeroom_layout_building_header_separator"
-        style="@style/Vertical_Divider" />
 
     <RelativeLayout
         android:id="@+id/freeroom_layout_building_header_show_more_header"
@@ -42,9 +33,11 @@
 
         <ImageView
             android:id="@+id/freeroom_layout_building_header_show_more"
+            style="@style/PocketCampusThumbnail"
             android:layout_width="32dip"
             android:layout_height="32dip"
             android:layout_alignParentRight="true"
+            android:layout_gravity="right|center_vertical"
             android:contentDescription="@string/freeroom_layout_building_header_show_more_img"
             android:src="@drawable/freeroom_ic_action_expand" />
 
@@ -52,13 +45,10 @@
 
         <TextView
             android:id="@+id/freeroom_layout_building_header_show_more_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="right|center_vertical"
+            style="@style/PocketCampusListItemTitle"
             android:layout_toLeftOf="@+id/freeroom_layout_building_header_show_more"
-            android:text="expand"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black" />
+            android:gravity="right|center_vertical"
+            android:text="expand" />
     </RelativeLayout>
 
 </LinearLayout>

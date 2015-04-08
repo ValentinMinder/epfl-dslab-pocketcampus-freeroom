@@ -1,0 +1,23 @@
+<html>
+<body>
+
+<h2>Upload participant picture</h2>
+
+<p>Use the button below to choose a file (JPG, PNG, GIF allowed) </p>
+
+<form action="upload_file.php" method="post" id="pic_upload_form"
+enctype="multipart/form-data">
+<!--<label for="file">Filename:</label>-->
+<input type="file" name="file" id="file"><br>
+<!--<input type="submit" name="submit" value="Submit">-->
+</form>
+
+<script>
+document.getElementById("file").onchange = function() {
+    document.getElementById("pic_upload_form").submit();
+};
+</script>
+
+
+</body>
+</html>

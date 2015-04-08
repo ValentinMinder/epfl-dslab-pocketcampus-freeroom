@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.platform.android.core.PluginModel;
-import org.pocketcampus.plugin.camipro.shared.TequilaToken;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproModel;
 import org.pocketcampus.plugin.camipro.android.iface.ICamiproView;
 import org.pocketcampus.plugin.camipro.shared.CardLoadingWithEbankingInfo;
@@ -12,8 +11,6 @@ import org.pocketcampus.plugin.camipro.shared.CardStatistics;
 import org.pocketcampus.plugin.camipro.shared.Transaction;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 /**
  * CamiproModel - The Model that stores the data of this plugin.
@@ -28,16 +25,6 @@ import android.content.SharedPreferences.Editor;
  */
 public class CamiproModel extends PluginModel implements ICamiproModel {
 	
-	/**
-	 * Some constants.
-	 */
-	private static final String CAMIPRO_STORAGE_NAME = "CAMIPRO_STORAGE_NAME";
-	private static final String CAMIPRO_COOKIE_KEY = "CAMIPRO_COOKIE_KEY";
-	
-	/**
-	 * SharedPreferences object responsible for the persistent data storage.
-	 */
-	private SharedPreferences iStorage;
 
 	/**
 	 * Reference to the Views that need to be notified when the stored data changes.
@@ -52,14 +39,7 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	private CardStatistics iCardStatistics;
 	private CardLoadingWithEbankingInfo iCardLoadingWithEbankingInfo;
 	private String lastUpdate;
-	private TequilaToken tequilaToken;
-	private boolean forceReauth;
-	
-	/**
-	 * Data that need to be persistent.
-	 */
-	private String camiproCookie;
-	
+
 	/**
 	 * Constructor with reference to the context.
 	 * 
@@ -70,16 +50,7 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	 * @param context is the Application Context.
 	 */
 	public CamiproModel(Context context) {
-		iStorage = context.getSharedPreferences(CAMIPRO_STORAGE_NAME, 0);
-		camiproCookie = iStorage.getString(CAMIPRO_COOKIE_KEY, null);
 		
-	}
-	
-	public boolean getForceReauth() {
-		return forceReauth;
-	}
-	public void setForceReauth(boolean val) {
-		forceReauth = val;
 	}
 	
 	/**
@@ -135,31 +106,6 @@ public class CamiproModel extends PluginModel implements ICamiproModel {
 	public void setLastUpdateDate(String aDate) {
 		lastUpdate = aDate;
 		mListeners.lastUpdateDateUpdated();
-	}
-	
-	/**
-	 * Setter and getter for camiproCookie
-	 */
-	public String getCamiproCookie() {
-		return camiproCookie;
-	}
-	public void setCamiproCookie(String aCamiproCookie) {
-		camiproCookie = aCamiproCookie;
-		if(!forceReauth) {
-			Editor editor = iStorage.edit();
-			editor.putString(CAMIPRO_COOKIE_KEY, camiproCookie);
-			editor.commit();
-		}
-	}
-	
-	/**
-	 * Setter and getter for tequilaToken
-	 */
-	public TequilaToken getTequilaToken() {
-		return tequilaToken;
-	}
-	public void setTequilaToken(TequilaToken arg) {
-		tequilaToken = arg;
 	}
 	
 	/**

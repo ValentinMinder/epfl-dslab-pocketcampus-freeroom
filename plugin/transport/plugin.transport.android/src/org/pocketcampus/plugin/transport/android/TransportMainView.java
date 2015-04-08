@@ -1,46 +1,47 @@
 package org.pocketcampus.plugin.transport.android;
 
+import static org.pocketcampus.platform.android.utils.DialogUtils.showSingleChoiceDialog;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
-import org.pocketcampus.platform.android.ui.PCSectionedList.PCEntryAdapter;
-import org.pocketcampus.platform.android.ui.PCSectionedList.PCEntryItem;
-import org.pocketcampus.platform.android.ui.PCSectionedList.PCItem;
-import org.pocketcampus.platform.android.ui.PCSectionedList.PCSectionItem;
-import org.pocketcampus.platform.android.ui.element.ButtonElement;
-import org.pocketcampus.platform.android.ui.layout.StandardTitledLayout;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
+import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
+import org.pocketcampus.platform.android.utils.Callback;
+import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
+import org.pocketcampus.platform.android.utils.Preparated;
+import org.pocketcampus.platform.android.utils.Preparator;
 import org.pocketcampus.plugin.transport.R;
+import org.pocketcampus.plugin.transport.android.iface.ErrorCause;
 import org.pocketcampus.plugin.transport.android.iface.ITransportView;
-import org.pocketcampus.plugin.transport.android.ui.TransportTripDetailsDialog;
-import org.pocketcampus.plugin.transport.android.utils.DestinationFormatter;
+import org.pocketcampus.plugin.transport.android.iface.TransportTrips;
 import org.pocketcampus.plugin.transport.android.utils.TransportFormatter;
-import org.pocketcampus.plugin.transport.shared.QueryTripsResult;
 import org.pocketcampus.plugin.transport.shared.TransportConnection;
 import org.pocketcampus.plugin.transport.shared.TransportStation;
 import org.pocketcampus.plugin.transport.shared.TransportTrip;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.markupartist.android.widget.ActionBar.Action;
+import com.markupartist.android.widget.Action;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 /**
  * The main view of the Transport plugin, first displayed when accessing
@@ -52,9 +53,7 @@ import com.markupartist.android.widget.ActionBar.Action;
  * Transport plugin. He can go to the <code>TransportEditView Activity</code> to
  * delete them or add more stations.
  * 
- * @author Oriane <oriane.rodriguez@epfl.ch>
- * @author Pascal <pascal.scheiben@epfl.ch>
- * @author Florian <florian.laurent@epfl.ch>
+ * @author silviu@pocketcampus.org
  * 
  */
 public class TransportMainView extends PluginView implements ITransportView {
@@ -63,25 +62,10 @@ public class TransportMainView extends PluginView implements ITransportView {
 	private TransportController mController;
 	/** The plugin model. */
 	private TransportModel mModel;
-	/* Layout */
 	/** Change direction action in the action bar. */
-	private ChangeDirectionAction mDirectionAction;
-	/** The main Layout consisting of two inner layouts and a title. */
-	private StandardTitledLayout mLayout;
-	/** The list to display next departures. */
-	private ListView mListView;
+	private SelectDepartureAction mSelectDepartureAction;
 
-	/** The pointer to access and modify preferences stored on the phone. */
-	private SharedPreferences mDestPrefs;
-	/** Interface to modify values in the <code>SharedPreferences</code> object. */
-	private Editor mDestPrefsEditor;
-	/** The name under which the preferences are stored on the phone. */
-	private static final String DEST_PREFS_NAME = "TransportDestinationsPrefs";
-
-	/** A <code>Boolean</code> telling which direction is shown. */
-	private boolean mFromEpfl;
-	/** The name of the EPFL station. */
-	private final String M_EPFL_STATION = "EPFL";
+	private boolean automaticChoice = true;
 
 	/**
 	 * Defines what the main controller is for this view.
@@ -97,28 +81,11 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 * and the stations with next departures.
 	 */
 	@Override
-	protected void onDisplay(Bundle savedInstanceState,
-			PluginController controller) {
+	protected void onDisplay(Bundle savedInstanceState, PluginController controller) {
 
 		mController = (TransportController) controller;
 		mModel = (TransportModel) mController.getModel();
-
-		mDestPrefs = getSharedPreferences(DEST_PREFS_NAME, 0);
-		mDestPrefsEditor = mDestPrefs.edit();
-
-		mFromEpfl = true;
-
-		// Set up the main layout and the list view
-		setUpLayout();
-		setUpListView();
-
-		// Set up the action bar with a button
-		setUpActionBar();
-
-		// Set up destinations that will be displayed
-		mModel.freeDestinations();
-		setUpDestinations();
-		setActionBarTitle(getString(R.string.transport_plugin_name));
+		setDepartureStation();
 	}
 
 	/**
@@ -128,355 +95,273 @@ public class TransportMainView extends PluginView implements ITransportView {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		mModel.freeDestinations();
-		mLayout.hideText();
-		setUpDestinations();
+		setDepartureStation();
 	}
-	
+
 	@Override
 	protected String screenName() {
 		return "/transport";
 	}
 
 	/**
-	 * Main Transport Options Menu containing access to the favorite stations.
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.transport_menu, menu);
-		return true;
-	}
-
-	/**
-	 * Decides what happens when the Options Menu is opened and an option is
-	 * chosen (which view to display).
-	 */
-	@Override
-	public boolean onOptionsItemSelected(android.view.MenuItem item) {
-		int id = item.getItemId();
-
-		if (id == R.id.transport_stations) {
-			trackEvent("UserStations", null);
-			mFromEpfl = true;
-			Intent i = new Intent(this, TransportEditView.class);
-			startActivity(i);
-		}
-		return true;
-	}
-
-	/**
 	 * Sets up the main layout of the plugin.
 	 */
 	private void setUpLayout() {
-		// Main layout
-		mLayout = new StandardTitledLayout(this);
-		mLayout.setTitle(getResources().getString(
-				R.string.transport_plugin_name));
-		mLayout.hideTitle();
-		setContentView(mLayout);
-	}
+		setContentView(R.layout.transport_main);
+		setActionBarTitle(getString(R.string.transport_plugin_name));
+		setUpActionBar();
 
-	/**
-	 * Sets up the list of stations found in the <code>SharedPreferences</code>
-	 * along with their next departures.
-	 */
-	private void setUpListView() {
-		// Creates the list view and sets its click listener
-		mListView = new ListView(this);
-		mListView.setId(1234);
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			/**
-			 * When the user clicks on a departure, shows a dialog with
-			 * connections details about the whole trip.
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// Find the name and departure time as a string
-				String txt = ((PCEntryItem) ((ListView) arg0)
-						.getItemAtPosition(arg2)).id;
-				// Separate into name and departure time
-				String[] s = txt.split(":");
-				String name = s[0];
-				System.out.println("****************" +name);
-				long depTime = Long.valueOf(s[1]);
-				long arrTime = Long.valueOf(s[2]);
-				// Find the destination in the ones from the model
-				List<TransportTrip> trips = mModel.getFavoriteStations().get(
-						name);
-				for (TransportTrip trip : trips) {
-					if (trip.getDepartureTime() == depTime
-							&& trip.getArrivalTime() == arrTime) {
-
-						TransportTripDetailsDialog dialog = new TransportTripDetailsDialog(
-								TransportMainView.this, trip);
-
-						trackEvent("ViewTripDetails", null);
-
-						dialog.show();
-						break;
-					}
-				}
-			}
-		});
-
-		// Adds it to the layout
-		mLayout.addFillerView(mListView);
+		updateTrips();
 	}
 
 	/**
 	 * Retrieves the action bar and adds a refresh action to it.
 	 */
 	private void setUpActionBar() {
-		addActionToActionBar(new RefreshAction(), 0);
+		removeAllActionsFromActionBar();
+
+		if (mSelectDepartureAction == null) {
+			mSelectDepartureAction = new SelectDepartureAction();
+		}
+		addActionToActionBar(mSelectDepartureAction);
+
+		addActionToActionBar(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				trackEvent("AddStation", null);
+				Intent i = new Intent(TransportMainView.this, TransportAddView.class);
+				startActivity(i);
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.sdk_add_white;
+			}
+
+			@Override
+			public String getDescription() {
+				return getString(R.string.transport_add_station);
+			}
+		});
+
+		addActionToActionBar(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				trackEvent("RemoveStation", null);
+				Intent i = new Intent(TransportMainView.this, TransportRemoveView.class);
+				startActivity(i);
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.sdk_remove;
+			}
+
+			@Override
+			public String getDescription() {
+				return getString(R.string.transport_remove_station);
+			}
+		});
+
+		addActionToActionBar(new RefreshAction());
+
 	}
 
 	/**
 	 * Sets up which stations have to be displayed. First checks if there are
-	 * stations in the <code>SharedPreferences</code>. If yes, asks for next
-	 * departures, and if not, displays a button to let the user add a station.
+	 * persisted stations. If yes, asks for next departures, and if not, asks
+	 * the server for default stations.
 	 */
-	@SuppressWarnings("unchecked")
-	private void setUpDestinations() {
-		Map<String, Integer> prefs = (Map<String, Integer>) mDestPrefs.getAll();
-		// If no stations set, display a button that redirects to the add
-		// view of the plugin
-		if (prefs == null || prefs.isEmpty()) {
-			if (mDirectionAction != null) {
-				removeActionFromActionBar(mDirectionAction);
-			}
-			ButtonElement addButton = new ButtonElement(this, getResources()
-					.getString(R.string.transport_add_station));
-			LayoutParams l = new LayoutParams(LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT);
-			l.addRule(RelativeLayout.CENTER_IN_PARENT);
-			addButton.setLayoutParams(l);
-
-			addButton.setOnClickListener(new OnClickListener() {
-
-				/**
-				 * When the user clicks on the add button, opens the
-				 * <code>TransportAddView Activity</code>.
-				 */
-				@Override
-				public void onClick(View v) {
-					trackEvent("AddStation", null);
-
-					mFromEpfl = true;
-					Intent add = new Intent(getApplicationContext(),
-							TransportAddView.class);
-					startActivity(add);
-				}
-			});
-
-			mLayout.removeFillerView();
-			mLayout.addFillerView(addButton);
-		} else {
-			// If station(s) are in the shared preferences, remove the
-			// button of the main layout and adds the list view
-			mLayout.removeFillerView();
-
-			// adding the titles
-			ArrayList<PCItem> items = new ArrayList<PCItem>();
-
-			Set<String> set = prefs.keySet();
-			List<String> list = new ArrayList<String>();
-
-			list.addAll(set);
-			Collections.sort(list);
-			for (String s : list) {
-
-				if (mFromEpfl)
-					items.add(new PCSectionItem(M_EPFL_STATION + " - " + s));
-				else
-					items.add(new PCSectionItem(s + " - " + M_EPFL_STATION));
-
-				items.add(new PCEntryItem("", "", ""));
-			}
-
-			PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-			mListView.setAdapter(adapter);
-			mLayout.addFillerView(mListView);
-			// Binds the names with actual TransportStation objects
-			mController.getStationsFromNames(list);
+	private void updateTrips() {
+		for (TransportStation station : mModel.getArrivalStations()) {
+			mController.searchForTrips(mModel.getDepartureStation(), station);
 		}
+		updateDisplay();
 	}
 
-	/**
-	 * Asks the server for connections in order to display the list of favorite
-	 * stations along with the next departures.
-	 */
-	private void displayDestinations() {
-		mLayout.hideText();
-		// Gets the user's preferred destinations from the model
-		HashMap<String, List<TransportTrip>> stations = mModel
-				.getFavoriteStations();
-		if (stations != null && !stations.isEmpty()) {
-			// The user wants to leave EPFL
-			if (mFromEpfl) {
-				for (String loc : stations.keySet()) {
-					mController.nextDepartures(M_EPFL_STATION, loc);
-				}
-				// The user wants to go to EPFL
-			} else {
-				for (String loc : stations.keySet()) {
-					mController.nextDepartures(loc, M_EPFL_STATION);
-				}
+	public static String getNiceLogo(TransportTrip trip) {
+		String logo = null;
+		for (TransportConnection p : trip.getParts()) {
+			if (!p.isFoot() && p.getLine() != null) {
+				logo = p.getLine().getName();
+				break;
 			}
 		}
+		logo = TransportFormatter.getNiceName(logo);
+		return logo;
 	}
 
-	/**
-	 * Called by the model when the data for the resulted connections has been
-	 * updated.
-	 */
-	@Override
-	public void connectionsUpdated(QueryTripsResult result) {
-		if (mDirectionAction == null) {
-			mDirectionAction = new ChangeDirectionAction();
+	private void startActivityShowingTripDetails(String destination, List<TransportTrip> trips) {
+		Intent intent = new Intent(this, TransportDestinationTripsView.class);
+		intent.putExtra(TransportDestinationTripsView.TRIPS, new ArrayList<TransportTrip>(trips));
+		intent.putExtra(TransportDestinationTripsView.DESTINATION, destination);
+
+		intent.putExtra(TransportDestinationTripsView.DEPARTURE, mModel.getDepartureStation().getName());
+		startActivity(intent);
+	}
+
+	private void updateDisplay() {
+		if (findViewById(R.id.transport_departure_station) == null) {
+			return;
 		}
-		removeActionFromActionBar(mDirectionAction);
-		addActionToActionBar(mDirectionAction, 0);
 
-		HashMap<String, List<TransportTrip>> mDisplayedLocations = mModel
-				.getFavoriteStations();
-		// In case the button is still here
-		mLayout.removeFillerView();
-		mLayout.addFillerView(mListView);
-		// Fill in the list view with the next departures
-		setItemsToDisplay(mDisplayedLocations);
-	}
+		((TextView) findViewById(R.id.transport_departure_station)).setText(mModel.getDepartureStation().getName());
 
-	/**
-	 * Called by the model when the list of favorite stations has been updated
-	 * and refreshes the view.
-	 */
-	@Override
-	public void favoriteStationsUpdated() {
-		displayDestinations();
-	}
+		((TextView) findViewById(R.id.transport_departure_station)).setText(mModel.getDepartureStation().getName());
+		findViewById(R.id.transport_departure_station).setOnClickListener(new OnClickListener() {
 
-	/**
-	 * Called by the model when the stations from the names have been updated
-	 * and displays the next departures.
-	 */
-	@Override
-	public void stationsFromNamesUpdated(List<TransportStation> result) {
-		displayDestinations();
-	}
+			@Override
+			public void onClick(View v) {
+				mSelectDepartureAction.performAction(v);
+			}
+		});
+		Preparated<TransportTrips> departures = new Preparated<TransportTrips>(new ArrayList<TransportTrips>(
+				mModel.getAllCachedTrips()), new Preparator<TransportTrips>() {
 
-	/**
-	 * Displays a message when an error happens upon contacting the server.
-	 */
-	@Override
-	public void networkErrorHappened() {
-		if (mDestPrefs.getAll() != null && !mDestPrefs.getAll().isEmpty()) {
-			mLayout.removeFillerView();
-			mLayout.setText(getResources().getString(
-					R.string.transport_network_error));
-		}
-	}
-
-	/**
-	 * Called when connections are received from the server. Creates the items
-	 * to be displayed (Station name with time until departure) and updates the
-	 * shared preferences. (This is not done before getting the result, to make
-	 * sure we store the correct station name in the preferences).
-	 */
-	private void setItemsToDisplay(
-			HashMap<String, List<TransportTrip>> mDisplayedLocations) {
-
-		Set<String> set = mDisplayedLocations.keySet();
-		ArrayList<PCItem> items = new ArrayList<PCItem>();
-		List<String> dest = new ArrayList<String>();
-		dest.addAll(set);
-		Collections.sort(dest);
-		for (String l : dest) {
-
-			if (!mDisplayedLocations.get(l).isEmpty()) {
-				String from = DestinationFormatter
-						.getNiceName(mDisplayedLocations.get(l).get(0)
-								.getFrom());
-				TransportTrip t = mDisplayedLocations.get(l).get(0);
-				String to = DestinationFormatter
-						.getNiceName(t.getParts().get(t.getParts().size()-1).getArrival().getName());
-
-				items.add(new PCSectionItem(from + " - " + to));
-				int i = 0;
-
-				for (TransportTrip c : mDisplayedLocations.get(l)) {
-					if (i < 3) {
-						Date dep = new Date();
-						dep.setTime(c.getDepartureTime());
-						Date now = new Date();
-						if (dep.after(now)) {
-							i++;
-							// Updates the shared preferences
-							if (mFromEpfl) {
-								if (!c.getTo().getName()
-										.equals("Ecublens VD, EPFL")) {
-									mDestPrefsEditor.putInt(
-											c.getParts().get(c.getParts().size()-1).getArrival().getName(), 
-											c.getParts().get(c.getParts().size()-1).getArrival().getId());
-									mDestPrefsEditor.commit();
-								}
-							} else {
-								if (!c.getFrom().getName()
-										.equals("Ecublens VD, EPFL")) {
-									mDestPrefsEditor.putInt(
-											c.getParts().get(0).getDeparture().getName(),
-											c.getParts().get(0).getDeparture().getId());
-									mDestPrefsEditor.commit();
-								}
-							}
-							// String representing the type of transport
-							String logo = "";
-							for (TransportConnection p : c.getParts()) {
-								if (!p.isFoot() && p.getLine() != null) {
-									logo = p.getLine().getName();
-									break;
-								}
-							}
-							logo = TransportFormatter.getNiceName(logo);
-							if (mFromEpfl) {
-								PCEntryItem entry = new PCEntryItem(
-										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(c.getParts().size()-1).getArrival().getName() + ":"
-												+ c.getDepartureTime() + ":"
-												+ c.getArrivalTime() + ":"
-												+ c.getId());
-								items.add(entry);
-
-							} else {
-								PCEntryItem entry = new PCEntryItem(
-										timeString(c.getDepartureTime()), logo,
-										c.getParts().get(0).getDeparture().getName() + ":"
-												+ c.getDepartureTime() + ":"
-												+ c.getArrivalTime() + ":"
-												+ c.getId());
-								items.add(entry);
-							}
-							// Add this departure
-						}
+			@Override
+			public Object content(int res, final TransportTrips item) {
+				switch (res) {
+				case R.id.transport_destination_name:
+					return item.stationName;
+				case R.id.transport_departure_line0: {
+					if (item.isError() || item.isLoading()) {
+						return "";
 					}
+					int index = 0;
+					if (item.getTrips().size() > index) {
+						return new LazyAdapter.Customizer(getNiceLogo(item.getTrips().get(index)),
+								new Callback<View>() {
+									public void callback(View t) {
+										((TextView) t).setTextColor(getResources().getColor(R.color.green_apple));
+									}
+								});
+					}
+					return null;
 				}
-			} else {
-				// just show the title
-				String title;
-				if (mFromEpfl)
-					title = M_EPFL_STATION + " - " + l;
-				else
-					title = l + " - " + M_EPFL_STATION;
-				items.add(new PCSectionItem(title));
-				items.add(new PCEntryItem("", "", ""));
+
+				case R.id.transport_departure_line1: {
+					if (item.isError() || item.isLoading()) {
+						return "";
+					}
+					int index = 1;
+					if (item.getTrips().size() > index) {
+						return getNiceLogo(item.getTrips().get(index));
+					}
+					return null;
+				}
+
+				case R.id.transport_departure_line2: {
+					if (item.isError() || item.isLoading()) {
+						return "";
+					}
+					int index = 2;
+					if (item.getTrips().size() > index) {
+						return getNiceLogo(item.getTrips().get(index));
+					}
+					return null;
+				}
+
+				case R.id.transport_departure_time0: {
+					if (item.isError()) {
+						String original = null;
+						switch (item.getErrorCause()) {
+						case NetworkError:
+							original = getString(R.string.sdk_connection_error_happened);
+							break;
+						case ServersDown:
+							original = getString(R.string.sdk_upstream_server_down);
+						}
+						return new LazyAdapter.Customizer(original, new Callback<View>() {
+
+							public void callback(View t) {
+								((TextView) t).setTextColor(getResources().getColor(R.color.epfl_corrected_red));
+							}
+						});
+
+					}
+					if (item.isLoading()) {
+						return getString(R.string.transport_loading);
+					}
+					int index = 0;
+					if (item.getTrips().size() > index) {
+						return new LazyAdapter.Customizer(timeString(item.getTrips().get(index).getDepartureTime()),
+								new Callback<View>() {
+									public void callback(View t) {
+										((TextView) t).setTextColor(getResources().getColor(R.color.green_apple));
+									}
+								});
+
+					}
+					return null;
+				}
+
+				case R.id.transport_departure_time1: {
+					if (item.isError() || item.isLoading()) {
+						return "";
+					}
+					int index = 1;
+					if (item.getTrips().size() > index) {
+						return timeString(item.getTrips().get(index).getDepartureTime());
+					}
+					return null;
+				}
+
+				case R.id.transport_departure_time2: {
+					if (item.isError() || item.isLoading()) {
+						return "";
+					}
+					int index = 2;
+					if (item.getTrips().size() > index) {
+						return timeString(item.getTrips().get(index).getDepartureTime());
+					}
+					return null;
+				}
+
+				case R.id.transport_main_row:
+					if (item.getTrips() != null) {
+						return new LazyAdapter.Actuated(item.stationName, new Actuator() {
+							@Override
+							public void triggered() {
+								startActivityShowingTripDetails(item.stationName, item.getTrips());
+							}
+						});
+					} else {
+						return null;
+					}
+				case R.id.transport_main_details_indicator:
+					if (item.isError() || item.isLoading()) {
+						return null;
+					}
+					return R.drawable.pocketcampus_list_arrow;
+				default:
+					Log.d("WTF", "Unknonw id " + res);
+					return null;
+				}
 			}
-		}
-		PCEntryAdapter adapter = new PCEntryAdapter(this, items);
-		// Update the list view
-		mListView.setAdapter(adapter);
-		mListView.invalidate();
+
+			@Override
+			public int[] resources() {
+				return new int[] { R.id.transport_destination_name, R.id.transport_departure_line0,
+						R.id.transport_departure_line1, R.id.transport_departure_line2, R.id.transport_departure_time0,
+						R.id.transport_departure_time1, R.id.transport_departure_time2, R.id.transport_main_row };
+			}
+
+			@Override
+			public void finalize(Map<String, Object> map, TransportTrips item) {
+
+			}
+
+		});
+
+		LazyAdapter adapter = new LazyAdapter(this, departures.getMap(), R.layout.transport_main_row,
+				departures.getKeys(), departures.getResources());
+		((ListView) findViewById(R.id.transport_departure_times_list)).setAdapter(adapter);
+
+		((ListView) findViewById(R.id.transport_departure_times_list)).setOnScrollListener(new PauseOnScrollListener(
+				ImageLoader.getInstance(), true, true));
+
 	}
 
 	/**
@@ -489,51 +374,24 @@ public class TransportMainView extends PluginView implements ITransportView {
 	 *         the departure.
 	 */
 	private String timeString(long milliseconds) {
-		String s = getResources().getString(R.string.transport_in);
-
 		Date now = new Date();
 		Date then = new Date();
 		then.setTime(milliseconds);
 
 		long diff = then.getTime() - now.getTime();
-		Date timeTillDeparture = new Date();
-		timeTillDeparture.setTime(diff);
 
-		diff = diff / 1000; // seconds
-		int minutes = (int) diff / 60; // minutes
-		int hours = (int) diff / 3660; // hours
-
-		if (hours > 0) {
-			if (hours == 1) {
-				s = s.concat(" " + hours + " "
-						+ getResources().getString(R.string.transport_hour)
-						+ ",");
-			} else {
-				s = s.concat(" " + hours + " "
-						+ getResources().getString(R.string.transport_hours)
-						+ ",");
-			}
+		if (diff > 60 * 60 * 1000) {
+			// if more than 1 hour
+			return DateUtils.formatDateTime(this, milliseconds, DateUtils.FORMAT_SHOW_TIME);
 		}
 
-		while (minutes > 60) {
-			minutes = minutes - 60;
-		}
+		long minutes = diff / (60 * 1000);
 
 		if (minutes > 0) {
-			if (minutes == 1) {
-				s = s.concat(" " + minutes + " "
-						+ getResources().getString(R.string.transport_minute));
-			} else {
-				s = s.concat(" " + minutes + " "
-						+ getResources().getString(R.string.transport_minutes));
-			}
+			return minutes + "'";
 		}
+		return getString(R.string.transport_departure_now);
 
-		if (hours == 0 && minutes == 0) {
-			s = getResources().getString(R.string.transport_departure_now);
-		}
-
-		return s;
 	}
 
 	/**
@@ -556,7 +414,7 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public int getDrawable() {
-			return R.drawable.sdk_action_bar_refresh;
+			return R.drawable.sdk_refresh;
 		}
 
 		/**
@@ -566,33 +424,24 @@ public class TransportMainView extends PluginView implements ITransportView {
 		@Override
 		public void performAction(View view) {
 			trackEvent("Refresh", null);
+			setDepartureStation();
+		}
 
-			mLayout.removeFillerView();
-			// mLayout.addFillerView(mListView);
-			mModel.freeConnections();
-			if (mModel.getFavoriteStations() == null
-					|| mModel.getFavoriteStations().isEmpty()) {
-				setUpDestinations();
-			} else {
-//				displayDestinations();
-				setUpDestinations();
-			}
+		@Override
+		public String getDescription() {
+			return getString(R.string.sdk_reload_title);
 		}
 	}
 
 	/**
-	 * Change the direction of the trips when clicking on the action bar change
-	 * direction button.
-	 * 
-	 * @author Oriane <oriane.rodriguez@epfl.ch>
-	 * 
+	 * Change the depature station
 	 */
-	private class ChangeDirectionAction implements Action {
+	private class SelectDepartureAction implements Action {
 
 		/**
 		 * The constructor which doesn't do anything
 		 */
-		ChangeDirectionAction() {
+		SelectDepartureAction() {
 		}
 
 		/**
@@ -609,28 +458,164 @@ public class TransportMainView extends PluginView implements ITransportView {
 		 */
 		@Override
 		public void performAction(View view) {
-			trackEvent("ChangeDirection", null);
+			trackEvent("SelectDeparture", null);
 
-			if (mFromEpfl) {
-				mFromEpfl = false;
-			} else {
-				mFromEpfl = true;
+			Map<Integer, String> mapFromIndexToName = new HashMap<Integer, String>();
+			mapFromIndexToName.put(0, getString(R.string.transport_automatic));
+			int index = 0;
+			int stationIndex = 0;
+			for (TransportStation station : mModel.getPersistedTransportStations()) {
+				index++;
+				mapFromIndexToName.put(index, station.getName());
+				if (station.equals(mModel.getDepartureStation())) {
+					stationIndex = index;
+				}
 			}
 
-			mModel.freeConnections();
-			if (mModel.getFavoriteStations() == null
-					|| mModel.getFavoriteStations().isEmpty()) {
-				setUpDestinations();
-			} else {
-				displayDestinations();
-			}
+			showSingleChoiceDialog(TransportMainView.this, mapFromIndexToName,
+					getString(R.string.transport_select_departure_station), automaticChoice ? 0 : stationIndex,
+					new SingleChoiceHandler<Integer>() {
+
+						@Override
+						public void saveSelection(Integer t) {
+							if (t == 0) {
+								automaticChoice = true;
+								locationLastRefresh = 0;
+							} else {
+								automaticChoice = false;
+								TransportStation station = mModel.getPersistedTransportStations().get(t - 1);
+								mModel.departureStationChangedTo(station);
+							}
+							setDepartureStation();
+						}
+					});
+		}
+
+		@Override
+		public String getDescription() {
+			return getString(R.string.transport_select_departure_station);
 		}
 	}
 
-	/**
-	 * Not used in this view.
-	 */
 	@Override
-	public void autoCompletedStationsUpdated() {
+	public void networkErrorHappened() {
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_connection_error_happened));
+	}
+
+	public void serversDown() {
+		setUnrecoverableErrorOccurred(getString(R.string.sdk_upstream_server_down));
+	}
+
+	@Override
+	public void searchForStationsFinished(String searchQuery, List<TransportStation> result) {
+	}
+
+	@Override
+	public void searchForStationsFailed(String searchQuery, ErrorCause cause) {
+		Toast.makeText(this, String.format(getString(R.string.transport_search_failed), searchQuery), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void searchForTripsFinished(TransportStation from, TransportStation to, List<TransportTrip> result) {
+		updateDisplay();
+	}
+
+	@Override
+	public void searchForTripsFailed(TransportStation from, TransportStation to, ErrorCause cause) {
+		Log.d("FAILURE", "Failed to get trips from " + from + " to " + to + " because of " + cause);
+		updateDisplay();
+	}
+
+	@Override
+	public void getDefaultStationsFinished(List<TransportStation> result) {
+		locationLastRefresh = 0;
+		setDepartureStation();
+	}
+
+	@Override
+	public void getDefaultStationsFailed(ErrorCause cause) {
+		switch (cause) {
+		case NetworkError:
+			networkErrorHappened();
+			break;
+		case ServersDown:
+			serversDown();
+		default:
+			break;
+		}
+	}
+
+	private long locationLastRefresh = 0;
+	private static final long REFRESH_PERIOD = 60 * 1000;
+
+	private void setDepartureStation() {
+		if (mModel.getPersistedTransportStations().size() == 0) {
+			mController.getDefaultStations();
+			setLoadingContentScreen(getString(R.string.transport_get_default_stations));
+			return;
+		}
+
+		if (!automaticChoice && mModel.getDepartureStation() != null) {
+			setUpLayout();
+			return;
+		}
+		if ((System.currentTimeMillis() - locationLastRefresh) < REFRESH_PERIOD) {
+			setUpLayout();
+			return;
+		}
+
+		setLoadingContentScreen(getString(R.string.transport_locating_you));
+
+		// Acquire a reference to the system Location Manager
+		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				locationLastRefresh = System.currentTimeMillis();
+				// Called when a new location is found by the network location
+				// provider.
+				location.setAltitude(0);
+				TransportStation departureStation = null;
+				float minDistance = Float.MAX_VALUE;
+				for (TransportStation station : mModel.getPersistedTransportStations()) {
+					Location stationLocation = new Location(LocationManager.GPS_PROVIDER);
+					double latitude = Integer.valueOf(station.getLatitude()).doubleValue();
+					latitude /= 1000 * 1000;
+					double longitude = Integer.valueOf(station.getLongitude()).doubleValue();
+					longitude /= 1000 * 1000;
+					stationLocation.setLatitude(latitude);
+					stationLocation.setLongitude(longitude);
+					float distance = location.distanceTo(stationLocation);
+					if (distance < minDistance) {
+						minDistance = distance;
+						departureStation = station;
+					}
+				}
+
+				mModel.departureStationChangedTo(departureStation);
+				setUpLayout();
+				locationManager.removeUpdates(this);
+			}
+
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+			}
+
+			public void onProviderEnabled(String provider) {
+			}
+
+			public void onProviderDisabled(String provider) {
+				TransportStation station = mModel.getPersistedTransportStations().get(0);
+				String text = String.format(getString(R.string.transport_locating_you_failed), station.getName());
+				Toast.makeText(TransportMainView.this, text, Toast.LENGTH_LONG).show();
+				mModel.departureStationChangedTo(station);
+				setUpLayout();
+				locationManager.removeUpdates(this);
+			}
+		};
+
+		// Register the listener with the Location Manager to receive location
+		// updates
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 	}
 }

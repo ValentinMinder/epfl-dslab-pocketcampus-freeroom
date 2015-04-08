@@ -6,12 +6,4 @@
 	<item
 		android:drawable="@drawable/freeroom_normal_icon" />
 
-	<item
-		android:drawable="@drawable/freeroom_selected_icon"
-		android:state_pressed="true" />
-
-	<item
-		android:drawable="@drawable/freeroom_selected_icon"
-		android:state_focused="true" />
-
 </selector>

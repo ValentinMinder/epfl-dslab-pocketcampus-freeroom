@@ -10,7 +10,7 @@ import java.util.Map;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
-import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter;
+import org.pocketcampus.platform.android.ui.adapter.SeparatedListAdapter2;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
 import org.pocketcampus.platform.android.utils.Preparated;
 import org.pocketcampus.platform.android.utils.Preparator;
@@ -20,6 +20,8 @@ import org.pocketcampus.plugin.moodle.android.iface.IMoodleView;
 import org.pocketcampus.plugin.moodle.shared.MoodleCourseSection2;
 import org.pocketcampus.plugin.moodle.shared.MoodleResource2;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,8 +30,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,10 +60,12 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	private int courseId;
 	private String courseTitle;
 	
+	
 	List<MoodleCourseSection2> sections = null;
 	
-	ListView mList;
+	StickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
+	ProgressDialog loading;
 
 	
 	@Override
@@ -80,7 +82,8 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 
 
 		displayingList = false;
-		setContentView(new StandardLayout(this));
+		
+		setLoadingContentScreen();
 
 		setActionBarTitle(getString(R.string.moodle_plugin_title));
 	}
@@ -133,11 +136,9 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 	
 	@Override
 	public void sectionsListUpdated() {
+		setContentView(new StandardLayout(this));
 		sections = mModel.getSections();
-		
 		updateDisplay();
-		
-
 	}
 
 	public void updateDisplay() {
@@ -150,7 +151,7 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 		
 
 		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this, R.layout.sdk_separated_list_header2);
+		SeparatedListAdapter2 adapter = new SeparatedListAdapter2(this, R.layout.sdk_separated_list_header2);
 		
 		boolean atLeastOneSection = false;
 
@@ -197,13 +198,12 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 			
 			if(!displayingList) {
 				setContentView(R.layout.moodle_course_container);
-				mList = (ListView) findViewById(R.id.moodle_course_list);
+				mList = (StickyListHeadersListView) findViewById(R.id.moodle_course_list);
 				displayingList = true;
 			}
-			
-			TextView header = (TextView) findViewById(R.id.moodle_course_header_title);
-			header.setText(courseTitle);
-			
+
+			setActionBarTitle(courseTitle);
+
 			mList.setAdapter(adapter);
 			mList.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 			mList.setOnItemClickListener(new OnItemClickListener() {
@@ -269,6 +269,19 @@ public class MoodleCourseView extends PluginView implements IMoodleView {
 				R.string.moodle_file_downloaded), Toast.LENGTH_SHORT).show();*/
 	}
 	
+	@Override
+	public synchronized void showLoading() {
+		hideLoading();
+		loading = ProgressDialog.show(this, null, getString(R.string.sdk_loading), true, false);
+	}
+
+	@Override
+	public synchronized void hideLoading() {
+		if(loading != null) {
+			loading.dismiss();
+			loading = null;
+		}
+	}
 
 	@Override
 	public void networkErrorCacheExists() {

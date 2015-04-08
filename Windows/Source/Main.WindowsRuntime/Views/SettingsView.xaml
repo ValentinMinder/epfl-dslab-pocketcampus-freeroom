@@ -1,0 +1,102 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Main.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding Settings, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="TileColoringTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
+    <StackPanel>
+        <!-- Page header & title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <StackPanel>
+                <TextBlock Text="{CustomResource PagesHeader}"
+                           Style="{StaticResource AppHeaderTextBlockStyle}" />
+
+                <TextBlock Text="{CustomResource Settings.ViewTitle}"
+                           Style="{StaticResource AppTitleTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
+        <cc:Switch Value="{Binding Settings.SessionStatus}" 
+                   Margin="19,16">
+            <!-- Not logged in -->
+            <cc:SwitchCase Values="NotLoggedIn">
+                <StackPanel>
+                    <!-- Text -->
+                    <TextBlock Text="{CustomResource Settings.NotLoggedIn}"
+                               Style="{StaticResource AppNormalTextBlockStyle}" />
+
+                    <!-- "Log in" button -->
+                    <Button Content="{CustomResource Settings.LogIn}"
+                            Command="{Binding LogInCommand}" />
+                </StackPanel>
+            </cc:SwitchCase>
+
+            <!-- Logged in temporarily -->
+            <cc:SwitchCase Values="LoggedInTemporarily">
+                <StackPanel>
+                    <!-- Text -->
+                    <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
+                        <Run Text="{CustomResource Settings.LoggedIn}" />
+                        
+                        <Bold>
+                            <Run Text="{Binding Credentials.UserName}" /> 
+                        </Bold>
+                    </TextBlock>
+
+                    <!-- Temporary explanation text -->
+                    <TextBlock Text="{CustomResource Settings.LoggedInTemporarilyExplanation}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
+
+                    <!-- "Log out" button -->
+                    <Button Content="{CustomResource Settings.LogOut}"
+                            Command="{Binding LogOutCommand}" />
+                </StackPanel>
+            </cc:SwitchCase>
+            
+            <!-- Logged in -->
+            <cc:SwitchCase Values="LoggedIn">
+                <StackPanel>
+                    <!-- Text -->
+                    <TextBlock Style="{StaticResource AppNormalTextBlockStyle}">
+                        <Run Text="{CustomResource Settings.LoggedIn}" />
+                        
+                        <Bold>
+                            <Run Text="{Binding Credentials.UserName}" />
+                        </Bold>
+                    </TextBlock>
+
+                    <!-- "Log out" button -->
+                    <Button Content="{CustomResource Settings.LogOut}"
+                            Command="{Binding LogOutCommand}" />
+
+
+                    <!-- "Destroy sessions" button -->
+                    <Button Content="{CustomResource Settings.DestroyAllSessions}"
+                            Command="{Binding DestroySessionsCommand}" />
+
+                    <TextBlock Text="{CustomResource Settings.DestroyAllSessionsExplanation}"
+                               Style="{StaticResource AppSubtleTextBlockStyle}" />
+                </StackPanel>
+            </cc:SwitchCase>
+        </cc:Switch>
+
+        <!-- Tile color picker -->
+        <ComboBox ItemsSource="{Binding AvailableTileColorings}"
+                  SelectedItem="{Binding Settings.TileColoring,
+                                         Mode=TwoWay}"
+                  ItemTemplate="{StaticResource TileColoringTemplate}"
+                  Header="{CustomResource Settings.TileColoring}"
+                  Margin="19,16" />
+    </StackPanel>
+</cc:PageBase>

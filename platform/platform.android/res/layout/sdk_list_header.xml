@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_header_title"
-    style="?android:attr/listSeparatorTextViewStyle"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/smoke"
-    android:paddingBottom="2dip"
-    android:paddingLeft="5dip"
-    android:paddingTop="2dip"
-    android:textColor="@android:color/white" />
+    style="@style/PocketCampusListSectionHeader" />

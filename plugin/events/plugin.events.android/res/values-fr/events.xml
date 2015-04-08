@@ -5,9 +5,9 @@
     <string name="events_preferences_rss_title">Options de flux RSS</string>
     <string name="events_preferences_other_title">Options</string>
     <string name="events_settings">Préférences</string>
-    <string name="events_no_events">Impossible de se connecter.</string>
+    <string name="events_no_events">Connexion impossible.</string>
     <string name="events_loading">Chargement des évènements...</string>
-    <string name="events_no_feed_selected">Aucun flux séléctionné.</string>
+    <string name="events_no_feed_selected">Aucun flux sélectionné.</string>
     <string name="events_from">Du</string>
     <string name="events_on">Le</string>
     <string name="events_to">au</string>
@@ -16,12 +16,33 @@
     <string name="events_location">Lieu:</string>
     <string name="events_speaker">Par</string>
     <string name="events_readmore"><u>En savoir plus...</u></string>
+    <string name="events_filter_by_categ">Filtrer par catégories</string>
+    <string name="events_filter_by_tags">Filtrer par tags</string>
+    <string name="events_email_popup_title">Envoyer par e-mail</string>
+    <string name="events_email_popup_body">Adresse e-mail pour l\'envoi de vos éléments favoris</string>
+    <string name="events_ok">OK</string>
+    <string name="events_camera">Scanner le code QR</string>
+    <string name="events_email">Envoyer par email</string>
+    <string name="events_choose_period">Changer la période</string>
+    <string name="events_past_events">Voir les evènements passés</string>
+    <string name="events_past_events_title">Evènements passés</string>
 
-    
-	<string name="events_filter_by_categ">Filtrer par catégorie</string>
-	<string name="events_filter_by_tags">Filtrer par tags</string>
-	<string name="events_email_popup_title">Envoyer par e-mail</string>
-	<string name="events_email_popup_body">Adresse e-mail pour envoyer vos éléments favoris</string>
-	<string name="events_ok">OK</string>
-    		
+	<string name="events_mark_as_favorite">Marquer comme favori</string>
+	<string name="events_remove_from_favorites">Supprimer des favoris</string>
+
+	<string name="events_email_success">E-mail envoyé avec succès</string>
+	<string name="events_email_failure">Échec de l\'envoi</string>
+		
+	<string name="events_show_past">Afficher les événements passés</string>
+	<string name="events_show_future">Afficher les événements futurs</string>					
+		
+
+	<string name="events_periods_oneday">Un jour</string>
+	<string name="events_periods_twodays">Deux jours</string>	
+	<string name="events_periods_oneweek">Une semaine</string>
+	<string name="events_periods_twoweeks">Deux semaines</string>
+	<string name="events_periods_onemonth">Un mois</string>
+	<string name="events_periods_sixmonths">Six mois</string>
+	<string name="events_periods_oneyear">Une année</string>
+							
 </resources>

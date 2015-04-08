@@ -1,0 +1,8 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:String x:Key="PluginIcon">F1 M11,34C7,38,7,43,7,50L6,50C4,50 4,50 4,52 4,54 4,55 4,56 4,58 4,58 6,58L1,85 4,84 5,87 8,85 10,87 11,84 14,85 9,58C11,58 11,58 11,56 11,55 11,52 11,52 11,50 11,50 9,50L8,50C8,43,8,38,12,34 M50,51L100,31 50,12 0,31 M80,43L50,55 20,43 16,71C16,71 28,64 34,64 40,64 50,74 50,74 50,74 61,64 66,64 72,64 84,71 84,71z</x:String>
+</ResourceDictionary>

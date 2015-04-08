@@ -46,7 +46,7 @@ public class DashboardAboutView extends PluginView {
 				"<p>" + DashboardController.getAppVersion(getApplicationContext()) + "</p>" +
 				"<p>" + getString(R.string.dashboard_about_developed) + "</p>" +
 				"<p><b>PocketCampus.Org</b></p>" +
-				"<p>Amer Chamseddine<br>Silviu Andrica<br>Loïc Gardiol<br>Solal Pirelli<br>George Candea</p>" +
+				"<p>Amer Chamseddine<br>Silviu Andrica<br>Loïc Gardiol<br>Solal Pirelli</p>" +
 				"<p><b>" + getString(R.string.dashboard_about_contact) + "</b></p>" +
 				"<p><p>team@pocketcampus.org</p>" +
 				"<p><b>" + getString(R.string.dashboard_about_support) + "</b></p>" +

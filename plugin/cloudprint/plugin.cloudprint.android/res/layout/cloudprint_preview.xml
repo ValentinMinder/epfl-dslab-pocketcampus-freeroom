@@ -1,144 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Dialog"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-     
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+     >
+
 
     <LinearLayout
-        style="@style/Dialog.Top"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:orientation="vertical" >
-
-            <TextView
-            style="@style/DialogText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cloudprint_plugin_title" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/Dialog.Middle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:gravity="center" >
-	
-		    <ImageView 
-		        android:id="@+id/cloudprint_printpreview_image"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:maxWidth="250dp"
-		        android:maxHeight="250dp"
-		        android:adjustViewBounds="true"
-		        android:background="@color/darker_gray"
-		        android:padding="1dp"
-		        android:src="@drawable/app_icon"
-		        android:layout_marginTop="5dip"
-		        android:layout_marginBottom="5dip"
-		        android:layout_marginLeft="5dp"
-		        android:layout_marginRight="5dp"
-		        />
+    
+	    <ProgressBar
+	        android:id="@+id/cloudprint_printpreview_loading"
+	        style="?android:attr/progressBarStyleLarge"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"
+	        android:layout_gravity="center_horizontal" />
 	    
-		</RelativeLayout>
-		    
+	    <ImageView
+	        android:id="@+id/cloudprint_printpreview_image"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:adjustViewBounds="true"
+	        android:maxHeight="250dip"
+	        android:maxWidth="250dip"
+	        android:layout_marginTop="10dip"
+	        android:padding="1dp"
+	        android:background="@color/blue"
+	        android:src="@drawable/cloudprint_icon" />
+
+    </LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+	    
+	    
+	    
 	    <LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center_horizontal"
+	        android:layout_gravity="bottom"
 	        android:orientation="horizontal" >
 	
-		    <Button
-		        android:id="@+id/cloudprint_previouspage_button"
-		        android:layout_weight=".15"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="3dp"
-		        android:layout_marginLeft="0dp"
-		        android:layout_marginRight="0dp"
-		        android:padding="10dp"
-		        android:background="@color/white"
-		        android:enabled="true"
-		        android:text="&lt;" />
-		    
-		    
-		    <TextView 
-		        android:id="@+id/cloudprint_pagenumber"
-		        android:layout_weight=".7"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"
-		        android:layout_marginTop="3dip"
-		        android:layout_marginBottom="20dip"
-		        android:layout_marginLeft="0dp"
-		        android:layout_marginRight="0dp"
-		        android:padding="10dp"
-				android:textColor="@android:color/primary_text_light" 
-		        android:text="@string/app_name"
-		        />
-		    
-			    
-		    <Button
-		        android:id="@+id/cloudprint_nextpage_button"
-		        android:layout_weight=".15"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="3dp"
-		        android:layout_marginLeft="0dp"
-		        android:layout_marginRight="0dp"
-		        android:padding="10dp"
-		        android:background="@color/white"
-		        android:enabled="true"
-		        android:text="&gt;" />
-		    
+	        <Button
+	            android:id="@+id/cloudprint_previouspage_button"
+	            style="@style/PocketCampusButton"
+	            android:layout_width="0dp"
+	            android:layout_weight=".15"
+	            android:layout_marginLeft="10dp"
+	            android:padding="10dp"
+	            android:text="&lt;" />
+	
+	        <TextView
+	            android:id="@+id/cloudprint_pagenumber"
+	            style="@style/PocketCampusListItemTitle"
+	            android:layout_width="0dp"
+	            android:layout_weight=".7"
+	            android:gravity="center"
+	            android:padding="10dp"
+	            android:text="@string/app_name" />
+	
+	        <Button
+	            android:id="@+id/cloudprint_nextpage_button"
+	            style="@style/PocketCampusButton"
+	            android:layout_width="0dp"
+	            android:layout_weight=".15"
+	            android:layout_marginRight="10dp"
+	            android:padding="10dp"
+	            android:text=">" />
 	    </LinearLayout>
-	        
-	    
-    </LinearLayout>
-
-
-    <LinearLayout
-        style="@style/Dialog.Bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-	    <Button
-	        android:id="@+id/cloudprint_back_button"
-	        android:layout_weight=".5"
-	        android:layout_width="0dp"
+	
+	    <LinearLayout
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
-	        android:paddingLeft="20dp"
-	        android:paddingRight="20dp"
-	        android:enabled="true"
-	        android:text="@string/cloudprint_dialog_button_back" />
-	    
-	    <Button
-	        android:id="@+id/cloudprint_print_button"
-	        android:layout_weight=".5"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="3dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
-	        android:paddingLeft="20dp"
-	        android:paddingRight="20dp"
-	        android:enabled="true"
-	        android:text="@string/cloudprint_dialog_button_print" />
-	    
-    </LinearLayout>
-        
+	        android:layout_marginTop="15dip"
+	        android:layout_marginBottom="15dip"
+	        android:layout_gravity="bottom"
+	        android:gravity="center_horizontal"
+	        android:orientation="horizontal" >
+	
+	        <Button
+	            android:id="@+id/cloudprint_back_button"
+	            style="@style/PocketCampusButton"
+	            android:layout_width="0dp"
+	            android:layout_marginLeft="10dp"
+	            android:layout_marginRight="10dp"
+	            android:layout_weight="1"
+	            android:text="@string/cloudprint_dialog_button_back" />
+	
+	        <Button
+	            android:id="@+id/cloudprint_print_button"
+	            style="@style/PocketCampusButton"
+	            android:layout_width="0dp"
+	            android:layout_marginLeft="10dp"
+	            android:layout_marginRight="10dp"
+	            android:layout_weight="1"
+	            android:text="@string/cloudprint_dialog_button_print" />
+	    </LinearLayout>
 
-</LinearLayout>
+	    
+	</LinearLayout>
+</RelativeLayout>

@@ -4,34 +4,51 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:label="@string/app_name"
         android:name="org.pocketcampus.platform.android.core.GlobalContext"
         android:icon="@drawable/transport_icon"
-        android:theme="@style/PocketCampusTheme" >
-
+        android:label="@string/app_name"
+        android:theme="@style/PocketCampusActionBarTheme" >
         <activity
+            android:name="org.pocketcampus.plugin.transport.android.TransportMainView"
+            android:icon="@drawable/transport_icon"
             android:label="@string/transport_plugin_name"
-             android:icon="@drawable/transport_icon"
-             android:screenOrientation="nosensor"
-            android:name="org.pocketcampus.plugin.transport.android.TransportMainView" >
-            <intent-filter >
+            android:logo="@drawable/transport_icon_white"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme"
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-        </activity>
 
-        <activity android:name="org.pocketcampus.plugin.transport.android.TransportAddView"
-            android:screenOrientation="nosensor">
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name="org.pocketcampus.plugin.transport.android.TransportEditView"
-            android:screenOrientation="nosensor">
+        <activity
+            android:name="org.pocketcampus.plugin.transport.android.TransportDestinationTripsView"
+            android:logo="@drawable/transport_icon_white"
+            android:screenOrientation="nosensor" >
+        </activity>
+        <activity
+            android:name="org.pocketcampus.plugin.transport.android.TransportTripView"
+            android:logo="@drawable/transport_icon_white"
+            android:screenOrientation="nosensor" >
+        </activity>
+        <activity
+            android:name="org.pocketcampus.plugin.transport.android.TransportAddView"
+            android:logo="@drawable/transport_icon_white"
+            android:screenOrientation="nosensor" >
+        </activity>
+        <activity
+            android:name="org.pocketcampus.plugin.transport.android.TransportRemoveView"
+            android:logo="@drawable/transport_icon_white"
+            android:screenOrientation="nosensor" >
         </activity>
 
         <service

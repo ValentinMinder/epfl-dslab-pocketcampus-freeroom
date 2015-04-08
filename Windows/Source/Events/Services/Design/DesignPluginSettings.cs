@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,9 +14,9 @@ namespace PocketCampus.Events.Services.Design
 {
     public sealed class DesignPluginSettings : IPluginSettings
     {
-        public string[] UserTickets
+        public ObservableCollection<string> UserTickets
         {
-            get { return new string[0]; }
+            get { return new ObservableCollection<string>(); }
             set { }
         }
 

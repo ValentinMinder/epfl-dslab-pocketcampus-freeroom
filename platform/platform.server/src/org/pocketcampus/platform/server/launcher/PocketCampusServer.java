@@ -4,6 +4,7 @@ import org.apache.thrift.TProcessor;
 import org.joda.time.LocalDateTime;
 import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.StateChecker;
+import org.pocketcampus.platform.server.TaskRunner;
 import org.pocketcampus.platform.shared.PCConfig;
 import org.pocketcampus.platform.shared.PCConstants;
 
@@ -93,8 +94,9 @@ public class PocketCampusServer extends ServerBase {
 
             final HttpServlet rawProcessor = getRawProcessor(pluginService);
             final StateChecker stateChecker = getStateChecker(pluginService);
+            final TaskRunner taskRunner = getTaskRunner(pluginService);
 
-            processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker));
+            processors.add(new ServiceInfo(pluginName.toLowerCase(), thriftProcessor, rawProcessor, stateChecker, taskRunner));
             plugins.put(pluginName.toLowerCase(), pluginService);
             System.out.println(pluginName + " plugin started.");
         }
@@ -149,18 +151,19 @@ public class PocketCampusServer extends ServerBase {
         final Object loggedPluginService = Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                final StringBuilder builder = new StringBuilder();
-                builder.append(LocalDateTime.now().toString());
-                builder.append(" ");
-                builder.append(pluginName);
-                builder.append(" ");
-                if (finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class) != null) {
-                    builder.append("(DEPRECATED) ");
-                }
-                builder.append(method.getName());
-                System.out.println(builder.toString());
+                String log = "[" + LocalDateTime.now().toString() + "]\t";
+                log += "plugin=" + pluginName + "\t";
+                log += "method=" + method.getName() + "\t";
+                Deprecated d = finalServiceClass.getMethod(method.getName(), method.getParameterTypes()).getAnnotation(Deprecated.class);
+                System.out.println(log + "deprecated=" + (d != null) + "\t");
 
-                return method.invoke(pluginService, args);
+                long t1 = System.currentTimeMillis();
+                try {
+                    return method.invoke(pluginService, args);
+				} finally {
+	                long t2 = System.currentTimeMillis();
+	                System.out.println(log + "time=" + (t2 - t1) + "ms\t");
+				}
             }
         });
 
@@ -185,5 +188,12 @@ public class PocketCampusServer extends ServerBase {
      */
     private StateChecker getStateChecker(final Object pluginService) {
         return pluginService instanceof StateChecker ? ((StateChecker) pluginService) : null;
+    }
+    
+    /**
+     * Gets a task runner, if any, for the plugin with the specified service.
+     */
+    private TaskRunner getTaskRunner(final Object pluginService) {
+        return pluginService instanceof TaskRunner ? ((TaskRunner) pluginService) : null;
     }
 }

@@ -1,0 +1,72 @@
+﻿<!-- Copyright (c) PocketCampus.Org 2014-15
+     See LICENSE file for more details
+     File author: Solal Pirelli -->
+
+<cc:PageBase x:Class="PocketCampus.Transport.Views.AddStationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="using:Microsoft.Xaml.Interactivity"
+             xmlns:c="using:PocketCampus.Common"
+             xmlns:cc="using:PocketCampus.Common.Controls"
+             DesignDataContext="{Binding AddStation, Source={StaticResource Design}}">
+    <cc:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="StationTemplate">
+                <cc:SimpleButton Command="{Binding DataContext.AddStationCommand, 
+                                                   ElementName=Root}"
+                                 CommandParameter="{Binding}"
+                                 Margin="0,16,0,0"
+                                 Padding="19,8">
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource AppLargeTextBlockStyle}" />
+                </cc:SimpleButton>
+            </DataTemplate>
+        </ResourceDictionary>
+    </cc:PageBase.Resources>
+    
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Page header & title -->
+        <Border Background="{StaticResource AppHeaderBackgroundBrush}">
+            <StackPanel>
+                <TextBlock Text="{CustomResource PagesHeader}"
+                           Style="{StaticResource AppHeaderTextBlockStyle}" />
+
+                <TextBlock Text="{CustomResource AddStation.ViewTitle}"
+                           Style="{StaticResource AppTitleTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Search box -->
+        <Border Grid.Row="1"
+                Background="{StaticResource AppSecondaryHeaderBackgroundBrush}">
+            <cc:SearchBox Query="{Binding Query, 
+                                          Mode=TwoWay}"
+                          SearchCommand="{Binding AddStationByNameCommand}"
+                          Margin="19,5">
+                <i:Interaction.Behaviors>
+                    <c:FocusBehavior />
+                </i:Interaction.Behaviors>
+            </cc:SearchBox>
+        </Border>
+
+        <!-- Suggestions -->
+        <ItemsControl Grid.Row="2"
+                      ItemsSource="{Binding Stations}"
+                      ItemTemplate="{StaticResource StationTemplate}" />
+
+        <!-- Data status -->
+        <cc:DataStatusDisplay Grid.Row="2"
+                              Data="{Binding DataStatus}" 
+                              RetryCommand="{Binding RefreshCommand}" />
+    </Grid>
+</cc:PageBase>

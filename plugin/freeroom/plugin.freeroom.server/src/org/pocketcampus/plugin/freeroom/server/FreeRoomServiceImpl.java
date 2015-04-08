@@ -793,8 +793,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
                      * maybe simpler: (ro.timestampEnd >= tsStart AND
 					 * ro.timestampStart <= tsEnd )
 					 */
-                    + "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd >= ?) "
-                    + "OR (ro.timestampStart <= ? AND ro.timestampStart >= ?)"
+                    + "WHERE ((ro.timestampEnd <= ? AND ro.timestampEnd > ?) "
+                    + "OR (ro.timestampStart < ? AND ro.timestampStart >= ?)"
                     + "OR (ro.timestampStart <= ? AND ro.timestampEnd >= ?)) "
                     + "AND ro.type LIKE ?) AND rl.groupAccess <= ? AND rl.enabled = 1";
 

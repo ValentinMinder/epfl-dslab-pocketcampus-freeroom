@@ -83,8 +83,8 @@
     <string name="cloudprint_enum_orientation_REVERSE_PORTRAIT">Reverse portrait</string>
     
     
-    
-    
+    <string name="cloudprint_upload_document">The PDF document will first be uploaded to the PocketCampus servers.</string>
+    <string name="cloudprint_info">Info</string>
     
     
 </resources>

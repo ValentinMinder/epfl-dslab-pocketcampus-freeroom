@@ -92,6 +92,12 @@
 // TransportTripCell
 //////////////////////////////////////////
 
+//////////////////////////////////////////
+// TransportTripPartsViewController
+//////////////////////////////////////////
+
+"(unknown)" = "(unknown)";
+
 //Accessibility
 "DepartureTimeWithFormat" = "Departure time: %@, ";
 "arrivalTimeWithFormat" = "arrival time: %@, ";

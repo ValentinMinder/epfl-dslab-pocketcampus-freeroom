@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using PocketCampus.Authentication;
 using PocketCampus.Authentication.Models;
 using PocketCampus.Authentication.Services;
-using PocketCampus.Authentication.ViewModels;
 using PocketCampus.Common;
 using PocketCampus.Common.Services;
 using PocketCampus.Main.Services;
@@ -16,9 +15,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Main.ViewModels
 {
-    /// <summary>
-    /// The settings ViewModel.
-    /// </summary>
     [LogId( "/dashboard/settings" )]
     public sealed class SettingsViewModel : ViewModel<NoParameter>
     {
@@ -26,43 +22,35 @@ namespace PocketCampus.Main.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
 
-        /// <summary>
-        /// Gets the settings.
-        /// </summary>
+
         public IMainSettings Settings { get; private set; }
 
-        /// <summary>
-        /// Gets the credentials.
-        /// </summary>
         public ICredentialsStorage Credentials { get; private set; }
 
-        /// <summary>
-        /// Gets the command executed to log on.
-        /// </summary>
+        public TileColoring[] AvailableTileColorings
+        {
+            get { return EnumEx.GetValues<TileColoring>(); }
+        }
+
         [LogId( "LogIn" )]
         public Command LogInCommand
         {
-            get { return this.GetCommand( () => _navigationService.NavigateTo<AuthenticationViewModel, AuthenticationRequest>( new AuthenticationRequest() ) ); }
+            get { return this.GetCommand( () => Messenger.Send( new AuthenticationRequest() ) ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to log off.
-        /// </summary>
         [LogId( "LogOff" )]
-        public AsyncCommand LogOffCommand
+        public AsyncCommand LogOutCommand
         {
-            get { return this.GetAsyncCommand( ExecuteLogOffCommand ); }
+            get { return this.GetAsyncCommand( LogOutAsync ); }
         }
 
         [LogId( "DestroySessions" )]
         public AsyncCommand DestroySessionsCommand
         {
-            get { return this.GetAsyncCommand( ExecuteDestroySessionsCommand ); }
+            get { return this.GetAsyncCommand( DestroySessionsAsync ); }
         }
 
-        /// <summary>
-        /// Creates a new SettingsViewModel.
-        /// </summary>
+
         public SettingsViewModel( IMainSettings settings, IAuthenticator authenticator, INavigationService navigationService,
                                   IAuthenticationService authenticationService, ICredentialsStorage credentials, ITileService tileService )
         {
@@ -72,35 +60,28 @@ namespace PocketCampus.Main.ViewModels
             _navigationService = navigationService;
             _authenticationService = authenticationService;
 
-            Settings.ListenToProperty( x => x.UseColoredTile, () =>
-            {
-                tileService.SetTileColoring( Settings.UseColoredTile );
-            } );
+            Settings.ListenToProperty( x => x.TileColoring, () => tileService.SetTileColoring( Settings.TileColoring ) );
         }
 
 
-        /// <summary>
-        /// Logs off.
-        /// </summary>
-        private async Task ExecuteLogOffCommand()
+        private async Task LogOutAsync()
         {
             Settings.SessionStatus = SessionStatus.NotLoggedIn;
             Settings.Session = null;
             Settings.Sessions = new Dictionary<string, string>();
-            Credentials.UserName = null;
-            Credentials.Password = null;
+            Credentials.DeleteCredentials();
             await _authenticator.LogOffAsync();
         }
 
-        /// <summary>
-        /// Destroys all user sessions from the server and logs off.
-        /// </summary>
-        private async Task ExecuteDestroySessionsCommand()
+        private async Task DestroySessionsAsync()
         {
-            var request = new LogoutRequest { Session = Settings.Session };
-            await _authenticationService.DestroyAllSessionsAsync( request );
+            if ( Settings.Session != null )
+            {
+                var request = new LogoutRequest { Session = Settings.Session };
+                await _authenticationService.DestroyAllSessionsAsync( request );
+            }
 
-            await ExecuteLogOffCommand();
+            await LogOutAsync();
         }
     }
 }

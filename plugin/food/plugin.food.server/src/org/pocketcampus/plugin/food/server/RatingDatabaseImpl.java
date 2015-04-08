@@ -44,43 +44,38 @@ public final class RatingDatabaseImpl implements RatingDatabase {
         Connection connection = _connectionManager.getConnection();
 
         PreparedStatement restaurantStatement = null;
+        PreparedStatement mealStatement = null;
         try {
             String restaurantCommand = "REPLACE INTO restaurants (Id, Name) VALUES (?, ?)";
             restaurantStatement = connection.prepareStatement(restaurantCommand);
+            String mealCommand = "REPLACE INTO meals (Id, Name, Description, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            mealStatement = connection.prepareStatement(mealCommand);
 
             for (EpflRestaurant restaurant : menu) {
                 restaurantStatement.setLong(1, restaurant.getRId());
                 restaurantStatement.setString(2, restaurant.getRName());
                 restaurantStatement.addBatch();
 
-                PreparedStatement mealStatement = null;
-                try {
-                    String mealCommand = "REPLACE INTO meals (Id, Name, Description, RestaurantId, TimeIndependentId, Date, Time) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                    mealStatement = connection.prepareStatement(mealCommand);
-
-                    for (EpflMeal meal : restaurant.getRMeals()) {
-                        mealStatement.setLong(1, meal.getMId());
-                        mealStatement.setString(2, meal.getMName());
-                        mealStatement.setString(3, meal.getMDescription());
-                        mealStatement.setLong(4, restaurant.getRId());
-                        mealStatement.setLong(5, Meals.computeTimeIndependentId(meal, restaurant.getRId()));
-                        mealStatement.setDate(6, new Date(date.toDate().getTime()));
-                        mealStatement.setString(7, time.name());
-                        mealStatement.addBatch();
-                    }
-
-                    mealStatement.executeBatch();
-                } finally {
-                    if (mealStatement != null) {
-                        mealStatement.close();
-                    }
+                for (EpflMeal meal : restaurant.getRMeals()) {
+                    mealStatement.setLong(1, meal.getMId());
+                    mealStatement.setString(2, meal.getMName());
+                    mealStatement.setString(3, meal.getMDescription());
+                    mealStatement.setLong(4, restaurant.getRId());
+                    mealStatement.setLong(5, Meals.computeTimeIndependentId(meal,restaurant.getRId()));
+                    mealStatement.setDate(6, new Date(date.toDate().getTime()));
+                    mealStatement.setString(7, time.name());
+                    mealStatement.addBatch();
                 }
             }
 
             restaurantStatement.executeBatch();
+            mealStatement.executeBatch();
         } finally {
             if (restaurantStatement != null) {
                 restaurantStatement.close();
+            }
+            if (mealStatement != null) {
+                mealStatement.close();
             }
         }
     }
@@ -157,38 +152,50 @@ public final class RatingDatabaseImpl implements RatingDatabase {
     }
 
     @Override
-    public void setRatings(List<EpflRestaurant> menu) throws SQLException {
+    public void setRatings(List<EpflRestaurant> menu, LocalDate date, MealTime time) throws SQLException {
         Connection connection = _connectionManager.getConnection();
 
+        Map<Long, EpflRating> mealRatings = new HashMap<>();
+        String mealQueryString = "SELECT TimeIndependentId, AVG(Rating), COUNT(*) " +
+                "FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
+                "WHERE TimeIndependentId IN (SELECT m.TimeIndependentId " +
+                "FROM meals m WHERE m.`Time` = ? AND m.`Date` = ?) " +
+                "GROUP BY TimeIndependentId ";
+        try (PreparedStatement mealQuery = connection.prepareStatement(mealQueryString)) {
+        	mealQuery.setString(1, time.name());
+        	mealQuery.setDate(2, new Date(date.toDate().getTime()));
+            ResultSet result = mealQuery.executeQuery();
+            while(result.next()) {
+                mealRatings.put(result.getLong(1), new EpflRating(result.getDouble(2), result.getInt(3)));
+            }
+        }
+        
+        Map<Long, EpflRating> restoRatings = new HashMap<>();
+        String restaurantQueryString = "SELECT RestaurantId, AVG(Rating), COUNT(*) " +
+                "FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
+                "GROUP BY RestaurantId ";
+        try (PreparedStatement restaurantQuery = connection.prepareStatement(restaurantQueryString)) {
+            ResultSet result = restaurantQuery.executeQuery();
+            while(result.next()) {
+            	restoRatings.put(result.getLong(1), new EpflRating(result.getDouble(2), result.getInt(3)));
+            }
+        }
+        
         for (EpflRestaurant restaurant : menu) {
             for (EpflMeal meal : restaurant.getRMeals()) {
-                String mealQueryString = "SELECT AVG(Rating), COUNT(*) " +
-                        "FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
-                        "WHERE meals.TimeIndependentId = ?";
-                try (PreparedStatement mealQuery = connection.prepareStatement(mealQueryString)) {
-                    mealQuery.setLong(1, Meals.computeTimeIndependentId(meal, restaurant.getRId()));
-
-                    ResultSet result = mealQuery.executeQuery();
-                    if (result.next()) {
-                        meal.setMRating(new EpflRating(result.getDouble(1), result.getInt(2)));
-                    } else {
-                        meal.setMRating(new EpflRating(0.0, 0));
-                    }
+            	EpflRating mealRating = mealRatings.get(Meals.computeTimeIndependentId(meal, restaurant.getRId()));
+                if (mealRating != null) {
+                    meal.setMRating(mealRating);
+                } else {
+                    meal.setMRating(new EpflRating(0.0, 0));
                 }
             }
 
-            String restaurantQueryString = "SELECT AVG(Rating), COUNT(*) " +
-                    "FROM mealratings INNER JOIN meals ON mealratings.MealId = meals.Id " +
-                    "WHERE RestaurantId = ?";
-            try (PreparedStatement restaurantQuery = connection.prepareStatement(restaurantQueryString)) {
-                restaurantQuery.setLong(1, restaurant.getRId());
-
-                ResultSet result = restaurantQuery.executeQuery();
-                if (result.next()) {
-                    restaurant.setRRating(new EpflRating(result.getDouble(1), result.getInt(2)));
-                } else {
-                    restaurant.setRRating(new EpflRating(0.0, 0));
-                }
+        	EpflRating restoRating = restoRatings.get(restaurant.getRId());
+            if (restoRating != null) {
+                restaurant.setRRating(restoRating);
+            } else {
+                restaurant.setRRating(new EpflRating(0.0, 0));
             }
         }
     }

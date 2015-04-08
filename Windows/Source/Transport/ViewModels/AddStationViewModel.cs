@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -14,9 +14,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Transport.ViewModels
 {
-    /// <summary>
-    /// ViewModel that allows the user to add a station.
-    /// </summary>
     [LogId( "/transport/addStation" )]
     public sealed class AddStationViewModel : DataViewModel<NoParameter>
     {
@@ -42,9 +39,6 @@ namespace PocketCampus.Transport.ViewModels
         }
 
 
-        /// <summary>
-        /// Gets the command executed to add a station.
-        /// </summary>
         [LogId( "Add" )]
         [LogParameter( "$Param.Name" )]
         public Command<Station> AddStationCommand
@@ -52,9 +46,6 @@ namespace PocketCampus.Transport.ViewModels
             get { return this.GetCommand<Station>( AddStation ); }
         }
 
-        /// <summary>
-        /// Gets the command executed to add a station from its name.
-        /// </summary>
         [LogId( "AddByName" )]
         [LogParameter( "$Param" )]
         public AsyncCommand<string> AddStationByNameCommand
@@ -63,9 +54,6 @@ namespace PocketCampus.Transport.ViewModels
         }
 
 
-        /// <summary>
-        /// Creates a new AddStationViewModel.
-        /// </summary>
         public AddStationViewModel( ITransportService transportService, ILocationService locationService,
                                     INavigationService navigationService, IPluginSettings pluginSettings )
         {
@@ -78,9 +66,6 @@ namespace PocketCampus.Transport.ViewModels
         }
 
 
-        /// <summary>
-        /// Provides station suggestions when the query changes.
-        /// </summary>
         private async void OnQueryChanged()
         {
             await TryExecuteAsync( async _ =>
@@ -107,12 +92,9 @@ namespace PocketCampus.Transport.ViewModels
             } );
         }
 
-        /// <summary>
-        /// Adds the specified station to the settings, and navigates back.
-        /// </summary>
         private void AddStation( Station station )
         {
-            if ( !_pluginSettings.Stations.Any( s => s.Name == station.Name ) )
+            if ( _pluginSettings.Stations.All( s => s.Name != station.Name ) )
             {
                 _pluginSettings.Stations.Add( station );
             }
@@ -120,9 +102,6 @@ namespace PocketCampus.Transport.ViewModels
             _navigationService.NavigateBack();
         }
 
-        /// <summary>
-        /// Finds the station with the specified name, adds it to the settings, and navigates back.
-        /// </summary>
         private async Task AddStationByNameAsync( string stationName )
         {
             if ( _pluginSettings.Stations.Any( s => s.Name == stationName ) )

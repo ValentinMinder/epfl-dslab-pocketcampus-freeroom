@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -198,6 +198,14 @@ namespace PocketCampus.Moodle.Services.Design
                         }
                     }
                 }
+            } );
+        }
+
+        public Task<PrintFileResponse> PrintFileAsync( PrintFileRequest request, CancellationToken token )
+        {
+            return Task.FromResult( new PrintFileResponse
+            {
+                Status = MoodleStatus.NetworkError
             } );
         }
     }

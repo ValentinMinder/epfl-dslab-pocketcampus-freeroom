@@ -35,6 +35,8 @@
 
 #import "TransportAddStationViewController.h"
 
+#import "NSNotificationCenter+LGAAdditions.h"
+
 static const NSUInteger kStationsSection = 0;
 static const NSUInteger kRestoreDefaultSection = 1;
 
@@ -73,8 +75,11 @@ static const NSUInteger kRestoreDefaultSection = 1;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStylePlain;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshFromModel) name:kTransportUserTransportStationsModifiedNotification object:self.transportService];
-    [self refreshFromModel];
+    __weak __typeof(self) welf = self;
+    [[NSNotificationCenter defaultCenter] lga_addObserver:self name:kTransportUserTransportStationsModifiedNotification object:self.transportService block:^(NSNotification *notif) {
+        [welf refreshFromModelAnimated:YES];
+    }];
+    [self refreshFromModelAnimated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -98,10 +103,14 @@ static const NSUInteger kRestoreDefaultSection = 1;
 
 #pragma mark - Data load
 
-- (void)refreshFromModel {
+- (void)refreshFromModelAnimated:(BOOL)animated {
     self.stations = [self.transportService.userTransportStations mutableCopy];
     @try {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kStationsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (animated) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kStationsSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            [self.tableView reloadData];
+        }
     }
     @catch (NSException *exception) {
         [self.tableView reloadData];
@@ -123,10 +132,6 @@ static const NSUInteger kRestoreDefaultSection = 1;
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == kStationsSection) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
     switch (indexPath.section) {
         case kStationsSection:
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];

@@ -43,6 +43,10 @@ public class PushNotifServiceImpl implements PushNotifService.Iface {
 		return result;
 	}
 
+	/***
+	 * Please provide pluginName in CamelCase 
+	 * Android now requires that! 
+	 */
 	private Boolean sendMessageInChunks(String pluginName, List<String> userIds, Map<String, String> msg) {
 		System.out.println("Pushnotif: sendMessageInChunks");
 		Map<String, String> androidTokens = dataStore.selectTokens(pluginName, userIds, "ANDROID");

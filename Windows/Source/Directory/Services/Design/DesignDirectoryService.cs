@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -105,7 +105,7 @@ namespace PocketCampus.Directory.Services.Design
                             PictureUrl = "http://people.epfl.ch/cgi-bin/people/getPhoto?id=223572",
                             Roles = new Dictionary<string,PersonRole>
                             {
-                                { "SIN-BA4", new PersonRole { Unit = "Section d'informatique - Bachelor semestre 4", Title = "Etudiant" } }
+                                { "SIN-BA5", new PersonRole { Unit = "Section d'informatique - Bachelor semestre 5", Title = "Etudiant" } }
                             },
                             Homepages = new Dictionary<string,string>
                             {

@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.pocketcampus.platform.android.cache.RequestCache;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.LogoutListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.moodle.R;
@@ -28,7 +29,6 @@ import org.pocketcampus.plugin.moodle.shared.MoodlePrintFileRequest2;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Client;
 import org.pocketcampus.plugin.moodle.shared.MoodleService.Iface;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -51,12 +51,14 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 public class MoodleController extends PluginController implements IMoodleController{
 
-	public static class Logouter extends BroadcastReceiver {
+	public static class Logouter extends LogoutListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			super.onReceive(context, intent);
 			Log.v("DEBUG", "MoodleController$Logouter logging out");
 			Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.LOGOUT",
 					Uri.parse("pocketcampus://moodle.plugin.pocketcampus.org/logout"));
+			authIntent.setClassName(context.getApplicationContext(), MoodleController.class.getName());
 			context.startService(authIntent);
 		}
 	};
@@ -73,6 +75,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 				intenteye.putExtra("selfauthok", 1);
 			if(intent.getIntExtra("usercancelled", 0) != 0)
 				intenteye.putExtra("usercancelled", 1);
+			intenteye.setClassName(context.getApplicationContext(), MoodleController.class.getName());
 			context.startService(intenteye);
 		}
 	};
@@ -138,6 +141,7 @@ public class MoodleController extends PluginController implements IMoodleControl
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "MoodleController::onStartCommand logout");
+			mClient = (Iface) getClient(new Client.Factory(), mPluginName);
 			RequestCache.invalidateCache(this, CoursesListRequest.class.getCanonicalName());
 			RequestCache.invalidateCache(this, SectionsListRequest.class.getCanonicalName());
 			deleteRecursive(new File(getMoodleFilesPath()));
@@ -184,17 +188,17 @@ public class MoodleController extends PluginController implements IMoodleControl
 	
 
 	public static void openFile(Context c, File file) {
-		Uri uri = Uri.fromFile(file);
-		Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
-		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
-		if(guessedContentType == null) {
-			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
-					R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		viewFileIntent.setDataAndType(uri, guessedContentType);
-		viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		try {
+			Uri uri = Uri.fromFile(file);
+			Intent viewFileIntent = new Intent(Intent.ACTION_VIEW);
+			String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+			if(guessedContentType == null) {
+				Toast.makeText(c.getApplicationContext(), c.getResources().getString(
+						R.string.moodle_no_app_to_handle_filetype), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			viewFileIntent.setDataAndType(uri, guessedContentType);
+			viewFileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			c.startActivity(viewFileIntent);
 		} catch(Exception e) {
 			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
@@ -203,14 +207,14 @@ public class MoodleController extends PluginController implements IMoodleControl
 	}
 
 	public static void shareFile(Context c, File file) {
-		Uri uri = Uri.fromFile(file);
-		Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
-		String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
-		if(guessedContentType == null)
-			guessedContentType = "*/*";
-		shareFileIntent.setType(guessedContentType);
-		shareFileIntent.putExtra(Intent.EXTRA_STREAM, uri);
 		try {
+			Uri uri = Uri.fromFile(file);
+			Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
+			String guessedContentType = URLConnection.guessContentTypeFromName(file.getName());
+			if(guessedContentType == null)
+				guessedContentType = "*/*";
+			shareFileIntent.setType(guessedContentType);
+			shareFileIntent.putExtra(Intent.EXTRA_STREAM, uri);
 			c.startActivity(shareFileIntent);
 		} catch(Exception e) {
 			Toast.makeText(c.getApplicationContext(), c.getResources().getString(
@@ -253,9 +257,11 @@ public class MoodleController extends PluginController implements IMoodleControl
 
 
 	public static void pingAuthPlugin(Context context) {
+		
 		Intent authIntent = new Intent("org.pocketcampus.plugin.authentication.ACTION_AUTHENTICATE",
 				Uri.parse("pocketcampus://authentication.plugin.pocketcampus.org/authenticate"));
 		authIntent.putExtra("selfauth", true);
+		authIntent.setClassName(context.getApplicationContext(), "org.pocketcampus.plugin.authentication.android.AuthenticationController");
 		context.startService(authIntent);
 	}
 	

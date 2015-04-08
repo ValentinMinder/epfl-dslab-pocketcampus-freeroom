@@ -38,5 +38,7 @@ public interface IEventsView extends IView {
 	void exchangeContactsFinished(boolean success);
 	void sendEmailRequestFinished(boolean success);
 	void sendAdminRegEmailFinished(boolean success);
+	void showLoading();
+	void hideLoading();
 	
 }

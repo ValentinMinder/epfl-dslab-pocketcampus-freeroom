@@ -1,4 +1,4 @@
-// Copyright (c) PocketCampus.Org 2014
+// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -9,9 +9,6 @@ using ThriftSharp;
 
 namespace PocketCampus.Moodle.Services
 {
-    /// <summary>
-    /// The Moodle server service.
-    /// </summary>
     [ThriftService( "MoodleService" )]
     public interface IMoodleService
     {
@@ -20,5 +17,8 @@ namespace PocketCampus.Moodle.Services
 
         [ThriftMethod( "getSections" )]
         Task<CourseSectionsResponse> GetSectionsAsync( [ThriftParameter( 1, "request" )] CourseSectionsRequest request, CancellationToken token );
+
+        [ThriftMethod( "printFile" )]
+        Task<PrintFileResponse> PrintFileAsync( [ThriftParameter( 1, "request" )] PrintFileRequest request, CancellationToken token );
     }
 }

@@ -10,7 +10,7 @@
 	<string name="food_menu_view_evening_menus">View evening menus</string>
 	
 	<string name="food_dialog_resto">Filter by restaurant</string>
-	<string name="food_dialog_types">Filter by types</string>
+	<string name="food_dialog_ingredients">Filter by meal type</string>
 	<string name="food_dialog_prices">Show prices for</string>
 	<string name="food_dialog_vote">Vote</string>
 	

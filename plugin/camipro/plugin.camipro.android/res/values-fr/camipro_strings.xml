@@ -19,7 +19,7 @@
         
     <string name="camipro_no_recent_transactions">Pas de transactions récentes</string>
         
-    <string name="camipro_ebanking_infos_text">Afin de charger votre carte CAMIPRO, veuillez reporter les indications de paiement ci-dessous (no de compte, no de référence, etc.) dans l\'outil e-banking fourni par votre établissement financier.\nLe type de paiement à effectuer est un paiement par BVR orange.</string>
+    <string name="camipro_ebanking_infos_text">Afin de charger votre carte CAMIPRO, veuillez reporter les indications de paiement ci-dessous (no de compte, no de référence, etc.) dans l\'interface e-banking fourni par votre établissement financier.\nLe type de paiement à effectuer est un paiement par BVR orange.</string>
     <string name="camipro_ebanking_paid_to_title">Versement pour</string>
     <string name="camipro_ebanking_account_number_title">Numéro de compte</string>
     <string name="camipro_ebanking_ref_number_title">Numéro de référence</string>
@@ -29,7 +29,6 @@
     <string name="camipro_string_logout">Déconnexion</string>
         
     <string name="camipro_error_camipro_down">PocketCampus a essayé de se connecter aux serveurs Camipro, mais ils semblent hors-ligne.</string>
-    <string name="camipro_connection_error_happened">Nous ne pouvons pas récupérer les données Camipro maintenant, car vous n\'êtes pas connecté à Internet.</string>
         
     <string name="camipro_menu_send_by_email">Envoyer par email</string>
         

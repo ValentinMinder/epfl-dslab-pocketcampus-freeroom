@@ -119,7 +119,7 @@ public final class FoodServiceTests {
 		DateTimeUtils.setCurrentMillisFixed(new DateTime(2013, 10, 29, 12, 30).getMillis());
 		service.vote(new VoteRequest(11, 4.0, "12345"));
 		List<EpflRestaurant> menu = mealList.get(MealTime.LUNCH, LocalDate.now()).getMenu();
-		ratingDatabase.setRatings(menu);
+		ratingDatabase.setRatings(menu, LocalDate.now(), MealTime.LUNCH);
 
 		assertEquals(new EpflRating(4.0, 1), menu.get(1).getRMeals().get(0).getMRating());
 	}
@@ -188,7 +188,7 @@ public final class FoodServiceTests {
 			}
 
 			@Override
-			public void setRatings(List<EpflRestaurant> menu) {
+			public void setRatings(List<EpflRestaurant> menu, LocalDate date, MealTime time) {
 				for (EpflRestaurant restaurant : menu) {
 					double totalValue = 0.0;
 					int totalCount = 0;

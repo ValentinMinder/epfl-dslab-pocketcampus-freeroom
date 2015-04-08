@@ -1,4 +1,4 @@
-﻿// Copyright (c) PocketCampus.Org 2014
+﻿// Copyright (c) PocketCampus.Org 2014-15
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
@@ -10,9 +10,6 @@ using ThinMvvm.Logging;
 
 namespace PocketCampus.Events.ViewModels
 {
-    /// <summary>
-    /// ViewModel for tag filters.
-    /// </summary>
     [LogId( "/events/tags" )]
     public sealed class TagFilterViewModel : ViewModel<EventPool>
     {
@@ -20,15 +17,9 @@ namespace PocketCampus.Events.ViewModels
         private readonly EventPool _pool;
 
 
-        /// <summary>
-        /// Gets the tag filters.
-        /// </summary>
         public Filter<string>[] Tags { get; private set; }
 
 
-        /// <summary>
-        /// Creates a new TagFilterViewModel.
-        /// </summary>
         public TagFilterViewModel( IPluginSettings settings,
                                    EventPool pool )
         {
@@ -45,9 +36,6 @@ namespace PocketCampus.Events.ViewModels
         }
 
 
-        /// <summary>
-        /// Called when the user navigates away from the ViewModel.
-        /// </summary>
         public override void OnNavigatedFrom()
         {
             var excluded = _settings.ExcludedTagsByPool;
