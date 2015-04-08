@@ -57,18 +57,18 @@ public class FoodServiceImpl implements FoodService.Iface, TaskRunner {
                 getLdapObject());
     }
     
-    @Override
-    public void schedule(BackgroundTasker.Scheduler tasker) {
-    	tasker.addTask(60 * 1000, true, new Runnable() {
+	@Override
+	public void schedule(BackgroundTasker.Scheduler tasker) {
+		tasker.addTask(60 * 1000, true, new Runnable() {
 			public void run() {
 				// prefetch things that take time (resto location, mostly)
 				FoodResponse response = _menu.get(MealTime.LUNCH, LocalDate.now());
 				for (EpflRestaurant restaurant : response.getMenu()) {
-		            _locator.findByName(restaurant.getRName());
-		        }
+					_locator.findByName(restaurant.getRName());
+				}
 			}
 		});
-    }
+	}
 
     @Override
     public FoodResponse getFood(FoodRequest foodReq) throws TException {
