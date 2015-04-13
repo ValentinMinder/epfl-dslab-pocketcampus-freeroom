@@ -2,9 +2,9 @@
 // See LICENSE file for more details
 // File author: Solal Pirelli
 
-using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 using PocketCampus.Common.Services;
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
 using Windows.System.Profile;
 
 namespace PocketCampus.Main.Services
@@ -20,7 +20,10 @@ namespace PocketCampus.Main.Services
                 if ( _current == null )
                 {
                     var token = HardwareIdentification.GetPackageSpecificToken( null );
-                    _current = BitConverter.ToString( token.Id.ToArray() );
+                    // Hash it with MD5 to get a length <50, that's what the server wants
+                    var alg = HashAlgorithmProvider.OpenAlgorithm( HashAlgorithmNames.Md5 );
+                    var hashed = alg.HashData( token.Id );
+                    _current = CryptographicBuffer.EncodeToHexString( hashed );
                 }
                 return _current;
             }
