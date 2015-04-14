@@ -11,6 +11,8 @@ $PC_PROXY_CONFIG = array (
 	"moodle.php" => array("protto" => "http://", "url" => "moodle.epfl.ch"),
 	"archibus.php" => array("protto" => "https://", "url" => "websrv.epfl.ch"),
 	"facebook.php" => array("protto" => "http://", "url" => "graph.facebook.com"),
+	"library-beast.php" => array("protto" => "http://", "url" => "beast-epfl.hosted.exlibrisgroup.com"),
+	"library-rib.php" => array("protto" => "http://", "url" => "www.library.ethz.ch"),
 );
 
 ?>
