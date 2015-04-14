@@ -145,6 +145,6 @@ extern NSString* const kPCConfigDidFinishLoadingNotification;
  */
 + (void)applyAndDieConfigWithPath:(NSString*)configPath;
 
-#endif;
+#endif
 
 @end

@@ -19,7 +19,6 @@
 		27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */; };
 		27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C1160F19A2588E00FEF411 /* recommendedapps.m */; };
 		2C8A4E0281E86D5354CC3585 /* Alumni.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE440E1B8C0863B7672C4B4 /* Alumni.png */; };
-		2D524B61AE18E8A19E65FCA3 /* Alumni.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE440E1B8C0863B7672C4B4 /* Alumni.png */; };
 		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
 		3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
@@ -229,7 +228,6 @@
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
 		3283C4CB1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
-		3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4CD1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
 		3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
@@ -605,9 +603,6 @@
 		32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */; };
 		32FFA79B186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */; };
 		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
-		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; };
 		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; };
@@ -619,7 +614,6 @@
 		8193447294E5D065581CBAAD /* IsAcademia.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EDE488982F3A13DD8BF17AF /* IsAcademia.png */; };
 		8D964F08A876C676D9337E69 /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
 		9017DC7828C541BFBF7E785E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
-		96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2443B6A4B62114CDE2BEB2 /* Alumni@2x.png */; };
 		A4B74DCFBECCA89CA9FE691C /* AlumniController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5064295A6C6E3D7D55A7FE6 /* AlumniController.m */; };
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
 		D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; };
@@ -3236,7 +3230,7 @@
 		3219EF4314FCDE4800A271CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = PocketCampus.Org;
 				TargetAttributes = {
 					32136F32193FBCFF002905A9 = {
@@ -3631,7 +3625,6 @@
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
 				32AA259C1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png in Resources */,
-				328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */,
 				2C8A4E0281E86D5354CC3585 /* Alumni.png in Resources */,
 				57FD42B68FA2EB290F49099E /* Alumni@2x.png in Resources */,
 				3283C4CB1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */,
@@ -4353,6 +4346,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -4396,6 +4390,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
