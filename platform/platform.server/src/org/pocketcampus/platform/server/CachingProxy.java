@@ -30,11 +30,9 @@ public final class CachingProxy {
 						}
 
 						int hash = Arrays.deepHashCode(args);
-						if (cache.get(method).containsKey(hash)) {
-							GeneratedValue cached = cache.get(method).get(hash);
-							if (validator.isValid(cached.generationDate)) {
-								return cached.value;
-							}
+						GeneratedValue cached = cache.get(method).get(hash);
+						if (cached != null && validator.isValid(cached.generationDate)) {
+							return cached.value;
 						}
 
 						Object result = method.invoke(instance, args);

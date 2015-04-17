@@ -43,10 +43,6 @@ public final class SoftMap<K, V> {
 		_cleanerThread.start();
 	}
 
-	public boolean containsKey(K key) {
-		return _map.containsKey(key);
-	}
-
 	public V get(K key) {
 		Reference<V> refVal = _map.get(key);
 		return refVal == null ? null : refVal.get();
