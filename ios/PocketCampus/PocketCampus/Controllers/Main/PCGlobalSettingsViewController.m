@@ -47,6 +47,8 @@
 
 #import "MainMenuViewController.h"
 
+#import "PCEPFLMailProfileViewController.h"
+
 #import "PCUsageViewController.h"
 
 #import "PCDebugConfigSelectionViewController.h"
@@ -54,9 +56,12 @@
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
-static const int kAboutSection = 2;
-static const int kMiscSection = 3;
-static const int kDebugSection = 4;
+static const int kAutoConfigsSection = 2;
+static const int kAboutSection = 3;
+static const int kMiscSection = 4;
+static const int kDebugSection = 5;
+
+static const int kMailConfigRow = 0;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -141,6 +146,22 @@ static const int kUsageRow = 0;
                     break;
             }
             break;
+        case kAutoConfigsSection:
+        {
+            switch (indexPath.row) {
+                case kMailConfigRow:
+                {
+#warning ADD TO GA spread sheet
+                    [self trackAction:@"OpenEPFLMailConfig"];
+                    PCEPFLMailProfileViewController* viewController = [PCEPFLMailProfileViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
         case kMainMenuSection:
             switch (indexPath.row) {
                 case kEditMainMenuRow:
@@ -248,6 +269,8 @@ static const int kUsageRow = 0;
     switch (section) {
         case kAccountsSection:
             return NSLocalizedStringFromTable(@"Accounts", @"PocketCampus", nil);
+        case kAutoConfigsSection:
+            return NSLocalizedStringFromTable(@"AutomaticConfigurations", @"PocketCampus", nil);
         case kMainMenuSection:
             return NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
         case kAboutSection:
@@ -269,6 +292,21 @@ static const int kUsageRow = 0;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [AuthenticationViewController localizedTitle];
             cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
+            break;
+        }
+        case kAutoConfigsSection:
+        {
+            switch (indexPath.row) {
+                case kMailConfigRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EPFLMail", @"PocketCampus", nil);
+                    cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLEmailInMailApp", @"PocketCampus", nil);
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                default:
+                    break;
+            }
             break;
         }
         case kMainMenuSection:
@@ -336,6 +374,8 @@ static const int kUsageRow = 0;
     switch (section) {
         case kAccountsSection:
             return 1;
+        case kAutoConfigsSection:
+            return 1;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
@@ -350,9 +390,9 @@ static const int kUsageRow = 0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #ifdef DEBUG
-    return 5;
+    return 6;
 #else
-    eturn 4;
+    return 5;
 #endif
 }
 

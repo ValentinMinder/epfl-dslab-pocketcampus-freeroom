@@ -40,6 +40,12 @@
 NSString* const kAuthenticationTequilaCookieName = @"tequila_key";
 NSString* const kAuthenticationLogoutNotification = @"kAuthenticationLogoutNotification";
 
+NSString* const kAuthenticationEmailUserAttributeName = @"email";
+NSString* const kAuthenticationGasparUserAttributeName = @"gaspar";
+NSString* const kAuthenticationSciperUserAttributeName = @"sciper";
+NSString* const kAuthenticationFirstnameUserAttributeName = @"firstname";
+NSString* const kAuthenticationLastnameUserAttributeName = @"lastname";
+
 static NSString* kTequilaOAuth2AuthURL = nil;
 static NSString* kTequilaOAuth2RequestKey = @"requestkey";
 static NSString* kTequilaOAuth2AuthApproveURL = nil;
@@ -367,6 +373,17 @@ static AuthenticationService* instance __weak = nil;
     operation.serviceClientSelector = @selector(getOAuth2TokensFromCode:);
     operation.delegateDidReturnSelector = @selector(getOAuth2TokensFromCodeForRequest:didReturn:);
     operation.delegateDidFailSelector = @selector(getOAuth2TokensFromCodeFailedForRequest:);
+    [operation addObjectArgument:request];
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)getUserAttributesWithRequest:(UserAttributesRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[UserAttributesRequest class]];
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.serviceClientSelector = @selector(getUserAttributes:);
+    operation.delegateDidReturnSelector = @selector(getUserAttributesForRequest:didReturn:);
+    operation.delegateDidFailSelector = @selector(getUserAttributesFailedForRequest:);
     [operation addObjectArgument:request];
     operation.returnType = ReturnTypeObject;
     [self.operationQueue addOperation:operation];
