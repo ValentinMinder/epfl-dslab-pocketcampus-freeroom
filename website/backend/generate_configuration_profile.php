@@ -31,6 +31,8 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
                 <true/>
                 <key>UserName</key>
                 <string>USER_GASPAR</string>
+                <key>MailNumberOfPastDaysToSync</key>
+                <integer>365</integer>
                 
                 <key>PayloadDescription</key>
                 <string>Installs your EPFL email</string>
@@ -84,6 +86,8 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
                 <true/>
                 <key>UserName</key>
                 <string>USER_GASPAR</string>
+                <key>MailNumberOfPastDaysToSync</key>
+                <integer>365</integer>
                 
                 <key>PayloadDescription</key>
                 <string>Installe votre compte email EPFL</string>
