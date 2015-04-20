@@ -29,18 +29,20 @@
     if (self) {
         self.authService = [AuthenticationService sharedInstanceToRetain];
         self.title = NSLocalizedStringFromTable(@"EPFLMail", @"PocketCampus", nil);
+        self.gaiScreenName = @"/dashboard/settings/emailconfig";
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 #pragma mark - Actions
 
 - (IBAction)startTapped {
+    [self trackAction:@"SetupEmail"];
     [self startGetUserAttribtesRequest];
 }
 

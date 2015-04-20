@@ -151,8 +151,7 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case kMailConfigRow:
                 {
-#warning ADD TO GA spread sheet
-                    [self trackAction:@"OpenEPFLMailConfig"];
+                    [self trackAction:@"OpenEmailConfig"];
                     PCEPFLMailProfileViewController* viewController = [PCEPFLMailProfileViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
