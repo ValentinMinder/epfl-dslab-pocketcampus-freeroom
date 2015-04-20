@@ -30,7 +30,7 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
                 <key>SSL</key>
                 <true/>
                 <key>UserName</key>
-                <string>USER_GASPAR</string>
+                <string>USER_GASPAR@INTRANET</string>
                 <key>MailNumberOfPastDaysToSync</key>
                 <integer>365</integer>
                 
@@ -41,7 +41,7 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
                 <key>PayloadType</key>
                 <string>com.apple.eas.account</string>
                 <key>PayloadDisplayName</key>
-                <string>EPFL email</string>
+                <string>EPFL</string>
                 <key>PayloadVersion</key>
                 <integer>1</integer>
                 <key>PayloadOrganization</key>
@@ -85,7 +85,7 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
                 <key>SSL</key>
                 <true/>
                 <key>UserName</key>
-                <string>USER_GASPAR</string>
+                <string>USER_GASPAR@INTRANET</string>
                 <key>MailNumberOfPastDaysToSync</key>
                 <integer>365</integer>
                 
@@ -96,7 +96,7 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
                 <key>PayloadType</key>
                 <string>com.apple.eas.account</string>
                 <key>PayloadDisplayName</key>
-                <string>Email EPFL</string>
+                <string>EPFL</string>
                 <key>PayloadVersion</key>
                 <integer>1</integer>
                 <key>PayloadOrganization</key>
