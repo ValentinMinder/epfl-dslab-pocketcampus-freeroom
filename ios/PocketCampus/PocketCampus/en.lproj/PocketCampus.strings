@@ -60,7 +60,9 @@
 
 "AutomaticConfigurations" = "Automatic configurations";
 "EPFLMail" = "EPFL email";
-"ConfigureEPFLEmailInMailApp" = "Setup EPFL email in Mail";
+"ConfigureEPFLEmailInMailApp" = "Setup my EPFL email in the Mail app";
+"Preparing" = "Preparing";
+"TapToCancel" = "Tap to cancel";
 
 //Accessbility
 

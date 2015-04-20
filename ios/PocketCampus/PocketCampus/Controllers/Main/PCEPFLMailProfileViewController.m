@@ -44,10 +44,23 @@
     [self startGetUserAttribtesRequest];
 }
 
+- (void)cancelTapped {
+    [self.authService cancelOperationsForDelegate:self];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
 #pragma mark - Private
 
 - (void)startGetUserAttribtesRequest {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.removeFromSuperViewOnHide = YES;
+    hud.labelText = NSLocalizedStringFromTable(@"Preparing", @"PocketCampus", nil);
+    hud.detailsLabelText = NSLocalizedStringFromTable(@"TapToCancel", @"PocketCampus", nil);
+    UITapGestureRecognizer* cancelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapped)];
+    [hud addGestureRecognizer:cancelGesture];
+    
     NSMutableArray* attributes = [NSMutableArray arrayWithObjects:kAuthenticationEmailUserAttributeName, kAuthenticationGasparUserAttributeName, nil];
     NSString* sessionId = [AuthenticationController sharedInstance].pocketCampusAuthSessionId ?: @"dummy";
     UserAttributesRequest* request = [[UserAttributesRequest alloc] initWithSessionId:sessionId attributeNames:attributes];
@@ -64,7 +77,7 @@
 #pragma mark - AuthenticationServiceDelegate
 
 - (void)getUserAttributesForRequest:(UserAttributesRequest *)request didReturn:(UserAttributesResponse *)response {
-    [MBProgressHUD hideHUDForView:self.view animated:NO];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     switch (response.statusCode) {
         case AuthStatusCode_OK:
         {
@@ -114,6 +127,7 @@
 - (void)dealloc
 {
     [self.authService cancelOperationsForDelegate:self];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
 }
 
 @end

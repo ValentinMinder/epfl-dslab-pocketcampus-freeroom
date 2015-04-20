@@ -94,6 +94,9 @@
 		323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C416BDB5300004D5AD /* AppLogoCellImage.png */; };
 		323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */; };
 		323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
+		3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */; };
+		3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */; };
+		3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D21AE5486600F195EF /* iOSMail_40@.png */; };
 		323CAC5919324F4800941BB1 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAC5819324F4800941BB1 /* AuthenticationViewController.m */; };
 		323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
@@ -799,6 +802,10 @@
 		323676C416BDB5300004D5AD /* AppLogoCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogoCellImage.png; sourceTree = "<group>"; };
 		323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FacebookLikeCellImage.png; sourceTree = "<group>"; };
 		323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@2x.png"; sourceTree = "<group>"; };
+		3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@2x.png"; sourceTree = "<group>"; };
+		3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@3x.png"; sourceTree = "<group>"; };
+		3236E5D21AE5486600F195EF /* iOSMail_40@.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@.png"; sourceTree = "<group>"; };
+		3236E5D61AE5585D00F195EF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		323CAC5719324F4800941BB1 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		323CAC5819324F4800941BB1 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
@@ -1258,7 +1265,6 @@
 		32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCEPFLMailProfileViewController.m; sourceTree = "<group>"; };
 		32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail@2x.png"; sourceTree = "<group>"; };
 		32CF2B231AE1653B00B3B2AA /* iOSMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSMail.png; sourceTree = "<group>"; };
-		32CF2B261AE1752F00B3B2AA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		32CF2B281AE1753100B3B2AA /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1802,6 +1808,9 @@
 				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
 				32CF2B231AE1653B00B3B2AA /* iOSMail.png */,
 				32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */,
+				3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */,
+				3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */,
+				3236E5D21AE5486600F195EF /* iOSMail_40@.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				32A37A611A6830E80079D208 /* LinkIcon@3x.png */,
@@ -3424,6 +3433,7 @@
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
 				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
 				32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */,
+				3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */,
@@ -3527,6 +3537,7 @@
 				32A37A721A6833060079D208 /* MasterVisible@3x.png in Resources */,
 				32A37A441A682B310079D208 /* ClockCell@3x.png in Resources */,
 				32A37A021A680B620079D208 /* Food@3x.png in Resources */,
+				3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */,
 				32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */,
 				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
@@ -3615,6 +3626,7 @@
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
+				3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32A37A6E1A6832960079D208 /* MainMenuNavbar@3x.png in Resources */,
@@ -4228,8 +4240,8 @@
 		32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				32CF2B261AE1752F00B3B2AA /* en */,
 				32CF2B281AE1753100B3B2AA /* fr */,
+				3236E5D61AE5585D00F195EF /* en */,
 			);
 			name = PCEPFLMailProfileViewController.xib;
 			sourceTree = "<group>";

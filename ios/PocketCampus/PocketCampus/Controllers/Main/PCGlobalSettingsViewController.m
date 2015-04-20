@@ -241,6 +241,13 @@ static const int kUsageRow = 0;
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kAutoConfigsSection) {
+        return 65.0;
+    }
+    return 44.0;
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -299,6 +306,7 @@ static const int kUsageRow = 0;
             switch (indexPath.row) {
                 case kMailConfigRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.imageView.image = [UIImage imageNamed:@"iOSMail_40"];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"EPFLMail", @"PocketCampus", nil);
                     cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLEmailInMailApp", @"PocketCampus", nil);
                     cell.detailTextLabel.textColor = [UIColor grayColor];
