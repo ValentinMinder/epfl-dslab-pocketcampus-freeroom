@@ -1,0 +1,12 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-moodle-shared')
+    compile project(':plugin-authentication-server')
+    compile project(':plugin-cloudprint-server')
+
+    compile libs.gson
+    compile libs.joda_time
+    compile libs.commons_io
+    compile libs.commons_lang3
+}

@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':plugin-moodle-shared')
+    compile project(':platform-android')
+
+    compile libs.commons_io
+}

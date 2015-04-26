@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+     <string name="directory_plugin_name">Directory</string>
+     <string name="directory_person_details_dialog_tile">Details</string>
+     
+     <!-- Dialog buttons -->
+     <string name="directory_dialog_button_call">Call</string>
+     <string name="directory_dialog_button_web">Web</string>
+     <string name="directory_dialog_button_map">Find on Map</string>
+     <string name="directory_dialog_button_mail">Email</string>
+     <string name="directory_dialog_button_import">Import</string>
+     
+     <string name="directory_call">Call</string>
+     <string name="directory_yes">yes</string>
+     <string name="directory_no">no</string>
+  
+     <string name="directory_searchView_title">EPFL directory</string>
+     <string name="directory_searchView_hint">Search for someone</string>
+     
+     <string name="directory_network_error">Could not connect</string>
+     <string name="directory_too_many_results_warning">Too many results, try to be more specific</string>
+     <string name="directory_couldnt_call">Problem with phone call</string>
+     <string name="directory_couldnt_email">Problem with email</string>
+     
+     <string name="directory_results_listView_title">Results</string>
+     <string name="directory_no_results_found">No results found</string>
+     <string name="directory_result_found">result found</string>
+     <string name="directory_results_found">results found</string>
+
+     <string name="directory_loading">Loading...</string>
+     
+     <string name="directory_ambiguous_query">Ambiguous query</string>
+     <string name="directory_popup_title">Contact details</string>
+     
+     <string name="directory_add_to_contacts">Add to contacts</string>
+     
+</resources>

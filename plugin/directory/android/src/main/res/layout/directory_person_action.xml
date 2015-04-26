@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow" >
+
+    <ImageView
+        android:id="@+id/directory_person_action_icon"
+        style="@style/PocketCampusThumbnail"
+        android:layout_width="30dip"
+        android:layout_height="30dip" />
+
+    <TextView
+        android:id="@+id/directory_person_action_text"
+        style="@style/PocketCampusListItemSubTitle"
+        android:text="@string/actionbar_activity_not_found" />
+
+</LinearLayout>

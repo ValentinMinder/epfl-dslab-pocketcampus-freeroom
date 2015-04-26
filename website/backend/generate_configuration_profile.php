@@ -1,5 +1,4 @@
-<?php
-
+﻿<?php
 $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Inc//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -22,7 +21,6 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
         <key>PayloadContent</key>
         <array>
             <dict>
-
                 <key>EmailAddress</key>
                 <string>USER_EMAIL</string>
                 <key>Host</key>
@@ -33,7 +31,6 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
                 <string>USER_GASPAR@INTRANET</string>
                 <key>MailNumberOfPastDaysToSync</key>
                 <integer>365</integer>
-                
                 <key>PayloadDescription</key>
                 <string>Installs your EPFL email</string>
                 <key>PayloadUUID</key>
@@ -48,7 +45,6 @@ $EPFL_EMAIL_CONFIG_PLIST_EN = <<<XML
                 <string>École Polytechnique Fédérale de Lausanne</string>
                 <key>PayloadIdentifier</key>
                 <string>org.pocketcampus.epflmailconfig</string>
-                
             </dict>
         </array>
     </dict>
@@ -77,7 +73,6 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
         <key>PayloadContent</key>
         <array>
             <dict>
-
                 <key>EmailAddress</key>
                 <string>USER_EMAIL</string>
                 <key>Host</key>
@@ -88,7 +83,6 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
                 <string>USER_GASPAR@INTRANET</string>
                 <key>MailNumberOfPastDaysToSync</key>
                 <integer>365</integer>
-                
                 <key>PayloadDescription</key>
                 <string>Installe votre compte email EPFL</string>
                 <key>PayloadUUID</key>
@@ -103,7 +97,6 @@ $EPFL_EMAIL_CONFIG_PLIST_FR = <<<XML
                 <string>École Polytechnique Fédérale de Lausanne</string>
                 <key>PayloadIdentifier</key>
                 <string>org.pocketcampus.epflmailconfig</string>
-                
             </dict>
         </array>
     </dict>

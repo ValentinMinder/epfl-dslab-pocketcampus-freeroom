@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-news-shared')
+
+    compile libs.joda_time
+    compile libs.commons_lang3
+}

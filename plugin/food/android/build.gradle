@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-food-shared')
+    compile project(':platform-android')
+}

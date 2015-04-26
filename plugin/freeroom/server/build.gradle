@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-freeroom-shared')
+
+    compile libs.gson
+}

@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':plugin-cloudprint-shared')
+    compile project(':platform-android')
+
+    compile libs.commons_io
+    compile libs.http_mime
+}

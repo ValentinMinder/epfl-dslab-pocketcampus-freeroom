@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':platform-shared')
+    
+    compile libs.mysql_connector
+    compile libs.jetty_server
+    compile libs.jetty_servlet
+    compile libs.joda_time
+    compile libs.mail
+}

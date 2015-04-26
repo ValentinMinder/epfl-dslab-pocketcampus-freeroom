@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-events-shared')
+    compile project(':platform-android')
+}

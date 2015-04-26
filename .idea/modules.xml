@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PocketCampus.iml" filepath="$PROJECT_DIR$/PocketCampus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/android.iml" filepath="$PROJECT_DIR$/android/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/android/platform-android.iml" filepath="$PROJECT_DIR$/platform/android/platform-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/server/platform-server.iml" filepath="$PROJECT_DIR$/platform/server/platform-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/shared/platform-shared.iml" filepath="$PROJECT_DIR$/platform/shared/platform-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/authentication/android/plugin-authentication-android.iml" filepath="$PROJECT_DIR$/plugin/authentication/android/plugin-authentication-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/authentication/server/plugin-authentication-server.iml" filepath="$PROJECT_DIR$/plugin/authentication/server/plugin-authentication-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/authentication/shared/plugin-authentication-shared.iml" filepath="$PROJECT_DIR$/plugin/authentication/shared/plugin-authentication-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/camipro/android/plugin-camipro-android.iml" filepath="$PROJECT_DIR$/plugin/camipro/android/plugin-camipro-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/camipro/server/plugin-camipro-server.iml" filepath="$PROJECT_DIR$/plugin/camipro/server/plugin-camipro-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/camipro/shared/plugin-camipro-shared.iml" filepath="$PROJECT_DIR$/plugin/camipro/shared/plugin-camipro-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/cloudprint/android/plugin-cloudprint-android.iml" filepath="$PROJECT_DIR$/plugin/cloudprint/android/plugin-cloudprint-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/cloudprint/server/plugin-cloudprint-server.iml" filepath="$PROJECT_DIR$/plugin/cloudprint/server/plugin-cloudprint-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/cloudprint/shared/plugin-cloudprint-shared.iml" filepath="$PROJECT_DIR$/plugin/cloudprint/shared/plugin-cloudprint-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/dashboard/android/plugin-dashboard-android.iml" filepath="$PROJECT_DIR$/plugin/dashboard/android/plugin-dashboard-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/directory/android/plugin-directory-android.iml" filepath="$PROJECT_DIR$/plugin/directory/android/plugin-directory-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/directory/server/plugin-directory-server.iml" filepath="$PROJECT_DIR$/plugin/directory/server/plugin-directory-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/directory/shared/plugin-directory-shared.iml" filepath="$PROJECT_DIR$/plugin/directory/shared/plugin-directory-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/events/android/plugin-events-android.iml" filepath="$PROJECT_DIR$/plugin/events/android/plugin-events-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/events/server/plugin-events-server.iml" filepath="$PROJECT_DIR$/plugin/events/server/plugin-events-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/events/shared/plugin-events-shared.iml" filepath="$PROJECT_DIR$/plugin/events/shared/plugin-events-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/food/android/plugin-food-android.iml" filepath="$PROJECT_DIR$/plugin/food/android/plugin-food-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/food/server/plugin-food-server.iml" filepath="$PROJECT_DIR$/plugin/food/server/plugin-food-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/food/shared/plugin-food-shared.iml" filepath="$PROJECT_DIR$/plugin/food/shared/plugin-food-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/freeroom/android/plugin-freeroom-android.iml" filepath="$PROJECT_DIR$/plugin/freeroom/android/plugin-freeroom-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/freeroom/server/plugin-freeroom-server.iml" filepath="$PROJECT_DIR$/plugin/freeroom/server/plugin-freeroom-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/freeroom/shared/plugin-freeroom-shared.iml" filepath="$PROJECT_DIR$/plugin/freeroom/shared/plugin-freeroom-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/isacademia/android/plugin-isacademia-android.iml" filepath="$PROJECT_DIR$/plugin/isacademia/android/plugin-isacademia-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/isacademia/server/plugin-isacademia-server.iml" filepath="$PROJECT_DIR$/plugin/isacademia/server/plugin-isacademia-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/isacademia/shared/plugin-isacademia-shared.iml" filepath="$PROJECT_DIR$/plugin/isacademia/shared/plugin-isacademia-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/map/android/plugin-map-android.iml" filepath="$PROJECT_DIR$/plugin/map/android/plugin-map-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/map/server/plugin-map-server.iml" filepath="$PROJECT_DIR$/plugin/map/server/plugin-map-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/map/shared/plugin-map-shared.iml" filepath="$PROJECT_DIR$/plugin/map/shared/plugin-map-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/moodle/android/plugin-moodle-android.iml" filepath="$PROJECT_DIR$/plugin/moodle/android/plugin-moodle-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/moodle/server/plugin-moodle-server.iml" filepath="$PROJECT_DIR$/plugin/moodle/server/plugin-moodle-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/moodle/shared/plugin-moodle-shared.iml" filepath="$PROJECT_DIR$/plugin/moodle/shared/plugin-moodle-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/news/android/plugin-news-android.iml" filepath="$PROJECT_DIR$/plugin/news/android/plugin-news-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/news/server/plugin-news-server.iml" filepath="$PROJECT_DIR$/plugin/news/server/plugin-news-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/news/shared/plugin-news-shared.iml" filepath="$PROJECT_DIR$/plugin/news/shared/plugin-news-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/pushnotif/android/plugin-pushnotif-android.iml" filepath="$PROJECT_DIR$/plugin/pushnotif/android/plugin-pushnotif-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/pushnotif/server/plugin-pushnotif-server.iml" filepath="$PROJECT_DIR$/plugin/pushnotif/server/plugin-pushnotif-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/pushnotif/shared/plugin-pushnotif-shared.iml" filepath="$PROJECT_DIR$/plugin/pushnotif/shared/plugin-pushnotif-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/recommendedapps/android/plugin-recommendedapps-android.iml" filepath="$PROJECT_DIR$/plugin/recommendedapps/android/plugin-recommendedapps-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/recommendedapps/server/plugin-recommendedapps-server.iml" filepath="$PROJECT_DIR$/plugin/recommendedapps/server/plugin-recommendedapps-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/recommendedapps/shared/plugin-recommendedapps-shared.iml" filepath="$PROJECT_DIR$/plugin/recommendedapps/shared/plugin-recommendedapps-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/satellite/android/plugin-satellite-android.iml" filepath="$PROJECT_DIR$/plugin/satellite/android/plugin-satellite-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/satellite/server/plugin-satellite-server.iml" filepath="$PROJECT_DIR$/plugin/satellite/server/plugin-satellite-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/satellite/shared/plugin-satellite-shared.iml" filepath="$PROJECT_DIR$/plugin/satellite/shared/plugin-satellite-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/transport/android/plugin-transport-android.iml" filepath="$PROJECT_DIR$/plugin/transport/android/plugin-transport-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/transport/server/plugin-transport-server.iml" filepath="$PROJECT_DIR$/plugin/transport/server/plugin-transport-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/transport/shared/plugin-transport-shared.iml" filepath="$PROJECT_DIR$/plugin/transport/shared/plugin-transport-shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
+    </modules>
+  </component>
+</project>

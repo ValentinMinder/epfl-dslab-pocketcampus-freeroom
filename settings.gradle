@@ -1,0 +1,25 @@
+def add(String projectName) {
+    include(projectName)
+    project(':' + projectName).projectDir = file(projectName.replace('-', '/')) 
+}
+
+['shared', 'server', 'android'].each { target ->
+    // Common projects
+    add("platform-$target")
+
+    // Plugin projects
+    ['authentication', 'camipro', 'cloudprint', 
+     'directory', 'events', 'food',
+     'freeroom', 'map', 'isacademia', 'moodle',
+     'news', 'pushnotif', 'recommendedapps',
+     'satellite', 'transport'].each { plugin ->
+        add("plugin-$plugin-$target")
+    }
+}
+
+// Android dashboard, which doesn't have a server counterpart
+add('plugin-dashboard-android')
+
+// Pseudo-projects for merging
+add('server')
+add('android')

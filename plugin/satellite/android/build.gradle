@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-satellite-shared')
+    compile project(':platform-android')
+}

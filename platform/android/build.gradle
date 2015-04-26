@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':platform-shared')
+
+    compile libs.commons_lang
+    compile libs.universal_image_loader
+    compile files(rootDir.path + '/libs/libGoogleAnalyticsServices.jar')
+}
