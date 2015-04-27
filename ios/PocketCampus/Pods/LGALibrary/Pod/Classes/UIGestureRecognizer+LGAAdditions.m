@@ -20,30 +20,46 @@
 // THE SOFTWARE.
 //
 
-@import Foundation;
+//  Created by Loïc Gardiol on 06.04.15.
 
-#import "LGACollectionTransitiveHash.h"
+#import "UIGestureRecognizer+LGAAdditions.h"
 
-@interface NSSet (LGAAdditions)<LGACollectionTransitiveHash>
+#import <objc/runtime.h>
 
-/**
- * @return a mutable set that corresponds to the receiver minus elements of set
- * @param set cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusSet:(NSSet*)set;
+@interface UIGestureRecognizer ()
 
-/**
- * @return a mutable set that corresponds to the receiver minus elements of orderedSet
- * @param orderedSet cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusOrderedSet:(NSOrderedSet*)orderedSet;
+@property (nonatomic, copy) void (^lga_actionBlock)(UIGestureRecognizer* sender);
 
-/**
- * @return a hash computed with hash of all elements in the set.
- * @discussion if an element responds to lga_transitiveHash,
- * the value returned returned by lga_transitiveHash is integrated
- * into the hash computation.
- */
-- (NSUInteger)lga_transitiveHash;
+@end
+
+@implementation UIGestureRecognizer (LGAAdditions)
+
+#pragma mark - Public
+
+- (instancetype)initWith_lga_actionBlock:(void (^)(UIGestureRecognizer* sender))actionBlock {
+    self = [self initWithTarget:self action:@selector(lga_actionHandler)];
+    if (self) {
+        self.lga_actionBlock = actionBlock;
+    }
+    return self;
+}
+
+static NSString* const kActionBlockKey = @"lga_actionBlock";
+
+- (void(^)(UIBarButtonItem*))lga_actionBlock {
+    return objc_getAssociatedObject(self, (__bridge const void *)(kActionBlockKey));
+}
+
+- (void)setLga_actionBlock:(void (^)(UIBarButtonItem*))lga_actionBlock {
+    objc_setAssociatedObject(self, (__bridge const void *)(kActionBlockKey), lga_actionBlock, OBJC_ASSOCIATION_COPY);
+}
+
+#pragma mark - Private
+
+- (void)lga_actionHandler {
+    if (self.lga_actionBlock) {
+        self.lga_actionBlock(self);
+    }
+}
 
 @end

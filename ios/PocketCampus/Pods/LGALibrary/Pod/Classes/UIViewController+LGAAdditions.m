@@ -20,30 +20,29 @@
 // THE SOFTWARE.
 //
 
-@import Foundation;
+//  Created by Loïc Gardiol on 26.03.15.
 
-#import "LGACollectionTransitiveHash.h"
+#import "UIViewController+LGAAdditions.h"
 
-@interface NSSet (LGAAdditions)<LGACollectionTransitiveHash>
+@implementation UIViewController (LGAAdditions)
 
-/**
- * @return a mutable set that corresponds to the receiver minus elements of set
- * @param set cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusSet:(NSSet*)set;
-
-/**
- * @return a mutable set that corresponds to the receiver minus elements of orderedSet
- * @param orderedSet cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusOrderedSet:(NSOrderedSet*)orderedSet;
-
-/**
- * @return a hash computed with hash of all elements in the set.
- * @discussion if an element responds to lga_transitiveHash,
- * the value returned returned by lga_transitiveHash is integrated
- * into the hash computation.
- */
-- (NSUInteger)lga_transitiveHash;
+- (BOOL)lga_isInSplitViewControllerMasterHierarchy {
+    if (!self.splitViewController) {
+        return NO;
+    }
+    UIViewController* masterViewController = self.splitViewController.viewControllers[0];
+    if (masterViewController == self) {
+        return YES;
+    }
+    if ([masterViewController isKindOfClass:[UINavigationController class]]) {
+        NSArray* viewControllers = [(UINavigationController*)masterViewController viewControllers];
+        return [viewControllers containsObject:self];
+    }
+    if ([masterViewController isKindOfClass:[UITabBarController class]]) {
+        NSArray* viewControllers = [(UITabBarController*)masterViewController viewControllers];
+        return [viewControllers containsObject:self];
+    }
+    return NO;
+}
 
 @end

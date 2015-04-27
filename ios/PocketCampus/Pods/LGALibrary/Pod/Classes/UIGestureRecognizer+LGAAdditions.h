@@ -20,30 +20,12 @@
 // THE SOFTWARE.
 //
 
-@import Foundation;
+//  Created by Loïc Gardiol on 06.04.15.
 
-#import "LGACollectionTransitiveHash.h"
+@import UIKit;
 
-@interface NSSet (LGAAdditions)<LGACollectionTransitiveHash>
+@interface UIGestureRecognizer (LGAAdditions)
 
-/**
- * @return a mutable set that corresponds to the receiver minus elements of set
- * @param set cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusSet:(NSSet*)set;
-
-/**
- * @return a mutable set that corresponds to the receiver minus elements of orderedSet
- * @param orderedSet cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusOrderedSet:(NSOrderedSet*)orderedSet;
-
-/**
- * @return a hash computed with hash of all elements in the set.
- * @discussion if an element responds to lga_transitiveHash,
- * the value returned returned by lga_transitiveHash is integrated
- * into the hash computation.
- */
-- (NSUInteger)lga_transitiveHash;
+- (instancetype)initWith_lga_actionBlock:(void (^)(UIGestureRecognizer* sender))actionBlock;
 
 @end

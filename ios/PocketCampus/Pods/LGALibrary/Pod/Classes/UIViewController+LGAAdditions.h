@@ -20,30 +20,16 @@
 // THE SOFTWARE.
 //
 
-@import Foundation;
+//  Created by Loïc Gardiol on 26.03.15.
 
-#import "LGACollectionTransitiveHash.h"
+@import UIKit;
 
-@interface NSSet (LGAAdditions)<LGACollectionTransitiveHash>
-
-/**
- * @return a mutable set that corresponds to the receiver minus elements of set
- * @param set cannot be nil
- */
-- (NSMutableSet*)lga_mutableSetWithMinusSet:(NSSet*)set;
+@interface UIViewController (LGAAdditions)
 
 /**
- * @return a mutable set that corresponds to the receiver minus elements of orderedSet
- * @param orderedSet cannot be nil
+ * @return YES if self is or within the master view controller hierarchy of self.splitViewController, NO in all other cases.
+ * WARNING: hierarchy here means in the viewControllers of a navigation or tab bar controller. Presented view controllers are not considered.
  */
-- (NSMutableSet*)lga_mutableSetWithMinusOrderedSet:(NSOrderedSet*)orderedSet;
-
-/**
- * @return a hash computed with hash of all elements in the set.
- * @discussion if an element responds to lga_transitiveHash,
- * the value returned returned by lga_transitiveHash is integrated
- * into the hash computation.
- */
-- (NSUInteger)lga_transitiveHash;
+@property (nonatomic, readonly) BOOL lga_isInSplitViewControllerMasterHierarchy;
 
 @end
