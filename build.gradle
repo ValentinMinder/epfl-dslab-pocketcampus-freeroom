@@ -57,10 +57,16 @@ buildscript {
     }
 
     dependencies {
-        // "Shadow JAR" plugin for all-inclusive JARs
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
-        // Android plugin
-        classpath 'com.android.tools.build:gradle:1.1.3'
+        if( !Boolean.getBoolean('no_server') ) {
+            // "Shadow JAR" plugin for all-inclusive JARs
+            classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
+        }
+
+        if( !Boolean.getBoolean('no_android') ) {
+            // Android plugin
+            classpath 'com.android.tools.build:gradle:1.1.3'
+        }
+
         // Thrift plugin
         classpath 'co.tomlee.gradle.plugins:gradle-thrift-plugin:0.0.6'
     }
@@ -235,7 +241,8 @@ task('createPlugin') << {
 }
 
 // Special project that merges all server projects into a JAR
-project(':server') {
+// The project may not exist (if the build is passed -Dno_server=true)
+configure( subprojects.findAll { it.path == ':server' } ) {
     apply plugin: 'java'
     apply plugin: "com.github.johnrengelman.shadow"
 
@@ -255,7 +262,8 @@ project(':server') {
 }
 
 // Special project that merges all Android projects into one and compiles it, by copying sources
-project(':android') {
+// The project may not exist (if the build is passed -Dno_android=true)
+configure( subprojects.findAll { it.path == ':android' } ) {
     task('merge') << {
 	// Delete the output directory if necessary, and re-create it
         projectDir.deleteDir()

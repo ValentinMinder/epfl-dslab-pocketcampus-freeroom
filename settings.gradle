@@ -3,7 +3,26 @@ def add(String projectName) {
     project(':' + projectName).projectDir = file(projectName.replace('-', '/')) 
 }
 
-['shared', 'server', 'android'].each { target ->
+def parts = ['shared']
+
+if( !Boolean.getBoolean('no_android') ) {
+    parts += 'android'
+
+    // Android dashboard, which doesn't have a server counterpart
+    add('plugin-dashboard-android')
+
+    // Pseudo-project for merging
+    add('android')
+}
+
+if( !Boolean.getBoolean('no_server') ) {
+    parts += 'server'
+
+    // Pseudo-project for merging
+    add('server')
+}
+
+parts.each { target ->
     // Common projects
     add("platform-$target")
 
@@ -16,10 +35,3 @@ def add(String projectName) {
         add("plugin-$plugin-$target")
     }
 }
-
-// Android dashboard, which doesn't have a server counterpart
-add('plugin-dashboard-android')
-
-// Pseudo-projects for merging
-add('server')
-add('android')
