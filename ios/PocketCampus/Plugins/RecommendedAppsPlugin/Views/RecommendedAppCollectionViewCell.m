@@ -124,7 +124,11 @@ static NSString* kAppImageURLKey = @"AppImageURL";
             [welf error];
             return;
         }
-        id resultsArray = [responseObject objectForKey:@"results"];
+        NSArray* resultsArray = [responseObject objectForKey:@"results"];
+        if (resultsArray.count == 0) {
+            [welf error];
+            return;
+        }
         id results = resultsArray[0];
         
         NSString* appName =  [results valueForKey:@"trackName"];
