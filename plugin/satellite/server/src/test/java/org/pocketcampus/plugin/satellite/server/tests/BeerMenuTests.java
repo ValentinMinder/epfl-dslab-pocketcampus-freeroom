@@ -1,8 +1,8 @@
 package org.pocketcampus.plugin.satellite.server.tests;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.pocketcampus.platform.server.HttpClient;
+import org.pocketcampus.platform.shared.utils.StringUtils;
 import org.pocketcampus.plugin.satellite.server.BeerMenuImpl;
 import org.pocketcampus.plugin.satellite.shared.SatelliteBeer;
 import org.pocketcampus.plugin.satellite.shared.SatelliteBeerContainer;
@@ -77,13 +77,8 @@ public final class BeerMenuTests {
 		}
 
 		private static String getFileContents(String name) {
-			try {
-				InputStream stream = new BeerMenuTests().getClass().getResourceAsStream(name);
-				return IOUtils.toString(stream, "UTF-8");
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
+			InputStream stream = BeerMenuTests.class.getResourceAsStream(name);
+			return StringUtils.fromStream(stream, "UTF-8");
 		}
 	}
 }
