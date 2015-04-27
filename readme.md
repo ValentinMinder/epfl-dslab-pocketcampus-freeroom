@@ -32,7 +32,7 @@ To build the entire server, use `gradlew server:build`.
 To make a JAR with the server, use `gradlew server:shadowJar`, which creates a JAR in build/libs/.  
 To merge all Android projects, use `gradlew android:merge`, which creates a project in android/ that you can then build like a normal Android project, e.g. `gradlew android:assembleDebug` and `gradlew android:assembleRelease` to assemble debug and release versions respectively.
 
-The iOS client and Windows Phone clients are built with Xcode and Visual Studio respectively.
+The iOS and Windows Phone clients are built with Xcode and Visual Studio respectively.
 
 ## Other tasks
 
