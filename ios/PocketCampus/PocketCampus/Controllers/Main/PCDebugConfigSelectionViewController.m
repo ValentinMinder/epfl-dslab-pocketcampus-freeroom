@@ -64,16 +64,20 @@ static NSInteger const kConfigsListSection = 1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+#ifdef DEBUG
     self.configPaths = [PCConfig bundledDebugConfigsPaths];
+#endif
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+#ifdef DEBUG
     switch (indexPath.section) {
         case kConfigsListSection:
         {
             if (indexPath.row == 0) {
+
                 [PCConfig applyAndDieConfigWithPath:nil];
             } else {
                 NSString* configPath = self.configPaths[indexPath.row-1];
@@ -85,6 +89,7 @@ static NSInteger const kConfigsListSection = 1;
             
             break;
     }
+#endif
 }
 
 #pragma mark - UITableViewDataSource
