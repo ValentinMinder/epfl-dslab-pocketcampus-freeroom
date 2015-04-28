@@ -58,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "772"
-            endingLineNumber = "772"
-            landmarkName = "-preferredStatusBarUpdateAnimation"
-            landmarkType = "5">
+            startingLineNumber = "787"
+            endingLineNumber = "787"
+            landmarkName = "@implementation ZUUIRevealController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "788"
-            endingLineNumber = "788"
+            startingLineNumber = "803"
+            endingLineNumber = "803"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -858,12 +858,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "764"
-            endingLineNumber = "764"
-            landmarkName = "-preferredStatusBarStyle"
+            startingLineNumber = "779"
+            endingLineNumber = "779"
+            landmarkName = "-setCurrentFrontViewPosition:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -5699,12 +5699,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "815"
-            endingLineNumber = "815"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "830"
+            endingLineNumber = "830"
+            landmarkName = "-supportedInterfaceOrientations"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -6594,43 +6594,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440946624.184726"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "685"
-            endingLineNumber = "685"
-            landmarkName = "-shouldAutomaticallyForwardAppearanceMethods"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948212.101224"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "691"
-            endingLineNumber = "691"
-            landmarkName = "-viewWillAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948213.473543"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "702"
-            endingLineNumber = "702"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
             landmarkName = "-viewDidAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6642,11 +6610,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948215.96056"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "713"
-            endingLineNumber = "713"
+            startingLineNumber = "706"
+            endingLineNumber = "706"
+            landmarkName = "-viewDidAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "717"
+            endingLineNumber = "717"
             landmarkName = "-viewWillDisappear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6658,12 +6642,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948217.028546"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "724"
-            endingLineNumber = "724"
+            startingLineNumber = "728"
+            endingLineNumber = "728"
             landmarkName = "-viewDidDisappear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "739"
+            endingLineNumber = "739"
+            landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -7304,6 +7304,38 @@
             startingLineNumber = "62"
             endingLineNumber = "62"
             landmarkName = "+isIdiomPad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "798"
+            endingLineNumber = "798"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451909626.747986"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "527"
+            endingLineNumber = "527"
+            landmarkName = "-_swapCurrentFrontViewControllerWith:animated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

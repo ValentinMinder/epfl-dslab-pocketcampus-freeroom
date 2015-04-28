@@ -70,4 +70,14 @@
     return [super preferredStatusBarUpdateAnimation];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    if ([PCUtils isOSVersionGreaterThanOrEqualTo:8.0] && self.navigationBar.frame.origin.y != self.topLayoutGuide.length) {
+        // Forces navigation to relayout (calling setNeedsLayout does not work)
+        // fixing a bug where navbar would sometime not have the correct height.
+        self.navigationBarHidden = !self.navigationBarHidden;
+        self.navigationBarHidden = !self.navigationBarHidden;
+    }
+}
+
 @end

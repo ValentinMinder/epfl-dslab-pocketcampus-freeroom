@@ -1091,13 +1091,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "737"
-            endingLineNumber = "737"
-            landmarkName = "-willRotateToInterfaceOrientation:duration:"
-            landmarkType = "5">
+            startingLineNumber = "752"
+            endingLineNumber = "752"
+            landmarkName = "@implementation ZUUIRevealController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1481,12 +1481,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "744"
-            endingLineNumber = "744"
-            landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1506,12 +1506,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "758"
-            endingLineNumber = "758"
-            landmarkName = "-prefersStatusBarHidden"
+            startingLineNumber = "773"
+            endingLineNumber = "773"
+            landmarkName = "-preferredStatusBarUpdateAnimation"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1531,12 +1531,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "745"
-            endingLineNumber = "745"
-            landmarkName = "-didRotateFromInterfaceOrientation:"
+            startingLineNumber = "760"
+            endingLineNumber = "760"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1556,12 +1556,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
-            landmarkName = "-didRotateFromInterfaceOrientation:"
+            startingLineNumber = "761"
+            endingLineNumber = "761"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -2869,7 +2869,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             scope = "0"
