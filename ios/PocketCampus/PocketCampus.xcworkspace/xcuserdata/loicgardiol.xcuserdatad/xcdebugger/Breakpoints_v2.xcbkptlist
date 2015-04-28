@@ -748,11 +748,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "443098078.046441"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "+OSVersion"
             landmarkType = "5">
             <Locations>
@@ -3221,11 +3221,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "+hasDeviceInternetConnection"
             landmarkType = "5">
          </BreakpointContent>
@@ -3637,11 +3637,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "+parametersDictionaryForURLString:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3717,11 +3717,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "+fileOrFolderSizeWithPath:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4449,11 +4449,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
             landmarkName = "+iconForFileExtension:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4465,11 +4465,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "291"
-            endingLineNumber = "291"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
             landmarkName = "+iconForFileExtension:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7288,6 +7288,22 @@
             startingLineNumber = "74"
             endingLineNumber = "74"
             landmarkName = "-openBrowserForProfileWithUsername:email:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Misc/PCUtils.m"
+            timestampString = "451906449.602162"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "+isIdiomPad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
