@@ -313,7 +313,6 @@ static NSString* const kHeaderFoorViewIdentifier = @"default";
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     if (section == kPrinterInfoSectionIndex && self.documentName) {
         UITableViewHeaderFooterView* header = (UITableViewHeaderFooterView*)view;
-        
         NSString* fullString = [NSString stringWithFormat:@"%@:\n%@", NSLocalizedStringFromTable(@"SelectedDocument", @"CloudPrintPlugin", nil), self.documentName];
         NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
         [attrString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0]} range:NSMakeRange(0, fullString.length)];
@@ -322,7 +321,6 @@ static NSString* const kHeaderFoorViewIdentifier = @"default";
         header.textLabel.numberOfLines = 2;
         header.textLabel.adjustsFontSizeToFitWidth = YES;
         header.textLabel.minimumScaleFactor = 0.85;
-        header.textLabel.textAlignment = NSTextAlignmentCenter;
         header.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
 }
