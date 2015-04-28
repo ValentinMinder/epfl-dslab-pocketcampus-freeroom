@@ -33,6 +33,7 @@
 "Printing" = "Printing";
 "PrintPreview" = "Print Preview";
 "OpenPocketCampusAndLoginFirst" = "To print, open PocketCampus first and login with your Gaspar account.";
+"SelectedDocument" = "Selected document";
 "POOL1Printers" = "POOL1 printers";
 "OpenPCandShowMyPrintLayerExplanations" = "Map cannot be displayed from here. Open PocketCampus > Map, then select the \"Printers\" layer.";
 "DidYouKnowExtensionTitle" = "Print from other apps";

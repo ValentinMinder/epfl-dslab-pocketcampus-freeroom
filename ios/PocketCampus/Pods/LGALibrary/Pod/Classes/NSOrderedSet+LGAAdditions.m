@@ -24,6 +24,24 @@
 
 @implementation NSOrderedSet (LGAAdditions)
 
+- (NSMutableOrderedSet*)lga_mutableOrderedSetWithMinusOrderedSet:(NSOrderedSet*)orderedSet; {
+    if (![orderedSet isKindOfClass:[NSOrderedSet class]]) {
+        [NSException raise:@"Illegal argument" format:@"orderedSet cannot be nil and must be of class NSOrderedSet"];
+    }
+    NSMutableOrderedSet* mSelf = [self mutableCopy];
+    [mSelf minusOrderedSet:orderedSet];
+    return mSelf;
+}
+
+- (NSMutableOrderedSet*)lga_mutableOrderedSetWithMinusSet:(NSSet*)set {
+    if (![set isKindOfClass:[NSSet class]]) {
+        [NSException raise:@"Illegal argument" format:@"set cannot be nil and must be of class NSSet"];
+    }
+    NSMutableOrderedSet* mSelf = [self mutableCopy];
+    [mSelf minusSet:set];
+    return mSelf;
+}
+
 - (NSUInteger)lga_transitiveHash {
     static NSUInteger const kPrime = 31;
     static SEL transHashSelector = nil;

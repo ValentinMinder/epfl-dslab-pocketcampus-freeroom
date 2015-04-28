@@ -19,7 +19,6 @@
 		27B74CFC19A210D6006B2F17 /* RecommendedAppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B74CFB19A210D6006B2F17 /* RecommendedAppsListViewController.m */; };
 		27C1161019A2588E00FEF411 /* recommendedapps.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C1160F19A2588E00FEF411 /* recommendedapps.m */; };
 		2C8A4E0281E86D5354CC3585 /* Alumni.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE440E1B8C0863B7672C4B4 /* Alumni.png */; };
-		2D524B61AE18E8A19E65FCA3 /* Alumni.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE440E1B8C0863B7672C4B4 /* Alumni.png */; };
 		320037511811843500901F6A /* CheckmarkRoundedSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200374F1811843500901F6A /* CheckmarkRoundedSquare.png */; };
 		320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 320037501811843500901F6A /* CheckmarkRoundedSquare@2x.png */; };
 		3200375518118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3200375318118B9A00901F6A /* CheckmarkRoundedSquareEmpty.png */; };
@@ -95,6 +94,9 @@
 		323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C416BDB5300004D5AD /* AppLogoCellImage.png */; };
 		323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */; };
 		323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
+		3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */; };
+		3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */; };
+		3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D21AE5486600F195EF /* iOSMail_40@.png */; };
 		323CAC5919324F4800941BB1 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAC5819324F4800941BB1 /* AuthenticationViewController.m */; };
 		323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
@@ -229,7 +231,6 @@
 		3281AB8416E2254600D8FAD1 /* EventItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3281AB8316E2254600D8FAD1 /* EventItemView.xib */; };
 		3282C284181179E2002A4FAE /* EventsLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3282C283181179E2002A4FAE /* EventsLarge@2x.png */; };
 		3283C4CB1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
-		3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4CD1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4CF1A1CE80E00B7ED55 /* AlumniPlugin.strings */; };
 		3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3283C4D21A1D012F00B7ED55 /* CloudPrintPreviewViewController.m */; };
 		3283C4D51A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3283C4D31A1D012F00B7ED55 /* CloudPrintPreviewViewController.xib */; };
@@ -469,6 +470,10 @@
 		32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32136F46193FBD20002905A9 /* CamiproWidget-Info.plist */; };
 		32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
 		32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
+		32CF2B1B1AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */; };
+		32CF2B221AE164E100B3B2AA /* iOSMail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */; };
+		32CF2B241AE1653B00B3B2AA /* iOSMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B231AE1653B00B3B2AA /* iOSMail.png */; };
+		32CF2B251AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
 		32CFECEF151CCB6800D8CBA6 /* PCPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECEE151CCB6800D8CBA6 /* PCPersistenceManager.m */; };
@@ -507,6 +512,10 @@
 		32DD525619B4DEB600B5B241 /* CloudPrintPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32DD525819B4DEB600B5B241 /* CloudPrintPlugin.strings */; };
 		32DE5B2117F1F8D900E03423 /* DirectoryLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */; };
 		32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */; };
+		32DE5B341AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */; };
+		32DE5B361AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
+		32DE5B371AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
+		32DE5B381AC1ACC4005499FD /* DebugConfigs in Resources */ = {isa = PBXBuildFile; fileRef = 32DE5B351AC1ACC4005499FD /* DebugConfigs */; };
 		32DE61F7150A1D2A00A4AB6E /* FoodLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */; };
 		32DFDB0F190902AE008C61E2 /* NewsModelAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */; };
 		32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E0E313194B1FDD003251CC /* FilterBarButton.png */; };
@@ -601,9 +610,6 @@
 		32FFA79A186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA798186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape.png */; };
 		32FFA79B186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32FFA799186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png */; };
 		38AE40F7B2AF51B65874011A /* Events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0FF44E59AC0FAF424B57744 /* Events@2x.png */; };
-		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3D60403F97790317C691C8A4 /* pushnotif.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4F4BE09D7B6CB26B98B895 /* pushnotif.m */; };
 		435A47269DBBFFEEE4BC0920 /* PushNotifController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F427C8F702CC10F288D8C /* PushNotifController.m */; };
 		4C3C4FEEB609B30BEFA34726 /* events.m in Sources */ = {isa = PBXBuildFile; fileRef = 62FB4BFDBB53089EB412B0C1 /* events.m */; };
@@ -615,7 +621,6 @@
 		8193447294E5D065581CBAAD /* IsAcademia.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EDE488982F3A13DD8BF17AF /* IsAcademia.png */; };
 		8D964F08A876C676D9337E69 /* Events.png in Resources */ = {isa = PBXBuildFile; fileRef = C9574A2CA3E21EEE6B620DE7 /* Events.png */; };
 		9017DC7828C541BFBF7E785E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AF5068222245668954256E /* libPods.a */; };
-		96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2443B6A4B62114CDE2BEB2 /* Alumni@2x.png */; };
 		A4B74DCFBECCA89CA9FE691C /* AlumniController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5064295A6C6E3D7D55A7FE6 /* AlumniController.m */; };
 		C5894949AFC59FDB4346CF53 /* IsAcademia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51224CC590D66476EC4D0CFB /* IsAcademia@2x.png */; };
 		D4224276930AC66CEAA3E5A9 /* EventsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AE43D19400EAA046F5166E /* EventsService.m */; };
@@ -797,6 +802,10 @@
 		323676C416BDB5300004D5AD /* AppLogoCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogoCellImage.png; sourceTree = "<group>"; };
 		323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FacebookLikeCellImage.png; sourceTree = "<group>"; };
 		323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@2x.png"; sourceTree = "<group>"; };
+		3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@2x.png"; sourceTree = "<group>"; };
+		3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@3x.png"; sourceTree = "<group>"; };
+		3236E5D21AE5486600F195EF /* iOSMail_40@.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@.png"; sourceTree = "<group>"; };
+		3236E5D61AE5585D00F195EF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		323CAC5719324F4800941BB1 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		323CAC5819324F4800941BB1 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		324151C715373A1700CCFB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MapPlugin.strings; sourceTree = "<group>"; };
@@ -1252,6 +1261,11 @@
 		32CCB50E155567CB00220282 /* News.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = News.png; sourceTree = "<group>"; };
 		32CCB50F155567CB00220282 /* News@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "News@2x.png"; sourceTree = "<group>"; };
 		32CE952419DDDF950071F987 /* CamiproWidget.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CamiproWidget.storyboard; sourceTree = "<group>"; };
+		32CF2B181AE15AC000B3B2AA /* PCEPFLMailProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCEPFLMailProfileViewController.h; sourceTree = "<group>"; };
+		32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCEPFLMailProfileViewController.m; sourceTree = "<group>"; };
+		32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail@2x.png"; sourceTree = "<group>"; };
+		32CF2B231AE1653B00B3B2AA /* iOSMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSMail.png; sourceTree = "<group>"; };
+		32CF2B281AE1753100B3B2AA /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -1278,6 +1292,9 @@
 		32DD525919B4DEB700B5B241 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CloudPrintPlugin.strings; sourceTree = "<group>"; };
 		32DE5B2017F1F8D900E03423 /* DirectoryLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DirectoryLarge.png; sourceTree = "<group>"; };
 		32DE5B2417F1FB6800E03423 /* DirectoryPersonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryPersonView.xib; sourceTree = "<group>"; };
+		32DE5B321AC1A8D4005499FD /* PCDebugConfigSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCDebugConfigSelectionViewController.h; sourceTree = "<group>"; };
+		32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCDebugConfigSelectionViewController.m; sourceTree = "<group>"; };
+		32DE5B351AC1ACC4005499FD /* DebugConfigs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DebugConfigs; sourceTree = "<group>"; };
 		32DE61F6150A1D2A00A4AB6E /* FoodLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FoodLarge.png; sourceTree = "<group>"; };
 		32DFDB0D190902AE008C61E2 /* NewsModelAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModelAdditions.h; sourceTree = "<group>"; };
 		32DFDB0E190902AE008C61E2 /* NewsModelAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsModelAdditions.m; sourceTree = "<group>"; };
@@ -1683,6 +1700,7 @@
 				3288699814FE5AF300CC97DB /* Model */,
 				328869A714FE5AF300CC97DB /* Views */,
 				3219EF5714FCDE4900A271CD /* Supporting Files */,
+				32DE5B351AC1ACC4005499FD /* DebugConfigs */,
 			);
 			path = PocketCampus;
 			sourceTree = "<group>";
@@ -1788,6 +1806,11 @@
 				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
 				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
 				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
+				32CF2B231AE1653B00B3B2AA /* iOSMail.png */,
+				32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */,
+				3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */,
+				3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */,
+				3236E5D21AE5486600F195EF /* iOSMail_40@.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				32A37A611A6830E80079D208 /* LinkIcon@3x.png */,
@@ -2139,6 +2162,11 @@
 				3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */,
 				3245DF2E18881B5F0072E086 /* PCUsageViewController.h */,
 				3245DF2F18881B5F0072E086 /* PCUsageViewController.m */,
+				32DE5B321AC1A8D4005499FD /* PCDebugConfigSelectionViewController.h */,
+				32DE5B331AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m */,
+				32CF2B181AE15AC000B3B2AA /* PCEPFLMailProfileViewController.h */,
+				32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */,
+				32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -3226,7 +3254,7 @@
 		3219EF4314FCDE4800A271CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = PocketCampus.Org;
 				TargetAttributes = {
 					32136F32193FBCFF002905A9 = {
@@ -3297,9 +3325,7 @@
 				32AF954919B39F91008CB161 /* Cross.png in Resources */,
 				32975CF119A34EB600146390 /* InfoPlist.strings in Resources */,
 				326FE24019A64DDE001A5056 /* PocketCampus.strings in Resources */,
-				2D524B61AE18E8A19E65FCA3 /* Alumni.png in Resources */,
-				96734DDF839CB17F066D38B0 /* Alumni@2x.png in Resources */,
-				3283C4CC1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */,
+				32DE5B371AC1ACC4005499FD /* DebugConfigs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3377,6 +3403,7 @@
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
 				32A37A3E1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png in Resources */,
 				32FBAD201A09056100D5C515 /* ClockBarButtonSelected.png in Resources */,
+				32CF2B241AE1653B00B3B2AA /* iOSMail.png in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
@@ -3406,6 +3433,7 @@
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
 				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
 				32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */,
+				3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */,
@@ -3434,6 +3462,7 @@
 				32A37A541A682F390079D208 /* FavoriteGlowNavBarButton@3x.png in Resources */,
 				32B3F3941621956C007A75C7 /* MainMenuView.xib in Resources */,
 				32A37A261A68203B0079D208 /* FoodSmileyHappy@3x.png in Resources */,
+				32DE5B361AC1ACC4005499FD /* DebugConfigs in Resources */,
 				326F5A8219BDA2D0000693A2 /* CloudPrintStatusView.xib in Resources */,
 				32A37A481A682C540079D208 /* Download@3x.png in Resources */,
 				32AA25A91A0A9F1A00146D68 /* MealType_POULTRY.png in Resources */,
@@ -3475,6 +3504,7 @@
 				320037521811843500901F6A /* CheckmarkRoundedSquare@2x.png in Resources */,
 				32ADC7191659AAEB0039F6A6 /* Download.png in Resources */,
 				32ADC71A1659AAEB0039F6A6 /* Download@2x.png in Resources */,
+				32CF2B251AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib in Resources */,
 				32A37A661A6831380079D208 /* LocationArrow@3x.png in Resources */,
 				32763231166511B700C33DF9 /* MapView-pad.xib in Resources */,
 				327BF2371666043100C67937 /* PushNotifPlugin.strings in Resources */,
@@ -3507,6 +3537,7 @@
 				32A37A721A6833060079D208 /* MasterVisible@3x.png in Resources */,
 				32A37A441A682B310079D208 /* ClockCell@3x.png in Resources */,
 				32A37A021A680B620079D208 /* Food@3x.png in Resources */,
+				3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */,
 				32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */,
 				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
@@ -3577,6 +3608,7 @@
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
 				32A37A1D1A681E680079D208 /* ArrowRightBarButton.png in Resources */,
 				32A37A461A682B590079D208 /* Cross@3x.png in Resources */,
+				32CF2B221AE164E100B3B2AA /* iOSMail@2x.png in Resources */,
 				32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */,
 				32A379FE1A680A7C0079D208 /* Events@3x.png in Resources */,
 				32A37A421A682ADB0079D208 /* ClockBarButtonSelected@3x.png in Resources */,
@@ -3594,6 +3626,7 @@
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
+				3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32A37A6E1A6832960079D208 /* MainMenuNavbar@3x.png in Resources */,
@@ -3622,7 +3655,6 @@
 				8193447294E5D065581CBAAD /* IsAcademia.png in Resources */,
 				32D29719185B64FE006530B7 /* IsAcademiaPlugin.strings in Resources */,
 				32AA259C1A0A9F1A00146D68 /* MealType_GREEN_FORK@3x.png in Resources */,
-				328501B419E5768F0049356E /* MapLayersBarButton.png in Resources */,
 				2C8A4E0281E86D5354CC3585 /* Alumni.png in Resources */,
 				57FD42B68FA2EB290F49099E /* Alumni@2x.png in Resources */,
 				3283C4CB1A1CE80E00B7ED55 /* AlumniPlugin.strings in Resources */,
@@ -3639,6 +3671,7 @@
 				3207A38719ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
 				32F9619D19C63227006A4C46 /* InfoPlist.strings in Resources */,
 				32F9619C19C631ED006A4C46 /* CloudPrintPlugin.strings in Resources */,
+				32DE5B381AC1ACC4005499FD /* DebugConfigs in Resources */,
 				325F1FC819FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32F9619B19C631E1006A4C46 /* PocketCampus.strings in Resources */,
 				325F1FC619FA9DDA0019CFCB /* CloudPrintExtensionInfoCell.xib in Resources */,
@@ -3829,6 +3862,7 @@
 				32AF954519B39929008CB161 /* CamiproInfoWidgetCell.m in Sources */,
 				32442FEB151CF87100685D10 /* TransportNextDeparturesViewController.m in Sources */,
 				322FB01817EC938E00D1A466 /* PCGAITracker.m in Sources */,
+				32CF2B1B1AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m in Sources */,
 				32150DE0197E710E00CCF2AB /* MoodleUrlViewController.m in Sources */,
 				3278F6CA184257AF007CB382 /* TransportDepartureSelectionViewController.m in Sources */,
 				324A5998151DFDD200977F33 /* TransportAddStationViewController.m in Sources */,
@@ -3886,6 +3920,7 @@
 				325C47AE1621E91A006752B4 /* MainController.m in Sources */,
 				324ADABF191A3A36000737E7 /* PCTileOverlay.m in Sources */,
 				32875E5F194CF2EF0071CDF8 /* PCWebViewController.m in Sources */,
+				32DE5B341AC1A8D4005499FD /* PCDebugConfigSelectionViewController.m in Sources */,
 				32CBF0631634812C00FD92E5 /* PCSplashViewController.m in Sources */,
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
 				32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */,
@@ -4202,6 +4237,15 @@
 			name = NewsPlugin.strings;
 			sourceTree = "<group>";
 		};
+		32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32CF2B281AE1753100B3B2AA /* fr */,
+				3236E5D61AE5585D00F195EF /* en */,
+			);
+			name = PCEPFLMailProfileViewController.xib;
+			sourceTree = "<group>";
+		};
 		32D2971C185B64FE006530B7 /* IsAcademiaPlugin.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4342,6 +4386,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -4385,6 +4430,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

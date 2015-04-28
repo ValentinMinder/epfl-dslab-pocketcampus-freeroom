@@ -82,8 +82,10 @@ static CGFloat kRowHeight;
 #pragma mark - Inits
 
 + (void)initialize {
-    kCellTextLabelTextStyle = UIFontTextStyleFootnote;
-    kCellDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+    if (self == [DirectoryPersonViewController self]) {
+        kCellTextLabelTextStyle = UIFontTextStyleFootnote;
+        kCellDetailTextLabelTextStyle = UIFontTextStyleFootnote;
+    }
 }
 
 - (id)init {

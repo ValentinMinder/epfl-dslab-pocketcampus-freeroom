@@ -125,4 +125,26 @@ extern NSString* const kPCConfigDidFinishLoadingNotification;
 
 + (NSUserDefaults*)defaults;
 
+
+/**
+ * DEBUG
+ */
+
+#ifdef DEBUG
+
+/**
+ * @return array of config file paths that can be pass to
+ */
++ (NSArray*)bundledDebugConfigsPaths;
+
+/**
+ * Prepares config persistence so that at next app lauch the config
+ * described by configPath is loaded.
+ * WARNING: the app is killed after preparing for the new config.
+ * @param configPath the path the config. Can be nil if you want NO custom config.
+ */
++ (void)applyAndDieConfigWithPath:(NSString*)configPath;
+
+#endif
+
 @end

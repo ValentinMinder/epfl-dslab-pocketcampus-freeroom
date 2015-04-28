@@ -33,6 +33,7 @@
 "Printing" = "Impression";
 "PrintPreview" = "Aperçu avant impression";
 "OpenPocketCampusAndLoginFirst" = "Pour pouvoir imprimer, ouvrez PocketCampus une première fois et connectez-vous avec votre compte Gaspar.";
+"SelectedDocument" = "Document sélectionné";
 "POOL1Printers" = "Imprimantes POOL1";
 "OpenPCandShowMyPrintLayerExplanations" = "Le plan ne peut pas être affiché depuis ici. Ouvrez PocketCampus > Plan, puis affichez le layer «Imprimantes».";
 "DidYouKnowExtensionTitle" = "Impression depuis d'autres apps";

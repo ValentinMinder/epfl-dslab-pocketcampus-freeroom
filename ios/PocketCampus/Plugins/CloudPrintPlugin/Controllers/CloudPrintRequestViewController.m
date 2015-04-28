@@ -70,6 +70,8 @@ static NSInteger const kColorRowIndex = 0;
 
 static NSInteger const kPageToTheEndValue = 10000;
 
+static NSString* const kHeaderFoorViewIdentifier = @"default";
+
 @interface CloudPrintRequestViewController ()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) CloudPrintExtensionInfoCell* extensionInfoCell;
@@ -111,6 +113,8 @@ static NSInteger const kPageToTheEndValue = 10000;
     UIBarButtonItem* flexibleItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem* flexibleItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     self.toolbarItems = @[flexibleItem1, previewButtonItem, flexibleItem2];
+    
+    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kHeaderFoorViewIdentifier];
     
     /*PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:self.tableView.style];
     self.tableView = tableViewAdditions;
@@ -291,6 +295,39 @@ static NSInteger const kPageToTheEndValue = 10000;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == kPrinterInfoSectionIndex && self.documentName) {
+        return [tableView dequeueReusableHeaderFooterViewWithIdentifier:kHeaderFoorViewIdentifier];
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == kPrinterInfoSectionIndex && self.documentName) {
+        return 52.0;
+    }
+    return 1.0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if (section == kPrinterInfoSectionIndex && self.documentName) {
+        UITableViewHeaderFooterView* header = (UITableViewHeaderFooterView*)view;
+        
+        NSString* fullString = [NSString stringWithFormat:@"%@:\n%@", NSLocalizedStringFromTable(@"SelectedDocument", @"CloudPrintPlugin", nil), self.documentName];
+        NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+        [attrString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0]} range:NSMakeRange(0, fullString.length)];
+        [attrString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:15.0] range:[fullString rangeOfString:self.documentName]];
+        header.textLabel.attributedText = attrString;
+        header.textLabel.numberOfLines = 2;
+        header.textLabel.adjustsFontSizeToFitWidth = YES;
+        header.textLabel.minimumScaleFactor = 0.85;
+        header.textLabel.textAlignment = NSTextAlignmentCenter;
+        header.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    }
+}
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -485,12 +522,12 @@ static NSInteger const kPageToTheEndValue = 10000;
 
 #pragma mark - UITableViewDataSource
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+/*- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == kCopiesAndRangeSectionIndex && self.documentName) {
         return self.documentName;
     }
     return nil;
-}
+}*/
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch (section) {

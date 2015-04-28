@@ -26,7 +26,6 @@
  */
 
 
-
 #import "PCService.h"
 
 #import "authentication.h"
@@ -39,6 +38,12 @@ typedef enum {
 
 extern NSString* const kAuthenticationTequilaCookieName;
 extern NSString* const kAuthenticationLogoutNotification;
+
+extern NSString* const kAuthenticationEmailUserAttributeName;
+extern NSString* const kAuthenticationGasparUserAttributeName;
+extern NSString* const kAuthenticationSciperUserAttributeName;
+extern NSString* const kAuthenticationFirstnameUserAttributeName;
+extern NSString* const kAuthenticationLastnameUserAttributeName;
 
 #pragma mark - AuthenticationServiceDelegate definition
 
@@ -60,6 +65,9 @@ extern NSString* const kAuthenticationLogoutNotification;
 
 - (void)getOAuth2TokensFromCodeForRequest:(AuthSessionRequest*)request didReturn:(AuthSessionResponse*)response;
 - (void)getOAuth2TokensFromCodeFailedForRequest:(AuthSessionRequest*)request;
+- (void)getUserAttributesForRequest:(UserAttributesRequest*)request didReturn:(UserAttributesResponse*)response;
+- (void)getUserAttributesFailedForRequest:(UserAttributesRequest*)request;
+
 
 - (void)getAuthTequilaTokenDidReturn:(AuthTokenResponse*)response __attribute__((deprecated));
 - (void)getAuthTequilaTokenFailed __attribute__((deprecated));
@@ -100,6 +108,7 @@ extern NSString* const kAuthenticationLogoutNotification;
  */
 
 - (void)getOAuth2TokensFromCodeWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
+- (void)getUserAttributesWithRequest:(UserAttributesRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate;
 
 - (void)getAuthTequilaTokenWithDelegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));
 - (void)getAuthSessionWithRequest:(AuthSessionRequest*)request delegate:(id<AuthenticationServiceDelegate>)delegate __attribute__((deprecated));

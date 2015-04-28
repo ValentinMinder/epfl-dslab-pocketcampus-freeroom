@@ -58,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "772"
-            endingLineNumber = "772"
-            landmarkName = "-preferredStatusBarUpdateAnimation"
-            landmarkType = "5">
+            startingLineNumber = "787"
+            endingLineNumber = "787"
+            landmarkName = "@implementation ZUUIRevealController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "788"
-            endingLineNumber = "788"
+            startingLineNumber = "803"
+            endingLineNumber = "803"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -446,11 +446,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718119.358019"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "695"
-            endingLineNumber = "695"
+            startingLineNumber = "682"
+            endingLineNumber = "682"
             landmarkName = "-layersListPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -462,11 +462,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718119.358019"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647"
+            startingLineNumber = "634"
+            endingLineNumber = "634"
             landmarkName = "-resultsListPressed"
             landmarkType = "5">
             <Locations>
@@ -476,6 +476,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[MapViewController floorUpPressed]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/ios/PocketCampus/Plugins/MapPlugin/Controllers/MapViewController.m"
                   timestampString = "403114864.573069"
                   startingColumnNumber = "9223372036854775807"
@@ -490,6 +491,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[MapViewController floorUpPressed]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/ios/PocketCampus/Plugins/MapPlugin/Controllers/MapViewController.m"
                   timestampString = "403114864.573451"
                   startingColumnNumber = "9223372036854775807"
@@ -522,11 +524,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "786"
-            endingLineNumber = "786"
+            startingLineNumber = "773"
+            endingLineNumber = "773"
             landmarkName = "-searchBarResultsListButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
@@ -538,11 +540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "957"
-            endingLineNumber = "957"
+            startingLineNumber = "944"
+            endingLineNumber = "944"
             landmarkName = "-mapView:didChangeUserTrackingMode:animated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -570,11 +572,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1075"
-            endingLineNumber = "1075"
+            startingLineNumber = "1062"
+            endingLineNumber = "1062"
             landmarkName = "-annotationAccessoryTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -618,11 +620,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "830"
-            endingLineNumber = "830"
+            startingLineNumber = "817"
+            endingLineNumber = "817"
             landmarkName = "@implementation MapViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -634,11 +636,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436198583.610362"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "600"
-            endingLineNumber = "600"
+            startingLineNumber = "587"
+            endingLineNumber = "587"
             landmarkName = "-manageRecentSearchesControllerVisibilityAnimated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -650,11 +652,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "753"
-            endingLineNumber = "753"
+            startingLineNumber = "740"
+            endingLineNumber = "740"
             landmarkName = "-updateControls"
             landmarkType = "5">
          </BreakpointContent>
@@ -666,11 +668,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "736"
-            endingLineNumber = "736"
+            startingLineNumber = "723"
+            endingLineNumber = "723"
             landmarkName = "-floorUpPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -682,11 +684,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1032"
-            endingLineNumber = "1032"
+            startingLineNumber = "1019"
+            endingLineNumber = "1019"
             landmarkName = "-serviceConnectionToServerFailed"
             landmarkType = "5">
          </BreakpointContent>
@@ -730,11 +732,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436198583.610362"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "-setMapControlsState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -746,11 +748,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "443098078.046441"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "+OSVersion"
             landmarkType = "5">
             <Locations>
@@ -760,6 +762,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "+[PCUtils edgeInsetsForViewController:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/PocketCampus/Misc/PCUtils.m"
                   timestampString = "403720088.009658"
                   startingColumnNumber = "9223372036854775807"
@@ -774,6 +777,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "+[PCUtils edgeInsetsForViewController:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/PocketCampus/Misc/PCUtils.m"
                   timestampString = "403720088.010038"
                   startingColumnNumber = "9223372036854775807"
@@ -820,6 +824,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIPopoverController(Additions) togglePopoverFromBarButtonItem:permittedArrowDirections:othersToDismiss:animated:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/PocketCampus/Views/Common/UIPopoverController+Additions.m"
                   timestampString = "404583615.205921"
                   startingColumnNumber = "9223372036854775807"
@@ -834,6 +839,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIPopoverController(Additions) togglePopoverFromBarButtonItem:permittedArrowDirections:othersToDismiss:animated:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus-private/ios/PocketCampus/PocketCampus/Views/Common/UIPopoverController+Additions.m"
                   timestampString = "404583615.206103"
                   startingColumnNumber = "9223372036854775807"
@@ -852,12 +858,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "764"
-            endingLineNumber = "764"
-            landmarkName = "-preferredStatusBarStyle"
+            startingLineNumber = "779"
+            endingLineNumber = "779"
+            landmarkName = "-setCurrentFrontViewPosition:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -941,11 +947,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436198583.610362"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "511"
-            endingLineNumber = "511"
+            startingLineNumber = "498"
+            endingLineNumber = "498"
             landmarkName = "-setMapControlsState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1402,11 +1408,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444753138.401488"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "-authenticateToken:withTequilaCookie:delegate:"
             landmarkType = "5">
             <Locations>
@@ -1416,6 +1422,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__70-[AuthenticationService authenticateToken:withTequilaCookie:delegate:]_block_invoke192"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
                   timestampString = "407763008.610546"
                   startingColumnNumber = "9223372036854775807"
@@ -1430,6 +1437,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__70-[AuthenticationService authenticateToken:withTequilaCookie:delegate:]_block_invoke192"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
                   timestampString = "407763008.610839"
                   startingColumnNumber = "9223372036854775807"
@@ -1448,11 +1456,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444752951.651994"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "-loginToTequilaWithUser:password:delegate:"
             landmarkType = "5">
             <Actions>
@@ -1472,11 +1480,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444752951.651994"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "-loginToTequilaWithUser:password:delegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1488,11 +1496,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444753138.401488"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
             landmarkName = "-authenticateToken:withTequilaCookie:delegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1566,6 +1574,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__62-[MoodleService downloadMoodleResource:progressView:delegate:]_block_invoke330"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Model/MoodleService.m"
                   timestampString = "407942157.447761"
                   startingColumnNumber = "9223372036854775807"
@@ -1580,6 +1589,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__62-[MoodleService downloadMoodleResource:progressView:delegate:]_block_invoke330"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Model/MoodleService.m"
                   timestampString = "407942157.448061"
                   startingColumnNumber = "9223372036854775807"
@@ -1772,6 +1782,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[ServiceRequest main]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/ServiceRequest.m"
                   timestampString = "409252259.071888"
                   startingColumnNumber = "9223372036854775807"
@@ -1786,6 +1797,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[ServiceRequest main]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/ServiceRequest.m"
                   timestampString = "409252259.072063"
                   startingColumnNumber = "9223372036854775807"
@@ -1898,6 +1910,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[NearestUserTransportStationRequest main]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/TransportPlugin/Model/TransportService.m"
                   timestampString = "408567505.891657"
                   startingColumnNumber = "9223372036854775807"
@@ -1912,6 +1925,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__copy_helper_block_"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/TransportPlugin/Model/TransportService.m"
                   timestampString = "408567505.891907"
                   startingColumnNumber = "9223372036854775807"
@@ -1926,6 +1940,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__destroy_helper_block_"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/TransportPlugin/Model/TransportService.m"
                   timestampString = "408567505.892303"
                   startingColumnNumber = "9223372036854775807"
@@ -2238,6 +2253,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "+[PCTableViewCellAdditions preferredHeightForStyle:textLabelTextStyle:detailTextLabelTextStyle:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Views/Common/PCTableViewCellAdditions.m"
                   timestampString = "410548985.204816"
                   startingColumnNumber = "9223372036854775807"
@@ -2252,6 +2268,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "+[PCTableViewCellAdditions preferredHeightForStyle:textLabelTextStyle:detailTextLabelTextStyle:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Views/Common/PCTableViewCellAdditions.m"
                   timestampString = "410548985.205057"
                   startingColumnNumber = "9223372036854775807"
@@ -2405,11 +2422,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "771"
-            endingLineNumber = "771"
+            startingLineNumber = "758"
+            endingLineNumber = "758"
             landmarkName = "@implementation MapViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -2451,6 +2468,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DirectoryPersonViewController peoplePickerNavigationController:shouldContinueAfterSelectingPerson:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
                   timestampString = "411056466.81544"
                   startingColumnNumber = "9223372036854775807"
@@ -2465,6 +2483,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__101-[DirectoryPersonViewController peoplePickerNavigationController:shouldContinueAfterSelectingPerson:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/DirectoryPlugin/Controllers/DirectoryPersonViewController.m"
                   timestampString = "411056466.815598"
                   startingColumnNumber = "9223372036854775807"
@@ -2881,6 +2900,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[PCServiceRequest main]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/PCServiceRequest.m"
                   timestampString = "442151260.656314"
                   startingColumnNumber = "9223372036854775807"
@@ -2895,6 +2915,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__24-[PCServiceRequest main]_block_invoke99"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/PocketCampus/Model/Common/PCServiceRequest.m"
                   timestampString = "442151260.656548"
                   startingColumnNumber = "9223372036854775807"
@@ -2943,6 +2964,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIImageView(AFNetworking) setImageWithURLRequest:placeholderImage:success:failure:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Pods/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m"
                   timestampString = "413573188.345936"
                   startingColumnNumber = "9223372036854775807"
@@ -2957,6 +2979,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIImageView(AFNetworking) setImageWithURLRequest:placeholderImage:success:failure:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Pods/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m"
                   timestampString = "413573188.346358"
                   startingColumnNumber = "9223372036854775807"
@@ -2971,6 +2994,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIImageView(AFNetworking) setImageWithURLRequest:placeholderImage:success:failure:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Pods/AFNetworking/UIKit+AFNetworking/UIImageView+AFNetworking.m"
                   timestampString = "413573188.346714"
                   startingColumnNumber = "9223372036854775807"
@@ -3003,6 +3027,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[FoodRestaurantInfoCell setRestaurant:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
                   timestampString = "413582378.470331"
                   startingColumnNumber = "9223372036854775807"
@@ -3017,6 +3042,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[FoodRestaurantInfoCell setRestaurant:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/FoodPlugin/Views/FoodRestaurantInfoCell.m"
                   timestampString = "413582378.470518"
                   startingColumnNumber = "9223372036854775807"
@@ -3195,11 +3221,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "+hasDeviceInternetConnection"
             landmarkType = "5">
          </BreakpointContent>
@@ -3417,6 +3443,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[IsAcademiaDayScheduleViewController calendarDayTimelineView:eventsForDate:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
                   timestampString = "417347530.486702"
                   startingColumnNumber = "9223372036854775807"
@@ -3431,6 +3458,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__77-[IsAcademiaDayScheduleViewController calendarDayTimelineView:eventsForDate:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
                   timestampString = "417347530.488768"
                   startingColumnNumber = "9223372036854775807"
@@ -3609,11 +3637,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "+parametersDictionaryForURLString:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3689,11 +3717,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "+fileOrFolderSizeWithPath:completion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3771,6 +3799,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__43-[EPFLLayersOverlay loadTileAtPath:result:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
                   timestampString = "421158642.292561"
                   startingColumnNumber = "9223372036854775807"
@@ -3785,6 +3814,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__43-[EPFLLayersOverlay loadTileAtPath:result:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MapPlugin/Views/EPFLLayersOverlay.m"
                   timestampString = "421158642.292873"
                   startingColumnNumber = "9223372036854775807"
@@ -4419,11 +4449,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
             landmarkName = "+iconForFileExtension:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4435,11 +4465,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "444748363.579013"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "291"
-            endingLineNumber = "291"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
             landmarkName = "+iconForFileExtension:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4801,6 +4831,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[PushNotifController observeAndStartDeviceRegistrationProcessOnOS]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
                   timestampString = "430672495.353315"
                   startingColumnNumber = "9223372036854775807"
@@ -4815,6 +4846,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__67-[PushNotifController observeAndStartDeviceRegistrationProcessOnOS]_block_invoke194"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/PushNotifPlugin/Controllers/PushNotifController.m"
                   timestampString = "430672495.35345"
                   startingColumnNumber = "9223372036854775807"
@@ -5119,6 +5151,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[EventPoolViewController reselectLastSelectedItem]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
                   timestampString = "430998571.326454"
                   startingColumnNumber = "9223372036854775807"
@@ -5133,6 +5166,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__51-[EventPoolViewController reselectLastSelectedItem]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/EventsPlugin/Controllers/EventPoolViewController.m"
                   timestampString = "430998571.326704"
                   startingColumnNumber = "9223372036854775807"
@@ -5247,11 +5281,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436198583.610362"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "476"
-            endingLineNumber = "476"
+            startingLineNumber = "463"
+            endingLineNumber = "463"
             landmarkName = "-setMapControlsState:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5309,6 +5343,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke151"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "432411297.732001"
                   startingColumnNumber = "9223372036854775807"
@@ -5323,6 +5358,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke_2152"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "432411297.732129"
                   startingColumnNumber = "9223372036854775807"
@@ -5341,11 +5377,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "442013432.942212"
+            timestampString = "450716733.986616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "504"
-            endingLineNumber = "504"
+            startingLineNumber = "541"
+            endingLineNumber = "541"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5471,11 +5507,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "442013432.942212"
+            timestampString = "450716733.986616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
+            startingLineNumber = "531"
+            endingLineNumber = "531"
             landmarkName = "-tableView:titleForFooterInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5549,6 +5585,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke159"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "433969078.750171"
                   startingColumnNumber = "9223372036854775807"
@@ -5563,6 +5600,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__112-[CloudPrintController viewControllerForPrintDocumentWithLocalURL:docName:printDocumentRequestOrNil:completion:]_block_invoke_2161"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "433969078.750375"
                   startingColumnNumber = "9223372036854775807"
@@ -5661,12 +5699,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "815"
-            endingLineNumber = "815"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "830"
+            endingLineNumber = "830"
+            landmarkName = "-supportedInterfaceOrientations"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5677,11 +5715,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "440951680.874786"
+            timestampString = "450715709.629296"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "-actionSheet:willDismissWithButtonIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5819,11 +5857,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "440951680.874786"
+            timestampString = "450716733.986616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5907,11 +5945,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Views/RecommendedAppCollectionViewCell.m"
-            timestampString = "436963770.219187"
+            timestampString = "451832509.252871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-setApp:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5923,11 +5961,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/RecommendedAppsPlugin/Views/RecommendedAppCollectionViewCell.m"
-            timestampString = "436963770.219187"
+            timestampString = "451832509.252871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "-setWithAppInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5971,11 +6009,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "896"
-            endingLineNumber = "896"
+            startingLineNumber = "883"
+            endingLineNumber = "883"
             landmarkName = "-mapView:didSelectAnnotationView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6035,11 +6073,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "437048359.789547"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "914"
-            endingLineNumber = "914"
+            startingLineNumber = "901"
+            endingLineNumber = "901"
             landmarkName = "-mapView:regionDidChangeAnimated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6113,6 +6151,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[MoodleCoursesListViewController getCoursesForRequest:didReturn:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
                   timestampString = "438017435.156985"
                   startingColumnNumber = "9223372036854775807"
@@ -6127,6 +6166,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__66-[MoodleCoursesListViewController getCoursesForRequest:didReturn:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/MoodlePlugin/Controllers/MoodleCoursesListViewController.m"
                   timestampString = "438017435.157174"
                   startingColumnNumber = "9223372036854775807"
@@ -6191,6 +6231,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[CloudPrintController handleJob:]"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "438641273.227324"
                   startingColumnNumber = "9223372036854775807"
@@ -6205,6 +6246,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__34-[CloudPrintController handleJob:]_block_invoke"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "438641273.227615"
                   startingColumnNumber = "9223372036854775807"
@@ -6301,6 +6343,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[CloudPrintActionViewController loadItemWithURL:]_block_invoke"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
                   timestampString = "438643504.991159"
                   startingColumnNumber = "9223372036854775807"
@@ -6315,6 +6358,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[CloudPrintActionViewController loadItemWithURL:]_block_invoke"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Extensions/CloudPrintAction/CloudPrintActionViewController.m"
                   timestampString = "438643504.991342"
                   startingColumnNumber = "9223372036854775807"
@@ -6411,6 +6455,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[CloudPrintController downloadDocumentForJob:progress:completion:]"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "438701552.298207"
                   startingColumnNumber = "9223372036854775807"
@@ -6425,6 +6470,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__67-[CloudPrintController downloadDocumentForJob:progress:completion:]_block_invoke"
                   moduleName = "CloudPrintAction"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/CloudPrintPlugin/Controllers/CloudPrintController.m"
                   timestampString = "438701552.298473"
                   startingColumnNumber = "9223372036854775807"
@@ -6548,43 +6594,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440946624.184726"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "685"
-            endingLineNumber = "685"
-            landmarkName = "-shouldAutomaticallyForwardAppearanceMethods"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948212.101224"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "691"
-            endingLineNumber = "691"
-            landmarkName = "-viewWillAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948213.473543"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "702"
-            endingLineNumber = "702"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
             landmarkName = "-viewDidAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6596,11 +6610,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948215.96056"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "713"
-            endingLineNumber = "713"
+            startingLineNumber = "706"
+            endingLineNumber = "706"
+            landmarkName = "-viewDidAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "717"
+            endingLineNumber = "717"
             landmarkName = "-viewWillDisappear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6612,12 +6642,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948217.028546"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "724"
-            endingLineNumber = "724"
+            startingLineNumber = "728"
+            endingLineNumber = "728"
             landmarkName = "-viewDidDisappear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "739"
+            endingLineNumber = "739"
+            landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -6644,11 +6690,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/CloudPrintPlugin/Controllers/CloudPrintRequestViewController.m"
-            timestampString = "441999056.648409"
+            timestampString = "450716733.986616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6788,11 +6834,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444748509.599998"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "-getOAuth2TequilaTokenWithDelegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6834,6 +6880,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[AuthenticationController getOAuth2TequilaTokenFailed]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.257409"
                   startingColumnNumber = "9223372036854775807"
@@ -6848,6 +6895,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__55-[AuthenticationController getOAuth2TequilaTokenFailed]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.257587"
                   startingColumnNumber = "9223372036854775807"
@@ -6878,7 +6926,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
@@ -6960,6 +7008,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[AuthenticationController getOAuth2CodeFailedForTequilaToken:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.264037"
                   startingColumnNumber = "9223372036854775807"
@@ -6974,6 +7023,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__63-[AuthenticationController getOAuth2CodeFailedForTequilaToken:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.264371"
                   startingColumnNumber = "9223372036854775807"
@@ -6988,7 +7038,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
@@ -7022,6 +7072,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[AuthenticationController getOAuth2TokensFromCodeFailedForRequest:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.265997"
                   startingColumnNumber = "9223372036854775807"
@@ -7036,6 +7087,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__68-[AuthenticationController getOAuth2TokensFromCodeFailedForRequest:]_block_invoke"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/loicgardiol/Documents/Dev/PocketCampus-private/ios/PocketCampus/Plugins/AuthenticationPlugin/Controllers/AuthenticationController.m"
                   timestampString = "445261930.266167"
                   startingColumnNumber = "9223372036854775807"
@@ -7054,11 +7106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444752951.651994"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "-getOAuth2TequilaTokenWithDelegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7070,11 +7122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444752951.651994"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "-getOAuth2TequilaTokenWithDelegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7086,11 +7138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/AuthenticationPlugin/Model/AuthenticationService.m"
-            timestampString = "444752951.651994"
+            timestampString = "450982687.810248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "-getOAuth2TequilaTokenWithDelegate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7172,6 +7224,118 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "-lga_removeObserver:name:object:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
+            timestampString = "451239080.519125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-startGetUserAttribtesRequest"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
+            timestampString = "451239080.519125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "-getUserAttributesFailedForRequest:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
+            timestampString = "451239080.519125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "-getUserAttributesForRequest:didReturn:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
+            timestampString = "451239080.519125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "-openBrowserForProfileWithUsername:email:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PocketCampus/Misc/PCUtils.m"
+            timestampString = "451906449.602162"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "+isIdiomPad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451912613.145363"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "798"
+            endingLineNumber = "798"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
+            timestampString = "451909626.747986"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "527"
+            endingLineNumber = "527"
+            landmarkName = "-_swapCurrentFrontViewControllerWith:animated:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

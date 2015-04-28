@@ -47,14 +47,21 @@
 
 #import "MainMenuViewController.h"
 
+#import "PCEPFLMailProfileViewController.h"
+
 #import "PCUsageViewController.h"
+
+#import "PCDebugConfigSelectionViewController.h"
 
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
+static const int kAutoConfigsSection = 50;
 static const int kAboutSection = 2;
-
 static const int kMiscSection = 3;
+static const int kDebugSection = 4;
+
+static const int kMailConfigRow = 0;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -139,6 +146,21 @@ static const int kUsageRow = 0;
                     break;
             }
             break;
+        case kAutoConfigsSection:
+        {
+            switch (indexPath.row) {
+                case kMailConfigRow:
+                {
+                    [self trackAction:@"OpenEmailConfig"];
+                    PCEPFLMailProfileViewController* viewController = [PCEPFLMailProfileViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
         case kMainMenuSection:
             switch (indexPath.row) {
                 case kEditMainMenuRow:
@@ -207,9 +229,22 @@ static const int kUsageRow = 0;
                     break;
             }
             break;
+        case kDebugSection:
+        {
+            PCDebugConfigSelectionViewController* viewController = [PCDebugConfigSelectionViewController new];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         default:
             break;
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kAutoConfigsSection) {
+        return 65.0;
+    }
+    return 44.0;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -240,6 +275,8 @@ static const int kUsageRow = 0;
     switch (section) {
         case kAccountsSection:
             return NSLocalizedStringFromTable(@"Accounts", @"PocketCampus", nil);
+        case kAutoConfigsSection:
+            return NSLocalizedStringFromTable(@"AutomaticConfigurations", @"PocketCampus", nil);
         case kMainMenuSection:
             return NSLocalizedStringFromTable(@"MainMenu", @"PocketCampus", nil);
         case kAboutSection:
@@ -261,6 +298,22 @@ static const int kUsageRow = 0;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [AuthenticationViewController localizedTitle];
             cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
+            break;
+        }
+        case kAutoConfigsSection:
+        {
+            switch (indexPath.row) {
+                case kMailConfigRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.imageView.image = [UIImage imageNamed:@"iOSMail_40"];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EPFLMail", @"PocketCampus", nil);
+                    cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLEmailInMailApp", @"PocketCampus", nil);
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                default:
+                    break;
+            }
             break;
         }
         case kMainMenuSection:
@@ -311,6 +364,13 @@ static const int kUsageRow = 0;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+        case kDebugSection:
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            cell.textLabel.text = @"Debug";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
         default:
             break;
     }
@@ -321,20 +381,26 @@ static const int kUsageRow = 0;
     switch (section) {
         case kAccountsSection:
             return 1;
+        case kAutoConfigsSection:
+            return 1;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
             return 3;
         case kMiscSection:
             return 1;
-        default:
-            return 0;
-            break;
+        case kDebugSection:
+            return 1;
     }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#ifdef DEBUG
+    return 5;
+#else
     return 4;
+#endif
 }
 
 @end

@@ -277,11 +277,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     [self.epflLayersOverlayRenderer cancelScreenTileDownload];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    self.searchState = self.searchState;
-}
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return [PCUtils isIdiomPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
@@ -373,7 +368,11 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
     
     if (!self.searchBarItem) {
         if (!self.searchBar) {
-            self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0, 210.0, kSearchBarHeightPortrait)];
+            CGFloat searchBarTargetWidth = ceilf(0.66 * [UIScreen mainScreen].bounds.size.width);
+            if ([PCUtils isIdiomPad] && searchBarTargetWidth > 272.0) {
+                searchBarTargetWidth = 272.0;
+            }
+            self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, searchBarTargetWidth, kSearchBarHeightPortrait)];
             self.searchBar.delegate = self;
             self.searchBar.barStyle = UISearchBarStyleDefault;
             self.searchBar.translucent = YES;
@@ -383,7 +382,7 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
             self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
         }
-        UIView* searchBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.searchBar.frame.size.width, self.searchBar.frame.size.height)];
+        UIView* searchBarContainerView = [[UIView alloc] initWithFrame:self.searchBar.bounds];
         searchBarContainerView.backgroundColor = [UIColor clearColor];
         [searchBarContainerView addSubview:self.searchBar];
         
@@ -425,18 +424,8 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
             items = @[];
         }
     } else {
-        
-        CGRect searchBarTargetFrame;
-        CGRect searchBarContainerViewTargetFrame;
-        
         [self.loadingIndicator stopAnimating];
         items = @[self.layersListButton, self.searchBarItem];
-        CGFloat searchBarTargetWidth = 0.66 * self.view.frame.size.width;
-        if ([PCUtils isIdiomPad] && searchBarTargetWidth > 272.0) {
-            searchBarTargetWidth = 272.0;
-        }
-        searchBarTargetFrame = CGRectMake(0, 0, searchBarTargetWidth, kSearchBarHeightPortrait);
-        searchBarContainerViewTargetFrame = searchBarTargetFrame;
         switch (searchState) {
             case SearchStateReady:
                 [self.loadingIndicator stopAnimating];
@@ -459,8 +448,6 @@ static CGFloat const kSearchBarHeightLandscape __unused = 32.0;
         if (!items) {
             return;
         }
-        self.searchBar.frame = searchBarTargetFrame;
-        self.searchBar.superview.frame = searchBarContainerViewTargetFrame;
     }
     BOOL searchBarWasFirstResponder = self.searchBar.isFirstResponder;
     self.navigationItem.rightBarButtonItems = items;

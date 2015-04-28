@@ -59,10 +59,11 @@ NSString* const kPCUtilsExtensionFolder = @"PCUtilsExtensionFolder";
 }
 
 + (BOOL)isIdiomPad {
-    BOOL pad = NO;
-#ifdef UI_USER_INTERFACE_IDIOM
-    pad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-#endif
+    static BOOL pad = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pad = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
+    });
     return pad;
 }
 

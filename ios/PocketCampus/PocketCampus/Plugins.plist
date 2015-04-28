@@ -140,16 +140,6 @@
 			<key>supportedIdioms</key>
 			<string>phone+pad</string>
 		</dict>
-		<dict>
-			<key>identifierName</key>
-			<string>Alumni</string>
-			<key>enabled</key>
-			<true/>
-			<key>hiddenByDefault</key>
-			<false/>
-			<key>supportedIdioms</key>
-			<string>phone</string>
-		</dict>
 	</array>
 </dict>
 </plist>

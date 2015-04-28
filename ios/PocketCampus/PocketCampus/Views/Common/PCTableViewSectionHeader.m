@@ -48,10 +48,12 @@ static UIColor* kHighlightedBarTintColor;
 #pragma mark - Init
 
 + (void)initialize {
-    kDefaultTextColor = [UIColor colorWithWhite:0.0 alpha:0.8];
-    kHighlightedTextColor = [UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0];
-    kDefaultBarTintColor = nil;
-    kHighlightedBarTintColor = nil;
+    if (self == [PCTableViewSectionHeader self]) {
+        kDefaultTextColor = [UIColor colorWithWhite:0.0 alpha:0.8];
+        kHighlightedTextColor = [UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0];
+        kDefaultBarTintColor = nil;
+        kHighlightedBarTintColor = nil;
+    }
 }
 
 - (id)initWithSectionTitle:(NSString*)sectionTitle tableView:(UITableView*)tableView {

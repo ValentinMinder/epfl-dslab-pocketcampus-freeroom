@@ -659,14 +659,6 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
     return 3;
 }
 
-- (NSInteger)resetFilterButtonIndex {
-    NSInteger periodButtonIndex = [self periodButtonIndex];
-    if (periodButtonIndex >= 0 && (self.isFilterByTagActive || self.pastMode)) {
-        return periodButtonIndex + 1;
-    }
-    return -1;
-}
-
 - (void)cameraButtonPressed {
     
     [self trackAction:@"ShowCodeScanner"];
@@ -896,7 +888,7 @@ static const UISearchBarStyle kSearchBarActiveStyle = UISearchBarStyleMinimal;
                 [self refresh];
             } else if (buttonIndex == [self periodButtonIndex]) {
                 [self presentPeriodSelectionActionSheet];
-            } else if (buttonIndex == [self resetFilterButtonIndex]) {
+            } else if (buttonIndex == actionSheet.destructiveButtonIndex) {
                 [self trackAction:@"ResetFilter"];
                 self.selectedCategories = nil;
                 self.selectedTags = nil;

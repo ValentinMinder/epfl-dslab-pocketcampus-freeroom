@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="eYP-6i-0uN" customClass="PCEPFLMailProfileViewController">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="GSP-ou-YUd"/>
+                <viewControllerLayoutGuide type="bottom" id="efM-rH-ssx"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="7fz-Ui-4aJ">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PocketCampus can automatically setup your EPFL email adress in the iOS Mail app." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
+                        <rect key="frame" x="20" y="139" width="284" height="58"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiD-Zm-NPx" userLabel="Install button">
+                        <rect key="frame" x="0.0" y="212" width="320" height="60"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="vzd-CH-Pua"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                        <inset key="contentEdgeInsets" minX="0.0" minY="-20" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Setup my EPFL email">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="startTapped" destination="eYP-6i-0uN" eventType="touchUpInside" id="WxI-DR-APN"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Gaspar login required)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="det-Va-aHl">
+                        <rect key="frame" x="87" y="244" width="147" height="17"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iOSMail.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Ye-CR-aYS">
+                        <rect key="frame" x="79" y="50" width="59" height="59"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstitutionLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zrA-FB-sM6">
+                        <rect key="frame" x="153" y="58" width="90" height="43"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already done this step? Open the Mail app and select your EPFL account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6K-Hc-MMP">
+                        <rect key="frame" x="20" y="282" width="280" height="51"/>
+                        <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="9Ye-CR-aYS" firstAttribute="centerY" secondItem="zrA-FB-sM6" secondAttribute="centerY" id="1dd-1v-VA5"/>
+                    <constraint firstItem="hiD-Zm-NPx" firstAttribute="top" secondItem="wuE-S6-oyC" secondAttribute="bottom" constant="15" id="3Vb-av-ZXn"/>
+                    <constraint firstAttribute="trailing" secondItem="hiD-Zm-NPx" secondAttribute="trailing" id="5VA-3g-ebq"/>
+                    <constraint firstItem="hiD-Zm-NPx" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" id="7fp-Nt-ufw"/>
+                    <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="8" id="Ggr-7h-aDU"/>
+                    <constraint firstAttribute="trailing" secondItem="wuE-S6-oyC" secondAttribute="trailing" constant="16" id="HMf-tr-Gz4"/>
+                    <constraint firstItem="zrA-FB-sM6" firstAttribute="leading" secondItem="9Ye-CR-aYS" secondAttribute="trailing" constant="15" id="ImA-df-bj1"/>
+                    <constraint firstItem="X6K-Hc-MMP" firstAttribute="top" secondItem="hiD-Zm-NPx" secondAttribute="bottom" constant="10" id="LhT-TP-obe"/>
+                    <constraint firstAttribute="centerX" secondItem="det-Va-aHl" secondAttribute="centerX" id="RrC-OC-xZJ"/>
+                    <constraint firstAttribute="centerX" secondItem="9Ye-CR-aYS" secondAttribute="centerX" constant="52" id="UO0-s5-CW8"/>
+                    <constraint firstAttribute="trailing" secondItem="X6K-Hc-MMP" secondAttribute="trailing" constant="20" id="XYE-Uc-vck"/>
+                    <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="100" id="Yzf-nb-PLK"/>
+                    <constraint firstItem="X6K-Hc-MMP" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="cOx-O7-msT"/>
+                    <constraint firstAttribute="centerX" secondItem="hiD-Zm-NPx" secondAttribute="centerX" id="eiS-1t-VGs"/>
+                    <constraint firstItem="9Ye-CR-aYS" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="30" id="h4E-OP-yuN"/>
+                    <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="9Ye-CR-aYS" secondAttribute="bottom" constant="30" id="vQk-sj-DwO"/>
+                    <constraint firstItem="9Ye-CR-aYS" firstAttribute="top" secondItem="det-Va-aHl" secondAttribute="bottom" constant="51" id="vwR-NS-b7a"/>
+                    <constraint firstItem="det-Va-aHl" firstAttribute="top" secondItem="hiD-Zm-NPx" secondAttribute="bottom" constant="-28" id="wTX-fM-EYy"/>
+                    <constraint firstItem="wuE-S6-oyC" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="yXh-Se-qln"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="vwR-NS-b7a"/>
+                        <exclude reference="Ggr-7h-aDU"/>
+                        <exclude reference="Yzf-nb-PLK"/>
+                        <exclude reference="eiS-1t-VGs"/>
+                    </mask>
+                </variation>
+            </view>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="441" y="313"/>
+        </viewController>
+    </objects>
+    <resources>
+        <image name="InstitutionLogo.png" width="90" height="43"/>
+        <image name="iOSMail.png" width="59" height="59"/>
+    </resources>
+</document>

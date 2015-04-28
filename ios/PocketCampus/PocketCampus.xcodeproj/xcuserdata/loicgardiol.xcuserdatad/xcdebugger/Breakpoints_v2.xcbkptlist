@@ -636,11 +636,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1702"
-            endingLineNumber = "1702">
+            startingLineNumber = "1689"
+            endingLineNumber = "1689">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -658,11 +658,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1706"
-            endingLineNumber = "1706">
+            startingLineNumber = "1693"
+            endingLineNumber = "1693">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -753,11 +753,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1187"
-            endingLineNumber = "1187"
+            startingLineNumber = "1174"
+            endingLineNumber = "1174"
             landmarkName = "-dealloc"
             landmarkType = "5">
          </BreakpointContent>
@@ -769,11 +769,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1646"
-            endingLineNumber = "1646">
+            startingLineNumber = "1633"
+            endingLineNumber = "1633">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -792,11 +792,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1735"
-            endingLineNumber = "1735">
+            startingLineNumber = "1722"
+            endingLineNumber = "1722">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -831,11 +831,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1828"
-            endingLineNumber = "1828">
+            startingLineNumber = "1815"
+            endingLineNumber = "1815">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -845,11 +845,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1762"
-            endingLineNumber = "1762">
+            startingLineNumber = "1749"
+            endingLineNumber = "1749">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
@@ -867,11 +867,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1589"
-            endingLineNumber = "1589">
+            startingLineNumber = "1576"
+            endingLineNumber = "1576">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -890,11 +890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1595"
-            endingLineNumber = "1595">
+            startingLineNumber = "1582"
+            endingLineNumber = "1582">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1091,13 +1091,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "737"
-            endingLineNumber = "737"
-            landmarkName = "-willRotateToInterfaceOrientation:duration:"
-            landmarkType = "5">
+            startingLineNumber = "752"
+            endingLineNumber = "752"
+            landmarkName = "@implementation ZUUIRevealController"
+            landmarkType = "3">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -1116,7 +1116,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-            timestampString = "436811412.365034"
+            timestampString = "448905394.959211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "152"
@@ -1481,12 +1481,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "744"
-            endingLineNumber = "744"
-            landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1506,12 +1506,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "758"
-            endingLineNumber = "758"
-            landmarkName = "-prefersStatusBarHidden"
+            startingLineNumber = "773"
+            endingLineNumber = "773"
+            landmarkName = "-preferredStatusBarUpdateAnimation"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1531,12 +1531,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "745"
-            endingLineNumber = "745"
-            landmarkName = "-didRotateFromInterfaceOrientation:"
+            startingLineNumber = "760"
+            endingLineNumber = "760"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1556,12 +1556,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "External frameworks/ZUUIRevealController/ZUUIRevealController.m"
-            timestampString = "440948222.167759"
+            timestampString = "451912613.145363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
-            landmarkName = "-didRotateFromInterfaceOrientation:"
+            startingLineNumber = "761"
+            endingLineNumber = "761"
+            landmarkName = "-prefersStatusBarHidden"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -1631,11 +1631,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/MapPlugin/Controllers/MapViewController.m"
-            timestampString = "436718364.591416"
+            timestampString = "451777952.26214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1929"
-            endingLineNumber = "1929">
+            startingLineNumber = "1916"
+            endingLineNumber = "1916">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2479,11 +2479,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCUtils.m"
-            timestampString = "443098078.046441"
+            timestampString = "451906580.651789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "+addCenteredLabelInView:withMessage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2555,6 +2555,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIActionSheet(Additions) toggleFromBarButtonItem:animated:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file://localhost/Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/ios/PocketCampus/PocketCampus/Views/Common/UIActionSheet+Additions.m"
                   timestampString = "401992798.684038"
                   startingColumnNumber = "9223372036854775807"
@@ -2569,6 +2570,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[UIActionSheet(Additions) toggleFromBarButtonItem:animated:]"
                   moduleName = "PocketCampus"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file://localhost/Users/loicgardiol/Dropbox/EPFL/Branches/Project/Source/PocketCampus/ios/PocketCampus/PocketCampus/Views/Common/UIActionSheet+Additions.m"
                   timestampString = "401992798.684406"
                   startingColumnNumber = "9223372036854775807"
@@ -2689,7 +2691,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-            timestampString = "436811412.365034"
+            timestampString = "448905394.959211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
@@ -2744,7 +2746,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/AppDelegate/AppDelegate.m"
-            timestampString = "436811412.365034"
+            timestampString = "448905394.959211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"

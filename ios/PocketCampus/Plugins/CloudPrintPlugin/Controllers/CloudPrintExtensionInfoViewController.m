@@ -41,6 +41,7 @@
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
         self.title = NSLocalizedStringFromTable(@"Printing", @"CloudPrintPlugin", nil);
+        self.gaiScreenName = @"/cloudprint/extensionInfo";
         self.preferredContentSize = CGSizeMake(400.0, 600.0);
     }
     return self;
@@ -51,6 +52,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {

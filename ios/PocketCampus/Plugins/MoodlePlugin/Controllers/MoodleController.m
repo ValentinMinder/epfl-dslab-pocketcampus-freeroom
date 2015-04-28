@@ -49,12 +49,14 @@ static MoodleController* instance __weak = nil;
 
 + (void)initialize {
     //initializing default settings
-    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
-    if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
-        [defaults setBool:YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
-    }
-    if (![defaults objectForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
-        [defaults setBool:YES forKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
+    if (self == [MoodleController self]) {
+        NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+        if (![defaults objectForKey:kMoodleSaveDocsPositionGeneralSettingBoolKey]) {
+            [defaults setBool:YES forKey:kMoodleSaveDocsPositionGeneralSettingBoolKey];
+        }
+        if (![defaults objectForKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey]) {
+            [defaults setBool:YES forKey:kMoodleDocsAutomaticallyHideNavBarSettingBoolKey];
+        }
     }
 }
 

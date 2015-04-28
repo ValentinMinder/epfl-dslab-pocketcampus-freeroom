@@ -47,9 +47,17 @@
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
         self.title = @"POOL1";
+        self.gaiScreenName = @"/cloudprint/info";
         self.preferredContentSize = CGSizeZero;
     }
     return self;
+}
+
+#pragma mark - UIViewController overrides
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self trackScreen];
 }
 
 #pragma mark - Actions
@@ -65,6 +73,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Ok", @"PocketCampus", nil) style:UIAlertActionStyleCancel handler:NULL]];
     [self presentViewController:alertController animated:YES completion:NULL];
 #else
+    [self trackAction:@"ShowPrintersOnMap"];
      UIViewController* viewController = [MapController viewControllerWithMapLayerIdsToDisplay:[NSSet setWithObject:@([mapConstants MapLayerIdMyPrint])]];
      viewController.title = NSLocalizedStringFromTable(@"POOL1Printers", @"CloudPrintPlugin", nil);
      [self.navigationController pushViewController:viewController animated:YES];

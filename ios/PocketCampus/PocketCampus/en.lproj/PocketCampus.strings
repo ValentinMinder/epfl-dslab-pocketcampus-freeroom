@@ -58,6 +58,11 @@
 "General" = "General";
 "NavigationBar" = "Navigation bar";
 
+"AutomaticConfigurations" = "Automatic configurations";
+"EPFLMail" = "EPFL email";
+"ConfigureEPFLEmailInMailApp" = "Setup my EPFL email in the Mail app";
+"Preparing" = "Preparing";
+"TapToCancel" = "Tap to cancel";
 
 //Accessbility
 
