@@ -91,7 +91,10 @@ static id instance __strong = nil;
 #endif
 #ifndef TARGET_IS_EXTENSION
     [instance popAndTrackOfflineScreensAndActions];
-    [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[NSString stringWithFormat:@"{VoiceOverEnabled:%@}", UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"]];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[NSString stringWithFormat:@"{VoiceOverEnabled:%@}", UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"]];
+    });
 #endif
     return instance;
 }
