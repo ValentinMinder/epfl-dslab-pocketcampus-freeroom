@@ -178,7 +178,9 @@ static NSString* const kHeaderFoorViewIdentifier = @"default";
         welf.navigationItem.leftBarButtonItem.enabled = NO;
         welf.navigationItem.rightBarButtonItem.enabled = NO;
         [welf dismissViewControllerAnimated:YES completion:^{
-            [welf printTapped];
+            if (welf.userValidatedRequestBlock) {
+                welf.userValidatedRequestBlock(welf.printRequest);
+            }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 welf.navigationItem.leftBarButtonItem.enabled = YES;
                 welf.navigationItem.rightBarButtonItem.enabled = YES;
