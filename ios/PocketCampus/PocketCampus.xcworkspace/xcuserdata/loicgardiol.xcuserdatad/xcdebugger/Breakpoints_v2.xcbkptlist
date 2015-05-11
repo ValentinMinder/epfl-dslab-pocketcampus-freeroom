@@ -5512,8 +5512,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "530"
             endingLineNumber = "530"
-            landmarkName = "-tableView:titleForFooterInSection:"
-            landmarkType = "5">
+            landmarkName = "@implementation CloudPrintRequestViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -7234,28 +7234,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "451239080.519125"
+            timestampString = "453055667.596791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "-startGetUserAttribtesRequest"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "451239080.519125"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "-getUserAttributesFailedForRequest:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -7266,11 +7250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "451239080.519125"
+            timestampString = "453055667.596791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "-getUserAttributesForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7282,12 +7266,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "451239080.519125"
+            timestampString = "453055667.596791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "-openBrowserForProfileWithUsername:email:"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "-openBrowser"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

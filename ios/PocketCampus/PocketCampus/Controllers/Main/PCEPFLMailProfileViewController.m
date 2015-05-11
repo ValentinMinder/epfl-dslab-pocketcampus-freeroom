@@ -14,6 +14,8 @@
 
 #import "AuthenticationController.h"
 
+#import "AFNetworking.h"
+
 @interface PCEPFLMailProfileViewController ()<AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) AuthenticationService* authService;
@@ -43,7 +45,7 @@
 
 - (IBAction)startTapped {
     [self trackAction:@"SetupEmail"];
-    [self startGetUserAttribtesRequest];
+    [self startGetUserAttribtesRequest]; // need to verify that session is valid before openining raw request in browser (openBrowser)
 }
 
 - (void)cancelTapped {
@@ -70,10 +72,14 @@
     [self.authService getUserAttributesWithRequest:request delegate:self];
 }
 
-- (void)openBrowserForProfileWithUsername:(NSString*)username email:(NSString*)email {
-#warning REMOVE TEST
-    NSString* urlString = [NSString stringWithFormat:@"https://test-pocketcampus.epfl.ch/backend/generate_configuration_profile.php?config=email&gaspar=%@&email=%@&lang=%@", username, email, [PCUtils userLanguageCode]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+- (void)openBrowser {
+    NSError* error = nil;
+    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:[[AuthenticationService sharedInstanceToRetain] pcProxiedRequest] withParameters:@{@"config":@"email"} error:&error];
+    if (error) {
+        [PCUtils showUnknownErrorAlertTryRefresh:NO];
+        return;
+    }
+    [[UIApplication sharedApplication] openURL:request.URL];
 }
 
 #pragma mark - AuthenticationServiceDelegate
@@ -83,17 +89,7 @@
     switch (response.statusCode) {
         case AuthStatusCode_OK:
         {
-            if (response.userAttributes.count != 2) {
-                [self getUserAttributesFailedForRequest:request];
-                return;
-            }
-            NSString* email = response.userAttributes[0];
-            NSString* gaspar = response.userAttributes[1];
-            if (email.length == 0 || gaspar.length == 0) {
-                [self getUserAttributesFailedForRequest:request];
-                return;
-            }
-            [self openBrowserForProfileWithUsername:gaspar email:email];
+            [self openBrowser];
             break;
         }
         case AuthStatusCode_INVALID_SESSION:

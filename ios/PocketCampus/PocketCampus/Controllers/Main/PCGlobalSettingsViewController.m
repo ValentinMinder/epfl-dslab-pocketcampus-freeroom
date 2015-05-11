@@ -56,10 +56,10 @@
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
-static const int kAutoConfigsSection = 50;
-static const int kAboutSection = 2;
-static const int kMiscSection = 3;
-static const int kDebugSection = 4;
+static const int kAutoConfigsSection = 2;
+static const int kAboutSection = 3;
+static const int kMiscSection = 4;
+static const int kDebugSection = 5;
 
 static const int kMailConfigRow = 0;
 
@@ -397,9 +397,9 @@ static const int kUsageRow = 0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #ifdef DEBUG
-    return 5;
+    return 6;
 #else
-    return 4;
+    return 5;
 #endif
 }
 

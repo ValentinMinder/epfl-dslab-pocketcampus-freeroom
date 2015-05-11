@@ -160,9 +160,9 @@ static const NSTimeInterval kDefaultThriftProtocolInstanceTimeoutInterval = 20.0
 - (void)addSpecificHeadersToRequest:(NSMutableURLRequest*)request {
     NSString* deviceToken = [PushNotifController notificationsDeviceToken];
     if (deviceToken) {
-        [request setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
         [request setValue:deviceToken forHTTPHeaderField:@"X-PC-PUSHNOTIF-TOKEN"];
     }
+    [request setValue:@"IOS" forHTTPHeaderField:@"X-PC-PUSHNOTIF-OS"];
     NSString* pcAuthSessionid = [[AuthenticationController sharedInstance] pocketCampusAuthSessionId];
     if (pcAuthSessionid) {
         [request setValue:pcAuthSessionid forHTTPHeaderField:@"X-PC-AUTH-PCSESSID"];
