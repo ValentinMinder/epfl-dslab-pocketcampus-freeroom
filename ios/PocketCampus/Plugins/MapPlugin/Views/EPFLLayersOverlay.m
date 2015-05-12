@@ -90,8 +90,8 @@ static NSString* kFloorMapLayerNameForQueryKey = @"{floor}";
     CGImageRelease(cropppedImageRef);
     
     CGPoint drawOrigin;
-    drawOrigin.x = rect.origin.x < 0.0 ? fabsf(rect.origin.x) : 0.0;
-    drawOrigin.y = rect.origin.y < 0.0 ? fabsf(rect.origin.y) : 0.0;
+    drawOrigin.x = rect.origin.x < 0.0 ? fabs(rect.origin.x) : 0.0;
+    drawOrigin.y = rect.origin.y < 0.0 ? fabs(rect.origin.y) : 0.0;
     
     UIGraphicsBeginImageContext(rect.size);
     [croppedImage drawAtPoint:drawOrigin];
