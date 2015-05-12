@@ -60,7 +60,7 @@
 
 "AutomaticConfigurations" = "Configurations automatiques";
 "EPFLMail" = "Email EPFL";
-"ConfigureEPFLEmailInMailApp" = "Configurer mon email EPFL dans Mail";
+"ConfigureEPFLEmailInMailApp" = "Installer mon email EPFL dans Mail";
 "EPFLVPN" = "VPN EPFL";
 "ConfigureEPFLVPN" = "Installer le VPN EPFL";
 "Preparing" = "Préparation";
