@@ -65,15 +65,17 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 				String sess = req.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
 				if (sess == null) {
-					resp.setStatus(HttpURLConnection.HTTP_FORBIDDEN);
+					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 					return;
 				}
 				String gaspar = getFieldFromSession(sess, "`gaspar`");
 				String email = getFieldFromSession(sess, "`email`");
 				if (gaspar == null || email == null) {
-					resp.setStatus(HttpURLConnection.HTTP_FORBIDDEN);
+					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 					return;
 				}
+
+				String pemFile = PocketCampusServer.CONFIG.getString("IOS_PROV_PROFILE_SIGNING_PEM_FILE");
 
 				if ("email".equals(req.getParameter("config"))) {
 					String nameForUuid = "IOS_EPFL_EMAIL_CONFIG " + email + " " + gaspar;
@@ -93,7 +95,8 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 					resp.setContentType("application/x-apple-aspen-config");
 					resp.setCharacterEncoding("UTF-8");
 					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_mail.mobileconfig\"");
-					resp.getOutputStream().write(body.getBytes("UTF-8"));
+					//resp.getOutputStream().write(body.getBytes("UTF-8"));
+					IosProvisionningProfiles.sign(pemFile, body, resp.getOutputStream());
 				} else if ("vpn".equals(req.getParameter("config"))) {
 					String nameForUuid = "IOS_EPFL_VPN_CONFIG " + email + " " + gaspar;
 
@@ -111,7 +114,8 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 					resp.setContentType("application/x-apple-aspen-config");
 					resp.setCharacterEncoding("UTF-8");
 					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_vpn.mobileconfig\"");
-					resp.getOutputStream().write(body.getBytes("UTF-8"));
+					//resp.getOutputStream().write(body.getBytes("UTF-8"));
+					IosProvisionningProfiles.sign(pemFile, body, resp.getOutputStream());
 				} else {
 					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;

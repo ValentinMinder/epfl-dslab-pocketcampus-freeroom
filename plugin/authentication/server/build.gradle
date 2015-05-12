@@ -4,5 +4,6 @@ dependencies {
     compile project(':plugin-authentication-shared')
 
     compile libs.gson
+    compile libs.commons_io
     compile files(rootDir.path + '/libs/tequila-client.jar')
 }

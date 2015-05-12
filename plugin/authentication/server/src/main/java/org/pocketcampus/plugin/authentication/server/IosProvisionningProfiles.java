@@ -1,6 +1,13 @@
 package org.pocketcampus.plugin.authentication.server;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class IosProvisionningProfiles {
+
+
 
 
     public static final String EMAIL_XML_EN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -239,6 +246,20 @@ public class IosProvisionningProfiles {
             "</plist>";
 
 
+        public static void sign(String pemFile, String xml, OutputStream out) throws IOException {
+                //openssl smime -sign -signer file.pem -inkey file.pem -certfile file.pem -nodetach -outform der
+                Process proc = Runtime.getRuntime().exec(new String[]{
+                        "openssl", "smime", "-sign",
+                        "-signer", pemFile,
+                        "-inkey", pemFile,
+                        "-certfile", pemFile,
+                        "-nodetach",
+                        "-outform", "der"});
+                proc.getOutputStream().write(xml.getBytes("UTF-8"));
+                proc.getOutputStream().close();
+                IOUtils.copy(proc.getInputStream(), out);
 
+                //String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
+        }
 }
