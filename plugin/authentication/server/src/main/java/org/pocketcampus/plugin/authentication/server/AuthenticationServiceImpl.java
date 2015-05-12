@@ -1,16 +1,18 @@
 package org.pocketcampus.plugin.authentication.server;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.thrift.TException;
+import org.pocketcampus.platform.server.RawPlugin;
 import org.pocketcampus.platform.server.launcher.PocketCampusServer;
 import org.pocketcampus.platform.shared.PCConstants;
 import org.pocketcampus.platform.shared.utils.StringUtils;
@@ -43,13 +45,83 @@ import com.google.gson.JsonParser;
  * @author Amer <amer.chamseddine@epfl.ch>
  * 
  */
-public class AuthenticationServiceImpl implements AuthenticationService.Iface {
+public class AuthenticationServiceImpl implements AuthenticationService.Iface, RawPlugin {
 
 	private final SessionManager _manager;
 
 	public AuthenticationServiceImpl() {
 		System.out.println("Starting Authentication plugin server ...");
 		_manager = new SessionManagerOAuth2();
+	}
+
+
+	@Override
+	public HttpServlet getServlet() {
+		return new HttpServlet() {
+
+
+
+			@Override
+			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				String sess = req.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
+				if (sess == null) {
+					resp.setStatus(HttpURLConnection.HTTP_FORBIDDEN);
+					return;
+				}
+				String gaspar = getFieldFromSession(sess, "`gaspar`");
+				String email = getFieldFromSession(sess, "`email`");
+				if (gaspar == null || email == null) {
+					resp.setStatus(HttpURLConnection.HTTP_FORBIDDEN);
+					return;
+				}
+
+				if ("email".equals(req.getParameter("config"))) {
+					String nameForUuid = "IOS_EPFL_EMAIL_CONFIG " + email + " " + gaspar;
+
+					UUID configurationPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " configuration payload uuid").getBytes());
+					UUID accountPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " account payload uuid").getBytes());
+
+					String body = IosProvisionningProfiles.EMAIL_XML_EN;
+					if("fr".equals(req.getHeader(PCConstants.HTTP_HEADER_USER_LANG_CODE))) {
+						body = IosProvisionningProfiles.EMAIL_XML_FR;
+					}
+					body = body.replace("USER_EMAIL", email)
+							.replace("USER_GASPAR", gaspar)
+							.replace("CONFIGURATION_PAYLOAD_UUID", configurationPayloadUuid.toString())
+							.replace("ACCOUNT_PAYLOAD_UUID", accountPayloadUuid.toString());
+
+					resp.setContentType("application/x-apple-aspen-config");
+					resp.setCharacterEncoding("UTF-8");
+					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_mail.mobileconfig\"");
+					resp.getOutputStream().write(body.getBytes("UTF-8"));
+				} else if ("vpn".equals(req.getParameter("config"))) {
+					String nameForUuid = "IOS_EPFL_VPN_CONFIG " + email + " " + gaspar;
+
+					UUID configurationPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " configuration payload uuid").getBytes());
+					UUID accountPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " account payload uuid").getBytes());
+
+					String body = IosProvisionningProfiles.VPN_XML_EN;
+					if("fr".equals(req.getHeader(PCConstants.HTTP_HEADER_USER_LANG_CODE))) {
+						body = IosProvisionningProfiles.VPN_XML_FR;
+					}
+					body = body.replace("USER_GASPAR", gaspar)
+							.replace("CONFIGURATION_PAYLOAD_UUID", configurationPayloadUuid.toString())
+							.replace("ACCOUNT_PAYLOAD_UUID", accountPayloadUuid.toString());
+
+					resp.setContentType("application/x-apple-aspen-config");
+					resp.setCharacterEncoding("UTF-8");
+					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_vpn.mobileconfig\"");
+					resp.getOutputStream().write(body.getBytes("UTF-8"));
+				} else {
+					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
+					return;
+				}
+
+
+			}
+
+
+		};
 	}
 
 	@Override
