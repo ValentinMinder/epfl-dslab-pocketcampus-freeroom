@@ -61,6 +61,8 @@
 "AutomaticConfigurations" = "Automatic configurations";
 "EPFLMail" = "EPFL email";
 "ConfigureEPFLEmailInMailApp" = "Setup my EPFL email in the Mail app";
+"EPFLVPN" = "EPFL VPN";
+"ConfigureEPFLVPN" = "Setup EPFL VPN";
 "Preparing" = "Preparing";
 "TapToCancel" = "Tap to cancel";
 

@@ -94,9 +94,6 @@
 		323676C516BDB5300004D5AD /* AppLogoCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C416BDB5300004D5AD /* AppLogoCellImage.png */; };
 		323676C816BDB6620004D5AD /* FacebookLikeCellImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */; };
 		323676C916BDB6620004D5AD /* FacebookLikeCellImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */; };
-		3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */; };
-		3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */; };
-		3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */ = {isa = PBXBuildFile; fileRef = 3236E5D21AE5486600F195EF /* iOSMail_40@.png */; };
 		323CAC5919324F4800941BB1 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323CAC5819324F4800941BB1 /* AuthenticationViewController.m */; };
 		323E5894193FC08F002B0B30 /* CamiproWidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32136F49193FBD20002905A9 /* CamiproWidgetViewController.m */; };
 		324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */ = {isa = PBXBuildFile; fileRef = 324151C615373A1700CCFB22 /* MapPlugin.strings */; };
@@ -180,6 +177,17 @@
 		3267676419E2C96800365F6D /* RecommendedAppsForCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676219E2C96800365F6D /* RecommendedAppsForCategoryCell.xib */; };
 		3267676819E2CE4800365F6D /* RecommendedAppCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */; };
 		3267676919E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */; };
+		3267F16D1B02350900B8A130 /* iOSMail_40@.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1631B02350900B8A130 /* iOSMail_40@.png */; };
+		3267F16E1B02350900B8A130 /* iOSMail_40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1641B02350900B8A130 /* iOSMail_40@2x.png */; };
+		3267F16F1B02350900B8A130 /* iOSMail_40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1651B02350900B8A130 /* iOSMail_40@3x.png */; };
+		3267F1701B02350900B8A130 /* iOSMail_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1661B02350900B8A130 /* iOSMail_60.png */; };
+		3267F1711B02350900B8A130 /* iOSMail_60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1671B02350900B8A130 /* iOSMail_60@2x.png */; };
+		3267F1721B02350900B8A130 /* iOSVPN_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1681B02350900B8A130 /* iOSVPN_40.png */; };
+		3267F1731B02350900B8A130 /* iOSVPN_40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F1691B02350900B8A130 /* iOSVPN_40@2x.png */; };
+		3267F1741B02350900B8A130 /* iOSVPN_40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F16A1B02350900B8A130 /* iOSVPN_40@3x.png */; };
+		3267F1751B02350900B8A130 /* iOSVPN_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F16B1B02350900B8A130 /* iOSVPN_60.png */; };
+		3267F1761B02350900B8A130 /* iOSVPN_60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3267F16C1B02350900B8A130 /* iOSVPN_60@2x.png */; };
+		3267F1791B02374F00B8A130 /* PCEPFLVPNProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267F1781B02374F00B8A130 /* PCEPFLVPNProfileViewController.m */; };
 		3268063219AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		3268063319AF44B800E8CD22 /* THTTPClient+MutableRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */; };
 		326B9250150279E900DB4AEE /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326B924F150279E900DB4AEE /* AddressBookUI.framework */; };
@@ -471,8 +479,6 @@
 		32CE952519DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
 		32CE952619DDDF950071F987 /* CamiproWidget.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32CE952419DDDF950071F987 /* CamiproWidget.storyboard */; };
 		32CF2B1B1AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */; };
-		32CF2B221AE164E100B3B2AA /* iOSMail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */; };
-		32CF2B241AE1653B00B3B2AA /* iOSMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B231AE1653B00B3B2AA /* iOSMail.png */; };
 		32CF2B251AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */; };
 		32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CFECE4151C789A00D8CBA6 /* TransportController.m */; };
 		32CFECEC151CA90800D8CBA6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CFECEB151CA90800D8CBA6 /* CoreLocation.framework */; };
@@ -531,6 +537,7 @@
 		32E67DC01684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E67DBF1684AF2600E5CFF6 /* DirectoryEmptyDetailView.xib */; };
 		32E67DC31684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */; };
 		32E67DC61684D40C00E5CFF6 /* PCRecentResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */; };
+		32E68F3C1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32E68F3A1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib */; };
 		32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */; };
 		32EB617F180D5A3C001AE852 /* MapResultsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB617E180D5A3C001AE852 /* MapResultsListViewController.m */; };
 		32EB6182180D7CC4001AE852 /* MapRecentSearchesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EB6181180D7CC4001AE852 /* MapRecentSearchesListViewController.m */; };
@@ -802,9 +809,6 @@
 		323676C416BDB5300004D5AD /* AppLogoCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogoCellImage.png; sourceTree = "<group>"; };
 		323676C616BDB6620004D5AD /* FacebookLikeCellImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FacebookLikeCellImage.png; sourceTree = "<group>"; };
 		323676C716BDB6620004D5AD /* FacebookLikeCellImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookLikeCellImage@2x.png"; sourceTree = "<group>"; };
-		3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@2x.png"; sourceTree = "<group>"; };
-		3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@3x.png"; sourceTree = "<group>"; };
-		3236E5D21AE5486600F195EF /* iOSMail_40@.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@.png"; sourceTree = "<group>"; };
 		3236E5D61AE5585D00F195EF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		323CAC5719324F4800941BB1 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		323CAC5819324F4800941BB1 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
@@ -925,6 +929,18 @@
 		3267676519E2CE4800365F6D /* RecommendedAppCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedAppCollectionViewCell.h; sourceTree = "<group>"; };
 		3267676619E2CE4800365F6D /* RecommendedAppCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedAppCollectionViewCell.m; sourceTree = "<group>"; };
 		3267676719E2CE4800365F6D /* RecommendedAppCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendedAppCollectionViewCell.xib; sourceTree = "<group>"; };
+		3267F1631B02350900B8A130 /* iOSMail_40@.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@.png"; sourceTree = "<group>"; };
+		3267F1641B02350900B8A130 /* iOSMail_40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@2x.png"; sourceTree = "<group>"; };
+		3267F1651B02350900B8A130 /* iOSMail_40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_40@3x.png"; sourceTree = "<group>"; };
+		3267F1661B02350900B8A130 /* iOSMail_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSMail_60.png; sourceTree = "<group>"; };
+		3267F1671B02350900B8A130 /* iOSMail_60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail_60@2x.png"; sourceTree = "<group>"; };
+		3267F1681B02350900B8A130 /* iOSVPN_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSVPN_40.png; sourceTree = "<group>"; };
+		3267F1691B02350900B8A130 /* iOSVPN_40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSVPN_40@2x.png"; sourceTree = "<group>"; };
+		3267F16A1B02350900B8A130 /* iOSVPN_40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSVPN_40@3x.png"; sourceTree = "<group>"; };
+		3267F16B1B02350900B8A130 /* iOSVPN_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSVPN_60.png; sourceTree = "<group>"; };
+		3267F16C1B02350900B8A130 /* iOSVPN_60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSVPN_60@2x.png"; sourceTree = "<group>"; };
+		3267F1771B02374F00B8A130 /* PCEPFLVPNProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCEPFLVPNProfileViewController.h; sourceTree = "<group>"; };
+		3267F1781B02374F00B8A130 /* PCEPFLVPNProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCEPFLVPNProfileViewController.m; sourceTree = "<group>"; };
 		3268063019AF44B800E8CD22 /* THTTPClient+MutableRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "THTTPClient+MutableRequest.h"; sourceTree = "<group>"; };
 		3268063119AF44B800E8CD22 /* THTTPClient+MutableRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "THTTPClient+MutableRequest.m"; sourceTree = "<group>"; };
 		326B924F150279E900DB4AEE /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -1213,6 +1229,7 @@
 		32BA30701645D31A00909D82 /* PCCenterMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCCenterMessageCell.m; sourceTree = "<group>"; };
 		32BBA916187454A600B2A7D3 /* UILabel+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Additions.h"; sourceTree = "<group>"; };
 		32BBA917187454A600B2A7D3 /* UILabel+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Additions.m"; sourceTree = "<group>"; };
+		32BD05051B0221A300C3D936 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PCEPFLVPNProfileViewController.xib; sourceTree = "<group>"; };
 		32BDB42B18C74E790014F821 /* PCScanningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCScanningViewController.h; sourceTree = "<group>"; };
 		32BDB42C18C74E790014F821 /* PCScanningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCScanningViewController.m; sourceTree = "<group>"; };
 		32C450AC18241364000C99A3 /* FoodMealCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMealCell.h; sourceTree = "<group>"; };
@@ -1263,8 +1280,6 @@
 		32CE952419DDDF950071F987 /* CamiproWidget.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CamiproWidget.storyboard; sourceTree = "<group>"; };
 		32CF2B181AE15AC000B3B2AA /* PCEPFLMailProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCEPFLMailProfileViewController.h; sourceTree = "<group>"; };
 		32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCEPFLMailProfileViewController.m; sourceTree = "<group>"; };
-		32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOSMail@2x.png"; sourceTree = "<group>"; };
-		32CF2B231AE1653B00B3B2AA /* iOSMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iOSMail.png; sourceTree = "<group>"; };
 		32CF2B281AE1753100B3B2AA /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PCEPFLMailProfileViewController.xib; sourceTree = "<group>"; };
 		32CFECE3151C789A00D8CBA6 /* TransportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TransportController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32CFECE4151C789A00D8CBA6 /* TransportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransportController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1316,6 +1331,7 @@
 		32E67DC21684AF5000E5CFF6 /* DirectoryEmptyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DirectoryEmptyDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32E67DC41684D40C00E5CFF6 /* PCRecentResultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCRecentResultTableViewCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32E67DC51684D40C00E5CFF6 /* PCRecentResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCRecentResultTableViewCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		32E68F3B1B02216E0040C9C7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCEPFLVPNProfileViewController.xib; sourceTree = "<group>"; };
 		32E9A22116394F6D00188AE0 /* PluginSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PluginSplitViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		32E9A22216394F6D00188AE0 /* PluginSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PluginSplitViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		32EB617D180D5A3C001AE852 /* MapResultsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapResultsListViewController.h; sourceTree = "<group>"; };
@@ -1806,11 +1822,16 @@
 				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
 				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
 				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
-				32CF2B231AE1653B00B3B2AA /* iOSMail.png */,
-				32CF2B211AE164E100B3B2AA /* iOSMail@2x.png */,
-				3236E5D01AE5486600F195EF /* iOSMail_40@2x.png */,
-				3236E5D11AE5486600F195EF /* iOSMail_40@3x.png */,
-				3236E5D21AE5486600F195EF /* iOSMail_40@.png */,
+				3267F1631B02350900B8A130 /* iOSMail_40@.png */,
+				3267F1641B02350900B8A130 /* iOSMail_40@2x.png */,
+				3267F1651B02350900B8A130 /* iOSMail_40@3x.png */,
+				3267F1661B02350900B8A130 /* iOSMail_60.png */,
+				3267F1671B02350900B8A130 /* iOSMail_60@2x.png */,
+				3267F1681B02350900B8A130 /* iOSVPN_40.png */,
+				3267F1691B02350900B8A130 /* iOSVPN_40@2x.png */,
+				3267F16A1B02350900B8A130 /* iOSVPN_40@3x.png */,
+				3267F16B1B02350900B8A130 /* iOSVPN_60.png */,
+				3267F16C1B02350900B8A130 /* iOSVPN_60@2x.png */,
 				32150DD2197D693300CCF2AB /* LinkIcon.png */,
 				32150DD3197D693300CCF2AB /* LinkIcon@2x.png */,
 				32A37A611A6830E80079D208 /* LinkIcon@3x.png */,
@@ -2167,6 +2188,9 @@
 				32CF2B181AE15AC000B3B2AA /* PCEPFLMailProfileViewController.h */,
 				32CF2B191AE15AC000B3B2AA /* PCEPFLMailProfileViewController.m */,
 				32CF2B271AE1752F00B3B2AA /* PCEPFLMailProfileViewController.xib */,
+				3267F1771B02374F00B8A130 /* PCEPFLVPNProfileViewController.h */,
+				3267F1781B02374F00B8A130 /* PCEPFLVPNProfileViewController.m */,
+				32E68F3A1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -3398,12 +3422,12 @@
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
 				32AA25A41A0A9F1A00146D68 /* MealType_PASTA@2x.png in Resources */,
 				3207A38619ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
+				3267F1721B02350900B8A130 /* iOSVPN_40.png in Resources */,
 				324151CC15373A1700CCFB22 /* MapPlugin.strings in Resources */,
 				326494CD1A07CC5100C63622 /* FoodMealTypeCell.xib in Resources */,
 				324151E015374FB100CCFB22 /* MapView-phone.xib in Resources */,
 				32A37A3E1A682AB10079D208 /* CheckmarkRoundedSquareEmpty@3x.png in Resources */,
 				32FBAD201A09056100D5C515 /* ClockBarButtonSelected.png in Resources */,
-				32CF2B241AE1653B00B3B2AA /* iOSMail.png in Resources */,
 				324151E515375BDD00CCFB22 /* Map.png in Resources */,
 				32FFA797186DDD5500237957 /* FavoriteNavBarButtonLandscape@2x.png in Resources */,
 				324151E615375BDD00CCFB22 /* Map@2x.png in Resources */,
@@ -3416,6 +3440,7 @@
 				32CCB4EF1555237500220282 /* Moodle.png in Resources */,
 				32CCB4F01555237500220282 /* Moodle@2x.png in Resources */,
 				32AA25991A0A9F1A00146D68 /* MealType_FISH@3x.png in Resources */,
+				32E68F3C1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib in Resources */,
 				32A37A781A6833D10079D208 /* SettingsBarButton@3x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
@@ -3424,16 +3449,19 @@
 				32A37A3C1A682A1C0079D208 /* CheckmarkRoundedSquare@3x.png in Resources */,
 				32CCB511155567CB00220282 /* News@2x.png in Resources */,
 				3297E017155571F80054F790 /* NewsLarge.png in Resources */,
+				3267F1751B02350900B8A130 /* iOSVPN_60.png in Resources */,
 				32A37A0E1A680F090079D208 /* IsAcademia@3x.png in Resources */,
 				32A37A001A680A800079D208 /* EventsLarge@3x.png in Resources */,
 				32FFA79B186DE3C800237957 /* FavoriteGlowNavBarButtonLandscape@2x.png in Resources */,
 				3271887E1A67F25D00729D06 /* MapLayersBarButton@3x.png in Resources */,
 				32B5871C156458FA0051C57E /* CamiproPlugin.strings in Resources */,
+				3267F1701B02350900B8A130 /* iOSMail_60.png in Resources */,
 				3270B7F118056E6F007EE85B /* ListBarButton.png in Resources */,
 				3270B7F218056E6F007EE85B /* ListBarButton@2x.png in Resources */,
 				3215446619E6B59D00D6FB33 /* MapLayersListSelectionView.xib in Resources */,
 				32AA25B41A0A9F1A00146D68 /* MealType_VEGETARIAN@3x.png in Resources */,
-				3236E5D31AE5486600F195EF /* iOSMail_40@2x.png in Resources */,
+				3267F16E1B02350900B8A130 /* iOSMail_40@2x.png in Resources */,
+				3267F1731B02350900B8A130 /* iOSVPN_40@2x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */,
@@ -3443,6 +3471,8 @@
 				32E637E419D0D25400378788 /* SplashImage5_5inch@3x.png in Resources */,
 				321F37E715B02FBE00E7BA6D /* HelpBarButton@2x.png in Resources */,
 				32A37A2A1A6820440079D208 /* FoodSmileySad@3x.png in Resources */,
+				3267F16D1B02350900B8A130 /* iOSMail_40@.png in Resources */,
+				3267F1741B02350900B8A130 /* iOSVPN_40@3x.png in Resources */,
 				325F1FBE19FA99AB0019CFCB /* CamiproInfoWidgetCell.xib in Resources */,
 				32506D06181DC7AF003F08D7 /* MasterHidden@2x.png in Resources */,
 				27B74CE719A205E6006B2F17 /* RecommendedApps@2x.png in Resources */,
@@ -3495,6 +3525,7 @@
 				32574ED6182140AE008F3163 /* DirectoryEmptyPictureSmall.png in Resources */,
 				327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */,
 				32A37A141A6817CD0079D208 /* RecommendedApps@3x.png in Resources */,
+				3267F1761B02350900B8A130 /* iOSVPN_60@2x.png in Resources */,
 				32A37A321A6826290079D208 /* TransportSmallBus@3x.png in Resources */,
 				327585A51844C5B1004215FC /* ArrowSimpleRight@2x.png in Resources */,
 				32C509EB17FC6D73005A5635 /* SortBarButton@2x.png in Resources */,
@@ -3530,6 +3561,7 @@
 				32035BB5166E988600E134DD /* MoodleFileView.xib in Resources */,
 				324CB57F1671580B008C7B3D /* MoodleSplashDetailView.xib in Resources */,
 				327412DA167E776A001E8C62 /* DownloadedCorner.png in Resources */,
+				3267F1711B02350900B8A130 /* iOSMail_60@2x.png in Resources */,
 				32AA25AA1A0A9F1A00146D68 /* MealType_POULTRY@2x.png in Resources */,
 				32AA259A1A0A9F1A00146D68 /* MealType_GREEN_FORK.png in Resources */,
 				32AA25781A0A95D100146D68 /* MealType_MEAT@3x.png in Resources */,
@@ -3537,7 +3569,6 @@
 				32A37A721A6833060079D208 /* MasterVisible@3x.png in Resources */,
 				32A37A441A682B310079D208 /* ClockCell@3x.png in Resources */,
 				32A37A021A680B620079D208 /* Food@3x.png in Resources */,
-				3236E5D51AE5486600F195EF /* iOSMail_40@.png in Resources */,
 				32A37A241A681F5C0079D208 /* DirectoryEmptyPictureSmall@3x.png in Resources */,
 				32AA25B01A0A9F1A00146D68 /* MealType_UNKNOWN@2x.png in Resources */,
 				327412DB167E776A001E8C62 /* DownloadedCorner@2x.png in Resources */,
@@ -3608,7 +3639,6 @@
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,
 				32A37A1D1A681E680079D208 /* ArrowRightBarButton.png in Resources */,
 				32A37A461A682B590079D208 /* Cross@3x.png in Resources */,
-				32CF2B221AE164E100B3B2AA /* iOSMail@2x.png in Resources */,
 				32AA25A81A0A9F1A00146D68 /* MealType_PIZZA@3x.png in Resources */,
 				32A379FE1A680A7C0079D208 /* Events@3x.png in Resources */,
 				32A37A421A682ADB0079D208 /* ClockBarButtonSelected@3x.png in Resources */,
@@ -3626,7 +3656,7 @@
 				327B0C25175199590011D81E /* ArrowUpRightCircleAccessory@2x.png in Resources */,
 				327585A41844C5B1004215FC /* ArrowSimpleRight.png in Resources */,
 				328A132218296E2D00F4C622 /* FoodSmileyMeh@2x.png in Resources */,
-				3236E5D41AE5486600F195EF /* iOSMail_40@3x.png in Resources */,
+				3267F16F1B02350900B8A130 /* iOSMail_40@3x.png in Resources */,
 				328A72E0184A4EE0002C5A6B /* SplashImage@2x.png in Resources */,
 				32CE952319DDDE180071F987 /* CamiproWidget-Info.plist in Resources */,
 				32A37A6E1A6832960079D208 /* MainMenuNavbar@3x.png in Resources */,
@@ -3925,6 +3955,7 @@
 				32FF46551636FB2500932FF5 /* PluginNavigationController.m in Sources */,
 				32E9A22316394F6D00188AE0 /* PluginSplitViewController.m in Sources */,
 				329840E316397ADB00FBADFA /* PluginController.m in Sources */,
+				3267F1791B02374F00B8A130 /* PCEPFLVPNProfileViewController.m in Sources */,
 				32BA30711645D31A00909D82 /* PCCenterMessageCell.m in Sources */,
 				3243FB9D18215CEC000F3CB5 /* FoodRestaurantViewController.m in Sources */,
 				3243FBA018216B95000F3CB5 /* FoodRestaurantInfoCell.m in Sources */,
@@ -4272,6 +4303,15 @@
 				32E3E5CE1897D1F500D263C5 /* fr */,
 			);
 			name = TransportPlugin.strings;
+			sourceTree = "<group>";
+		};
+		32E68F3A1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32E68F3B1B02216E0040C9C7 /* en */,
+				32BD05051B0221A300C3D936 /* fr */,
+			);
+			name = PCEPFLVPNProfileViewController.xib;
 			sourceTree = "<group>";
 		};
 		32FAC0E81500F40700925180 /* DirectoryPlugin.strings */ = {

@@ -49,6 +49,8 @@
 
 #import "PCEPFLMailProfileViewController.h"
 
+#import "PCEPFLVPNProfileViewController.h"
+
 #import "PCUsageViewController.h"
 
 #import "PCDebugConfigSelectionViewController.h"
@@ -62,6 +64,7 @@ static const int kMiscSection = 4;
 static const int kDebugSection = 5;
 
 static const int kMailConfigRow = 0;
+static const int kVPNConfigRow = 1;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -153,6 +156,13 @@ static const int kUsageRow = 0;
                 {
                     [self trackAction:@"OpenEmailConfig"];
                     PCEPFLMailProfileViewController* viewController = [PCEPFLMailProfileViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                case kVPNConfigRow:
+                {
+                    [self trackAction:@"OpenVPNConfig"];
+                    PCEPFLVPNProfileViewController* viewController = [PCEPFLVPNProfileViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -311,6 +321,14 @@ static const int kUsageRow = 0;
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
+                case kVPNConfigRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.imageView.image = [UIImage imageNamed:@"iOSVPN_40"];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EPFLVPN", @"PocketCampus", nil);
+                    cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLVPN", @"PocketCampus", nil);
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
                 default:
                     break;
             }
@@ -382,7 +400,7 @@ static const int kUsageRow = 0;
         case kAccountsSection:
             return 1;
         case kAutoConfigsSection:
-            return 1;
+            return 2;
         case kMainMenuSection:
             return 2;
         case kAboutSection:

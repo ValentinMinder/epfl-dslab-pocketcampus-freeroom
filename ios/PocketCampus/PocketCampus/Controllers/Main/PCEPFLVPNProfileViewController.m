@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 17.04.15.
+//  Created by Loïc Gardiol on 12.05.15.
 
-#import "PCEPFLMailProfileViewController.h"
+#import "PCEPFLVPNProfileViewController.h"
 
 #import "MBProgressHUD.h"
 
@@ -37,13 +37,13 @@
 
 #import "AFNetworking.h"
 
-@interface PCEPFLMailProfileViewController ()<AuthenticationServiceDelegate>
+@interface PCEPFLVPNProfileViewController ()<AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) AuthenticationService* authService;
 
 @end
 
-@implementation PCEPFLMailProfileViewController
+@implementation PCEPFLVPNProfileViewController
 
 #pragma mark - Init
 
@@ -51,8 +51,8 @@
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
         self.authService = [AuthenticationService sharedInstanceToRetain];
-        self.title = NSLocalizedStringFromTable(@"EPFLMail", @"PocketCampus", nil);
-        self.gaiScreenName = @"/dashboard/settings/emailconfig";
+        self.title = NSLocalizedStringFromTable(@"EPFLVPN", @"PocketCampus", nil);
+        self.gaiScreenName = @"/dashboard/settings/vpnconfig";
     }
     return self;
 }
@@ -65,7 +65,7 @@
 #pragma mark - Actions
 
 - (IBAction)startTapped {
-    [self trackAction:@"SetupEmail"];
+    [self trackAction:@"SetupVPN"];
     [self startGetUserAttribtesRequest]; // need to verify that session is valid before openining raw request in browser (openBrowser)
 }
 
@@ -95,7 +95,7 @@
 
 - (void)openBrowser {
     NSError* error = nil;
-    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:[[AuthenticationService sharedInstanceToRetain] pcProxiedRequest] withParameters:@{@"config":@"email"} error:&error];
+    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:[[AuthenticationService sharedInstanceToRetain] pcProxiedRequest] withParameters:@{@"config":@"vpn"} error:&error];
     if (error) {
         [PCUtils showUnknownErrorAlertTryRefresh:NO];
         return;
