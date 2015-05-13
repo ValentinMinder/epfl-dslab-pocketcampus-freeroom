@@ -37,9 +37,8 @@
 
 #import "AFNetworking.h"
 
-@interface PCEPFLVPNProfileViewController ()<AuthenticationServiceDelegate>
+@interface PCEPFLVPNProfileViewController ()
 
-@property (nonatomic, strong) AuthenticationService* authService;
 @property (nonatomic, strong) AFHTTPRequestOperation* profileURLOperation;
 
 @end
@@ -51,7 +50,6 @@
 - (instancetype)init {
     self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil] firstObject];
     if (self) {
-        self.authService = [AuthenticationService sharedInstanceToRetain];
         self.title = NSLocalizedStringFromTable(@"EPFLVPN", @"PocketCampus", nil);
         self.gaiScreenName = @"/dashboard/settings/vpnconfig";
     }
@@ -79,18 +77,17 @@
 
 - (IBAction)startTapped {
     [self trackAction:@"SetupVPN"];
-    [self startGetUserAttribtesRequest]; // need to verify that session is valid before openining raw request in browser (openBrowser)
+    [self startRequest]; // need to verify that session is valid before openining raw request in browser (openBrowser)
 }
 
 - (void)cancelTapped {
-    [self.authService cancelOperationsForDelegate:self];
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 #pragma mark - Private
 
-- (void)startGetUserAttribtesRequest {
+- (void)startRequest {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.removeFromSuperViewOnHide = YES;
@@ -99,14 +96,6 @@
     UITapGestureRecognizer* cancelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapped)];
     [hud addGestureRecognizer:cancelGesture];
     
-    NSMutableArray* attributes = [NSMutableArray arrayWithObjects:kAuthenticationEmailUserAttributeName, kAuthenticationGasparUserAttributeName, nil];
-    NSString* sessionId = [AuthenticationController sharedInstance].pocketCampusAuthSessionId ?: @"dummy";
-    UserAttributesRequest* request = [[UserAttributesRequest alloc] initWithSessionId:sessionId attributeNames:attributes];
-    [self.authService cancelOperationsForDelegate:self];
-    [self.authService getUserAttributesWithRequest:request delegate:self];
-}
-
-- (void)openBrowser {
     NSError* error = nil;
     
     NSURLRequest* pcRequest = [[AuthenticationService sharedInstanceToRetain] pcProxiedRequest];
@@ -114,76 +103,58 @@
     
     if (error) {
         [PCUtils showUnknownErrorAlertTryRefresh:NO];
-        CLSNSLog(@"!!ERROR : vpn profile request generation failed with error: %@", error);
         return;
     }
     
     [self.profileURLOperation cancel];
     [self.profileURLOperation setCompletionBlockWithSuccess:NULL failure:NULL];
     
+    __weak __typeof(self) welf = self;
     self.profileURLOperation = [[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [PCUtils showUnknownErrorAlertTryRefresh:NO]; //we want a 302, not a 2XX
+        [MBProgressHUD hideHUDForView:welf.view animated:YES];
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
+            [PCUtils showUnknownErrorAlertTryRefresh:NO];
+            return;
+        }
+        NSDictionary* json = responseObject;
+        NSError* error = nil;
+        NSURLRequest* finalRequest = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:pcRequest withParameters:json error:&error];
+        [[UIApplication sharedApplication] openURL:finalRequest.URL];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (operation.response.statusCode != 302) {
-            [PCUtils showUnknownErrorAlertTryRefresh:NO];
-            CLSNSLog(@"!!ERROR : vpn profile request failed with error: %@", error);
+        [MBProgressHUD hideHUDForView:welf.view animated:YES];
+        if (!operation.response) {
+            [PCUtils showConnectionToServerTimedOutAlert];
             return;
         }
-        NSString* profileURLString = operation.response.allHeaderFields[@"Location"];
-        if (profileURLString) {
-            [PCUtils showUnknownErrorAlertTryRefresh:NO];
-            CLSNSLog(@"!!ERROR : vpn profile request failed with error: %@", error);
-            return;
+        switch (operation.response.statusCode) {
+            case 407:
+            {
+                [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
+                    [welf startRequest];
+                } userCancelled:^{
+                    // Nothing to do
+                } failure:^(NSError *error) {
+                    [PCUtils showUnknownErrorAlertTryRefresh:NO];
+                }];
+                break;
+            }
+            default:
+                [PCUtils showUnknownErrorAlertTryRefresh:NO];
+                break;
         }
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:profileURLString]];
     }];
+    self.profileURLOperation.responseSerializer = [AFJSONResponseSerializer serializer];
     [self.profileURLOperation start];
-}
-
-#pragma mark - AuthenticationServiceDelegate
-
-- (void)getUserAttributesForRequest:(UserAttributesRequest *)request didReturn:(UserAttributesResponse *)response {
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    switch (response.statusCode) {
-        case AuthStatusCode_OK:
-        {
-            [self openBrowser];
-            break;
-        }
-        case AuthStatusCode_INVALID_SESSION:
-        {
-            __weak __typeof(self) welf = self;
-            [[AuthenticationController sharedInstance] addLoginObserver:self success:^{
-                [welf startGetUserAttribtesRequest];
-            } userCancelled:^{
-                // Nothing to do
-            } failure:^(NSError *error) {
-                [welf getUserAttributesFailedForRequest:request];
-            }];
-            break;
-        }
-        default:
-            [self getUserAttributesFailedForRequest:request];
-            break;
-    }
-}
-
-- (void)getUserAttributesFailedForRequest:(UserAttributesRequest *)request {
-    [MBProgressHUD hideHUDForView:self.view animated:NO];
-    [PCUtils showServerErrorAlert];
-}
-
-- (void)serviceConnectionToServerFailed {
-    [MBProgressHUD hideHUDForView:self.view animated:NO];
-    [PCUtils showConnectionToServerTimedOutAlert];
+    
 }
 
 #pragma mark - Dealloc
 
 - (void)dealloc
 {
-    [self.authService cancelOperationsForDelegate:self];
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [self.profileURLOperation cancel];
+    [self.profileURLOperation setCompletionBlockWithSuccess:NULL failure:NULL];
 }
 
 @end
