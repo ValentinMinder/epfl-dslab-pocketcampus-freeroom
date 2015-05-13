@@ -58,9 +58,21 @@
     return self;
 }
 
+#pragma mark - UIViewController overrides
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self trackScreen];
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if ([PCUtils isIdiomPad]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
 }
 
 #pragma mark - Actions

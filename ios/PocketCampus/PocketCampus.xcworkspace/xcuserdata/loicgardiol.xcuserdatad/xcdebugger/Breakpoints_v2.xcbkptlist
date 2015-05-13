@@ -7234,11 +7234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "453217836.483883"
+            timestampString = "453218428.27056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "-startGetUserAttribtesRequest"
             landmarkType = "5">
          </BreakpointContent>
@@ -7250,11 +7250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "453217836.483883"
+            timestampString = "453218428.27056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "-getUserAttributesForRequest:didReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7266,11 +7266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Controllers/Main/PCEPFLMailProfileViewController.m"
-            timestampString = "453217836.483883"
+            timestampString = "453218428.27056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
             landmarkName = "-openBrowser"
             landmarkType = "5">
          </BreakpointContent>

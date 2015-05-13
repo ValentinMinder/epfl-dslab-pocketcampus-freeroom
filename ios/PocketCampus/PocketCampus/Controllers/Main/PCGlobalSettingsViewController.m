@@ -83,6 +83,8 @@ static const int kUsageRow = 0;
 
 @end
 
+#pragma mark - Init
+
 @implementation PCGlobalSettingsViewController
 
 - (id)initWithMainController:(MainController*)mainController
@@ -95,6 +97,8 @@ static const int kUsageRow = 0;
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -122,6 +126,8 @@ static const int kUsageRow = 0;
     }
     
 }
+
+#pragma mark - Actions
 
 - (void)doneBarButtonPressed {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
