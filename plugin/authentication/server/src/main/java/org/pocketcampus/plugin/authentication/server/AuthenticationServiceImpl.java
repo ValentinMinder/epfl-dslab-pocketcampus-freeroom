@@ -3,7 +3,9 @@ package org.pocketcampus.plugin.authentication.server;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -60,65 +62,102 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 		return new HttpServlet() {
 
 
+			class ConfigRequest {
+				long timestamp = System.currentTimeMillis();
+				String sess;
+				String email;
+				String gaspar;
+				String sciper;
+				String lang; // can be null
+				String type; // email or vpn
+				String getfile;
+			}
+
+			Map<String, ConfigRequest> map = new ConcurrentHashMap<String, ConfigRequest>();
+
+			private void cleanup() {
+				Iterator<Map.Entry<String, ConfigRequest>> i = map.entrySet().iterator();
+				while(i.hasNext()) {
+					Map.Entry<String, ConfigRequest> e = i.next();
+					if(System.currentTimeMillis() - e.getValue().timestamp > 60000) {
+						i.remove();
+					}
+				}
+			}
 
 			@Override
 			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				String sess = req.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
-				if (sess == null) {
+				cleanup();
+
+				ConfigRequest cr = new ConfigRequest();
+				cr.sess = req.getHeader(PCConstants.HTTP_HEADER_AUTH_PCSESSID);
+				if(cr.sess != null) {
+					cr.email = getFieldFromSession(cr.sess, "`email`");
+					cr.gaspar = getFieldFromSession(cr.sess, "`gaspar`");
+					cr.sciper = getFieldFromSession(cr.sess, "`sciper`");
+				}
+				cr.lang = req.getHeader(PCConstants.HTTP_HEADER_USER_LANG_CODE);
+				cr.type = req.getParameter("config");
+				cr.getfile = req.getParameter("getfile");
+				if(cr.getfile != null) {
+					ConfigRequest mapped = map.get(cr.getfile);
+					if(mapped == null) {
+						resp.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+						return;
+					}
+					cr = mapped;
+				}
+
+
+				if (cr.sess == null || cr.gaspar == null || cr.email == null || cr.sciper == null) {
 					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
 					return;
 				}
-				String gaspar = getFieldFromSession(sess, "`gaspar`");
-				String email = getFieldFromSession(sess, "`email`");
-				if (gaspar == null || email == null) {
-					resp.setStatus(HttpURLConnection.HTTP_PROXY_AUTH);
-					return;
-				}
+
 
 				String pemFile = PocketCampusServer.CONFIG.getString("IOS_PROV_PROFILE_SIGNING_PEM_FILE");
 
-				if ("email".equals(req.getParameter("config"))) {
-					String nameForUuid = "IOS_EPFL_EMAIL_CONFIG " + email + " " + gaspar;
+				Map<String, String> xml = IosProvisionningProfiles.XML_MAP.get(cr.type);
 
-					UUID configurationPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " configuration payload uuid").getBytes());
-					UUID accountPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " account payload uuid").getBytes());
-
-					String body = IosProvisionningProfiles.EMAIL_XML_EN;
-					if("fr".equals(req.getHeader(PCConstants.HTTP_HEADER_USER_LANG_CODE))) {
-						body = IosProvisionningProfiles.EMAIL_XML_FR;
-					}
-					body = body.replace("USER_EMAIL", email)
-							.replace("USER_GASPAR", gaspar)
-							.replace("CONFIGURATION_PAYLOAD_UUID", configurationPayloadUuid.toString())
-							.replace("ACCOUNT_PAYLOAD_UUID", accountPayloadUuid.toString());
-
-					resp.setContentType("application/x-apple-aspen-config");
-					resp.setCharacterEncoding("UTF-8");
-					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_mail.mobileconfig\"");
-					//resp.getOutputStream().write(body.getBytes("UTF-8"));
-					IosProvisionningProfiles.sign(pemFile, body, resp.getOutputStream());
-				} else if ("vpn".equals(req.getParameter("config"))) {
-					String nameForUuid = "IOS_EPFL_VPN_CONFIG " + email + " " + gaspar;
-
-					UUID configurationPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " configuration payload uuid").getBytes());
-					UUID accountPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " account payload uuid").getBytes());
-
-					String body = IosProvisionningProfiles.VPN_XML_EN;
-					if("fr".equals(req.getHeader(PCConstants.HTTP_HEADER_USER_LANG_CODE))) {
-						body = IosProvisionningProfiles.VPN_XML_FR;
-					}
-					body = body.replace("USER_GASPAR", gaspar)
-							.replace("CONFIGURATION_PAYLOAD_UUID", configurationPayloadUuid.toString())
-							.replace("ACCOUNT_PAYLOAD_UUID", accountPayloadUuid.toString());
-
-					resp.setContentType("application/x-apple-aspen-config");
-					resp.setCharacterEncoding("UTF-8");
-					resp.setHeader("Content-Disposition", "attachment; filename=\"EPFL_vpn.mobileconfig\"");
-					//resp.getOutputStream().write(body.getBytes("UTF-8"));
-					IosProvisionningProfiles.sign(pemFile, body, resp.getOutputStream());
-				} else {
+				if(xml == null) {
 					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;
+
+				}
+
+
+
+				String nameForUuid = "ios epfl config " + cr.type + " " + cr.sciper;
+
+				UUID configurationPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " configuration payload uuid").getBytes());
+				UUID accountPayloadUuid = UUID.nameUUIDFromBytes((nameForUuid + " account payload uuid").getBytes());
+
+				String body = xml.get(cr.lang);
+				if(body == null) {
+					body = xml.get("en");
+				}
+				body = body.replace("USER_EMAIL", cr.email)
+						.replace("USER_GASPAR", cr.gaspar)
+						.replace("USER_SCIPER", cr.sciper)
+						.replace("CONFIGURATION_PAYLOAD_UUID", configurationPayloadUuid.toString())
+						.replace("ACCOUNT_PAYLOAD_UUID", accountPayloadUuid.toString());
+
+				if(cr.getfile == null) {
+					cr.getfile = UUID.randomUUID().toString();
+					map.put(cr.getfile, cr);
+					JsonObject reply = new JsonObject();
+					reply.addProperty("getfile", cr.getfile);
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resp.getOutputStream().write(new Gson().toJson(reply).getBytes("UTF-8"));
+
+				} else {
+					map.remove(cr.getfile);
+
+					resp.setContentType("application/x-apple-aspen-config");
+					resp.setCharacterEncoding("UTF-8");
+					resp.setHeader("Content-Disposition", "attachment; filename=\"pocketcampus.mobileconfig\"");
+					IosProvisionningProfiles.sign(pemFile, body, resp.getOutputStream());
 				}
 
 

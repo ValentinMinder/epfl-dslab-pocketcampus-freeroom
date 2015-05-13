@@ -4,13 +4,16 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IosProvisionningProfiles {
 
 
 
 
-    public static final String EMAIL_XML_EN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    private static final String EMAIL_XML_EN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE plist PUBLIC \"-//Apple Inc//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
             "<plist version=\"1.0\">\n" +
             "    <dict>\n" +
@@ -61,7 +64,7 @@ public class IosProvisionningProfiles {
             "</plist>";
 
 
-    public static final String EMAIL_XML_FR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    private static final String EMAIL_XML_FR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE plist PUBLIC \"-//Apple Inc//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
             "<plist version=\"1.0\">\n" +
             "    <dict>\n" +
@@ -111,7 +114,7 @@ public class IosProvisionningProfiles {
             "    </dict>\n" +
             "</plist>";
 
-    public static final String VPN_XML_EN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    private static final String VPN_XML_EN = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE plist PUBLIC \"-//Apple Inc//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
             "<plist version=\"1.0\">\n" +
             "    <dict>\n" +
@@ -178,7 +181,7 @@ public class IosProvisionningProfiles {
             "    </dict>\n" +
             "</plist>";
 
-    public static final String VPN_XML_FR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    private static final String VPN_XML_FR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE plist PUBLIC \"-//Apple Inc//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
             "<plist version=\"1.0\">\n" +
             "    <dict>\n" +
@@ -247,7 +250,6 @@ public class IosProvisionningProfiles {
 
 
         public static void sign(String pemFile, String xml, OutputStream out) throws IOException {
-                //openssl smime -sign -signer file.pem -inkey file.pem -certfile file.pem -nodetach -outform der
                 Process proc = Runtime.getRuntime().exec(new String[]{
                         "openssl", "smime", "-sign",
                         "-signer", pemFile,
@@ -259,7 +261,18 @@ public class IosProvisionningProfiles {
                 proc.getOutputStream().close();
                 IOUtils.copy(proc.getInputStream(), out);
 
-                //String status = IOUtils.toString(proc.getInputStream(), "UTF-8");
-
         }
+
+    public static final Map<String, Map<String, String>> XML_MAP = new HashMap<String, Map<String, String>>();
+
+    static {
+        XML_MAP.put("email", new HashMap<String, String>());
+        XML_MAP.get("email").put("en", EMAIL_XML_EN);
+        XML_MAP.get("email").put("fr", EMAIL_XML_FR);
+
+        XML_MAP.put("vpn", new HashMap<String, String>());
+        XML_MAP.get("vpn").put("en", VPN_XML_EN);
+        XML_MAP.get("vpn").put("fr", VPN_XML_FR);
+    }
+
 }
