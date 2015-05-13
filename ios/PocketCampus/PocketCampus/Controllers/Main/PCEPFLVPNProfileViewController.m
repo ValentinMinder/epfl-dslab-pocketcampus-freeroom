@@ -40,6 +40,7 @@
 @interface PCEPFLVPNProfileViewController ()<AuthenticationServiceDelegate>
 
 @property (nonatomic, strong) AuthenticationService* authService;
+@property (nonatomic, strong) AFHTTPRequestOperation* profileURLOperation;
 
 @end
 
@@ -95,12 +96,36 @@
 
 - (void)openBrowser {
     NSError* error = nil;
-    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:[[AuthenticationService sharedInstanceToRetain] pcProxiedRequest] withParameters:@{@"config":@"vpn"} error:&error];
+    
+    NSURLRequest* pcRequest = [[AuthenticationService sharedInstanceToRetain] pcProxiedRequest];
+    NSURLRequest* request = [[AFHTTPRequestSerializer serializer] requestBySerializingRequest:pcRequest withParameters:@{@"config": @"vpn"} error:&error];
+    
     if (error) {
         [PCUtils showUnknownErrorAlertTryRefresh:NO];
+        CLSNSLog(@"!!ERROR : vpn profile request generation failed with error: %@", error);
         return;
     }
-    [[UIApplication sharedApplication] openURL:request.URL];
+    
+    [self.profileURLOperation cancel];
+    [self.profileURLOperation setCompletionBlockWithSuccess:NULL failure:NULL];
+    
+    self.profileURLOperation = [[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [PCUtils showUnknownErrorAlertTryRefresh:NO]; //we want a 302, not a 2XX
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (operation.response.statusCode != 302) {
+            [PCUtils showUnknownErrorAlertTryRefresh:NO];
+            CLSNSLog(@"!!ERROR : vpn profile request failed with error: %@", error);
+            return;
+        }
+        NSString* profileURLString = operation.response.allHeaderFields[@"Location"];
+        if (profileURLString) {
+            [PCUtils showUnknownErrorAlertTryRefresh:NO];
+            CLSNSLog(@"!!ERROR : vpn profile request failed with error: %@", error);
+            return;
+        }
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:profileURLString]];
+    }];
+    [self.profileURLOperation start];
 }
 
 #pragma mark - AuthenticationServiceDelegate
