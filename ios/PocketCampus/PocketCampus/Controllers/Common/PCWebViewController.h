@@ -61,6 +61,12 @@
 @property (nonatomic) BOOL automaticallyHandlesInternallyRecognizedURLs;
 
 /**
+ * If YES, a toolbar is displayed with back/next web flow control buttons
+ * Default: YES
+ */
+@property (nonatomic) BOOL showNavigationControls;
+
+/**
  * Equivalent of UIWebViewDelegate webView:shouldLoad...:
  * Called *after* dealing with automaticallyHandlesInternallyRecognizedURLs if URL was not recognized.
  * Defaut: nil (default behavior)

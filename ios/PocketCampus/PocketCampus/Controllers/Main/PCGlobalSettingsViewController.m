@@ -51,6 +51,8 @@
 
 #import "PCEPFLVPNProfileViewController.h"
 
+#import "PCWhatsNewViewController.h"
+
 #import "PCUsageViewController.h"
 
 #import "PCDebugConfigSelectionViewController.h"
@@ -72,6 +74,7 @@ static const int kRestoreDefaultMainMenuRow = 1;
 static const int kRatePCRow = 0;
 static const int kLikePCFBRow = 1;
 static const int kAboutRow = 2;
+static const int kWhatsNewRow = 3;
 
 static const int kUsageRow = 0;
 
@@ -228,6 +231,13 @@ static const int kUsageRow = 0;
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
+                case kWhatsNewRow:
+                {
+                    [self trackAction:@"OpenWhatsNew"];
+                    PCWhatsNewViewController* viewController = [PCWhatsNewViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
                 default:
                     break;
             }
@@ -376,6 +386,12 @@ static const int kUsageRow = 0;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
                     cell.imageView.image = [UIImage imageNamed:@"Info"];
                     break;
+                case kWhatsNewRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"Info"];
+                    break;
                 default:
                     break;
             }
@@ -410,7 +426,7 @@ static const int kUsageRow = 0;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
-            return 3;
+            return 4;
         case kMiscSection:
             return 1;
         case kDebugSection:

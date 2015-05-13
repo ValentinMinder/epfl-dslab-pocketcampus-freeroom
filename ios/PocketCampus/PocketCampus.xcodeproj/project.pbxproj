@@ -292,6 +292,8 @@
 		329E1B3C16E693130054C3A8 /* FavoriteNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */; };
 		329E1B3F16E696F80054C3A8 /* FavoriteGlowNavBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */; };
 		329E1B4016E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */; };
+		32A20C831B03A7EC000C532D /* PCWhatsNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A20C821B03A7EC000C532D /* PCWhatsNewViewController.m */; };
+		32A20C861B03A980000C532D /* PCWhatsNew.html in Resources */ = {isa = PBXBuildFile; fileRef = 32A20C881B03A980000C532D /* PCWhatsNew.html */; };
 		32A379F61A6808B30079D208 /* CamiproLarge@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A379F51A6808B30079D208 /* CamiproLarge@3x.png */; };
 		32A379F81A6808BD0079D208 /* Camipro@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A379F71A6808BD0079D208 /* Camipro@3x.png */; };
 		32A379FA1A6809B80079D208 /* Directory@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A379F91A6809B80079D208 /* Directory@3x.png */; };
@@ -1075,6 +1077,10 @@
 		329E1B3A16E693130054C3A8 /* FavoriteNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteNavBarButton@2x.png"; sourceTree = "<group>"; };
 		329E1B3D16E696F80054C3A8 /* FavoriteGlowNavBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteGlowNavBarButton.png; sourceTree = "<group>"; };
 		329E1B3E16E696F80054C3A8 /* FavoriteGlowNavBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteGlowNavBarButton@2x.png"; sourceTree = "<group>"; };
+		32A20C811B03A7EC000C532D /* PCWhatsNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCWhatsNewViewController.h; sourceTree = "<group>"; };
+		32A20C821B03A7EC000C532D /* PCWhatsNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCWhatsNewViewController.m; sourceTree = "<group>"; };
+		32A20C871B03A980000C532D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/PCWhatsNew.html; sourceTree = "<group>"; };
+		32A20C891B03A981000C532D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/PCWhatsNew.html; sourceTree = "<group>"; };
 		32A379F51A6808B30079D208 /* CamiproLarge@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CamiproLarge@3x.png"; sourceTree = "<group>"; };
 		32A379F71A6808BD0079D208 /* Camipro@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camipro@3x.png"; sourceTree = "<group>"; };
 		32A379F91A6809B80079D208 /* Directory@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Directory@3x.png"; sourceTree = "<group>"; };
@@ -1626,6 +1632,7 @@
 				32777B4215D1BFB400A29F56 /* PCAbout.html */,
 				328A72E1184A503C002C5A6B /* PCSplashView.h */,
 				328A72E2184A503C002C5A6B /* PCSplashView.m */,
+				32A20C881B03A980000C532D /* PCWhatsNew.html */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -2179,6 +2186,8 @@
 				32CBF0621634812C00FD92E5 /* PCSplashViewController.m */,
 				320A05B015B02C240057B15C /* PCGlobalSettingsViewController.h */,
 				320A05B115B02C240057B15C /* PCGlobalSettingsViewController.m */,
+				32A20C811B03A7EC000C532D /* PCWhatsNewViewController.h */,
+				32A20C821B03A7EC000C532D /* PCWhatsNewViewController.m */,
 				3293AD1E15D1BC7C0097D414 /* PCAboutViewController.h */,
 				3293AD1F15D1BC7C0097D414 /* PCAboutViewController.m */,
 				3245DF2E18881B5F0072E086 /* PCUsageViewController.h */,
@@ -3443,6 +3452,7 @@
 				32E68F3C1B02216E0040C9C7 /* PCEPFLVPNProfileViewController.xib in Resources */,
 				32A37A781A6833D10079D208 /* SettingsBarButton@3x.png in Resources */,
 				32342A8117F43347009C05FA /* DirectoryEmptyPicture@2x.png in Resources */,
+				32A20C861B03A980000C532D /* PCWhatsNew.html in Resources */,
 				32CCB500155546C100220282 /* NewsPlugin.strings in Resources */,
 				32875E61194CF3100071CDF8 /* PCWebView.xib in Resources */,
 				32CCB510155567CB00220282 /* News.png in Resources */,
@@ -3937,6 +3947,7 @@
 				32710E91156507DA00DE6984 /* CamiproViewController.m in Sources */,
 				326494C11A07A44A00C63622 /* PCTabBarController.m in Sources */,
 				3257C20D1570F99C00E626A4 /* TransportHelpViewController.m in Sources */,
+				32A20C831B03A7EC000C532D /* PCWhatsNewViewController.m in Sources */,
 				32308C0D18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m in Sources */,
 				320A05B215B02C240057B15C /* PCGlobalSettingsViewController.m in Sources */,
 				32728D6C191A26830031B52B /* EPFLTileOverlay.m in Sources */,
@@ -4211,6 +4222,15 @@
 				32975CF419A34EBB00146390 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		32A20C881B03A980000C532D /* PCWhatsNew.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32A20C871B03A980000C532D /* en */,
+				32A20C891B03A981000C532D /* fr */,
+			);
+			name = PCWhatsNew.html;
 			sourceTree = "<group>";
 		};
 		32A63A4D1535FFF400237841 /* TransportTripsHeaderCell.xib */ = {

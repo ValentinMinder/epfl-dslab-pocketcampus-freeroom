@@ -54,6 +54,7 @@
         self.originalURL = url;
         self.title = title;
         self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
     }
     return self;
 }
@@ -65,6 +66,7 @@
         self.originalRequest = request;
         self.title = title;
         self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
     }
     return self;
 }
@@ -76,8 +78,16 @@
         self.htmlString = htmlString;
         self.title = title;
         self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
     }
     return self;
+}
+
+#pragma mark - Public
+
+- (void)setShowNavigationControls:(BOOL)showNavigationControls {
+    _showNavigationControls = showNavigationControls;
+    self.navigationController.toolbarHidden = !self.showNavigationControls;
 }
 
 #pragma mark - UIViewController overrides
@@ -109,7 +119,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.translucent = NO;
-    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbarHidden = !self.showNavigationControls;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

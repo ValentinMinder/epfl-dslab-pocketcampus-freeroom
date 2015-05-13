@@ -65,6 +65,8 @@
 "ConfigureEPFLVPN" = "Installer le VPN EPFL";
 "Preparing" = "Préparation";
 "TapToCancel" = "Touchez pour annuler";
+"WhatsNew" = "Nouveautés";
+"WhatsNewInUpdate" = "Nouveautés de cette mise à jour";
 
 //Accessbility
 
