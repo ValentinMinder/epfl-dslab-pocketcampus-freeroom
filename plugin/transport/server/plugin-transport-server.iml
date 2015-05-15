@@ -30,8 +30,8 @@
     <orderEntry type="module" module-name="platform-shared" exported="" />
     <orderEntry type="module" module-name="plugin-transport-shared" exported="" />
     <orderEntry type="library" exported="" name="libthrift-0.9.2" level="project" />
-    <orderEntry type="library" exported="" name="javax.servlet-api-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="slf4j-simple-1.5.8" level="project" />
+    <orderEntry type="library" exported="" name="javax.servlet-api-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
     <orderEntry type="library" exported="" name="commons-lang-2.6" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.5.8" level="project" />

@@ -92,6 +92,7 @@ public final class CourseServiceTests {
 				response.getSectionsSize() > 0);
 	}
 
+	@Test
 	public void invisibleSectionsAreHidden() {
 		HttpClient client = new TestHttpClient("TestSectionList.json");
 		CourseService service = new CourseServiceImpl(new TestAuthenticator("123"), client, "Token");
@@ -183,7 +184,7 @@ public final class CourseServiceTests {
 		assertFalse("The first resource should not be a folder.",
 				resource.isSetFolder());
 		assertEquals("The first resource's name should be fetched properly.",
-				"Attribution Aux Salles Examen Analyse II",
+				"Attribution Aux Salles Examen Analyse I.I",
 				resource.getFile().getName());
 		assertEquals("the first resource's extension should be fetched properly",
 				"pdf",
