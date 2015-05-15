@@ -18,7 +18,7 @@ import java.util.Locale;
 
 /**
  * Implementation of CourseService using Moodle's REST API.
- * <p/>
+ * <p>
  * TODO: In getSections, make sure the user has access to the course.
  *
  * @author Solal Pirelli <solal@pocketcampus.org>
@@ -231,8 +231,9 @@ public final class CourseServiceImpl implements CourseService {
 
                     // > 0 rather than == 1 for file and URL because Moodle allows multiple files inside a file...
                     if (module.modname.equals(MODULE_FILE) && module.contents != null && module.contents.length > 0) {
-                        final String name = FilenameUtils.removeExtension(moduleName);
                         final String extension = FilenameUtils.getExtension(module.contents[0].filename);
+                        // Don't remove the extension if it's not there
+                        final String name = moduleName.endsWith(extension) ? FilenameUtils.removeExtension(moduleName) : moduleName;
                         final String iconUrl = module.modicon.replace(FILE_ICON_SIZE, FILE_ICON_SIZE_TOKEN);
 
                         final MoodleFile2 file = new MoodleFile2(name, extension, module.contents[0].fileurl).setIcon(iconUrl);
