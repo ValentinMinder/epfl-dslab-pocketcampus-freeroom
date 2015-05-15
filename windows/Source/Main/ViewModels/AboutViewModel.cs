@@ -20,7 +20,7 @@ namespace PocketCampus.Main.ViewModels
 
         public string AppVersion
         {
-            get { return typeof( AboutViewModel ).GetTypeInfo().Assembly.GetName().Version.ToString( 2 ); }
+            get { return typeof( AboutViewModel ).GetTypeInfo().Assembly.GetName().Version.ToString( 3 ); }
         }
 
 
