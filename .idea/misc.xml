@@ -3,6 +3,58 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/platform/android" />
+    <file type="web" url="file://$PROJECT_DIR$/platform/server" />
+    <file type="web" url="file://$PROJECT_DIR$/platform/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/dashboard/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/server" />
+  </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
