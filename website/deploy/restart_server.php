@@ -5,7 +5,8 @@ include_once "vars.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$u = uniqid('');
-	file_put_contents("private/commands", "php start_server.php $team ; echo $u \n", FILE_APPEND | LOCK_EX);
+	$just_stop = (empty($_GET["just_stop"]) ? "" : "just_stop");
+	file_put_contents("private/commands", "php start_server.php $team $just_stop ; echo $u \n", FILE_APPEND | LOCK_EX);
 	$watchdog = 0;
 	do {
 		sleep(1);
@@ -29,9 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <form action="#" method="post">
-<p>(this button submits a request to restart your server; the old instance will be killed)</p>
+<p>(this button submits a request to (re)start your server; the old instance, if any, will be killed)</p>
 <input type="hidden" name="file"><br>
-<input type="submit" value="submit">
+<input type="submit" value="(re)start">
+</form>
+
+<form action="?just_stop=1" method="post">
+<p>(to just stop the currently running server, use the following button)</p>
+<input type="hidden" name="file"><br>
+<input type="submit" value="stop">
 </form>
 
 

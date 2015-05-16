@@ -47,6 +47,9 @@ while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team- | grep -v 
 
 }
 
+if(!empty($argv[2])) { // just_stop
+	die("done\n");
+}
 
 echo "starting new server\n";
 
