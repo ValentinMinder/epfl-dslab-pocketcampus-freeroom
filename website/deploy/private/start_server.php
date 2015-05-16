@@ -30,7 +30,7 @@ $u = uniqid('');
 $sig = "TERM";
 $try = 0;
 
-while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' '"))  ) {
+while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team- | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' '"))  ) {
 
 	echo "sending signal $sig to process $proc\n";
 	system("kill -$sig $proc");
