@@ -6,7 +6,7 @@ echo "<pre>";
 
 echo "ls\n";
 
-foreach(glob("bin/pocketcampus-server-$team*") as $file) {
+foreach(glob("bin/pocketcampus-server-$team-*") as $file) {
 	echo "<a href=\"$file\">" . basename($file) . "</a>\n";
 }
 
