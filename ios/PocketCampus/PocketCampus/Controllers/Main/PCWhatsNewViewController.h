@@ -35,4 +35,11 @@
 
 - (instancetype)init;
 
+/**
+ * If set, a Done button is displayed as right bar button item, and this block
+ * is executed when tapped.
+ * Default: nil
+ */
+@property (nonatomic, copy) void (^doneTappedBlock)();
+
 @end

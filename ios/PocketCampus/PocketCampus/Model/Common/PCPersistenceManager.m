@@ -34,6 +34,8 @@
 
 #import "NSUserDefaults+Additions.h"
 
+NSString* PCPersistenceManagerPocketCampusPlatformPluginName = @"pocketcampus";
+
 static NSString* const kPCUserDefaultsSharedAppGroupName = @"group.org.pocketcampus";
 
 @interface PCUserDefaults : NSUserDefaults
@@ -402,6 +404,9 @@ static NSString* const kBundleIdentifier = @"org.pocketcampus";
 
 + (void)checkPluginName:(NSString*)pluginName {
 #ifdef TARGET_IS_MAIN_APP
+    if ([pluginName isEqualToString:PCPersistenceManagerPocketCampusPlatformPluginName]) {
+        return;
+    }
     if (![[MainController publicController] isPluginAnycaseIdentifierValid:pluginName]) {
         [NSException raise:@"Illegal argument" format:@"pluginName '%@' is not valid", pluginName];
     }

@@ -25,38 +25,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 13.05.15.
+//  Created by Loïc Gardiol on 18.05.15.
 
-#import "PCWhatsNewViewController.h"
+#import "PCInfoCell.h"
 
-#import "UIBarButtonItem+LGAAdditions.h"
+@import CoreText;
 
-@interface PCWhatsNewViewController ()
+@interface PCInfoCell ()
+
+@property (nonatomic, weak) IBOutlet UILabel* label;
 
 @end
 
-@implementation PCWhatsNewViewController
+@implementation PCInfoCell
 
 #pragma mark - Init
 
-- (instancetype)init {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"PCWhatsNew" ofType:@"html"];
-    NSError* error = nil;
-    NSString* htmlString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    self = [super initWithHTMLString:htmlString title:NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil)];
+- (instancetype)initWithAttributedString:(NSAttributedString*)attrStr {
+    NSArray* elements = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:nil options:nil];
+    self = (PCInfoCell*)elements[0];
     if (self) {
-        self.showNavigationControls = NO;
+        self.label.attributedText = attrStr;
     }
     return self;
 }
 
 #pragma mark - Public
 
-- (void)setDoneTappedBlock:(void (^)())doneTappedBlock {
-    _doneTappedBlock = doneTappedBlock;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone lga_actionBlock:^(UIBarButtonItem *sender) {
-        doneTappedBlock();
-    }];
+- (CGFloat)preferredHeightInTableView:(UITableView*)tableView {
+    NSAttributedString* attrString = self.label.attributedText;
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
+    CGSize targetSize = CGSizeMake(tableView.frame.size.width-52.0, CGFLOAT_MAX); //account for text left and right insets of the text view
+    CGSize size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attrString length]), NULL, targetSize, NULL);
+    CFRelease(framesetter);
+    return size.height+20.0;
+}
+
+#pragma mark - Private
+
+- (IBAction)closeTapped {
+    if (self.closeButtonTapped) {
+        self.closeButtonTapped();
+    }
 }
 
 @end

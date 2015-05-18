@@ -29,6 +29,11 @@
 
 @import Foundation;
 
+/**
+ * Use this as argument for methods that take plugin name as parameter to persist elements that are related to PocketCampus platform itself.
+ */
+extern NSString* PCPersistenceManagerPocketCampusPlatformPluginName;
+
 @interface PCPersistenceManager : NSObject
 
 #pragma mark - Persistence migration

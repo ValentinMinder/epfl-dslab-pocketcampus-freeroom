@@ -67,6 +67,9 @@
 "TapToCancel" = "Tap to cancel";
 "WhatsNew" = "What's new";
 "WhatsNewInUpdate" = "What's new in this update?";
+"TapForMoreInfo" = "Tap for more info";
+
+"WhatsNewInVersionContentShort" = "EPFL email, EPFL VPN.";
 
 //Accessbility
 

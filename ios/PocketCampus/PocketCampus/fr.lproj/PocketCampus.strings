@@ -67,6 +67,9 @@
 "TapToCancel" = "Touchez pour annuler";
 "WhatsNew" = "Nouveautés";
 "WhatsNewInUpdate" = "Nouveautés de cette mise à jour";
+"TapForMoreInfo" = "Touchez pour plus d'infos";
+
+"WhatsNewInVersionContentShort" = "Emails EPFL, VPN EPFL.";
 
 //Accessbility
 

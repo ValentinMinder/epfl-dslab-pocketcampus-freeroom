@@ -61,6 +61,8 @@
 		3216C95A16A609CA0050D17D /* DirectoryProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3216C95916A609CA0050D17D /* DirectoryProfilePictureView.xib */; };
 		3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE091508E31200BF94F7 /* FoodController.m */; };
 		3217CE0F1508F92700BF94F7 /* FoodMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217CE0E1508F92700BF94F7 /* FoodMainViewController.m */; };
+		3217E5791B09EDAF0081CDBC /* PCInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3217E5771B09EDAF0081CDBC /* PCInfoCell.m */; };
+		3217E57A1B09EDAF0081CDBC /* PCInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3217E5781B09EDAF0081CDBC /* PCInfoCell.xib */; };
 		3218CD2415B8359F00CEB238 /* MoodleLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3218CD2315B8359F00CEB238 /* MoodleLarge.png */; };
 		3219EF5114FCDE4900A271CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5014FCDE4900A271CD /* UIKit.framework */; };
 		3219EF5314FCDE4900A271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219EF5214FCDE4900A271CD /* Foundation.framework */; };
@@ -767,6 +769,9 @@
 		3217CE091508E31200BF94F7 /* FoodController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodController.m; sourceTree = "<group>"; };
 		3217CE0D1508F92700BF94F7 /* FoodMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodMainViewController.h; sourceTree = "<group>"; };
 		3217CE0E1508F92700BF94F7 /* FoodMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FoodMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		3217E5761B09EDAF0081CDBC /* PCInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCInfoCell.h; sourceTree = "<group>"; };
+		3217E5771B09EDAF0081CDBC /* PCInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCInfoCell.m; sourceTree = "<group>"; };
+		3217E5781B09EDAF0081CDBC /* PCInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PCInfoCell.xib; sourceTree = "<group>"; };
 		3218CD2315B8359F00CEB238 /* MoodleLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoodleLarge.png; sourceTree = "<group>"; };
 		3219EF4C14FCDE4900A271CD /* PocketCampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketCampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3219EF5014FCDE4900A271CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -2232,6 +2237,9 @@
 				3247CAF715135FD800105A71 /* PCTableViewSectionHeader.m */,
 				3241F1DC15B4AB9B00C7DF3A /* PCEditableTableViewCell.h */,
 				3241F1DD15B4AB9B00C7DF3A /* PCEditableTableViewCell.m */,
+				3217E5761B09EDAF0081CDBC /* PCInfoCell.h */,
+				3217E5771B09EDAF0081CDBC /* PCInfoCell.m */,
+				3217E5781B09EDAF0081CDBC /* PCInfoCell.xib */,
 				32BA306F1645D31900909D82 /* PCCenterMessageCell.h */,
 				32BA30701645D31A00909D82 /* PCCenterMessageCell.m */,
 				327412E3167E824F001E8C62 /* PCTableViewCellAdditions.h */,
@@ -3428,6 +3436,7 @@
 				32A37A7C1A68346E0079D208 /* FilterBarButton@3x.png in Resources */,
 				32CAE432153628C100AB17CC /* TransportTripPartsView.xib in Resources */,
 				32125BBF1536F215009B8D37 /* TransportFeetConnection.png in Resources */,
+				3217E57A1B09EDAF0081CDBC /* PCInfoCell.xib in Resources */,
 				32125BC01536F215009B8D37 /* TransportFeetConnection@2x.png in Resources */,
 				32AA25A41A0A9F1A00146D68 /* MealType_PASTA@2x.png in Resources */,
 				3207A38619ED5B7C0041DF0B /* CloudPrintPOOL1InfoViewController.xib in Resources */,
@@ -3913,6 +3922,7 @@
 				324151D515373B5900CCFB22 /* map.m in Sources */,
 				324151D815373BA300CCFB22 /* MapService.m in Sources */,
 				32456C0A184373DE00993F8B /* TransportNextDeparturesCell.m in Sources */,
+				3217E5791B09EDAF0081CDBC /* PCInfoCell.m in Sources */,
 				324151F415377B4C00CCFB22 /* MapItemAnnotation.m in Sources */,
 				3232C45919B8A0BF002BA3C6 /* CloudPrintModelAdditions.m in Sources */,
 				3283C4D41A1D012F00B7ED55 /* CloudPrintPreviewViewController.m in Sources */,

@@ -25,38 +25,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 13.05.15.
+//  Created by Loïc Gardiol on 18.05.15.
 
-#import "PCWhatsNewViewController.h"
+@import UIKit;
 
-#import "UIBarButtonItem+LGAAdditions.h"
+@interface PCInfoCell : PCTableViewCellAdditions
 
-@interface PCWhatsNewViewController ()
+- (instancetype)initWithAttributedString:(NSAttributedString*)attrStr;
 
-@end
+/**
+ * Executed when close button is tapped
+ * Default: nil
+ */
+@property (nonatomic, copy) void (^closeButtonTapped)();
 
-@implementation PCWhatsNewViewController
-
-#pragma mark - Init
-
-- (instancetype)init {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"PCWhatsNew" ofType:@"html"];
-    NSError* error = nil;
-    NSString* htmlString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    self = [super initWithHTMLString:htmlString title:NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil)];
-    if (self) {
-        self.showNavigationControls = NO;
-    }
-    return self;
-}
-
-#pragma mark - Public
-
-- (void)setDoneTappedBlock:(void (^)())doneTappedBlock {
-    _doneTappedBlock = doneTappedBlock;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone lga_actionBlock:^(UIBarButtonItem *sender) {
-        doneTappedBlock();
-    }];
-}
+- (CGFloat)preferredHeightInTableView:(UITableView*)tableView;
 
 @end
