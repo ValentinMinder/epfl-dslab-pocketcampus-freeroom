@@ -351,6 +351,7 @@ static NSString* kMainMenuWhatsNewCellLastHiddenVersionStringKey = @"MainMenuWha
             [viewController setDoneTappedBlock:^{
                 [welf dismissViewControllerAnimated:YES completion:NULL];
             }];
+            [self trackAction:@"ShowWhatsNew"];
             [self.navigationController presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:^{
                 [welf.tableView deselectRowAtIndexPath:indexPath animated:NO];
             }];
