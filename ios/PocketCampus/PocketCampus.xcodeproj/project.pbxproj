@@ -83,6 +83,9 @@
 		322207F31688FFFA003F6622 /* NewsItem.html in Resources */ = {isa = PBXBuildFile; fileRef = 322207F21688FFFA003F6622 /* NewsItem.html */; };
 		322207F91689E3A3003F6622 /* PCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F61689E3A3003F6622 /* PCUtils.m */; };
 		322207FA1689E3A3003F6622 /* PCValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 322207F81689E3A3003F6622 /* PCValues.m */; };
+		3223BBE61B0A5121009C26D0 /* MagicWand.png in Resources */ = {isa = PBXBuildFile; fileRef = 3223BBE31B0A5121009C26D0 /* MagicWand.png */; };
+		3223BBE71B0A5121009C26D0 /* MagicWand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3223BBE41B0A5121009C26D0 /* MagicWand@2x.png */; };
+		3223BBE81B0A5121009C26D0 /* MagicWand@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3223BBE51B0A5121009C26D0 /* MagicWand@3x.png */; };
 		32290ACF18200A0A005869E7 /* FoodSplashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */; };
 		32290AD118200A25005869E7 /* FoodSplashDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD018200A25005869E7 /* FoodSplashDetailView.xib */; };
 		32290AD318200C68005869E7 /* FoodLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32290AD218200C67005869E7 /* FoodLarge@2x.png */; };
@@ -800,6 +803,9 @@
 		322207F61689E3A3003F6622 /* PCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCUtils.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		322207F71689E3A3003F6622 /* PCValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCValues.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		322207F81689E3A3003F6622 /* PCValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCValues.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		3223BBE31B0A5121009C26D0 /* MagicWand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MagicWand.png; sourceTree = "<group>"; };
+		3223BBE41B0A5121009C26D0 /* MagicWand@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MagicWand@2x.png"; sourceTree = "<group>"; };
+		3223BBE51B0A5121009C26D0 /* MagicWand@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MagicWand@3x.png"; sourceTree = "<group>"; };
 		32290ACD18200A0A005869E7 /* FoodSplashDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodSplashDetailViewController.h; sourceTree = "<group>"; };
 		32290ACE18200A0A005869E7 /* FoodSplashDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodSplashDetailViewController.m; sourceTree = "<group>"; };
 		32290AD018200A25005869E7 /* FoodSplashDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FoodSplashDetailView.xib; sourceTree = "<group>"; };
@@ -1859,6 +1865,9 @@
 				3289F2B5183FAB8C00D833C2 /* LocationArrow2Active.png */,
 				3289F2B6183FAB8C00D833C2 /* LocationArrow2Active@2x.png */,
 				32A37A691A6831C00079D208 /* LocationArrow2Active@3x.png */,
+				3223BBE31B0A5121009C26D0 /* MagicWand.png */,
+				3223BBE41B0A5121009C26D0 /* MagicWand@2x.png */,
+				3223BBE51B0A5121009C26D0 /* MagicWand@3x.png */,
 				32B13A3D1634B0F4007B54A1 /* MainMenuNavbar.png */,
 				32B13A3E1634B0F4007B54A1 /* MainMenuNavbar@2x.png */,
 				32A37A6D1A6832960079D208 /* MainMenuNavbar@3x.png */,
@@ -3418,6 +3427,7 @@
 				32506CFE181D4195003F08D7 /* MoodleLarge@2x.png in Resources */,
 				27B74CE619A205E6006B2F17 /* RecommendedApps.png in Resources */,
 				327513311825465D0037FE00 /* FavoriteCorner.png in Resources */,
+				3223BBE71B0A5121009C26D0 /* MagicWand@2x.png in Resources */,
 				32A37A381A6829E40079D208 /* ArrowUpRightCircleAccessory@3x.png in Resources */,
 				326F5A8519BDCE8C000693A2 /* PrintBarButton.png in Resources */,
 				324A599A151DFDF700977F33 /* TransportAddStationView.xib in Resources */,
@@ -3607,6 +3617,7 @@
 				322207F11688F101003F6622 /* NewsItemView.xib in Resources */,
 				32D1DE18184663C700D0C866 /* TransportTripCell.xib in Resources */,
 				32E0E31A194B206D003251CC /* FilterBarButtonSelected@2x.png in Resources */,
+				3223BBE61B0A5121009C26D0 /* MagicWand.png in Resources */,
 				322207F31688FFFA003F6622 /* NewsItem.html in Resources */,
 				32A37A601A6830C40079D208 /* Info@3x.png in Resources */,
 				32E0E315194B1FDD003251CC /* FilterBarButton.png in Resources */,
@@ -3653,6 +3664,7 @@
 				32150DD9197D6D0400CCF2AB /* FolderIcon@2x.png in Resources */,
 				32A37A561A682F400079D208 /* FavoriteGlowNavBarButtonLandscape@3x.png in Resources */,
 				328D382A1747A8C9006FE6F3 /* EventsTagView.xib in Resources */,
+				3223BBE81B0A5121009C26D0 /* MagicWand@3x.png in Resources */,
 				32C509EA17FC6D73005A5635 /* SortBarButton.png in Resources */,
 				325F1FBB19FA95470019CFCB /* CloudPrintExtensionSafari@2x.png in Resources */,
 				32DE5B2517F1FB6800E03423 /* DirectoryPersonView.xib in Resources */,

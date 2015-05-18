@@ -390,7 +390,7 @@ static const int kUsageRow = 0;
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"Info"];
+                    cell.imageView.image = [UIImage imageNamed:@"MagicWand"];
                     break;
                 default:
                     break;
