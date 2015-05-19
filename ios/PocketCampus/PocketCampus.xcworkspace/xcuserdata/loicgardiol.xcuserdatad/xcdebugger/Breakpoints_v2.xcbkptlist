@@ -219,8 +219,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "326"
             endingLineNumber = "326"
-            landmarkName = "-tableView:heightForRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation DirectoryPersonViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -235,7 +235,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "336"
             endingLineNumber = "336"
-            landmarkName = "-tableView:heightForHeaderInSection:"
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
             <Actions>
                <BreakpointActionProxy
@@ -275,8 +275,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "149"
             endingLineNumber = "149"
-            landmarkName = "@implementation DirectoryPersonViewController"
-            landmarkType = "3">
+            landmarkName = "-supportedInterfaceOrientations"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -323,8 +323,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "237"
             endingLineNumber = "237"
-            landmarkName = "-newPersonViewController:didCompleteWithNewPerson:"
-            landmarkType = "5">
+            landmarkName = "@implementation DirectoryPersonViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -6025,11 +6025,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PocketCampus/Misc/PCGAITracker.m"
-            timestampString = "444586697.141391"
+            timestampString = "453730084.346168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "NS_EXTENSION_UNAVAILABLE_IOS()"
             landmarkType = "7">
          </BreakpointContent>

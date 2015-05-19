@@ -84,6 +84,7 @@ static id instance __strong = nil;
         if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
             [instance initGAIConfig];
             CLSNSLog(@"-> Starting Google Analytics tracker.");
+            [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[NSString stringWithFormat:@"{VoiceOverEnabled:%@}", UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"]];
         } else {
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
@@ -91,10 +92,6 @@ static id instance __strong = nil;
 #endif
 #ifndef TARGET_IS_EXTENSION
     [instance popAndTrackOfflineScreensAndActions];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[NSString stringWithFormat:@"{VoiceOverEnabled:%@}", UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"]];
-    });
 #endif
     return instance;
 }
