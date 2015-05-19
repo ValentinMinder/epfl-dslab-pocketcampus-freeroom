@@ -227,7 +227,7 @@ static NSString* kMainMenuWhatsNewCellLastHiddenVersionStringKey = @"MainMenuWha
     return [lastHiddenVersion isEqualToString:[PCUtils appVersion]];
 }
 
-- (void)hideWhatsNewCell {
+- (void)saveHiddenWhatsNewCell {
     [[PCPersistenceManager userDefaultsForPluginName:@"pocketcampus"] setObject:[PCUtils appVersion] forKey:kMainMenuWhatsNewCellLastHiddenVersionStringKey];
 }
 
@@ -296,7 +296,7 @@ static NSString* kMainMenuWhatsNewCellLastHiddenVersionStringKey = @"MainMenuWha
             _whatsNewCell = [[PCInfoCell alloc] initWithAttributedString:attrString];
             __weak __typeof(self) welf = self;
             [_whatsNewCell setCloseButtonTapped:^{
-                [welf hideWhatsNewCell];
+                [welf saveHiddenWhatsNewCell];
                 [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kWhatsNewSection] withRowAnimation:UITableViewRowAnimationAutomatic];
             }];
         }
