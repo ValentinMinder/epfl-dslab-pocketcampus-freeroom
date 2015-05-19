@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment version="2048" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -11,7 +11,7 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="JUb-bw-bv2" customClass="PCInfoCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JUb-bw-bv2" id="ND5-nQ-edc">
+            <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JUb-bw-bv2" id="ND5-nQ-edc">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Print from any app" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXg-Cg-V2y">
@@ -31,15 +31,25 @@
                             <action selector="closeTapped" destination="JUb-bw-bv2" eventType="touchUpInside" id="19J-7n-aNr"/>
                         </connections>
                     </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d9i-Wr-9Ci" userLabel="Line">
+                        <rect key="frame" x="0.0" y="84" width="320" height="1"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="mok-cs-snm"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="1" green="0.91764705882352937" blue="0.0" alpha="0.050000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
+                    <constraint firstItem="d9i-Wr-9Ci" firstAttribute="leading" secondItem="ND5-nQ-edc" secondAttribute="leading" id="9G8-K0-Zo6"/>
                     <constraint firstItem="GXg-Cg-V2y" firstAttribute="top" secondItem="ND5-nQ-edc" secondAttribute="topMargin" constant="7" id="KXu-AK-xML"/>
                     <constraint firstAttribute="centerY" secondItem="GXg-Cg-V2y" secondAttribute="centerY" id="VfA-FD-YXJ"/>
+                    <constraint firstAttribute="bottom" secondItem="d9i-Wr-9Ci" secondAttribute="bottom" constant="-0.5" id="ZvX-aX-0H3"/>
                     <constraint firstItem="GXg-Cg-V2y" firstAttribute="leading" secondItem="7bN-vj-PB9" secondAttribute="trailing" constant="6" id="b0C-O9-7VM"/>
                     <constraint firstAttribute="trailingMargin" secondItem="GXg-Cg-V2y" secondAttribute="trailing" id="fc2-O9-kBl"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="ND5-nQ-edc" secondAttribute="leadingMargin" id="ge0-8G-0um"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="leading" secondItem="GXg-Cg-V2y" secondAttribute="trailing" constant="10" id="kc6-1o-aAg"/>
+                    <constraint firstAttribute="trailing" secondItem="d9i-Wr-9Ci" secondAttribute="trailing" id="nQF-Rx-RdV"/>
                     <constraint firstAttribute="centerY" secondItem="7bN-vj-PB9" secondAttribute="centerY" id="sTq-am-dm9"/>
                     <constraint firstItem="7bN-vj-PB9" firstAttribute="trailing" secondItem="ND5-nQ-edc" secondAttribute="trailingMargin" id="u6y-50-vHa"/>
                     <constraint firstAttribute="bottomMargin" secondItem="GXg-Cg-V2y" secondAttribute="bottom" id="yEy-jd-6Qa"/>
