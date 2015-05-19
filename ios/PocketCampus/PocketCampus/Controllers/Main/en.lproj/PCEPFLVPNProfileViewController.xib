@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController id="eYP-6i-0uN" customClass="PCEPFLMailProfileViewController">
+        <viewController id="eYP-6i-0uN" customClass="PCEPFLVPNProfileViewController">
             <layoutGuides>
                 <viewControllerLayoutGuide type="top" id="GSP-ou-YUd"/>
                 <viewControllerLayoutGuide type="bottom" id="efM-rH-ssx"/>
@@ -16,21 +16,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="PocketCampus can automatically setup your EPFL email adress in the iOS Mail app." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
-                        <rect key="frame" x="20" y="140" width="284" height="58"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
+                        <rect key="frame" x="20" y="120" width="284" height="77"/>
+                        <string key="text">PocketCampus can automatically setup EPFL VPN. The VPN allows you to access EPFL's internal network even when you are not on the campus.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiD-Zm-NPx" userLabel="Install button">
-                        <rect key="frame" x="0.0" y="213" width="320" height="60"/>
+                        <rect key="frame" x="0.0" y="212" width="320" height="60"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="60" id="vzd-CH-Pua"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                         <inset key="contentEdgeInsets" minX="0.0" minY="-20" maxX="0.0" maxY="0.0"/>
-                        <state key="normal" title="Setup my EPFL email">
+                        <state key="normal" title="Setup EPFL VPN">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
@@ -38,31 +39,33 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="(Gaspar login required)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="det-Va-aHl">
-                        <rect key="frame" x="87" y="245" width="147" height="17"/>
+                        <rect key="frame" x="87" y="244" width="147" height="17"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="iOSMail_60.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Ye-CR-aYS">
-                        <rect key="frame" x="78" y="50" width="60" height="60"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="iOSVPN_60.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Ye-CR-aYS">
+                        <rect key="frame" x="78" y="40" width="60" height="60"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="InstitutionLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zrA-FB-sM6">
-                        <rect key="frame" x="153" y="59" width="90" height="43"/>
+                        <rect key="frame" x="153" y="48" width="90" height="43"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Already done this step? Open the Mail app and select your EPFL account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6K-Hc-MMP">
-                        <rect key="frame" x="20" y="283" width="280" height="51"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6K-Hc-MMP">
+                        <rect key="frame" x="20" y="282" width="280" height="51"/>
+                        <string key="text">Already done this step? You can enable VPN in
+Settings &gt; VPN.</string>
                         <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="To uninstall your EPFL email, go to Settings &gt; General &gt; Profiles &gt; EPFL email, and tap Delete." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5c6-W8-F9Z">
-                        <rect key="frame" x="20" y="354" width="284" height="58"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="To uninstall the VPN, go to Settings &gt; General &gt; Profiles &gt; EPFL VPN, and tap Delete." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AOz-pP-okN">
+                        <rect key="frame" x="20" y="348" width="284" height="58"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="9Ye-CR-aYS" firstAttribute="centerY" secondItem="zrA-FB-sM6" secondAttribute="centerY" id="1dd-1v-VA5"/>
                     <constraint firstItem="hiD-Zm-NPx" firstAttribute="top" secondItem="wuE-S6-oyC" secondAttribute="bottom" constant="15" id="3Vb-av-ZXn"/>
@@ -70,19 +73,19 @@
                     <constraint firstItem="hiD-Zm-NPx" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" id="7fp-Nt-ufw"/>
                     <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="8" id="Ggr-7h-aDU"/>
                     <constraint firstAttribute="trailing" secondItem="wuE-S6-oyC" secondAttribute="trailing" constant="16" id="HMf-tr-Gz4"/>
-                    <constraint firstItem="5c6-W8-F9Z" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="I7K-Ha-fKn"/>
                     <constraint firstItem="zrA-FB-sM6" firstAttribute="leading" secondItem="9Ye-CR-aYS" secondAttribute="trailing" constant="15" id="ImA-df-bj1"/>
-                    <constraint firstItem="5c6-W8-F9Z" firstAttribute="top" secondItem="X6K-Hc-MMP" secondAttribute="bottom" constant="20" id="JWq-s5-YX3"/>
                     <constraint firstItem="X6K-Hc-MMP" firstAttribute="top" secondItem="hiD-Zm-NPx" secondAttribute="bottom" constant="10" id="LhT-TP-obe"/>
+                    <constraint firstItem="AOz-pP-okN" firstAttribute="top" secondItem="X6K-Hc-MMP" secondAttribute="bottom" constant="15" id="RHA-HJ-u7i"/>
                     <constraint firstAttribute="centerX" secondItem="det-Va-aHl" secondAttribute="centerX" id="RrC-OC-xZJ"/>
                     <constraint firstAttribute="centerX" secondItem="9Ye-CR-aYS" secondAttribute="centerX" constant="52" id="UO0-s5-CW8"/>
                     <constraint firstAttribute="trailing" secondItem="X6K-Hc-MMP" secondAttribute="trailing" constant="20" id="XYE-Uc-vck"/>
                     <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="100" id="Yzf-nb-PLK"/>
+                    <constraint firstAttribute="trailing" secondItem="AOz-pP-okN" secondAttribute="trailing" constant="16" id="cGX-2Y-AH4"/>
                     <constraint firstItem="X6K-Hc-MMP" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="cOx-O7-msT"/>
-                    <constraint firstAttribute="trailing" secondItem="5c6-W8-F9Z" secondAttribute="trailing" constant="16" id="cZg-HG-Heu"/>
                     <constraint firstAttribute="centerX" secondItem="hiD-Zm-NPx" secondAttribute="centerX" id="eiS-1t-VGs"/>
-                    <constraint firstItem="9Ye-CR-aYS" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="30" id="h4E-OP-yuN"/>
-                    <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="9Ye-CR-aYS" secondAttribute="bottom" constant="30" id="vQk-sj-DwO"/>
+                    <constraint firstItem="9Ye-CR-aYS" firstAttribute="top" secondItem="GSP-ou-YUd" secondAttribute="bottom" constant="20" id="h4E-OP-yuN"/>
+                    <constraint firstItem="wuE-S6-oyC" firstAttribute="top" secondItem="9Ye-CR-aYS" secondAttribute="bottom" constant="20" id="vQk-sj-DwO"/>
+                    <constraint firstItem="AOz-pP-okN" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="vrc-Py-VZr"/>
                     <constraint firstItem="9Ye-CR-aYS" firstAttribute="top" secondItem="det-Va-aHl" secondAttribute="bottom" constant="51" id="vwR-NS-b7a"/>
                     <constraint firstItem="det-Va-aHl" firstAttribute="top" secondItem="hiD-Zm-NPx" secondAttribute="bottom" constant="-28" id="wTX-fM-EYy"/>
                     <constraint firstItem="wuE-S6-oyC" firstAttribute="leading" secondItem="7fz-Ui-4aJ" secondAttribute="leading" constant="20" id="yXh-Se-qln"/>
@@ -96,12 +99,13 @@
                     </mask>
                 </variation>
             </view>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-44" y="370"/>
+            <point key="canvasLocation" x="320" y="384"/>
         </viewController>
     </objects>
     <resources>
         <image name="InstitutionLogo.png" width="90" height="43"/>
-        <image name="iOSMail_60.png" width="60" height="60"/>
+        <image name="iOSVPN_60.png" width="60" height="60"/>
     </resources>
 </document>

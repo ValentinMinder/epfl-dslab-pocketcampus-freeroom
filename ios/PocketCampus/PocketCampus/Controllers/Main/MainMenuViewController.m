@@ -41,12 +41,17 @@
 
 #import "UIBarButtonItem+LGAAdditions.h"
 
+#import "PCInfoCell.h"
+
+#import "PCWhatsNewViewController.h"
+
 static NSString* const kMenuItemButtonIdentifier = @"MenuItemButton";
 static NSString* const kMenuItemThinSeparatorIdentifier = @"MenuItemSeparator";
 
 static CGFloat const kTableViewFooterHeight = 54.0;
 
-static const int kPluginsSection = 0;
+static const int kWhatsNewSection = 0;
+static const int kPluginsSection = 1;
 
 @interface MainMenuViewController ()
 
@@ -58,6 +63,8 @@ static const int kPluginsSection = 0;
 
 @property (nonatomic, strong) UIBarButtonItem* settingsButton;
 @property (nonatomic, strong) UIBarButtonItem* doneButton;
+
+@property (readonly, strong) PCInfoCell* whatsNewCell;
 
 @end
 
@@ -213,7 +220,18 @@ static const int kPluginsSection = 0;
     self.institutionLogoImageView.alpha = (kOffsetAlphaStart - diff) / kOffsetAlphaStart;
 }
 
-#pragma mark - Buttons
+static NSString* kMainMenuWhatsNewCellLastHiddenVersionStringKey = @"MainMenuWhatsNewCellLastHiddenVersionString";
+
+- (BOOL)shouldHideWhatsNewCell {
+    NSString* lastHiddenVersion = [[PCPersistenceManager userDefaultsForPluginName:@"pocketcampus"] objectForKey:kMainMenuWhatsNewCellLastHiddenVersionStringKey];
+    return [lastHiddenVersion isEqualToString:[PCUtils appVersion]];
+}
+
+- (void)saveHiddenWhatsNewCell {
+    [[PCPersistenceManager userDefaultsForPluginName:@"pocketcampus"] setObject:[PCUtils appVersion] forKey:kMainMenuWhatsNewCellLastHiddenVersionStringKey];
+}
+
+#pragma mark - Buttons and cells
 
 - (UILabel*)pocketCampusLabel {
     UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120.0, 40.0)];
@@ -259,6 +277,33 @@ static const int kPluginsSection = 0;
     return _doneButton;
 }
 
+@synthesize whatsNewCell = _whatsNewCell;
+
+- (PCInfoCell*)whatsNewCell {
+    @synchronized (self) {
+        if (!_whatsNewCell) {
+            NSString* title = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil)];
+            NSString* body = NSLocalizedStringFromTable(@"WhatsNewInVersionContentShort", @"PocketCampus", nil);
+            NSString* tapForMore = NSLocalizedStringFromTable(@"TapForMoreInfo", @"PocketCampus", nil);
+            NSString* fullString = [NSString stringWithFormat:@"%@\n%@\n%@", title, body, tapForMore];
+            NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:fullString];
+            UIFont* titleFont = [UIFont boldSystemFontOfSize:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote].pointSize+1.0];
+            [attrString addAttribute:NSFontAttributeName value:titleFont range:[fullString rangeOfString:title]];
+            NSMutableParagraphStyle* paraStyle = [NSMutableParagraphStyle new];
+            paraStyle.paragraphSpacingBefore = 3.0;
+            [attrString addAttributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote], NSParagraphStyleAttributeName:paraStyle} range:[fullString rangeOfString:body]];
+            [attrString addAttributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote], NSForegroundColorAttributeName: [UIColor darkGrayColor]} range:[fullString rangeOfString:tapForMore]];
+            _whatsNewCell = [[PCInfoCell alloc] initWithAttributedString:attrString];
+            __weak __typeof(self) welf = self;
+            [_whatsNewCell setCloseButtonTapped:^{
+                [welf saveHiddenWhatsNewCell];
+                [welf.tableView reloadSections:[NSIndexSet indexSetWithIndex:kWhatsNewSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }];
+        }
+    }
+    return _whatsNewCell;
+}
+
 #pragma mark - Actions
 
 - (void)institutionLogoTapped {
@@ -298,10 +343,31 @@ static const int kPluginsSection = 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MainMenuItem* item = self.menuItems[indexPath.row];
-    NSString* lowercaseIdentifier = [item.identifier lowercaseString];
-    [self trackAction:@"OpenPlugin" contentInfo:lowercaseIdentifier];
-    [self.mainController setActivePluginWithIdentifier:item.identifier];
+    switch (indexPath.section) {
+        case kWhatsNewSection:
+        {
+            PCWhatsNewViewController* viewController = [PCWhatsNewViewController new];
+            __weak __typeof(self) welf = self;
+            [viewController setDoneTappedBlock:^{
+                [welf dismissViewControllerAnimated:YES completion:NULL];
+            }];
+            [self trackAction:@"ShowWhatsNew"];
+            [self.navigationController presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:^{
+                [welf.tableView deselectRowAtIndexPath:indexPath animated:NO];
+            }];
+            break;
+        }
+        case kPluginsSection:
+        {
+            MainMenuItem* item = self.menuItems[indexPath.row];
+            NSString* lowercaseIdentifier = [item.identifier lowercaseString];
+            [self trackAction:@"OpenPlugin" contentInfo:lowercaseIdentifier];
+            [self.mainController setActivePluginWithIdentifier:item.identifier];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -309,36 +375,58 @@ static const int kPluginsSection = 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MainMenuItem* item = self.menuItems[indexPath.row];
-    if (!self.tableView.editing && item.hidden) {
-        return 0.0;
-    } else {
-        return [MainMenuItemCell height];
+    switch (indexPath.section) {
+        case kWhatsNewSection:
+            return [self.whatsNewCell preferredHeightInTableView:tableView];
+        case kPluginsSection:
+        {
+            MainMenuItem* item = self.menuItems[indexPath.row];
+            if (!self.tableView.editing && item.hidden) {
+                return 0.0;
+            } else {
+                return [MainMenuItemCell height];
+            }
+        }
     }
+    return 0.0;
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MainMenuItem* menuItem = self.menuItems[indexPath.row];
-    MainMenuItemCell* cell = self.cellForIndexPath[indexPath];
-    if (!cell) {
-        cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemButtonIdentifier];
-        self.cellForIndexPath[indexPath] = cell;
+    switch (indexPath.section) {
+        case kWhatsNewSection:
+        {
+            return self.whatsNewCell;
+        }
+        case kPluginsSection:
+        {
+            MainMenuItem* menuItem = self.menuItems[indexPath.row];
+            MainMenuItemCell* cell = self.cellForIndexPath[indexPath];
+            if (!cell) {
+                cell = [MainMenuItemCell cellWithMainMenuItem:menuItem reuseIdentifier:kMenuItemButtonIdentifier];
+                self.cellForIndexPath[indexPath] = cell;
+            }
+            cell.eyeButtonDelegate = self;
+            if (menuItem.hidden) {
+                [cell setEyeButtonState:EyeButtonStateDataHidden];
+            } else {
+                [cell setEyeButtonState:EyeButtonStateDataVisible];
+            }
+            if (!self.tableView.editing) {
+                cell.hidden = menuItem.hidden;
+            }
+            if (cell.hidden && self.tableView.editing) {
+                cell.hidden = NO;
+            }
+            return cell;
+        }
     }
-    cell.eyeButtonDelegate = self;
-    if (menuItem.hidden) {
-        [cell setEyeButtonState:EyeButtonStateDataHidden];
-    } else {
-        [cell setEyeButtonState:EyeButtonStateDataVisible];
-    }
-    if (!self.tableView.editing) {
-        cell.hidden = menuItem.hidden;
-    }
-    if (cell.hidden && self.tableView.editing) {
-        cell.hidden = NO;
-    }
-    return cell;
+    return nil;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == kPluginsSection;
 }
 
 - (NSIndexPath*)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
@@ -362,11 +450,17 @@ static const int kPluginsSection = 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.menuItems.count;
+    switch (section) {
+        case kWhatsNewSection:
+            return [self shouldHideWhatsNewCell] ? 0 : 1;
+        case kPluginsSection:
+            return self.menuItems.count;
+    }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 @end

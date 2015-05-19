@@ -34,6 +34,7 @@
 @property (nonatomic, strong, readwrite) IBOutlet UIWebView* webView;
 
 @property (nonatomic, copy) NSURL* originalURL;
+@property (nonatomic, copy) NSURLRequest* originalRequest;
 @property (nonatomic, copy) NSString* htmlString;
 @property (nonatomic, strong) UIBarButtonItem* originalRightBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem* goBackBarButton;
@@ -53,6 +54,19 @@
         self.originalURL = url;
         self.title = title;
         self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
+    }
+    return self;
+}
+
+- (instancetype)initWithRequest:(NSURLRequest*)request title:(NSString*)title {
+    [PCUtils throwExceptionIfObject:request notKindOfClass:[NSURLRequest class]];
+    self = [super initWithNibName:@"PCWebView" bundle:nil];
+    if (self) {
+        self.originalRequest = request;
+        self.title = title;
+        self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
     }
     return self;
 }
@@ -64,8 +78,16 @@
         self.htmlString = htmlString;
         self.title = title;
         self.automaticallyHandlesInternallyRecognizedURLs = YES; //Default
+        self.showNavigationControls = YES; //Default
     }
     return self;
+}
+
+#pragma mark - Public
+
+- (void)setShowNavigationControls:(BOOL)showNavigationControls {
+    _showNavigationControls = showNavigationControls;
+    self.navigationController.toolbarHidden = !self.showNavigationControls;
 }
 
 #pragma mark - UIViewController overrides
@@ -75,6 +97,9 @@
     if (self.originalURL) {
         self.webView.scalesPageToFit = YES;
         [self.webView loadRequest:[NSURLRequest requestWithURL:self.originalURL]];
+    } else if (self.originalRequest) {
+        self.webView.scalesPageToFit = YES;
+        [self.webView loadRequest:self.originalRequest];
     } else if (self.htmlString) {
         [self.webView loadHTMLString:self.htmlString baseURL:nil];
     } else {
@@ -94,7 +119,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.translucent = NO;
-    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbarHidden = !self.showNavigationControls;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

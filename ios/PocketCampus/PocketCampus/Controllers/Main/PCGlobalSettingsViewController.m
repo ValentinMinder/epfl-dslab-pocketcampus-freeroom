@@ -49,6 +49,10 @@
 
 #import "PCEPFLMailProfileViewController.h"
 
+#import "PCEPFLVPNProfileViewController.h"
+
+#import "PCWhatsNewViewController.h"
+
 #import "PCUsageViewController.h"
 
 #import "PCDebugConfigSelectionViewController.h"
@@ -56,12 +60,13 @@
 
 static const int kAccountsSection = 0;
 static const int kMainMenuSection = 1;
-static const int kAutoConfigsSection = 50;
-static const int kAboutSection = 2;
-static const int kMiscSection = 3;
-static const int kDebugSection = 4;
+static const int kAutoConfigsSection = 2;
+static const int kAboutSection = 3;
+static const int kMiscSection = 4;
+static const int kDebugSection = 5;
 
 static const int kMailConfigRow = 0;
+static const int kVPNConfigRow = 1;
 
 static const int kEditMainMenuRow = 0;
 static const int kRestoreDefaultMainMenuRow = 1;
@@ -69,6 +74,7 @@ static const int kRestoreDefaultMainMenuRow = 1;
 static const int kRatePCRow = 0;
 static const int kLikePCFBRow = 1;
 static const int kAboutRow = 2;
+static const int kWhatsNewRow = 3;
 
 static const int kUsageRow = 0;
 
@@ -79,6 +85,8 @@ static const int kUsageRow = 0;
 @property (nonatomic, strong) UIActionSheet* restoreDefaultMainMenuActionSheet;
 
 @end
+
+#pragma mark - Init
 
 @implementation PCGlobalSettingsViewController
 
@@ -92,6 +100,8 @@ static const int kUsageRow = 0;
     }
     return self;
 }
+
+#pragma mark - UIViewController overrides
 
 - (void)viewDidLoad
 {
@@ -119,6 +129,8 @@ static const int kUsageRow = 0;
     }
     
 }
+
+#pragma mark - Actions
 
 - (void)doneBarButtonPressed {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
@@ -153,6 +165,13 @@ static const int kUsageRow = 0;
                 {
                     [self trackAction:@"OpenEmailConfig"];
                     PCEPFLMailProfileViewController* viewController = [PCEPFLMailProfileViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                case kVPNConfigRow:
+                {
+                    [self trackAction:@"OpenVPNConfig"];
+                    PCEPFLVPNProfileViewController* viewController = [PCEPFLVPNProfileViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -209,6 +228,13 @@ static const int kUsageRow = 0;
                 {
                     [self trackAction:@"OpenAbout"];
                     PCAboutViewController* viewController = [PCAboutViewController new];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                case kWhatsNewRow:
+                {
+                    [self trackAction:@"OpenWhatsNew"];
+                    PCWhatsNewViewController* viewController = [PCWhatsNewViewController new];
                     [self.navigationController pushViewController:viewController animated:YES];
                     break;
                 }
@@ -311,6 +337,14 @@ static const int kUsageRow = 0;
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
+                case kVPNConfigRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                    cell.imageView.image = [UIImage imageNamed:@"iOSVPN_40"];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EPFLVPN", @"PocketCampus", nil);
+                    cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLVPN", @"PocketCampus", nil);
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
                 default:
                     break;
             }
@@ -352,6 +386,12 @@ static const int kUsageRow = 0;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
                     cell.imageView.image = [UIImage imageNamed:@"Info"];
                     break;
+                case kWhatsNewRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"MagicWand"];
+                    break;
                 default:
                     break;
             }
@@ -382,11 +422,11 @@ static const int kUsageRow = 0;
         case kAccountsSection:
             return 1;
         case kAutoConfigsSection:
-            return 1;
+            return 2;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
-            return 3;
+            return 4;
         case kMiscSection:
             return 1;
         case kDebugSection:
@@ -397,9 +437,9 @@ static const int kUsageRow = 0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #ifdef DEBUG
-    return 5;
+    return 6;
 #else
-    return 4;
+    return 5;
 #endif
 }
 

@@ -60,9 +60,16 @@
 
 "AutomaticConfigurations" = "Configurations automatiques";
 "EPFLMail" = "Email EPFL";
-"ConfigureEPFLEmailInMailApp" = "Configurer mon email EPFL dans Mail";
+"ConfigureEPFLEmailInMailApp" = "Installer mon email EPFL dans Mail";
+"EPFLVPN" = "VPN EPFL";
+"ConfigureEPFLVPN" = "Installer le VPN EPFL";
 "Preparing" = "Préparation";
 "TapToCancel" = "Touchez pour annuler";
+"WhatsNew" = "Nouveautés";
+"WhatsNewInUpdate" = "Nouveautés de cette mise à jour";
+"TapForMoreInfo" = "Touchez pour plus d'infos";
+
+"WhatsNewInVersionContentShort" = "Emails EPFL, VPN EPFL.";
 
 //Accessbility
 

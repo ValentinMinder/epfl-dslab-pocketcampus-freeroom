@@ -38,6 +38,14 @@
 - (instancetype)initWithURL:(NSURL*)url title:(NSString*)title;
 
 /**
+ * @return web view controller loading request
+ * @param request request to load
+ * @param title optional title to us as view controller's title
+ * @discussion: important: PCWebViewController should be used with a navigation controller
+ */
+- (instancetype)initWithRequest:(NSURLRequest*)request title:(NSString*)title;
+
+/**
  * @return web view controller showing the HTML.
  * @param url url to load
  * @param title optional title to us as view controller's title
@@ -51,6 +59,12 @@
  * Default: YES
  */
 @property (nonatomic) BOOL automaticallyHandlesInternallyRecognizedURLs;
+
+/**
+ * If YES, a toolbar is displayed with back/next web flow control buttons
+ * Default: YES
+ */
+@property (nonatomic) BOOL showNavigationControls;
 
 /**
  * Equivalent of UIWebViewDelegate webView:shouldLoad...:
