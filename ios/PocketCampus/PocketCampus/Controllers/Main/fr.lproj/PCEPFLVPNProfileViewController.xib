@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
                         <rect key="frame" x="20" y="120" width="284" height="96"/>
                         <string key="text">PocketCampus peut automatiquement installer le VPN EPFL. Le VPN vous permet d'accéder au réseau interne de l'EPFL même quand vous n'êtes pas sur le campus.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -38,25 +38,25 @@
                             <action selector="startTapped" destination="eYP-6i-0uN" eventType="touchUpInside" id="WxI-DR-APN"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Login Gaspar requis)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="det-Va-aHl">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="(Login Gaspar requis)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="det-Va-aHl">
                         <rect key="frame" x="91" y="263" width="138" height="17"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iOSVPN_60.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Ye-CR-aYS">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="iOSVPN_60.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Ye-CR-aYS">
                         <rect key="frame" x="78" y="40" width="60" height="60"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstitutionLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zrA-FB-sM6">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="InstitutionLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zrA-FB-sM6">
                         <rect key="frame" x="153" y="48" width="90" height="43"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vous avez déjà effectué cette étape ? Vous pouvez activer le VPN dans Réglages &gt; VPN." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6K-Hc-MMP">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Vous avez déjà effectué cette étape ? Vous pouvez activer le VPN dans Réglages &gt; VPN." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6K-Hc-MMP">
                         <rect key="frame" x="20" y="301" width="280" height="51"/>
                         <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pour désinstaller le VPN, allez dans Réglages &gt; Général &gt; Profils &gt; VPN EPFL et sélectionnez Supprimer." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="saA-ak-uYM">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Pour désinstaller le VPN, allez dans Réglages &gt; Général &gt; Profils &gt; VPN EPFL et sélectionnez Supprimer." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="saA-ak-uYM">
                         <rect key="frame" x="20" y="367" width="284" height="58"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
