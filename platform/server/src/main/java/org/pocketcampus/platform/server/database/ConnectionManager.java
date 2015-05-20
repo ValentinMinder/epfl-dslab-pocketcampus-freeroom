@@ -5,10 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
+	private static Connection connection;
+
 	private String url;
 	private String user;
 	private String password;
-	private Connection connection;
 
 	public ConnectionManager(String url, String user, String password) {
 		this.url = url;
@@ -24,19 +25,14 @@ public class ConnectionManager {
 		}
 	}
 
-	public void connect() throws SQLException {
-		this.connection = DriverManager.getConnection(url, user, password);
-	}
-
-	public void disconnect() throws SQLException {
-		this.connection.close();
-		this.connection = null;
+	private void connect() throws SQLException {
+		connection = DriverManager.getConnection(url, user, password);
 	}
 
 	public Connection getConnection() throws SQLException {
-		if (this.connection == null || !this.connection.isValid(1)) {
+		if (connection == null || !connection.isValid(3)) {
 			connect();
 		}
-		return this.connection;
+		return connection;
 	}
 }

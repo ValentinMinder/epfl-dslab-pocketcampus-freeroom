@@ -63,7 +63,6 @@ public class MapDatabase {
         }
 
         statement.close();
-        connectionManager.disconnect();
 
         return layers;
     }
