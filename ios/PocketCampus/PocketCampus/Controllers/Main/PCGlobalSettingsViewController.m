@@ -356,10 +356,12 @@ static const int kUsageRow = 0;
                 case kEditMainMenuRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"EditMainMenu", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
                     break;
                 case kRestoreDefaultMainMenuRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu...", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
                     break;
                 default:
                     break;
@@ -373,11 +375,13 @@ static const int kUsageRow = 0;
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"RatePCAppStore", @"PocketCampus", nil);
                     //cell.detailTextLabel.text = NSLocalizedStringFromTable(@"RatePCAppStoreSubtitle", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
                     cell.imageView.image = [UIImage imageNamed:@"AppLogoCellImage"];
                     break;
                 case kLikePCFBRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"LikePConFB", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
                     cell.imageView.image = [UIImage imageNamed:@"FacebookLikeCellImage"];
                     break;
                 case kAboutRow:
