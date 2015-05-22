@@ -226,7 +226,7 @@ static NSUInteger const kDeleteAllDownloadedDocumentsSection = 3;
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
-            cell.textLabel.textColor = [PCValues pocketCampusRed];
+            cell.textLabel.textColor = self.view.tintColor;
             cell.textLabel.text = NSLocalizedStringFromTable(@"DeleteAllDownloadedDocuments", @"MoodlePlugin", nil);
             cell.textLabel.adjustsFontSizeToFitWidth = YES;
             if (self.tmpTotalNbResourcesSize > 0) {

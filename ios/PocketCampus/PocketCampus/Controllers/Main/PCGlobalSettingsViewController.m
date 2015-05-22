@@ -219,9 +219,13 @@ static const int kUsageRow = 0;
                 {
                     [self trackAction:@"LikeOnFacebook"];
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    //
-                    NSURL *url = [NSURL URLWithString:@"http://facebook.com/pocketcampus"];
-                    [[UIApplication sharedApplication] openURL:url];
+                    NSURL *facebookURL = [NSURL URLWithString:@"fb://profile/188616577853493"];
+                    if ([[UIApplication sharedApplication] canOpenURL:facebookURL]) {
+                        [[UIApplication sharedApplication] openURL:facebookURL];
+                    } else {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://facebook.com/pocketcampus"]];
+                    }
+                    
                     break;
                 }
                 case kAboutRow:
@@ -271,6 +275,23 @@ static const int kUsageRow = 0;
         return 65.0;
     }
     return 44.0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kMainMenuSection) {
+        UIEdgeInsets insets = cell.separatorInset;
+        insets.right = insets.left;
+        cell.separatorInset = insets;
+        //cell.textLabel.backgroundColor = [UIColor grayColor];
+        // Prevent the cell from inheriting the Table View's margin settings
+        if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+            [cell setPreservesSuperviewLayoutMargins:NO];
+        }
+        // Explictly set your cell's layout margins
+        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+            cell.layoutMargins = insets;
+        }
+    }
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -336,6 +357,7 @@ static const int kUsageRow = 0;
                     cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLEmailInMailApp", @"PocketCampus", nil);
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.separatorInset = UIEdgeInsetsZero;
                     break;
                 case kVPNConfigRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
@@ -344,6 +366,7 @@ static const int kUsageRow = 0;
                     cell.detailTextLabel.text = NSLocalizedStringFromTable(@"ConfigureEPFLVPN", @"PocketCampus", nil);
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.separatorInset = UIEdgeInsetsZero;
                     break;
                 default:
                     break;
@@ -377,25 +400,29 @@ static const int kUsageRow = 0;
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"RatePCAppStore", @"PocketCampus", nil);
                     cell.detailTextLabel.text = NSLocalizedStringFromTable(@"RatePCAppStoreSubtitle", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"AppLogoCellImage"];
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.imageView.image = [[UIImage imageNamed:@"AppStoreBarButtonSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    cell.imageView.tintColor = [UIColor colorWithRed:0.407843 green:0.615686 blue:0.960784 alpha:1.0];
                     break;
                 case kLikePCFBRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.textLabel.text = NSLocalizedStringFromTable(@"LikePConFB", @"PocketCampus", nil);
                     cell.detailTextLabel.text = NSLocalizedStringFromTable(@"LikePConFBSubtitle", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"FacebookLikeCellImage"];
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.imageView.image = [[UIImage imageNamed:@"FacebookBarButtonSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    cell.imageView.tintColor = [UIColor colorWithRed:0.278431 green:0.345098 blue:0.592157 alpha:1.0];
                     break;
                 case kAboutRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"Info"];
+                    cell.imageView.image = [UIImage imageNamed:@"InfoBarButton"];
                     break;
                 case kWhatsNewRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"MagicWand"];
+                    cell.imageView.image = [UIImage imageNamed:@"MagicWandBarButton"];
                     break;
                 default:
                     break;
