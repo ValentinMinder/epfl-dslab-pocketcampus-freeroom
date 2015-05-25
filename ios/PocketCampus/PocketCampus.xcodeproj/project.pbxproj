@@ -184,6 +184,9 @@
 		325F1FC819FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F1FCA19FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib */; };
 		325FABC819C6FF600075370F /* CamiproWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 32136F33193FBCFF002905A9 /* CamiproWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		32617BCE16E7DA5F004F9CF9 /* PCTableViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */; };
+		326373511B13225B0064A8EF /* InfoBarButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3263734E1B13225B0064A8EF /* InfoBarButtonSelected.png */; };
+		326373521B13225B0064A8EF /* InfoBarButtonSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3263734F1B13225B0064A8EF /* InfoBarButtonSelected@2x.png */; };
+		326373531B13225B0064A8EF /* InfoBarButtonSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 326373501B13225B0064A8EF /* InfoBarButtonSelected@3x.png */; };
 		326494C11A07A44A00C63622 /* PCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326494C01A07A44A00C63622 /* PCTabBarController.m */; };
 		326494C41A07A4D400C63622 /* PluginTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 326494C31A07A4D400C63622 /* PluginTabBarController.m */; };
 		326494CB1A07B97900C63622 /* FoodMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 326494CA1A07B97900C63622 /* FoodMainViewController.xib */; };
@@ -950,6 +953,9 @@
 		325F1FCB19FAAE1E0019CFCB /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/CloudPrintExtensionInfoViewController.xib; sourceTree = "<group>"; };
 		32617BCC16E7DA5F004F9CF9 /* PCTableViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTableViewAdditions.h; sourceTree = "<group>"; };
 		32617BCD16E7DA5F004F9CF9 /* PCTableViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTableViewAdditions.m; sourceTree = "<group>"; };
+		3263734E1B13225B0064A8EF /* InfoBarButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InfoBarButtonSelected.png; sourceTree = "<group>"; };
+		3263734F1B13225B0064A8EF /* InfoBarButtonSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InfoBarButtonSelected@2x.png"; sourceTree = "<group>"; };
+		326373501B13225B0064A8EF /* InfoBarButtonSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InfoBarButtonSelected@3x.png"; sourceTree = "<group>"; };
 		326494BF1A07A44A00C63622 /* PCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCTabBarController.h; sourceTree = "<group>"; };
 		326494C01A07A44A00C63622 /* PCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCTabBarController.m; sourceTree = "<group>"; };
 		326494C21A07A4D400C63622 /* PluginTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginTabBarController.h; sourceTree = "<group>"; };
@@ -1873,6 +1879,9 @@
 				3200375718119B4100901F6A /* InfobarButton.png */,
 				3200375818119B4100901F6A /* InfoBarButton@2x.png */,
 				32A37A5F1A6830C40079D208 /* InfoBarButton@3x.png */,
+				3263734E1B13225B0064A8EF /* InfoBarButtonSelected.png */,
+				3263734F1B13225B0064A8EF /* InfoBarButtonSelected@2x.png */,
+				326373501B13225B0064A8EF /* InfoBarButtonSelected@3x.png */,
 				328473EE1A49B9DE0091DF26 /* InstitutionLogo.png */,
 				328473EF1A49B9DE0091DF26 /* InstitutionLogo@2x.png */,
 				32D6A77A1A4AD6180085D3A5 /* InstitutionLogo@3x.png */,
@@ -3438,6 +3447,7 @@
 				32AA25A31A0A9F1A00146D68 /* MealType_PASTA.png in Resources */,
 				3289D28B15094739008DD299 /* Directory@2x.png in Resources */,
 				32AA25981A0A9F1A00146D68 /* MealType_FISH@2x.png in Resources */,
+				326373531B13225B0064A8EF /* InfoBarButtonSelected@3x.png in Resources */,
 				3289D28E1509474A008DD299 /* Food.png in Resources */,
 				326F5A7919BCDC71000693A2 /* CloudPrintMultiPageLayoutButton.xib in Resources */,
 				32506D05181DC7AF003F08D7 /* MasterHidden.png in Resources */,
@@ -3531,6 +3541,7 @@
 				3267F16E1B02350900B8A130 /* iOSMail_40@2x.png in Resources */,
 				3267F1731B02350900B8A130 /* iOSVPN_40@2x.png in Resources */,
 				32B5871E156458FA0051C57E /* Camipro.png in Resources */,
+				326373511B13225B0064A8EF /* InfoBarButtonSelected.png in Resources */,
 				32B5871F156458FA0051C57E /* Camipro@2x.png in Resources */,
 				328473F01A49B9DE0091DF26 /* InstitutionLogo.png in Resources */,
 				32710E951565129600DE6984 /* CamiproLarge.png in Resources */,
@@ -3721,6 +3732,7 @@
 				32A37A0A1A680D970079D208 /* News@3x.png in Resources */,
 				32AEEC831747C11C006DBA2F /* CamiproView~iphone.xib in Resources */,
 				32217EFD1B0F412300E3B5D7 /* FacebookLikeCellImage@2x.png in Resources */,
+				326373521B13225B0064A8EF /* InfoBarButtonSelected@2x.png in Resources */,
 				32A37A1E1A681E680079D208 /* ArrowRightBarButton@2x.png in Resources */,
 				325F1FC719FAAE1B0019CFCB /* CloudPrintExtensionInfoViewController.xib in Resources */,
 				32A37A041A680B660079D208 /* FoodLarge@3x.png in Resources */,

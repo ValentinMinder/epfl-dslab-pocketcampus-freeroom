@@ -15,6 +15,7 @@
 "Done" = "Done";
 "Accounts" = "Accounts";
 "About" = "About";
+"AboutPocketCampusSubtitle" = "Contact & info";
 "Delete" = "Delete";
 "Settings" = "Settings";
 "LastUpdate" = "Last update";
@@ -62,7 +63,7 @@
 "EPFLMail" = "EPFL email";
 "ConfigureEPFLEmailInMailApp" = "Setup my EPFL email in the Mail app";
 "EPFLVPN" = "EPFL VPN";
-"ConfigureEPFLVPN" = "Setup EPFL VPN";
+"ConfigureEPFLVPN" = "Setup EPFL's VPN";
 "Preparing" = "Preparing";
 "TapToCancel" = "Tap to cancel";
 "WhatsNew" = "What's new";

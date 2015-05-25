@@ -158,6 +158,25 @@ static const int kUsageRow = 0;
                     break;
             }
             break;
+        case kMainMenuSection:
+            switch (indexPath.row) {
+                case kEditMainMenuRow:
+                {
+                    [self trackAction:@"EditDashboard"];
+                    [self.mainController.mainMenuViewController setEditing:YES];
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                    break;
+                }
+                case kRestoreDefaultMainMenuRow:
+                {
+                    self.restoreDefaultMainMenuActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"RestoreDefaultMainMenuExplanation", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil), nil];
+                    [self.restoreDefaultMainMenuActionSheet showInView:self.tableView];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
         case kAutoConfigsSection:
         {
             switch (indexPath.row) {
@@ -180,25 +199,6 @@ static const int kUsageRow = 0;
             }
             break;
         }
-        case kMainMenuSection:
-            switch (indexPath.row) {
-                case kEditMainMenuRow:
-                {
-                    [self trackAction:@"EditDashboard"];
-                    [self.mainController.mainMenuViewController setEditing:YES];
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-                    break;
-                }
-                case kRestoreDefaultMainMenuRow:
-                {
-                    self.restoreDefaultMainMenuActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"RestoreDefaultMainMenuExplanation", @"PocketCampus", nil) delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"PocketCampus", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"RestoreDefaultMainMenu", @"PocketCampus", nil), nil];
-                    [self.restoreDefaultMainMenuActionSheet showInView:self.tableView];
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
         case kAboutSection: //about
             switch (indexPath.row) {
                 case kRatePCRow:
@@ -347,6 +347,26 @@ static const int kUsageRow = 0;
             cell.detailTextLabel.text = [[AuthenticationController sharedInstance] loggedInUsername];
             break;
         }
+        case kMainMenuSection:
+        {
+            switch (indexPath.row) {
+                case kEditMainMenuRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"EditMainMenu", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                    break;
+                case kRestoreDefaultMainMenuRow:
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu...", @"PocketCampus", nil);
+                    cell.textLabel.textColor = self.view.tintColor;
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
         case kAutoConfigsSection:
         {
             switch (indexPath.row) {
@@ -373,26 +393,6 @@ static const int kUsageRow = 0;
             }
             break;
         }
-        case kMainMenuSection:
-        {
-            switch (indexPath.row) {
-                case kEditMainMenuRow:
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"EditMainMenu", @"PocketCampus", nil);
-                    cell.textLabel.textColor = self.view.tintColor;
-                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    break;
-                case kRestoreDefaultMainMenuRow:
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                    cell.textLabel.text = NSLocalizedStringFromTable(@"RestoreDefaultMainMenu...", @"PocketCampus", nil);
-                    cell.textLabel.textColor = self.view.tintColor;
-                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        }
         case kAboutSection:
         {
             switch (indexPath.row) {
@@ -413,15 +413,19 @@ static const int kUsageRow = 0;
                     cell.imageView.tintColor = [UIColor colorWithRed:0.278431 green:0.345098 blue:0.592157 alpha:1.0];
                     break;
                 case kAboutRow:
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"About", @"PocketCampus", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"InfoBarButton"];
+                    cell.detailTextLabel.text = NSLocalizedStringFromTable(@"AboutPocketCampusSubtitle", @"PocketCampus", nil);
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.imageView.image = [[UIImage imageNamed:@"InfoBarButtonSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    cell.imageView.tintColor = [UIColor colorWithWhite:0.5 alpha:1.0];
                     break;
                 case kWhatsNewRow:
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text = NSLocalizedStringFromTable(@"WhatsNewInUpdate", @"PocketCampus", nil);
+                    cell.textLabel.adjustsFontSizeToFitWidth = YES;
                     cell.imageView.image = [UIImage imageNamed:@"MagicWandBarButton"];
                     break;
                 default:
