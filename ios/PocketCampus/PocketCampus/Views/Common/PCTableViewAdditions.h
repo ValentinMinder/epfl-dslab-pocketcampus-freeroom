@@ -152,8 +152,10 @@ typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
  * identifier cannot be nil
  * You can the user restoreContentOffsetForIdentifier: to restore the contentOffset
  * This method automatically deals with the portrait/landscape problem.
+ * @return a dictionary that represents the state, and that you can persist (user defaults compatible) if needed,
+ * to pass it later to restoreContentOffsetWithStateDictionary:
  */
-- (void)saveContentOffsetForIdentifier:(NSString*)identifier;
+- (NSDictionary*)saveContentOffsetForIdentifier:(NSString*)identifier;
 
 /**
  * See saveContentOffsetForIdentifier:
@@ -161,5 +163,13 @@ typedef CGFloat (^RowHeightBlock)(PCTableViewAdditions* tableView);
  * Does nothing if not saved state found for identifier
  */
 - (void)restoreContentOffsetForIdentifier:(NSString*)identifier;
+
+/**
+ * Similar to restoreContentOffsetForIdentifier: except that yourself take care
+ * or providing the content offset state. This info must have been built previously
+ * by saveContentOffsetForIdentifier:.
+ * Does nothing if stateDictionary is invalid.
+ */
+- (void)restoreContentOffsetWithStateDictionary:(NSDictionary*)stateDictionary;
 
 @end

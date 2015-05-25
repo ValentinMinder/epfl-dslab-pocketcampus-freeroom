@@ -66,6 +66,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
 
 @interface MoodleCourseSectionsViewController ()<UISearchDisplayDelegate, MoodleServiceDelegate>
 
+@property (nonatomic) BOOL firstViewWillAppearDone;
 @property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) UISearchBar* searchBar;
 @property (nonatomic, strong) UISearchDisplayController* searchController;
@@ -172,6 +173,7 @@ static const NSInteger kSegmentIndexFavorites = 2;
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteMoodleResourcesUpdated:) name:kMoodleFavoritesMoodleItemsUpdatedNotification object:self.moodleService];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -182,6 +184,12 @@ static const NSInteger kSegmentIndexFavorites = 2;
     }
     if (!self.sections || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
+    }
+    if (!self.firstViewWillAppearDone) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self restoreUIState];
+        });
+        self.firstViewWillAppearDone = YES;
     }
 //#warning REMOVE
     //[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(test) userInfo:nil repeats:YES];
@@ -212,6 +220,7 @@ static int i = 0;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self saveUIState];
     [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
@@ -243,6 +252,10 @@ static int i = 0;
         [self fillSectionsForSelectedSegment];
         [self.tableView reloadData];
     }
+}
+
+- (void)appWillResignActive {
+    [self saveUIState];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -451,6 +464,42 @@ static int i = 0;
         [filteredSections addObject:moodleSectionCopy];
     }
     return filteredSections;
+}
+
+- (void)saveUIState {
+    if (!self.sectionsResponse) {
+        return;
+    }
+    NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+    [defaults setInteger:self.segmentedControl.selectedSegmentIndex forKey:[self selectedSegmentedIndexIntegerKey]];
+    [defaults setObject:[(PCTableViewAdditions*)(self.tableView) saveContentOffsetForIdentifier:[self contentOffsetDictionaryKey]] forKey:[self contentOffsetDictionaryKey]];
+}
+
+- (void)restoreUIState {
+    if (!self.sectionsResponse) {
+        return;
+    }
+    @try {
+        NSUserDefaults* defaults = [PCPersistenceManager userDefaultsForPluginName:@"moodle"];
+        NSNumber* nsSelectedSegmentedIndex = [defaults objectForKey:[self selectedSegmentedIndexIntegerKey]];
+        if (nsSelectedSegmentedIndex) {
+            self.segmentedControl.selectedSegmentIndex = [nsSelectedSegmentedIndex integerValue];
+            [self segmentedControlValueChanged];
+        }
+        NSDictionary* contentOffsetDictionary = [defaults objectForKey:[self contentOffsetDictionaryKey]];
+        if (contentOffsetDictionary) {
+            [(PCTableViewAdditions*)(self.tableView) restoreContentOffsetWithStateDictionary:contentOffsetDictionary];
+        }
+    }
+    @catch (NSException *exception) {}
+}
+
+- (NSString*)selectedSegmentedIndexIntegerKey {
+    return [NSString stringWithFormat:@"selectedSegmentIndex-moodleCourse-%d", (int)(self.course.courseId)];
+}
+
+- (NSString*)contentOffsetDictionaryKey {
+    return [NSString stringWithFormat:@"contentOffset-moodleCourse-%d", (int)(self.course.courseId)];
 }
 
 #pragma mark - Button actions
