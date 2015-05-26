@@ -54,7 +54,7 @@ if(!empty($argv[2])) { // just_stop
 echo "starting new server\n";
 
 
-system("cd ../bin ; java -jar $jarname $configname  > pocketcampus-server-$team-$d-$u.log  2>&1 & echo started with pid $!");
+system("cd ../bin ; java -XX:+PrintGC -jar $jarname $configname  > pocketcampus-server-$team-$d-$u.log  2>&1 & echo started with pid $!");
 //system("cd bin ; ./restart $jarname $configname pocketcampus-server-$team-$d-$u.log");
 
 
