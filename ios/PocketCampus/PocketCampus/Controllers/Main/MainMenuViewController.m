@@ -352,7 +352,9 @@ static NSString* kMainMenuWhatsNewCellLastHiddenVersionStringKey = @"MainMenuWha
                 [welf dismissViewControllerAnimated:YES completion:NULL];
             }];
             [self trackAction:@"ShowWhatsNew"];
-            [self.navigationController presentViewController:[[PCNavigationController alloc] initWithRootViewController:viewController] animated:YES completion:^{
+            PCNavigationController* navController = [[PCNavigationController alloc] initWithRootViewController:viewController];
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self.navigationController presentViewController:navController animated:YES completion:^{
                 [welf.tableView deselectRowAtIndexPath:indexPath animated:NO];
             }];
             break;
