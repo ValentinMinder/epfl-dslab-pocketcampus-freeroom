@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
@@ -147,6 +148,10 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		updateDisplay();
 	}
 
+	@Override
+	public void gradesUpdated() {
+	}
+
 	private String formatStringWithDate(int res) {
 		SimpleDateFormat fmt = new SimpleDateFormat("EEE d MMM yyyy",
 				Locale.getDefault());
@@ -220,6 +225,25 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			@Override
 			public int getDrawable() {
 				return R.drawable.sdk_pick_date;
+			}
+
+			@Override
+			public String getDescription() {
+				return getString(R.string.isacademia_go_to_date);
+			}
+		});
+
+
+		addActionToActionBar(new Action() {
+
+			@Override
+			public void performAction(View view) {
+				startActivity(new Intent(IsAcademiaMainView.this, IsAcademiaGradesView.class));
+			}
+
+			@Override
+			public int getDrawable() {
+				return R.drawable.isa_grades_icon;
 			}
 
 			@Override
