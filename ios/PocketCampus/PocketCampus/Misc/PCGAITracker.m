@@ -84,7 +84,7 @@ static id instance __strong = nil;
         if ([[PCConfig defaults] boolForKey:PC_CONFIG_GAN_ENABLED_KEY]) {
             [instance initGAIConfig];
             CLSNSLog(@"-> Starting Google Analytics tracker.");
-            [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[NSString stringWithFormat:@"{VoiceOverEnabled:%@}", UIAccessibilityIsVoiceOverRunning() ? @"YES" : @"NO"]];
+            [instance trackAction:@"DeviceInfo" inScreenWithName:@"/" category:kEventCategoryOther contentInfo:[self deviceInfo]];
         } else {
             CLSNSLog(@"-> Google Analytics disabled (config)");
         }
@@ -107,7 +107,7 @@ static id instance __strong = nil;
 #else
     CLSLog(@"Track screen: '%@'", screenName);
     [self.gaiTracker set:kGAIScreenName value:screenName];
-    [self.gaiTracker send:[[GAIDictionaryBuilder createAppView] build]];
+    [self.gaiTracker send:[[GAIDictionaryBuilder createScreenView] build]];
 #endif
 }
 
@@ -252,6 +252,42 @@ static id instance __strong = nil;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     self.gaiTracker = [[GAI sharedInstance] trackerWithTrackingId:ganId];
 #endif
+}
+
++ (NSString*)deviceInfo {
+    CLAuthorizationStatus locationAuthStatus = [CLLocationManager authorizationStatus];
+    NSString* authStatusString;
+    switch (locationAuthStatus) {
+        case kCLAuthorizationStatusNotDetermined:
+            authStatusString = @"NotDetermined";
+            break;
+        case kCLAuthorizationStatusRestricted:
+            authStatusString = @"Restricted";
+            break;
+        case kCLAuthorizationStatusDenied:
+            authStatusString = @"Denied";
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            authStatusString = @"Always";
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            authStatusString = @"WhenInUse";
+            break;
+        default:
+            authStatusString = @"Unknown";
+            break;
+    }
+    
+    NSDictionary* deviceInfo = @{
+                                 @"VoiceOverEnabled:":@(UIAccessibilityIsVoiceOverRunning()),
+                                 @"LocationAuthStatus":authStatusString
+                                 };
+    NSError* error = nil;
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:deviceInfo options:0 error:&error];
+    if (error) {
+        return @"error";
+    }
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];;
 }
 
 @end
