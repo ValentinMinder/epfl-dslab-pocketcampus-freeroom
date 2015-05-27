@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -92,7 +93,7 @@ public final class StationServiceTests {
 		}
 
 		@Override
-		public String get(String url, Charset charset) throws IOException {
+		public String get(String url, Map<String,String> headers, Charset charset) throws IOException {
 			throw new RuntimeException("get(String, Charset) should not be called.");
 		}
 

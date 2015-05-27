@@ -72,6 +72,17 @@ struct ScheduleResponse {
   2: required IsaStatusCode statusCode;
 }
 
+struct SemesterGrades {
+   1: required string semesterName;
+   2: required map<string, string> grades;
+}
+
+struct IsaGradesResponse {
+  1: required IsaStatusCode statusCode;
+  2: optional list<SemesterGrades> semesters;
+}
+
 service IsAcademiaService {
     ScheduleResponse getSchedule(1: ScheduleRequest req);
+    IsaGradesResponse getGrades();
 }
