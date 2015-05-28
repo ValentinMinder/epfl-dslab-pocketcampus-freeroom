@@ -1,0 +1,7 @@
+order deny,allow
+deny from all
+allow from 128.178.224.37
+
+RewriteEngine On
+RewriteRule ^/?(.*)$ https://isa.epfl.ch/$1 [L,P]
+
