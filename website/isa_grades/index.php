@@ -208,44 +208,100 @@ if($has_signed_up) {
 
 ?>
 
-<h1 class="fr">Inscription pour tester la fonctionalité notes d'IS-Academia (beta)</h1>
-<h1 class="en">Opt-in to beta test the grades functionality in IS-Academia</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-<p><small><a href="?lang=en">EN</a> | <a href="?lang=fr">FR</a></small></p>
+    <title>PocketCampus & grades</title>
 
-<p class="fr"><span class="m">Cher</span><span class="f">Chère</span> <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
-<p class="en">Dear <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-<p class="fr">Si tu connais l'app PocketCampus, tu sais probablement qu'il t'est possible d'accéder à ton horaire de cours dans la section IS-Academia.</p>
-<p class="en">If you're familiar with PocketCampus, you probably already know that you can access your timetables using the IS-Academia section of the app.</p>
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
 
-<p class="fr">Nous souhaitons passer à la prochaine étape et te permettre de voir tes notes !</p>
-<p class="en">We want to take the app to the next level, and allow you to access your grades, right from your phone!</p>
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
-<p class="fr">Nous cherchons des testeurs pour la version Beta sur Android.</p>
-<p class="en">We are currently looking for a limited number of users, willing to beta test this functionality on Android.</p>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-<p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
-<p class="en">If you opt-in, you won't need to install any additional app.</p>
+  <body>
 
-<p class="fr">Si tu es intéressé, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
-<p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
+    <div class="container">
 
-<p class="fr">Merci d'avance!</p>
-<p class="en">Thanks a lot!</p>
+        <div class="starter-template">
+            
+            <img style="margin-top: 15px; margin-left: -7px; margin-bottom: -15px;" src="../images/pocketcampus-logo-100px">
+            
+            <h1 class="fr">Notes IS-Academia dans PocketCampus (Beta)</h1>
+            <h1 class="en">IS-Academia grades in PocketCampus (Beta)</h1>
+            
+            <p><small><a href="?lang=en">EN</a> | <a href="?lang=fr">FR</a></small></p>
+            
+            <p class="fr"><span class="m">Cher</span><span class="f">Chère</span> <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
+            <p class="en">Dear <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
+            
+            <p class="fr">Si tu connais l'app PocketCampus, tu sais probablement qu'il t'est possible d'accéder à ton horaire de cours dans la section IS-Academia.</p>
+            <p class="en">If you're familiar with PocketCampus, you probably already know that you can access your timetables using the IS-Academia section of the app.</p>
+            
+            <p class="fr">Nous souhaitons passer à la prochaine étape et te permettre de voir tes notes !</p>
+            <p class="en">We want to take the app to the next level, and allow you to access your grades, right from your phone!</p>
+            
+            <p class="fr">Nous cherchons des testeurs pour la version Beta sur Android.</p>
+            <p class="en">We are currently looking for a limited number of users, willing to beta test this functionality on Android.</p>
+            
+            <p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
+            <p class="en">If you opt-in, you won't need to install any additional app.</p>
+            
+            <p class="fr">Si tu es intéressé, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
+            <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
+            
+            <p class="fr">Merci d'avance!</p>
+            <p class="en">Thanks a lot!</p>
+            
+            <p class="fr">L'équipe PocketCampus</p>
+            <p class="en">The PocketCampus team</p>
+            
+            <div class="on">
+            	<p class="fr" style="color:#090;">Tu es déjà inscris, merci!</p>
+            	<p class="en" style="color:#090;">You have already opted-in, thank you!</p>
+            </div>
+            
+            <div class="off">
+                <form method="post" action="#"><input type="hidden" name="optin" value="1">
+                	<span class="fr"><input type="submit" class="btn btn-lg btn-primary" value="S'inscrire"></span>
+                	<span class="en"><input type="submit" class="btn btn-lg btn-primary" value="Opt-in"></span>
+                </form>
+            </div>
+            
+            <p class="fr">Une question ? <a href="mailto:team@pocketcampus.org">Nous contacter</a>.</p>
+            <p class="en">Any question? <a href="mailto:team@pocketcampus.org">Contact us</a>.</p>
+        </div>
 
-<p class="fr">L'équipe PocketCampus</p>
-<p class="en">The PocketCampus team</p>
+    </div><!-- /.container -->
 
-<div class="on">
-	<p class="fr" style="color:#090;">Tu es déjà inscris, merci!</p>
-	<p class="en" style="color:#090;">You have already opted-in, thank you!</p>
-</div>
 
-<div class="off"><form method="post" action="#"><input type="hidden" name="optin" value="1">
-	<span class="fr"><input type="submit" value="S'inscrire"></span>
-	<span class="en"><input type="submit" value="Opt-in"></span>
-</form></div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </body>
+</html>
 
 
 
