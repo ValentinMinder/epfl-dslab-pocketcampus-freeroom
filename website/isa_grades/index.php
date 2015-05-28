@@ -247,8 +247,8 @@ if($has_signed_up) {
             
             <img style="margin-top: 15px; margin-left: -7px; margin-bottom: -15px;" src="../images/pocketcampus-logo-100px">
             
-            <h1 class="fr">Notes IS-Academia dans PocketCampus (Beta)</h1>
-            <h1 class="en">IS-Academia grades in PocketCampus (Beta)</h1>
+            <h1 class="fr">Notes IS-Academia dans PocketCampus (Beta Android)</h1>
+            <h1 class="en">IS-Academia grades in PocketCampus (Beta Android)</h1>
             
             <p><small><a href="?lang=en">EN</a> | <a href="?lang=fr">FR</a></small></p>
             
