@@ -1,5 +1,11 @@
 <?php
 
+if(empty($_GET["lang"])) {
+	$lang = ((!empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) && substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2) == "fr") ? "fr" : "en");
+	header("Location: ?lang=$lang");
+	exit;
+}
+
 session_start();
 
 header('Content-Type: text/html; charset=utf-8');
@@ -146,6 +152,9 @@ foreach($sheet_data as $row) {
 
 $title = trim(shell_exec("ldapsearch -h ldap.epfl.ch -b o=epfl,c=ch -x uniqueIdentifier={$_SESSION["user"]["uniqueid"]} | grep personalTitle | head -n 1 | cut -d ' ' -f 2"));
 
+
+
+/*
 echo "<h1>Inscription pour tester la fonctionalité notes d'IS-Academia (beta)</h1>\n";
 
 echo "<p>" . ($title == "Monsieur" ? "Cher" : ($title == "Madame" ? "Chère" : "Bonjour")) . " {$_SESSION["user"]["firstname"]},</p>\n";
@@ -167,11 +176,29 @@ echo "<p>L'équipe PocketCampus</p>\n";
 if($has_signed_up) {
 	echo "<p style=\"color:#090;\">Tu es déjà inscris, merci!</p>\n";
 } else {
-	echo "<form method=\"post\" action=\"?\"> <input type=\"hidden\" name=\"optin\" value=\"1\"> <input type=\"submit\" value=\"S'inscrire\"> </form>\n";
+	echo "<form method=\"post\" action=\"#\"> <input type=\"hidden\" name=\"optin\" value=\"1\"> <input type=\"submit\" value=\"S'inscrire\"> </form>\n";
+}
+*/
+
+
+
+if($title == "Madame") {
+	echo "<style>.m { display:none; }</style>\n";
+} else {
+	echo "<style>.f { display:none; }</style>\n";
 }
 
+if($_GET["lang"] == "fr") {
+	echo "<style>.en { display:none; }</style>\n";
+} else {
+	echo "<style>.fr { display:none; }</style>\n";
+}
 
-
+if($has_signed_up) {
+	echo "<style>.off { display:none; }</style>\n";
+} else {
+	echo "<style>.on { display:none; }</style>\n";
+}
 
 
 //echo "<pre>\n";
@@ -180,3 +207,45 @@ if($has_signed_up) {
 //echo json_encode($ret);
 
 ?>
+
+<h1 class="fr">Inscription pour tester la fonctionalité notes d'IS-Academia (beta)</h1>
+<h1 class="en">Opt-in to beta test the grades functionality in IS-Academia</h1>
+
+<p><small><a href="?lang=en">EN</a> | <a href="?lang=fr">FR</a></small></p>
+
+<p class="fr"><span class="m">Cher</span><span class="f">Chère</span> <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
+<p class="en">Dear <?php echo $_SESSION["user"]["firstname"]; ?>,</p>
+
+<p class="fr">Si tu connais l'app PocketCampus, tu sais probablement qu'il t'est possible d'accéder à ton horaire de cours dans la section IS-Academia.</p>
+<p class="en">If you're familiar with PocketCampus, you probably already know that you can access your timetables using the IS-Academia section of the app.</p>
+
+<p class="fr">Nous souhaitons passer à la prochaine étape et te permettre de voir tes notes !</p>
+<p class="en">We want to take the app to the next level, and allow you to access your grades, right from your phone!</p>
+
+<p class="fr">Nous cherchons des testeurs pour la version Beta sur Android.</p>
+<p class="en">We are currently looking for a limited number of users, willing to beta test this functionality on Android.</p>
+
+<p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
+<p class="en">If you opt-in, you won't need to install any additional app.</p>
+
+<p class="fr">Si tu es intéressé, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
+<p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
+
+<p class="fr">Merci d'avance!</p>
+<p class="en">Thanks a lot!</p>
+
+<p class="fr">L'équipe PocketCampus</p>
+<p class="en">The PocketCampus team</p>
+
+<div class="on">
+	<p class="fr" style="color:#090;">Tu es déjà inscris, merci!</p>
+	<p class="en" style="color:#090;">You have already opted-in, thank you!</p>
+</div>
+
+<div class="off"><form method="post" action="#"><input type="hidden" name="optin" value="1">
+	<span class="fr"><input type="submit" value="S'inscrire"></span>
+	<span class="en"><input type="submit" value="Opt-in"></span>
+</form></div>
+
+
+
