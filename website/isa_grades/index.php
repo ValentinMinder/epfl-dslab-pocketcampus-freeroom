@@ -277,8 +277,8 @@ if($has_signed_up) {
             <p class="en">The PocketCampus team</p>
             
             <div class="on">
-            	<p class="fr" style="color:#090;">Tu es déjà inscris, merci!</p>
-            	<p class="en" style="color:#090;">You have already opted-in, thank you!</p>
+            	<p class="fr" style="color:#090;">Tu es inscris, merci !</p>
+            	<p class="en" style="color:#090;">You are in, thank you!</p>
             </div>
             
             <div class="off">
