@@ -83,7 +83,7 @@ public class DashboardController extends PluginController {
 	}
 	
 	public void fetchDynamicConfig(DashboardView view) {
-		new FetchDynamicConfigRequest(view).start(this, threadSafeClient, getApplicationContext());
+		new FetchDynamicConfigRequest(view, getHttpGet("dummy")).start(this, threadSafeClient, getApplicationContext());
 	}
 	
 	public void registerPushNotif() {

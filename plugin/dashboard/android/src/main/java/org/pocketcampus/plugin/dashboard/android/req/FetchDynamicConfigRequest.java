@@ -2,6 +2,7 @@ package org.pocketcampus.plugin.dashboard.android.req;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -22,16 +23,18 @@ import android.content.Context;
 public class FetchDynamicConfigRequest extends Request<DashboardController, DefaultHttpClient, Context, Boolean> {
 	
 	DashboardView view;
+	HttpGet get;
 	
-	public FetchDynamicConfigRequest(DashboardView view) {
+	public FetchDynamicConfigRequest(DashboardView view, HttpGet http) {
 		this.view = view;
+		this.get = http;
 	}
 	
 	@Override
 	protected Boolean runInBackground(DefaultHttpClient client, Context param) throws Exception {
 		String appVersion = DashboardController.getAppVersion(param);
-		HttpGet get = new HttpGet("https://pocketcampus.epfl.ch/backend/get_config.php?" +
-				"app_version=" + appVersion + "&platform=android");
+		get.setURI(URI.create("https://pocketcampus.epfl.ch/backend/get_config.php?" +
+				"app_version=" + appVersion + "&platform=android"));
 		HttpResponse resp = client.execute(get);
 		InputStream in = resp.getEntity().getContent();
 		FileOutputStream fos = param.openFileOutput("pocketcampus.config", Context.MODE_PRIVATE);
