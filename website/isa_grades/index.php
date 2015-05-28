@@ -181,26 +181,6 @@ if($has_signed_up) {
 */
 
 
-
-if($title == "Madame") {
-	echo "<style>.m { display:none; }</style>\n";
-} else {
-	echo "<style>.f { display:none; }</style>\n";
-}
-
-if($_GET["lang"] == "fr") {
-	echo "<style>.en { display:none; }</style>\n";
-} else {
-	echo "<style>.fr { display:none; }</style>\n";
-}
-
-if($has_signed_up) {
-	echo "<style>.off { display:none; }</style>\n";
-} else {
-	echo "<style>.on { display:none; }</style>\n";
-}
-
-
 //echo "<pre>\n";
 //print_r($_POST);
 
@@ -237,6 +217,26 @@ if($has_signed_up) {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <?php
+      if($title == "Madame") {
+    	echo "<style>.m { display:none; }</style>\n";
+    } else {
+    	echo "<style>.f { display:none; }</style>\n";
+    }
+    
+    if($_GET["lang"] == "fr") {
+    	echo "<style>.en { display:none; }</style>\n";
+    } else {
+    	echo "<style>.fr { display:none; }</style>\n";
+    }
+    
+    if($has_signed_up) {
+    	echo "<style>.off { display:none; }</style>\n";
+    } else {
+    	echo "<style>.on { display:none; }</style>\n";
+    }
+    ?>
   </head>
 
   <body>
@@ -267,7 +267,7 @@ if($has_signed_up) {
             <p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
             <p class="en">If you opt-in, you won't need to install any additional app.</p>
             
-            <p class="fr">Si tu es intéressé, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
+            <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
             <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
             
             <p class="fr">Merci d'avance!</p>
@@ -277,8 +277,8 @@ if($has_signed_up) {
             <p class="en">The PocketCampus team</p>
             
             <div class="on">
-            	<p class="fr" style="color:#090;">Tu es inscris, merci !</p>
-            	<p class="en" style="color:#090;">You are in, thank you!</p>
+            	<p class="fr" style="color:#090; font-size: large; font-weight: bold;">Tu es inscris, merci !</p>
+            	<p class="en" style="color:#090; font-size: large; font-weight: bold;">You are in, thank you!</p>
             </div>
             
             <div class="off">
