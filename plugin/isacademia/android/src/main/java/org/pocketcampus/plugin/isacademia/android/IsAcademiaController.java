@@ -84,19 +84,21 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 	@Override
 	public void onCreate() {
 		mModel = new IsAcademiaModel(getApplicationContext());
+		createThriftClients();
+	}
+
+	public void createThriftClients() {
 		mClientS = (Iface) getClient(new Client.Factory(), mPluginName);
 		mClientG = (Iface) getClient(new Client.Factory(), mPluginName);
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
 			Bundle extras = aIntent.getExtras();
 			if(extras != null && extras.getInt("selfauthok") != 0) {
 				Log.v("DEBUG", "IsAcademiaController::onStartCommand auth succ");
-				// need to recreate thrift client coz old one will not have the sessId http header attached
-				mClientS = (Iface) getClient(new Client.Factory(), mPluginName);
-				mClientG = (Iface) getClient(new Client.Factory(), mPluginName);
+				createThriftClients(); // need to recreate thrift client coz old one will not have sessId
 				mModel.getListenersToNotify().authenticationFinished();
 			} else if(extras != null && extras.getInt("usercancelled") != 0) {
 				Log.v("DEBUG", "IsAcademiaController::onStartCommand user cancelled");
@@ -108,8 +110,7 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "IsAcademiaController::onStartCommand logout");
-			mClientS = (Iface) getClient(new Client.Factory(), mPluginName);
-			mClientG = (Iface) getClient(new Client.Factory(), mPluginName);
+			createThriftClients(); // need to recreate thrift client for same reason as above
 			RequestCache.invalidateCache(this, GetScheduleRequest.class.getCanonicalName());
 		}
 		stopSelf();

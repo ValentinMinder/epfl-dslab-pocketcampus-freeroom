@@ -2,11 +2,14 @@
 <resources>
 
     <string name="isacademia_plugin_title">IS-Academia</string>
+    <string name="isacademia_timetables">Horaires IS-Academia</string>
+    <string name="isacademia_grades">Notes IS-Academia</string>
     <string name="isacademia_schedule_for">Horaires du %s</string>
     <string name="isacademia_no_classes_on">Pas de cours le %s</string>
     <string name="isacademia_no_grades">Pas de notes</string>
     <string name="isacademia_network_error">Une erreur de connexion s\'est produite\nlors du chargement des horaires du\n%s</string>
     <string name="isacademia_go_to_date">Aller à</string>
+    <string name="isacademia_show_grades">Afficher notes</string>
     <string name="isacademia_period_type_LECTURE">Cours</string>
     <string name="isacademia_period_type_EXERCISES">Exercises</string>
     <string name="isacademia_period_type_LAB">Labo</string>

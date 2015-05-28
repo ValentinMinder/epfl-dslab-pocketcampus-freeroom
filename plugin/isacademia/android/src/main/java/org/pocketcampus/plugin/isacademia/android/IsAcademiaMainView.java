@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.pocketcampus.platform.android.core.GlobalContext;
+import org.pocketcampus.platform.android.core.PCAndroidConfig;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
@@ -85,8 +86,8 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 		// Get and cast the controller and model
 		mController = (IsAcademiaController) controller;
 		mModel = (IsAcademiaModel) controller.getModel();
-
-		setActionBarTitle(getString(R.string.isacademia_plugin_title));
+		
+		setActionBarTitle(getString(R.string.isacademia_timetables));
 
 		// transform currentTime to dayKey in device's timezone
 		keyFormatter = new SimpleDateFormat("yyyyMMdd", Locale.US);
@@ -233,24 +234,27 @@ public class IsAcademiaMainView extends PluginView implements IIsAcademiaView {
 			}
 		});
 
+		if(PCAndroidConfig.PC_ANDR_CFG.getInteger("DISABLE_ISA_GRADES") == 0) {
+			addActionToActionBar(new Action() {
 
-		addActionToActionBar(new Action() {
+				@Override
+				public void performAction(View view) {
+					trackEvent("ShowGrades", null);
+					startActivity(new Intent(IsAcademiaMainView.this, IsAcademiaGradesView.class));
+				}
 
-			@Override
-			public void performAction(View view) {
-				startActivity(new Intent(IsAcademiaMainView.this, IsAcademiaGradesView.class));
-			}
+				@Override
+				public int getDrawable() {
+					return R.drawable.isa_grades_icon;
+				}
 
-			@Override
-			public int getDrawable() {
-				return R.drawable.isa_grades_icon;
-			}
+				@Override
+				public String getDescription() {
+					return getString(R.string.isacademia_show_grades);
+				}
+			});
+		}
 
-			@Override
-			public String getDescription() {
-				return getString(R.string.isacademia_go_to_date);
-			}
-		});
 	}
 
 	private static String getRoomsString(StudyPeriod p) {

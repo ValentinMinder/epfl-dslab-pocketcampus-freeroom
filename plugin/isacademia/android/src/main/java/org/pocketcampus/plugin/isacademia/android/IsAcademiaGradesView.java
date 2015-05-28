@@ -74,7 +74,7 @@ public class IsAcademiaGradesView extends PluginView implements IIsAcademiaView 
 		mController = (IsAcademiaController) controller;
 		mModel = (IsAcademiaModel) controller.getModel();
 
-		setActionBarTitle(getString(R.string.isacademia_plugin_title));
+		setActionBarTitle(getString(R.string.isacademia_grades));
 
 		// transform currentTime to dayKey in device's timezone
 		// try {

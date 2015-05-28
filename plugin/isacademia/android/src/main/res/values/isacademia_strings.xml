@@ -2,11 +2,14 @@
 <resources>
 
     <string name="isacademia_plugin_title">IS-Academia</string>
+    <string name="isacademia_timetables">IS-Academia Timetables</string>
+    <string name="isacademia_grades">IS-Academia Grades</string>
     <string name="isacademia_schedule_for">Schedule for %s</string>
     <string name="isacademia_no_classes_on">No classes on %s</string>
     <string name="isacademia_no_grades">No grades</string>
     <string name="isacademia_network_error">A network error occurred\nwhile loading the schedule for\n%s</string>
     <string name="isacademia_go_to_date">Go to date</string>
+    <string name="isacademia_show_grades">Show grades</string>
     <string name="isacademia_period_type_LECTURE">Lecture</string>
     <string name="isacademia_period_type_EXERCISES">Exercises</string>
     <string name="isacademia_period_type_LAB">Lab</string>
