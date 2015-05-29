@@ -58,6 +58,7 @@ public final class IsAcademiaGradesService implements GradesService {
         for (final XElement semesterElem : XElement.parse(xml).children(SEMESTER_ELEMENT)) {
             grades.add(parseSemester(semesterElem, locale));
         }
+        Collections.reverse(grades);
         return grades;
     }
 
