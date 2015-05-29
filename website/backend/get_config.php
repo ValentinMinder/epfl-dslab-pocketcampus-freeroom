@@ -1,6 +1,33 @@
 <?php
 
-system("echo \"{$_SERVER["HTTP_USER_AGENT"]}\" >> user_agents");
+$disable_isa_grades = 1;
+
+if(!empty($_SERVER["HTTP_X_PC_AUTH_PCSESSID"]) && ($sess_id = json_decode($_SERVER["HTTP_X_PC_AUTH_PCSESSID"], true)) && !empty($sess_id["Tequila.profile"])) {
+	$profile = file_get_contents("https://tequila.epfl.ch/cgi-bin/OAuth2IdP/userinfo?access_token=" . urlencode($sess_id["Tequila.profile"]));
+	if($profile && ($decoded = json_decode($profile, true)) && !empty($decoded["Sciper"])) {
+
+		$workbook = "18D07NjPnPgKva7FNPV0qZAIcWtth_oyYeMwGtsIcxIc";
+		$sheet_id = "1674637367";
+		$sheet_data = file_get_contents("https://docs.google.com/spreadsheets/d/$workbook/export?format=csv&id=$workbook&gid=$sheet_id");
+		$sheet_data = str_getcsv($sheet_data, "\n");
+		$headers = null;
+		foreach($sheet_data as $row) {
+			if($headers == null) {
+				$headers = str_getcsv($row);
+			} else {
+				$r = array_combine($headers, str_getcsv($row));
+				if($r["sciper"] == $decoded["Sciper"]) {
+					$disable_isa_grades = 0;
+					break;
+				}
+			}
+		}
+
+		system("echo \"[`date`] {$decoded["Sciper"]}\" >> scipers");
+	}
+}
+
+system("echo \"[`date`] {$_SERVER["HTTP_USER_AGENT"]}\" >> user_agents");
 
 $platform = "android";
 $app_version = "1.0";
@@ -90,6 +117,7 @@ $resp["SERVER_PORT"] = "14611";
 $resp["SERVER_ADDRESS"] = "pocketcampus.epfl.ch";
 $resp["ENABLED_PLUGINS"] = array("Camipro", "Moodle", "Food", "Transport", "News", "Satellite", "Map", "Directory", "MyEdu", "Events", "Authentication", "PushNotif", "IsAcademia", "FreeRoom", "CloudPrint", "RecommendedApps", "Alumni");
 //$resp["SERVER_URI"] = "v3r1";
+$resp["DISABLE_ISA_GRADES"] = $disable_isa_grades;
 $resp["FOOD_RATINGS_ENABLED"] = 1; //0 = disabled, 1 = enabled
 
 // iOS6 does not support https
