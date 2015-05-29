@@ -317,7 +317,7 @@ configure( subprojects.findAll { it.path == ':android' } ) {
             // Add the application children, with special treatment for the dashboard's activity
             def pluginApp = pluginManifest.get('application').get(0)
             pluginApp.children().each{ node ->
-                if( node.name() == 'activity' && p.parent.name != 'dashboard' ) {
+                if( node.name() == 'activity' && p.path != ':plugin-dashboard-android' ) {
                     def toRemove = node.'**'.find{ it.attributes()[androidNs.name] == 'android.intent.category.LAUNCHER' }
                     if( toRemove != null ) { toRemove.parent().remove(toRemove) }
                 }
