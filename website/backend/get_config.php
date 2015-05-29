@@ -23,11 +23,11 @@ if(!empty($_SERVER["HTTP_X_PC_AUTH_PCSESSID"]) && ($sess_id = json_decode($_SERV
 			}
 		}
 
-		system("echo \"{$decoded["Sciper"]}\" >> scipers");
+		system("echo \"[`date`] {$decoded["Sciper"]}\" >> scipers");
 	}
 }
 
-system("echo \"{$_SERVER["HTTP_USER_AGENT"]}\" >> user_agents");
+system("echo \"[`date`] {$_SERVER["HTTP_USER_AGENT"]}\" >> user_agents");
 
 $platform = "android";
 $app_version = "1.0";
