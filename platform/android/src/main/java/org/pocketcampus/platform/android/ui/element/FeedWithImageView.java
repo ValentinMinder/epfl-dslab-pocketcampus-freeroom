@@ -1,6 +1,6 @@
 package org.pocketcampus.platform.android.ui.element;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.ui.labeler.IFeedViewLabeler;
 
 import android.content.Context;

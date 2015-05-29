@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.tracker.GATracker;
 
 import android.app.Application;

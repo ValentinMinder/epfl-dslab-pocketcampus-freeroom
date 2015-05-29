@@ -2,7 +2,7 @@ package org.pocketcampus.platform.android.ui.adapter;
 
 import java.util.ArrayList;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.ui.element.IconTextView;
 
 import android.content.Context;

@@ -270,7 +270,7 @@ configure( subprojects.findAll { it.path == ':android' } ) {
         projectDir.mkdir()
 
         // Copy all subprojects' code into the merged project;
-        androidProjects.each{ p -> realCopy(p.projectDir, projectDir) }
+        androidProjects.findAll{ p -> p.path != ':android' && p.path != ':platform-android' }.each{ p -> realCopy(p.projectDir, projectDir) }
 
         // Fix references to R in all files
         fileTree(dir: 'src/main/java').each{ file ->
@@ -305,7 +305,7 @@ configure( subprojects.findAll { it.path == ':android' } ) {
         def app = manifest.get('application').get(0)
 
         // Merge all plugin manifests into it
-        androidProjects.findAll{ p -> p.path != ':android' && p.parent.name != 'platform' }.each{ p ->
+        androidProjects.findAll{ p -> p.path != ':android' && p.path != ':platform-android' }.each{ p ->
             def pluginManifestFile = new File([p.projectDir, 'src', 'main', 'AndroidManifest.xml'].join(File.separator))
             def pluginManifest = new XmlParser().parse(pluginManifestFile)
 
