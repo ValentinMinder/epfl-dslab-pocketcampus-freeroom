@@ -305,7 +305,7 @@ configure( subprojects.findAll { it.path == ':android' } ) {
         def app = manifest.get('application').get(0)
 
         // Merge all plugin manifests into it
-        androidProjects.findAll{ p -> p.path != ':android' && p.parent.name != 'platform' }.each{ p ->
+        androidProjects.findAll{ p -> p.path != ':android' && p.path != ':platform-android' }.each{ p ->
             def pluginManifestFile = new File([p.projectDir, 'src', 'main', 'AndroidManifest.xml'].join(File.separator))
             def pluginManifest = new XmlParser().parse(pluginManifestFile)
 
