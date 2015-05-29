@@ -3,6 +3,7 @@ package org.pocketcampus.platform.android.ui.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.pocketcampus.platform.android.utils.Callback;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ public class StickyHeaderListAdapter extends BaseAdapter implements StickyListHe
     
 	private final List<BaseAdapter> sections = new LinkedList<BaseAdapter>();
 	protected BaseAdapter headers;
+    protected Callback<Integer> applyCollapsedHeaderState;
       
     public StickyHeaderListAdapter() {
     }  
@@ -19,11 +21,18 @@ public class StickyHeaderListAdapter extends BaseAdapter implements StickyListHe
     public void setHeaders(BaseAdapter adapter) {  
         this.headers = adapter;  
     }
-    
-    public void addSection(BaseAdapter adapter) {  
+
+    /***
+     * Call this to be notified to set the expanded/collapsed state of a section
+     */
+    public void setHeaderCollapsedStateApplier(Callback<Integer> applyCollapsedHeaderState) {
+        this.applyCollapsedHeaderState = applyCollapsedHeaderState;
+    }
+
+    public void addSection(BaseAdapter adapter) {
         this.sections.add(adapter);  
-    }  
-      
+    }
+
     private void audit() {
     	if(headers == null)
     		throw new IllegalStateException("headers adapter not set");
@@ -109,7 +118,11 @@ public class StickyHeaderListAdapter extends BaseAdapter implements StickyListHe
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
     	audit();
-    	return headers.getView((int) getHeaderId(position), convertView, parent);
+        position = (int) getHeaderId(position);
+        if(applyCollapsedHeaderState != null) {
+            applyCollapsedHeaderState.callback(position);
+        }
+    	return headers.getView(position, convertView, parent);
 	}
 
   

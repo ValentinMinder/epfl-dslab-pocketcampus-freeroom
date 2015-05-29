@@ -9,19 +9,7 @@ import static org.pocketcampus.platform.android.utils.SetUtils.difference;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
@@ -30,6 +18,7 @@ import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuated;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter.Actuator;
 import org.pocketcampus.platform.android.ui.adapter.StickyHeaderListAdapter;
 import org.pocketcampus.platform.android.ui.layout.StandardLayout;
+import org.pocketcampus.platform.android.utils.Callback;
 import org.pocketcampus.platform.android.utils.DialogUtils.MultiChoiceHandler;
 import org.pocketcampus.platform.android.utils.DialogUtils.SingleChoiceHandler;
 import org.pocketcampus.platform.android.utils.Preparated;
@@ -44,6 +33,7 @@ import org.pocketcampus.plugin.food.shared.MealType;
 import org.pocketcampus.plugin.food.shared.PriceTarget;
 import org.pocketcampus.plugin.food.shared.SubmitStatus;
 
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -100,7 +90,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	Long foodDay;
 	MealTime foodTime = MealTime.LUNCH;
 
-	StickyListHeadersListView mList;
+	ExpandableStickyListHeadersListView mList;
 	ScrollStateSaver scrollState;
 
 	@Override
@@ -180,7 +170,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 	public void foodUpdated() {
 
 		setContentView(R.layout.food_main);
-		mList = (StickyListHeadersListView) findViewById(R.id.food_main_list);
+		mList = (ExpandableStickyListHeadersListView) findViewById(R.id.food_main_list);
 		displayingList = false;
 		StandardLayout sl = new StandardLayout(this);
 		setContentView(sl);
@@ -359,7 +349,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		StickyHeaderListAdapter adapter = new StickyHeaderListAdapter();
 		List<AResto> restoList = new ArrayList<AResto>(mController.getRestos().values());
 		Collections.sort(restoList, getRestoComp4sort());
-		List<AResto> displayedResto = new LinkedList<AResto>();
+		final List<AResto> displayedResto = new LinkedList<AResto>();
 		for (AResto r : restoList) {
 			if (!filteredRestos.contains(r.id))
 				continue;
@@ -460,7 +450,7 @@ public class FoodMainView extends PluginView implements IFoodView {
 		} else {
 			if (!displayingList) {
 				setContentView(R.layout.food_main);
-				mList = (StickyListHeadersListView) findViewById(R.id.food_main_list);
+				mList = (ExpandableStickyListHeadersListView) findViewById(R.id.food_main_list);
 				displayingList = true;
 			}
 			// TextView headerTitle = (TextView)
@@ -499,6 +489,29 @@ public class FoodMainView extends PluginView implements IFoodView {
 					}
 				}
 			});
+
+			mList.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+				@Override
+				public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+					if(mList.isHeaderCollapsed(headerId)){
+						mModel.addExpandedResto(displayedResto.get((int) headerId).id);
+						trackEvent("ExpandResto", displayedResto.get((int) headerId).name);
+						mList.expand(headerId);
+					}else {
+						mModel.removeExpandedResto(displayedResto.get((int) headerId).id);
+						trackEvent("CollapseResto", displayedResto.get((int) headerId).name);
+						mList.collapse(headerId);
+					}
+				}
+			});
+
+			adapter.setHeaderCollapsedStateApplier(new Callback<Integer>() {
+				public void callback(Integer i) {
+					if(!mModel.getExpandedRestos().contains(displayedResto.get(i).id))
+						mList.collapse(i);
+				}
+			});
+
 
 			if (scrollState != null)
 				scrollState.restore(mList);

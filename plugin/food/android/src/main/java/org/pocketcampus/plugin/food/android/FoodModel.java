@@ -31,6 +31,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	private static final String FOOD_STORAGE_NAME = "FOOD_STORAGE_NAME";
 	private static final String FOOD_DISLIKED_RESTOS_KEY = "FOOD_DISLIKED_RESTOS_KEY";
 	private static final String FOOD_DISLIKED_TYPES_KEY = "FOOD_DISLIKED_TYPES_KEY";
+	private static final String FOOD_EXPANDED_RESTOS_KEY = "FOOD_EXPANDED_RESTOS_KEY";
 	private static final String FOOD_USER_STATUS_KEY = "FOOD_USER_STATUS_KEY";
 	
 	/**
@@ -48,6 +49,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	 */
 	private Set<Long> dislikedRestos = new HashSet<Long>();
 	private Set<MealType> dislikedTypes = new HashSet<MealType>();
+	private Set<Long> expandedRestos = new HashSet<Long>();
 	private PriceTarget userStatus = null;
 	
 	/**
@@ -64,6 +66,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		
 		dislikedRestos = decodeRestos(iStorage.getString(FOOD_DISLIKED_RESTOS_KEY, ""));
 		dislikedTypes = decodeTypes(iStorage.getString(FOOD_DISLIKED_TYPES_KEY, ""));
+		expandedRestos = decodeRestos(iStorage.getString(FOOD_EXPANDED_RESTOS_KEY, ""));
 		int userStatusInt = iStorage.getInt(FOOD_USER_STATUS_KEY, 0);
 		userStatus = (userStatusInt == 0 ? null : PriceTarget.findByValue(userStatusInt));
 		
@@ -95,6 +98,17 @@ public class FoodModel extends PluginModel implements IFoodModel {
 	public Set<MealType> getDislikedTypes() {
 		return dislikedTypes;
 	}
+	public void addExpandedResto(Long resto) {
+		expandedRestos.add(resto);
+		savePrefs();
+	}
+	public void removeExpandedResto(Long resto) {
+		expandedRestos.remove(resto);
+		savePrefs();
+	}
+	public Set<Long> getExpandedRestos() {
+		return expandedRestos;
+	}
 	public void setUserStatus(PriceTarget target) {
 		userStatus = target;
 		savePrefs();
@@ -108,6 +122,7 @@ public class FoodModel extends PluginModel implements IFoodModel {
 		iStorage.edit()
 				.putString(FOOD_DISLIKED_RESTOS_KEY, encodeRestos(dislikedRestos))
 				.putString(FOOD_DISLIKED_TYPES_KEY, encodeTypes(dislikedTypes))
+				.putString(FOOD_EXPANDED_RESTOS_KEY, encodeRestos(expandedRestos))
 				.putInt(FOOD_USER_STATUS_KEY, (userStatus == null ? 0 : userStatus.getValue()))
 				.commit();
 	}
