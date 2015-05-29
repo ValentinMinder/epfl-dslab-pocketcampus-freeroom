@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PocketCampus.iml" filepath="$PROJECT_DIR$/PocketCampus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/android.iml" filepath="$PROJECT_DIR$/android/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/platform/android/platform-android.iml" filepath="$PROJECT_DIR$/platform/android/platform-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/platform/server/platform-server.iml" filepath="$PROJECT_DIR$/platform/server/platform-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/platform/shared/platform-shared.iml" filepath="$PROJECT_DIR$/platform/shared/platform-shared.iml" />
