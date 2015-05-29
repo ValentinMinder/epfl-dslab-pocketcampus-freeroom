@@ -74,8 +74,6 @@
 			    android:protectionLevel="signature" />
 
 
-	<permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />
 	<permission android:name="org.pocketcampus.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />
 
