@@ -2,6 +2,8 @@
 <resources>
 
     <declare-styleable name="StickyListHeadersListView">
+        <attr name="stickyListHeadersListViewStyle" format="reference"/>
+
         <!-- View attributes -->
         <attr name="android:clipToPadding" />
         <attr name="android:scrollbars" />
@@ -26,6 +28,7 @@
         <attr name="android:divider" />
         <attr name="android:dividerHeight" />
         <attr name="android:transcriptMode" />
+        <attr name="android:stackFromBottom" />
 
         <!-- StickyListHeaders attributes -->
         <attr name="hasStickyHeaders" format="boolean" />
