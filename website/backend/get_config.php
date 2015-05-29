@@ -4,6 +4,8 @@ $disable_isa_grades = 1;
 
 if(!empty($_SERVER["HTTP_X_PC_AUTH_PCSESSID"]) && ($sess_id = json_decode($_SERVER["HTTP_X_PC_AUTH_PCSESSID"], true)) && !empty($sess_id["Tequila.profile"])) {
 	$profile = file_get_contents("https://tequila.epfl.ch/cgi-bin/OAuth2IdP/userinfo?access_token=" . urlencode($sess_id["Tequila.profile"]));
+	// TODO this is a HACK because Claude Lecommandeur implicitly uses ISO-8859-1, which is not good for JSON
+	$profile = iconv("ISO-8859-1", "UTF-8", $profile);
 	if($profile && ($decoded = json_decode($profile, true)) && !empty($decoded["Sciper"])) {
 
 		$workbook = "18D07NjPnPgKva7FNPV0qZAIcWtth_oyYeMwGtsIcxIc";
