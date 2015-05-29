@@ -35,7 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 
 public class TouchListView extends ListView {
 	private ImageView mDragView;

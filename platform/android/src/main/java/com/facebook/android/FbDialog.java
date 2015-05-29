@@ -39,7 +39,7 @@ import android.widget.TextView;
 
 import com.facebook.android.Facebook.DialogListener;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 
 public class FbDialog extends Dialog {
 

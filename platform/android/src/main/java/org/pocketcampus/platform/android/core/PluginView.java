@@ -5,7 +5,7 @@ import static org.pocketcampus.platform.android.core.GlobalContext.GA_EVENT_CATE
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.core.PluginController.ControllerBinder;
 import org.pocketcampus.platform.android.tracker.GATracker;
 

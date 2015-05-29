@@ -270,7 +270,7 @@ configure( subprojects.findAll { it.path == ':android' } ) {
         projectDir.mkdir()
 
         // Copy all subprojects' code into the merged project;
-        androidProjects.each{ p -> realCopy(p.projectDir, projectDir) }
+        androidProjects.findAll{ p -> p.path != ':android' && p.path != ':platform-android' }.each{ p -> realCopy(p.projectDir, projectDir) }
 
         // Fix references to R in all files
         fileTree(dir: 'src/main/java').each{ file ->

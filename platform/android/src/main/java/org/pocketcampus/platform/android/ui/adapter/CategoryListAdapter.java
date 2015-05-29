@@ -3,7 +3,7 @@ package org.pocketcampus.platform.android.ui.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

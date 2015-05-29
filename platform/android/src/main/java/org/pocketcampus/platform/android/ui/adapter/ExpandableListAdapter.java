@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.ui.labeler.IRatableViewConstructor;
 import org.pocketcampus.platform.android.ui.labeler.IRatableViewLabeler;
 

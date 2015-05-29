@@ -2,7 +2,7 @@ package org.pocketcampus.platform.android.ui.adapter;
 
 import java.util.List;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.ui.element.ElementDimension;
 
 import android.content.Context;

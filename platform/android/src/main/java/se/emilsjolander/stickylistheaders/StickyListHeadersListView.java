@@ -1,6 +1,6 @@
 package se.emilsjolander.stickylistheaders;
 
-import org.pocketcampus.R;
+import org.pocketcampus.platform.android.R;
 
 import se.emilsjolander.stickylistheaders.WrapperViewList.LifeCycleListener;
 import android.annotation.SuppressLint;
