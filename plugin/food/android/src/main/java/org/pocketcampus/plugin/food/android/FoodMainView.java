@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import android.widget.*;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.platform.android.ui.adapter.LazyAdapter;
@@ -50,13 +51,7 @@ import android.support.v4.util.LongSparseArray;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.markupartist.android.widget.Action;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -497,6 +492,14 @@ public class FoodMainView extends PluginView implements IFoodView {
 						mModel.addExpandedResto(displayedResto.get((int) headerId).id);
 						trackEvent("ExpandResto", displayedResto.get((int) headerId).name);
 						mList.expand(headerId);
+						final int top = ((View) (header.getParent())).getTop();
+						mList.postDelayed(new Runnable() {
+							public void run() {
+								mList.smoothScrollBy(top, 1000);
+							}
+						}, 10);
+
+
 					}else {
 						mModel.removeExpandedResto(displayedResto.get((int) headerId).id);
 						trackEvent("CollapseResto", displayedResto.get((int) headerId).name);
