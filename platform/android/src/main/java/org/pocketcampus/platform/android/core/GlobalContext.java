@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.pm.ApplicationInfo;
+import org.pocketcampus.platform.android.BuildConfig;
 import org.pocketcampus.platform.android.R;
 import org.pocketcampus.platform.android.tracker.GATracker;
 
@@ -186,8 +188,12 @@ public class GlobalContext extends Application {
 			*   This should be exhaustive/comprehensive
 			*   meaning all config params should be assigned a value here.
 			*/
-			PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus));
-			
+			if ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) ) {
+				PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus_debug));
+			} else {
+				PC_ANDR_CFG.load(getResources().openRawResource(R.raw.pocketcampus_release));
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
