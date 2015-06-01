@@ -50,7 +50,7 @@ public class FetchOccupancyDataJSON {
 
     public FetchOccupancyDataJSON(String db_url, String username,
                                   String passwd, FreeRoomServiceImpl server) {
-        connMgr = new ConnectionManager(db_url, username, passwd);
+        connMgr = new ConnectionManager(db_url, username, passwd, true);
         DB_URL = db_url;
         DB_USER = username;
         DB_PASSWORD = passwd;

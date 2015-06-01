@@ -88,8 +88,8 @@ public class FreeRoomServiceImpl implements FreeRoomService.Iface {
         ROOM_DETAILS_URL = PocketCampusServer.CONFIG.getString("FR_ROOM_DETAILS");
 
         try {
-            connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
-            connMgrUpdate = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD);
+            connMgr = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD, true);
+            connMgrUpdate = new ConnectionManager(DB_URL, DB_USER, DB_PASSWORD, true);
             connMgr.getConnection().setTransactionIsolation(
                     Connection.TRANSACTION_READ_COMMITTED);
             connMgrUpdate.getConnection().setTransactionIsolation(
