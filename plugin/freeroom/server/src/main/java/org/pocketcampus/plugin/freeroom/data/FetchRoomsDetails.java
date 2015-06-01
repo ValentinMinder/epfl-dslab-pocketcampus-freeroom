@@ -34,7 +34,7 @@ public class FetchRoomsDetails {
     private Connection connDB = null;
 
     public FetchRoomsDetails(String db_url, String username, String passwd, String url_indiv) {
-        connMgr = new ConnectionManager(db_url, username, passwd);
+        connMgr = new ConnectionManager(db_url, username, passwd, true);
         URL_INDIVIDUAL_ROOM = url_indiv;
         this.connDB = null;
 
