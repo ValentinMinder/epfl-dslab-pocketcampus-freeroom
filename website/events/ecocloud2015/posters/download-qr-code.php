@@ -78,7 +78,7 @@
         These files show you where to place the QR code.<br/>Make sure that the QR code completely covers the red square!</p>
         <script>
             function set_image(iid) {
-                url = "http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=23000070%26markFavorite=" + iid;
+                url = "http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=28000020%26markFavorite=" + iid;
                 document.getElementById("qr_image").src=url;
                 document.getElementById("qr_link").innerHTML='<a href="' + url + '" target="_blank">download</a>';
                 document.getElementById("template_link").innerHTML = '<a href="template'+iid+'.png">download template</a>'
