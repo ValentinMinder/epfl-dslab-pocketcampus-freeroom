@@ -5,17 +5,12 @@ error_reporting(E_ALL | E_STRICT);
 $posterName = "template128020001.png";
 $croppedPosterName = "cropped_{$posterName}";
 $cwd = getcwd();
+
 $systemCommand = "/usr/local/Cellar/imagemagick/6.8.9-7/bin/convert {$cwd}/{$posterName} -gravity NorthEast -crop 6.2%\! {$cwd}/decodedIds/{$croppedPosterName}";
-
-echo '<pre>';
-echo "Outcome of running system({$systemCommand})";
-
-$last_line = system($systemCommand, $retval);
-// Printing additional info
-echo '
-</pre>
-<hr />Last line of the output: ' . $last_line . '
-<hr />Return value: ' . $retval . '<hr/>';
+system($systemCommand, $retval);
+if($retval != 0){
+	die("Error while executing {$systemCommand}");
+}
 
 $url = "https://api.qrserver.com/v1/read-qr-code/";
 
@@ -47,27 +42,20 @@ parse_str($query);
 
 print_r($markFavorite);
 
+if (empty($markFavorite)){
+	print_r($json);
+	die("Failed to get meaning of QR code.");
+}
+
 $systemCommand = "cp {$cwd}/{$posterName} {$cwd}/decodedIds/{$markFavorite}.png";
-
-echo '<pre>';
-echo "Outcome of running system({$systemCommand})";
-
-$last_line = system($systemCommand, $retval);
-// Printing additional info
-echo '
-</pre>
-<hr />Last line of the output: ' . $last_line . '
-<hr />Return value: ' . $retval . '<hr/>';
+system($systemCommand, $retval);
+if($retval != 0){
+	die("Error while executing {$systemCommand}");
+}
 
 $systemCommand = "rm {$cwd}/decodedIds/{$croppedPosterName}";
-
-echo '<pre>';
-echo "Outcome of running system({$systemCommand})";
-
-$last_line = system($systemCommand, $retval);
-// Printing additional info
-echo '
-</pre>
-<hr />Last line of the output: ' . $last_line . '
-<hr />Return value: ' . $retval . '<hr/>';
+system($systemCommand, $retval);
+if($retval != 0){
+	die("Error while executing {$systemCommand}");
+}
 ?>
