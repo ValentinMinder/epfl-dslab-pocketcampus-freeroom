@@ -51,7 +51,16 @@ public class GlobalContext extends Application {
 		
 		refresh();
 	}
-	
+
+	public String getAppVersion() {
+		try {
+			return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public void refresh() {
 		loadConfig();
 		loadPluginManifests();
@@ -200,15 +209,30 @@ public class GlobalContext extends Application {
 		try {
 			
 			/**
-			* Then override with server config.
+			* Then override with common server config.
 			*   The server config file is in the private dir;
 			*   It is downloaded and written by the dashboard plugin.
 			*/
 			try {
-				PC_ANDR_CFG.load(openFileInput("pocketcampus.config"));
+				PC_ANDR_CFG.load(openFileInput("pocketcampus_common.config"));
 			} catch (FileNotFoundException e) {
 			}
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+
+			/**
+			 * Then override with authenticated server config.
+			 *   The server config file is in the private dir;
+			 *   It is downloaded and written by the dashboard plugin.
+			 */
+			try {
+				PC_ANDR_CFG.load(openFileInput("pocketcampus_authenticated.config"));
+			} catch (FileNotFoundException e) {
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
