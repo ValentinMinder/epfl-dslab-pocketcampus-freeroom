@@ -21,3 +21,5 @@
 128020021	PowerCool : Simulation of Integrated Microfluidic Power Generation in Many-Core Servers
 128020022	Energy Management in Geo-distributed Green Datacenters
 128020023	Fast Learning of Deep Models using Spectral Descent
+128020024	PowerCool : Simulation of Integrated Microfluidic Power Generation in Many-Core Servers
+128020025	Energy Management in Geo-distributed Green Datacenters
