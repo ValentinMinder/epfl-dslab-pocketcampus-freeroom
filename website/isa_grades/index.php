@@ -247,8 +247,8 @@ if($has_signed_up) {
             
             <img style="margin-top: 15px; margin-left: -7px; margin-bottom: -15px;" src="../images/pocketcampus-logo-100px">
             
-            <h1 class="fr">Notes IS-Academia dans PocketCampus (Beta Android)</h1>
-            <h1 class="en">IS-Academia grades in PocketCampus (Beta Android)</h1>
+            <h1 class="fr">Notes IS-Academia dans PocketCampus (Bêta Android)</h1>
+            <h1 class="en">IS-Academia grades in PocketCampus (Android Beta)</h1>
             
             <p><small><a href="?lang=en">EN</a> | <a href="?lang=fr">FR</a></small></p>
             
@@ -261,7 +261,7 @@ if($has_signed_up) {
             <p class="fr">Nous souhaitons passer à la prochaine étape et te permettre de voir tes notes !</p>
             <p class="en">We want to take the app to the next level, and allow you to access your grades, right from your phone!</p>
             
-            <p class="fr">Nous cherchons des testeurs pour la version Beta sur Android.</p>
+            <p class="fr">Nous cherchons des testeurs pour la version bêta sur Android.</p>
             <p class="en">We are currently looking for a limited number of users, willing to beta test this functionality on Android.</p>
             
             <p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
@@ -270,7 +270,7 @@ if($has_signed_up) {
             <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
             <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
             
-            <p class="fr">Merci d'avance!</p>
+            <p class="fr">Merci d'avance !</p>
             <p class="en">Thanks a lot!</p>
             
             <p class="fr">L'équipe PocketCampus</p>
@@ -288,8 +288,34 @@ if($has_signed_up) {
                 </form>
             </div>
             
-            <p class="fr">Une question ? <a href="mailto:team@pocketcampus.org">Nous contacter</a>.</p>
-            <p class="en">Any question? <a href="mailto:team@pocketcampus.org">Contact us</a>.</p>
+            <h2>&nbsp;</h2>
+            <h2 class="fr">Questions Courantes</h2>
+            <h2 class="en">FAQ</h2>
+            
+            <h5 class="fr">Je me suis inscris mais je n'ai toujours pas l'option "Notes" dans la section IS-Academia</h5>
+            <h5 class="en">I opted-in but still cannot see the "Grades" icon in the IS-Academia section</h5>
+            
+            <p class="fr">Merci de fermer (tuer) l'app et la redémarrer.</p>
+            <p class="en">Please kill the app and restart it.</p>
+            <p>&nbsp;</p>
+
+            <h5 class="fr">Quelle version de l'app dois-je avoir pour que la fonctinoalité "Notes" marche?</h5>
+            <h5 class="en">What app version should I have for the "Grades" functionality to work?</h5>
+
+            <p class="fr">Il faut avoir PocketCampus v3.1.1 ou une version plus récente.</p>
+            <p class="en">You should have PocketCampus v3.1.1 or a more recent version.</p>
+            <p>&nbsp;</p>
+
+            <h5 class="fr">Je ne peux pas voire les notes de tous mes cours</h5>
+            <h5 class="en">I cannot see grades for all my courses</h5>
+
+            <p class="fr">Actuellement, seulement des cours bien définis font partie de la bêta. Nous allons ajouter plus de cours prochainement.</p>
+            <p class="en">For now, only selected courses are in the beta. We will add more courses soon.</p>
+            <p>&nbsp;</p>
+
+            <p class="fr">D'autres questions ? <a href="mailto:team@pocketcampus.org">Nous contacter</a></p>
+            <p class="en">Other questions? <a href="mailto:team@pocketcampus.org">Contact us</a></p>
+
         </div>
 
     </div><!-- /.container -->
