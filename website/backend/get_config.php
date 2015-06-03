@@ -17,7 +17,7 @@ if(!empty($_SERVER["HTTP_X_PC_AUTH_PCSESSID"]) && ($sess_id = json_decode($_SERV
 			} else {
 				$r = array_combine($headers, str_getcsv($row));
 				if($r["sciper"] == $decoded["Sciper"]) {
-					$disable_isa_grades = 0;
+					$disable_isa_grades = 1;
 					break;
 				}
 			}
