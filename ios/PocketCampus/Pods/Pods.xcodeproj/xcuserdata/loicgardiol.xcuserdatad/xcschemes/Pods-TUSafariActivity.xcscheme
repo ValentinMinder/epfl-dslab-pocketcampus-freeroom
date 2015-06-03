@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A71B413BB2E2C43C1AA17D4D"
+               BlueprintIdentifier = "2012A3AF5C9A7311BA425AA6"
                BuildableName = "libPods-TUSafariActivity.a"
                BlueprintName = "Pods-TUSafariActivity"
                ReferencedContainer = "container:Pods.xcodeproj">

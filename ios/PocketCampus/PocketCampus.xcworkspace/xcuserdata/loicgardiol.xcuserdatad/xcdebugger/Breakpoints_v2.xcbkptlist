@@ -3365,7 +3365,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "354"
@@ -3381,7 +3381,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "323"
@@ -3413,7 +3413,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "327"
@@ -3429,7 +3429,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "332"
@@ -3477,7 +3477,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "352"
@@ -6722,7 +6722,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plugins/IsAcademiaPlugin/Controllers/IsAcademiaDayScheduleViewController.m"
-            timestampString = "442078513.031768"
+            timestampString = "455019628.322847"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "288"
@@ -7352,6 +7352,22 @@
             startingLineNumber = "84"
             endingLineNumber = "84"
             landmarkName = "+sharedTracker"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/LGALibrary/Pod/Classes/UITabBarController+LGAAdditions.m"
+            timestampString = "455020594.184509"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "-lga_bottomLayoutGuide"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
