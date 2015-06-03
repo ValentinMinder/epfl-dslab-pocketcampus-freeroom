@@ -59,7 +59,9 @@ curl_close ($ch);
 
 $json = json_decode($result, true);
 if(empty($json) || empty($json[0]) || empty($json[0]["symbol"]) || empty($json[0]["symbol"][0]) || empty($json[0]["symbol"][0]["data"])) {
-	die("Failed to decode QR code, did you put your QR code in the proper placeholder?");
+	echo "<b>Failed to decode QR code, did you put your QR code in the proper placeholder? (top-right, 5cm X 5cm)</b>";
+	echo "<p>If you think there is an error, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
+	return;
 }
 
 $parsed_url = parse_url($json[0]["symbol"][0]["data"]);
@@ -85,11 +87,13 @@ foreach($all_posters as $p) {
 }
 
 if(!isset($posters_map[$parsed_query_string["markFavorite"]])) {
-	die("Failed to find your poster, did you register it?");
+	echo "<b>Failed to find your poster, did you register it?</b>";
+	echo "<p>If you think there is an error, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
+	return;
 }
 
 echo "<p>Upload succeeded, detected poster:</p>\n";
 echo "<p><b>{$posters_map[$parsed_query_string["markFavorite"]]}</b></p>\n";
-echo "<p>If it's not your poster, please notify the organizers</p>\n";
+echo "<p>If it's not your poster, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
 
 ?>
