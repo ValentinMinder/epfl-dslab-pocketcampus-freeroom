@@ -241,6 +241,7 @@
 		327412E1167E7E56001E8C62 /* DownloadedCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412DF167E7E56001E8C62 /* DownloadedCornerSelected.png */; };
 		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
 		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; };
+		327442961B1F3F5600199369 /* IsAcademiaGradesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 327442951B1F3F5600199369 /* IsAcademiaGradesViewController.m */; };
 		327513311825465D0037FE00 /* FavoriteCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132D1825465D0037FE00 /* FavoriteCorner.png */; };
 		327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */; };
 		327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */; };
@@ -1026,6 +1027,8 @@
 		327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownloadedCornerSelected@2x.png"; sourceTree = "<group>"; };
 		327412E3167E824F001E8C62 /* PCTableViewCellAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PCTableViewCellAdditions.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCTableViewCellAdditions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		327442941B1F3F5600199369 /* IsAcademiaGradesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaGradesViewController.h; sourceTree = "<group>"; };
+		327442951B1F3F5600199369 /* IsAcademiaGradesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaGradesViewController.m; sourceTree = "<group>"; };
 		3275132D1825465D0037FE00 /* FavoriteCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCorner.png; sourceTree = "<group>"; };
 		3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCorner@2x.png"; sourceTree = "<group>"; };
 		3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCornerSelected.png; sourceTree = "<group>"; };
@@ -3140,6 +3143,8 @@
 				104F4598B47B32142EF41F88 /* IsAcademiaController.m */,
 				3297421318D799A900E23C76 /* IsAcademiaDayScheduleViewController.h */,
 				3297421418D799A900E23C76 /* IsAcademiaDayScheduleViewController.m */,
+				327442941B1F3F5600199369 /* IsAcademiaGradesViewController.h */,
+				327442951B1F3F5600199369 /* IsAcademiaGradesViewController.m */,
 			);
 			name = Controllers;
 			path = Plugins/IsAcademiaPlugin/Controllers;
@@ -3968,6 +3973,7 @@
 				32FAC0FA1500F40700925180 /* directory.m in Sources */,
 				32102B6615050B9D0076537E /* food.m in Sources */,
 				3245DF3018881B5F0072E086 /* PCUsageViewController.m in Sources */,
+				327442961B1F3F5600199369 /* IsAcademiaGradesViewController.m in Sources */,
 				32FF91EC19C62FC300559E1E /* CloudPrintActionViewController.m in Sources */,
 				32102B6C15050C000076537E /* FoodService.m in Sources */,
 				3242DE1F150577050082D720 /* PCService.m in Sources */,

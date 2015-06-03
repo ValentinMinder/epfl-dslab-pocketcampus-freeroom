@@ -1,6 +1,9 @@
 
 "PluginName" = "IS-Academia";
 "MySchedule" = "My schedule";
+"Schedule" = "Schedule";
+"MyGrades" = "My grades";
+"Grades" = "Grades";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Rooms:\n(tap to see on map)"; //<periodType> \n\n <name>\n<timeString>
 "Lecture" = "Lecture";

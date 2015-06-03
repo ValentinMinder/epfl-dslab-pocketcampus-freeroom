@@ -1,6 +1,9 @@
 
 "PluginName" = "IS-Academia";
 "MySchedule" = "Mon horaire";
+"Schedule" = "Horaire";
+"MyGrades" = "Mes résultats";
+"Grades" = "Résultats";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Salles:\n(touchez pour voir sur le plan)"; //<periodType> \n\n <name>\n<timeString>
 "Lecture" = "Cours";

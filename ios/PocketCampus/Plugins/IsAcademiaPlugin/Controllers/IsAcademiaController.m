@@ -31,11 +31,15 @@
 
 #import "IsAcademiaDayScheduleViewController.h"
 
+#import "IsAcademiaGradesViewController.h"
+
 static IsAcademiaController* instance __weak = nil;
 
 @interface IsAcademiaController ()
 
 @property (nonatomic, strong) IsAcademiaService* moodleService;
+@property (nonatomic, weak) UISegmentedControl* scheduleViewControllerSegmentedControl;
+@property (nonatomic, weak) UISegmentedControl* gradesViewControllerSegmentedControl;
 
 @end
 
@@ -51,10 +55,22 @@ static IsAcademiaController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            IsAcademiaDayScheduleViewController* dayScheduleViewController = [IsAcademiaDayScheduleViewController new];
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:dayScheduleViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            IsAcademiaDayScheduleViewController* scheduleViewController = [IsAcademiaDayScheduleViewController new];
+            UISegmentedControl* scheduleViewControllerSegmentedControl = [self titleViewSegmentedControlInstance];
+            self.scheduleViewControllerSegmentedControl = scheduleViewControllerSegmentedControl;
+            scheduleViewController.navigationItem.titleView = scheduleViewControllerSegmentedControl;
+            
+            IsAcademiaGradesViewController* gradesViewController = [IsAcademiaGradesViewController new];
+            UISegmentedControl* gradesViewControllerSegmentedControl = [self titleViewSegmentedControlInstance];
+            self.gradesViewControllerSegmentedControl = gradesViewControllerSegmentedControl;
+            gradesViewController.navigationItem.titleView = gradesViewControllerSegmentedControl;
+            
+            PluginTabBarController* tabBarController = [PluginTabBarController new];
+            PCNavigationController* scheduleNavController = [[PCNavigationController alloc] initWithRootViewController:scheduleViewController];
+            PCNavigationController* gradesNavController = [[PCNavigationController alloc] initWithRootViewController:gradesViewController];
+            tabBarController.viewControllers = @[scheduleNavController, gradesNavController];
+            tabBarController.pluginIdentifier = [[self class] identifierName];
+            self.mainTabBarController = tabBarController;
             instance = self;
         }
         return self;
@@ -88,6 +104,27 @@ static IsAcademiaController* instance __weak = nil;
 
 + (NSString*)identifierName {
     return @"IsAcademia";
+}
+
+#pragma mark - Private
+
+static NSInteger const kScheduleSegmentIndex = 0;
+static NSInteger const kGradesSegmentedIndex = 1;
+
+- (UISegmentedControl*)titleViewSegmentedControlInstance {
+    UISegmentedControl* segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedStringFromTable(@"Schedule", @"IsAcademiaPlugin", nil), NSLocalizedStringFromTable(@"Grades", @"IsAcademiaPlugin", nil)]];
+    segmentedControl.selectedSegmentIndex = kScheduleSegmentIndex;
+    segmentedControl.tintColor = [UIColor clearColor];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0], NSForegroundColorAttributeName:[PCValues pocketCampusRed]} forState:UIControlStateNormal];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateSelected];
+    [segmentedControl addTarget:self action:@selector(titleViewSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    return segmentedControl;
+}
+
+- (void)titleViewSegmentedControlValueChanged:(UISegmentedControl*)segmentedControl {
+    self.mainTabBarController.selectedIndex = segmentedControl.selectedSegmentIndex;
+    self.scheduleViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
+    self.gradesViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
 }
 
 #pragma mark - Dealloc
