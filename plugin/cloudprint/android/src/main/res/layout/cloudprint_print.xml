@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/cloudprint_preview_print"
+        style="@style/PocketCampusListItemTitle"
+        android:text="@string/cloudprint_plugin_title"
+        android:maxLines="3" />
+
+    <ScrollView
+        android:layout_marginBottom="35dp"
+        android:layout_marginTop="15dip" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <Spinner
+                android:id="@+id/cloudprint_select_copies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/cloudprint_select_pageselection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/cloudprint_select_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/cloudprint_select_doublesided"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/cloudprint_select_orientation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/cloudprint_select_multipage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cloudprint_preview_button"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/cloudprint_dialog_button_preview" />
+
+        <Button
+            android:id="@+id/cloudprint_print_button"
+            style="@style/PocketCampusButton"
+            android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/cloudprint_dialog_button_print" />
+    </LinearLayout>
+
+</LinearLayout>

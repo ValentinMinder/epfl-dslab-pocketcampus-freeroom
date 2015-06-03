@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-authentication-shared')
+    compile project(':platform-android')
+}

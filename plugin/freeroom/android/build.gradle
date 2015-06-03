@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-freeroom-shared')
+    compile project(':platform-android')
+}

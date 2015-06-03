@@ -10,7 +10,7 @@ echo "ps aux\n";
 //system("./status $team");
 
 $u = uniqid('');
-file_put_contents("private/commands", "ps aux | grep pocketcampus-server-$team | grep -v grep ; echo $u \n", FILE_APPEND | LOCK_EX);
+file_put_contents("private/commands", "ps aux | grep pocketcampus-server-$team- | grep -v grep ; echo $u \n", FILE_APPEND | LOCK_EX);
 $watchdog = 0;
 do {
 	sleep(1);

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.pocketcampus.plugin.freeroom"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="org.pocketcampus.platform.android.core.GlobalContext"
+        android:icon="@drawable/freeroom_normal_icon"
+        android:label="@string/app_name"
+        android:theme="@style/PocketCampusActionBarTheme" >
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomHomeView"
+            android:icon="@drawable/freeroom_normal_icon"
+            android:logo="@drawable/freeroom_icon_white"
+            android:label="@string/freeroom_plugin_title"
+            android:launchMode="singleTask"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme"
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="pocketcampus.intent.action.PLUGIN_MAIN" />
+            </intent-filter>
+
+
+            <!-- Interception of epfl QR-code or website http://occupancy.epfl.ch/room -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="occupancy.epfl.ch"
+                    android:scheme="http" />
+            </intent-filter>
+
+            <!-- Interception of PocketCampus Intent or QR-code -->
+            <!-- SCHEME://freeroom.plugin.pocketcampus.org/search?name=NAM -->
+            <!-- Does an autocomplete on "NAM*" and return ALL the corresponding results. -->
+            <!-- scheme can be either "http", "pocketcampus" or "" (empty string) -->
+            <!-- http is supported because when opening or giving link to other may remove the pocketcampus and add http automatically -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/search"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/search"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/search"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+
+            <!-- SCHEME://freeroom.plugin.pocketcampus.org/match?name=NAM -->
+            <!-- Find the room where "NAM" matches exactly the room name or building, and return ALL the corresponding results. -->
+            <!-- This way is intended to match a whole building (for instance all BC without BCH) -->
+            <!-- If you want a single room and you know its uid, prefer the /show?id=UID method -->
+            <!-- scheme can be either "http", "pocketcampus" or "" (empty string) -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/match"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/match"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/match"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+
+            <!-- Interception of PocketCampus Intent or QR-code -->
+            <!-- pocketcampus://freeroom.plugin.pocketcampus.org/show?id=UID -->
+            <!-- Works with EPFL UID with or without the leading 1201XXX -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/show"
+                    android:scheme="http" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/show"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="freeroom.plugin.pocketcampus.org"
+                    android:pathPrefix="/show"
+                    android:scheme="pocketcampus" />
+            </intent-filter>
+        </activity>
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomSearchActivity"
+            android:icon="@drawable/freeroom_normal_icon"
+            android:logo="@drawable/freeroom_icon_white"
+            android:label="@string/freeroom_plugin_title"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomFavoritesActivity"
+            android:icon="@drawable/freeroom_normal_icon"
+            android:logo="@drawable/freeroom_icon_white"
+            android:label="@string/freeroom_plugin_title"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomCopyClipBoard"
+            android:icon="@drawable/freeroom_ic_action_copy"
+            android:logo="@drawable/freeroom_icon_white"
+            android:label="@string/freeroom_share_CopyClipBoard"
+            android:screenOrientation="nosensor"
+            android:theme="@style/PocketCampusActionBarTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/org.pocketcampus.freeroom.text" />
+            </intent-filter>
+        </activity>
+
+        <service
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.freeroom.android.FreeRoomController" >
+        </service>
+
+    </application>
+
+</manifest>

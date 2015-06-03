@@ -1,0 +1,13 @@
+# User-specific stuff
+workspace.xml
+tasks.xml
+dictionaries
+
+# Sensitive or high-churn files:
+sqlDataSources.xml
+dynamic.xml
+uiDesigner.xml
+
+# Gradle:
+gradle.xml
+/libraries/

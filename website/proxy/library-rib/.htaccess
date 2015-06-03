@@ -1,0 +1,8 @@
+AuthUserFile /var/www/vhosts/pocketcampus/private/proxy_library.pass
+AuthType Basic
+AuthName "Password Protected"
+Require valid-user
+
+RewriteEngine On
+RewriteRule ^/?(.*)$ http://www.library.ethz.ch/$1 [L,P]
+

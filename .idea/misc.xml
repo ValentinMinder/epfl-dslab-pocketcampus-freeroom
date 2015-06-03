@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/platform/android" />
+    <file type="web" url="file://$PROJECT_DIR$/platform/server" />
+    <file type="web" url="file://$PROJECT_DIR$/platform/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/authentication/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/camipro/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/cloudprint/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/dashboard/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/directory/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/events/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/food/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/freeroom/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/isacademia/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/map/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/moodle/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/news/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/pushnotif/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/recommendedapps/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/satellite/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/android" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/server" />
+    <file type="web" url="file://$PROJECT_DIR$/plugin/transport/shared" />
+    <file type="web" url="file://$PROJECT_DIR$/server" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Android Lint</id>
+          </State>
+          <State>
+            <id>Internationalization issues</id>
+          </State>
+          <State>
+            <id>Internationalization issuesJava</id>
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Android</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+</project>

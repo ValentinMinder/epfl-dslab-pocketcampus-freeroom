@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="authentication_plugin_title">Authentification</string>
+    <string name="authentication_authenticating_title">Authentification en cours</string>
+    
+    <string name="authentication_string_username_hint">Nom d\'utilisateur</string>
+    <string name="authentication_string_password_hint">Mot de passe</string>
+    <string name="authentication_string_staysignedin">Enregistrer mot de passe</string>
+    <string name="authentication_string_login">Connexion</string>
+        
+    <string name="authentication_invalid_credentials">Nom d\'utilisateur ou mot de passe invalides, essayer de nouveau</string>
+    <string name="authentication_cookie_expired">Votre session a expiré, s\'il vous plaît connectez vous de nouveau</string>
+    <string name="authentication_connection_error_happened">Nous ne pouvons pas vous connecter maintenant, car vous n\'êtes pas connecté à Internet</string>
+        
+    <string name="authentication_string_alwaysallow">Toujours Autoriser</string>
+    <string name="authentication_string_allow">Autoriser</string>
+    <string name="authentication_string_deny">Refuser</string>
+    <string name="authentication_string_alwaysdeny">Toujours Refuser</string>
+        
+    <string name="authentication_string_serviceaccessaccount">Le service suivant demande l\'accès à votre compte. PocketCampus n\'est pas affilié à cette application. Nous vous recommandons d\'accorder l\'accès uniquement si vous faites confiance au service.</string>
+    <string name="authentication_string_isrequestingaccessto">demande l\'accès à</string>
+    
+    <string name="authentication_permission_description">Cette autorisation doit être utilisé lorsqu\'une application tierce veut authentifier les utilisateurs avec Tequila</string>
+    <string name="authentication_permission_label">authentifier les utilisateurs avec Tequila</string>
+    <string name="authentication_permission_group_description">Ce groupe d\'autorisations est utilisé pour les autorisations PocketCampus liés à l\'authentification</string>
+    <string name="authentication_permission_group_label">Authentification</string>
+    
+    <string name="authentication_ext_org_not_allowed">Le service auquel vous vous connectez ne permet pas les connexions provenant d\'institutions externes</string>
+    <string name="authentication_org_prompt_title">Choisir votre institution</string>
+    <string name="authentication_not_from_epfl">Pas de l\'EPFL?</string>
+    
+    <string name="authentication_string_logout">Déconnexion</string>
+    <string name="authentication_string_failed">Échec</string>
+    <string name="authentication_signed_out">Déconnecté %d session(s)</string>
+    <string name="authentication_logged_in_as">Vous êtes connecté en tant que&lt;br&gt;&lt;b&gt;%s&lt;/b&gt;</string>
+    <string name="authentication_not_logged_in">Vous n\'êtes pas connecté</string>
+    <string name="authentication_session_will_time_out">Votre session expirera après&lt;br&gt;&lt;b&gt;un certain temps d\'inactivité&lt;/b&gt;</string>
+    <string name="authentication_password_saved">Mot de passe enregistré sur l\'appareil&lt;br&gt;pour compte &lt;b&gt;%s&lt;/b&gt;</string>
+    
+</resources>

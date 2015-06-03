@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':platform-shared')
+    compile project(':platform-server')
+    compile project(':plugin-events-shared')
+    compile project(':plugin-pushnotif-server')
+
+    compile libs.mail
+    compile libs.gson
+}

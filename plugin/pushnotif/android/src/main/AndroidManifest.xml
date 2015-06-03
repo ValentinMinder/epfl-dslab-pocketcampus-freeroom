@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.pocketcampus.plugin.pushnotif"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="15" />
+
+
+
+
+    <application android:label="@string/app_name"
+        android:theme="@style/PocketCampusTheme"
+        android:icon="@drawable/pushnotif_icon"
+        android:name="org.pocketcampus.platform.android.core.GlobalContext">
+
+
+		<activity android:name="org.pocketcampus.plugin.pushnotif.android.PushNotifMainView"
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:icon="@drawable/pushnotif_icon"
+			android:screenOrientation="nosensor"
+			android:label="@string/pushnotif_plugin_title">
+<!-- 			<intent-filter> -->
+<!-- 				<action android:name="android.intent.action.MAIN" /> -->
+<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
+<!-- 				<action android:name="pocketcampus.intent.action.PLUGIN_MAIN" /> -->
+<!-- 			</intent-filter> -->
+
+
+
+
+		</activity>
+
+
+		<service android:name="org.pocketcampus.plugin.pushnotif.android.PushNotifController"
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<intent-filter>
+
+				<action android:name="org.pocketcampus.plugin.pushnotif.GCM_INTENT" />
+				<action android:name="org.pocketcampus.plugin.pushnotif.REGISTER_FOR_PUSH" />
+
+				<category android:name="org.pocketcampus.plugin.pushnotif" />
+				<data  android:scheme="pocketcampus" android:host="pushnotif.plugin.pocketcampus.org" />
+			</intent-filter>
+
+		</service>
+
+
+
+
+		<receiver android:name="org.pocketcampus.plugin.pushnotif.gcm.PCGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="org.pocketcampus.plugin.pushnotif" />
+				<category android:name="org.pocketcampus" />
+			</intent-filter>
+		</receiver>
+
+		<service android:name="org.pocketcampus.plugin.pushnotif.gcm.GCMIntentService" />
+
+	</application>
+
+
+	<permission-group android:description="@string/pushnotif_permission_group_description"
+	                  android:icon="@drawable/pushnotif_icon"
+	                  android:label="@string/pushnotif_permission_group_label"
+	                  android:name="org.pocketcampus.permission_groups.PUSHNOTIF" />
+
+	<permission android:description="@string/pushnotif_permission_description"
+			    android:icon="@drawable/pushnotif_icon"
+			    android:label="@string/pushnotif_permission_label"
+			    android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF"
+			    android:permissionGroup="org.pocketcampus.permission_groups.PUSHNOTIF"
+			    android:protectionLevel="signature" />
+
+
+	<permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="org.pocketcampus.plugin.pushnotif.permission.C2D_MESSAGE" />
+	<permission android:name="org.pocketcampus.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="org.pocketcampus.permission.C2D_MESSAGE" />
+
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+
+	<uses-permission android:name="org.pocketcampus.permissions.USE_PC_PUSHNOTIF" />
+
+</manifest>

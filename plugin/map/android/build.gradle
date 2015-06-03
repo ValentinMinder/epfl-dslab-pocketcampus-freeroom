@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':plugin-map-shared')
+    compile project(':platform-android')
+
+    compile libs.play_services_maps
+    compile libs.commons_io
+}

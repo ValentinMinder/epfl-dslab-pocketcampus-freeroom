@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow" >
+
+    <!-- ListRow Left sied picture image -->
+
+    <LinearLayout
+        android:id="@+id/directory_person_picture_container"
+        android:layout_width="50dip"
+        android:layout_height="50dip" >
+
+        <ImageView
+            android:id="@+id/directory_person_picture"
+            style="@style/PocketCampusThumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="50dip"
+            android:layout_gravity="left"
+            android:src="@drawable/sdk_empty_person" />
+    </LinearLayout>
+    <!-- Title Of Song -->
+
+    <TextView
+        android:id="@+id/directory_person_name"
+        style="@style/PocketCampusListItemTitle"
+        android:layout_alignTop="@+id/directory_person_picture_container"
+        android:layout_marginTop="-5dip"
+        android:layout_toRightOf="@+id/directory_person_picture_container"
+        android:text="Rihanna Love the way lie" >
+    </TextView>
+
+    <!-- Artist Name -->
+
+    <TextView
+        android:id="@+id/directory_person_details"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_below="@id/directory_person_name"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/directory_person_picture_container"
+        android:text="Just gona stand there and ..." />
+
+</RelativeLayout>

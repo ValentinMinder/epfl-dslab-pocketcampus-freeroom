@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-camipro-shared')
+    compile project(':plugin-authentication-server')
+
+    compile libs.gson
+}

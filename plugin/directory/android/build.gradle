@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-directory-shared')
+    compile project(':platform-android')
+}

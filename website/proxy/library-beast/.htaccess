@@ -1,0 +1,8 @@
+AuthUserFile /var/www/vhosts/pocketcampus/private/proxy_library.pass
+AuthType Basic
+AuthName "Password Protected"
+Require valid-user
+
+RewriteEngine On
+RewriteRule ^/?(.*)$ http://beast-epfl.hosted.exlibrisgroup.com/$1 [L,P]
+

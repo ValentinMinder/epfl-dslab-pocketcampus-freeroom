@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-pushnotif-shared')
+
+    compile libs.gcm_server
+    compile libs.javapns
+}

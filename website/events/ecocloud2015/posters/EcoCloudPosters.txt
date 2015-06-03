@@ -1,0 +1,25 @@
+128020001	Manycore Network Interfaces for In-Memory Rack-Scale Computing
+128020002	SHIFT:Shared History Instruction Fetch for Lean-Core Server Processors
+128020003	Scale-Out NUMA
+128020004	Accelerating Index Traversals through In-Memory Pointer Chasing
+128020005	Memory Systems for Scale-Out Servers
+128020006	Asynchronous Memory Access Chaining
+128020007	CloudSuite
+128020008	Scale-Out Processors
+128020009	Language and Compiler Support for Custom Data-Centric Optimizations
+128020010	PrivySeal : Your Smart Privacy Assistant for Installing Cloud Apps
+128020011	StoreSim : Reducing Information Disclosure in Multicloud Storage Services
+128020012	Mining Subjective Properties on the Web
+128020013	An Incremental Anytime Algorithm for Multi-Objective Query Optimization
+128020014	Micro-architectural Analysis of In-memory OLTP Systems
+128020015	Smooth Scan : Statistics-oblivious access paths
+128020016	ATraPos : Adaptive Transaction Processing on Hardware Islands
+128020017	Data Management Challenges in Brain Simulations
+128020018	Data-driven Neuroscience: Enabling Breakthroughs Via Innovative Data Management
+128020019	Everything You Always Wanted to Know About Synchronization but Were Afraid to Ask
+128020020	Asynchronized Concurrency : The Secret to Scaling Concurrent Search Data Structures
+128020021	PowerCool : Simulation of Integrated Microfluidic Power Generation in Many-Core Servers
+128020022	Energy Management in Geo-distributed Green Datacenters
+128020023	Fast Learning of Deep Models using Spectral Descent
+128020024	Cooling of High Performance Server CPU's using a Pin Fin Evaporator
+128020025	Two-Phase Microchannel Thermosyphon Cooling System for Servers

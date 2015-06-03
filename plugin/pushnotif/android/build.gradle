@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':plugin-pushnotif-shared')
+    compile project(':platform-android')
+
+    compile files(rootDir.path + '/libs/gcm.jar')
+}

@@ -30,7 +30,7 @@ $u = uniqid('');
 $sig = "TERM";
 $try = 0;
 
-while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' '"))  ) {
+while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team- | grep -v grep | tr '\t' ' ' | tr -s ' ' | cut -f 2 -d ' '"))  ) {
 
 	echo "sending signal $sig to process $proc\n";
 	system("kill -$sig $proc");
@@ -47,11 +47,14 @@ while(""  !=  ($proc = exec("ps aux | grep pocketcampus-server-$team | grep -v g
 
 }
 
+if(!empty($argv[2])) { // just_stop
+	die("done\n");
+}
 
 echo "starting new server\n";
 
 
-system("cd ../bin ; java -jar $jarname $configname  > pocketcampus-server-$team-$d-$u.log  2>&1 & echo started with pid $!");
+system("cd ../bin ; java -XX:+PrintGC -jar $jarname $configname  > pocketcampus-server-$team-$d-$u.log  2>&1 & echo started with pid $!");
 //system("cd bin ; ./restart $jarname $configname pocketcampus-server-$team-$d-$u.log");
 
 

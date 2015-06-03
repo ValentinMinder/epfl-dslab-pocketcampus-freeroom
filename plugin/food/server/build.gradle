@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-food-shared')
+    compile project(':plugin-authentication-server')
+
+    compile libs.gson
+    compile libs.joda_time
+    compile libs.unboundid_ldap
+}

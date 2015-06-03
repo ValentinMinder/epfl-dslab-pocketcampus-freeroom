@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-isacademia-shared')
+    compile project(':platform-android')
+}

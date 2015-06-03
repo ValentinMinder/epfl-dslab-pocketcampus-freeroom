@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="food_plugin_title">Food</string>
+    <string name="food_no_menus">No menus</string>
+    
+    
+    
+	<string name="food_menu_view_other_day">View other day menus</string>
+	<string name="food_menu_view_lunch_menus">View lunch menus</string>
+	<string name="food_menu_view_evening_menus">View evening menus</string>
+	
+	<string name="food_dialog_resto">Filter by restaurant</string>
+	<string name="food_dialog_ingredients">Filter by meal type</string>
+	<string name="food_dialog_prices">Show prices for</string>
+	<string name="food_dialog_vote">Vote</string>
+	
+	<string name="food_title_lunch_menus">Lunch menus on %s</string>
+	<string name="food_title_evening_menus">Evening menus on %s</string>
+
+	<string name="food_string_no_lunch_menus">No lunch menus on %s</string>
+	<string name="food_string_no_evening_menus">No evening menus on %s</string>
+		
+	<string name="food_text_satisfaction">satisfaction</string>
+	<string name="food_text_vote">vote</string>
+	<string name="food_text_votes">votes</string>
+	<string name="food_text_novotes">no votes</string>
+					
+	<string name="food_button_vote_inline">vote</string>
+	<string name="food_button_seemap_inline">see on map</string>
+	<string name="food_button_vote">Vote</string>
+	<string name="food_button_send">Send</string>
+	<string name="food_button_googletranslate">Send to Google Translate</string>
+	<string name="food_button_copytext">Copy text to clipboard</string>
+	<string name="food_button_showprices">Show prices</string>
+							
+	<string name="food_toast_nogoogletranslate">Please install Google Translate</string>
+	<string name="food_toast_vote_noselection">Please select one of the smileys</string>
+	<string name="food_toast_copied">Copied to clipboard</string>
+	<string name="food_toast_alreadyvoted">Already voted</string>
+	<string name="food_toast_tooearly">Too early</string>
+	<string name="food_toast_toolate">Too late</string>	
+	<string name="food_toast_thanksforvote">Thanks for your vote</string>
+
+	<string name="food_pricetag_auto">&lt;i&gt;Select automatically&lt;/i&gt;</string>
+									
+	<string name="food_enum_STUDENT">Student</string>
+	<string name="food_enum_PHD_STUDENT">PhD student</string>
+	<string name="food_enum_STAFF">Staff</string>
+	<string name="food_enum_VISITOR">Visitor</string>
+
+	<string name="food_enum_FISH">Fish</string>
+	<string name="food_enum_MEAT">Meat</string>
+	<string name="food_enum_POULTRY">Chicken</string>
+	<string name="food_enum_VEGETARIAN">Vegetarian</string>
+	<string name="food_enum_GREEN_FORK">Green fork</string>
+	<string name="food_enum_PASTA">Pasta</string>
+	<string name="food_enum_PIZZA">Pizza</string>
+	<string name="food_enum_THAI">Thaï</string>
+	<string name="food_enum_INDIAN">Indian</string>
+	<string name="food_enum_LEBANESE">Lebanese</string>
+	
+</resources>

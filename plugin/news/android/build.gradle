@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugin-news-shared')
+    compile project(':platform-android')
+}

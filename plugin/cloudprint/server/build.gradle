@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':platform-server')
+    compile project(':platform-shared')
+    compile project(':plugin-cloudprint-shared')
+    compile project(':plugin-authentication-server')
+
+    compile libs.gson
+    compile libs.commons_io
+    compile libs.commons_lang
+}

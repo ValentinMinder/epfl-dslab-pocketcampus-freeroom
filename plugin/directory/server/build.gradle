@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':platform-shared')
+    compile project(':platform-server')
+    compile project(':plugin-directory-shared')
+
+    compile libs.unboundid_ldap
+    compile libs.commons_io
+}

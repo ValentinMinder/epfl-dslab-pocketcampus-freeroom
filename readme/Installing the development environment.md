@@ -10,15 +10,11 @@
 
 * Install Git: `apt-get install git`
 
-* Install Ant: `apt-get install ant`
-
 * Install MySQL: `apt-get install mysql-server`
 
 * Install PHP: `apt-get install php5-cli`
 
-* Clone the PocketCampus repo: `git clone https://github.com/PocketCampus/pocketcampus.git`
-
-* Add local.properties: `echo "sdk.dir=PATH/TO/ANDROID/SDK" > android/PocketCampus/local.properties`
+* Clone the PocketCampus repo: `git clone https://github.com/dslab-epfl/pocketcampus.git`
 
 * Run all of the create_database, create_tables and initialize_tables SQL files:  
 ```

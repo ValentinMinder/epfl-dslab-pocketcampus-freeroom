@@ -1,0 +1,37 @@
+def add(String projectName) {
+    include(projectName)
+    project(':' + projectName).projectDir = file(projectName.replace('-', '/')) 
+}
+
+def parts = ['shared']
+
+if( !Boolean.getBoolean('no_android') ) {
+    parts += 'android'
+
+    // Android dashboard, which doesn't have a server counterpart
+    add('plugin-dashboard-android')
+
+    // Pseudo-project for merging
+    add('android')
+}
+
+if( !Boolean.getBoolean('no_server') ) {
+    parts += 'server'
+
+    // Pseudo-project for merging
+    add('server')
+}
+
+parts.each { target ->
+    // Common projects
+    add("platform-$target")
+
+    // Plugin projects
+    ['authentication', 'camipro', 'cloudprint', 
+     'directory', 'events', 'food',
+     'freeroom', 'map', 'isacademia', 'moodle',
+     'news', 'pushnotif', 'recommendedapps',
+     'satellite', 'transport'].each { plugin ->
+        add("plugin-$plugin-$target")
+    }
+}

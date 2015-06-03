@@ -5,15 +5,13 @@ bin/
 gen/
 target/
 
-# IntelliJ/Android studio
-*.iml
-*.eml
-.idea/
+# Gradle
+.gradle/
+build/
+gradle.properties
 
-# Merged projects
-/android/PocketCampus
-/server/PocketCampusServer
-/server/PocketCampusServerTests
+# Merged project
+/android/
 
 # OS X
 .DS_Store
@@ -37,5 +35,5 @@ AppPackages/
 BundleArtifacts/
 
 # Secret files in the Windows Phone client
-Windows/Source/Main.WindowsRuntime/analytics.xml
-Windows/Source/Map.WindowsRuntime/MapToken.txt
+/Windows/Source/Main.WindowsRuntime/analytics.xml
+/Windows/Source/Map.WindowsRuntime/MapToken.txt

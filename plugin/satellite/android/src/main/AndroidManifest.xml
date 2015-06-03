@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.pocketcampus.plugin.satellite"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="org.pocketcampus.platform.android.core.GlobalContext"
+        android:label="@string/app_name"
+        android:theme="@style/PocketCampusTheme" >
+        <activity
+            android:name="org.pocketcampus.plugin.satellite.android.SatelliteMainView"
+            android:icon="@drawable/satellite_normal_icon"
+            android:screenOrientation="nosensor"
+            android:label="@string/satellite_plugin_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <service
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="org.pocketcampus.plugin.satellite.android.SatelliteController" >
+        </service>
+    </application>
+
+</manifest>

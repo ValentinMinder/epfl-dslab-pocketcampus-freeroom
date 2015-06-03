@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PocketCampusRow" >
+
+    <!-- ListRow Left sied Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/food_thumbnail_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/food_thumbnail"
+            style="@style/PocketCampusThumbnail"
+            android:layout_width="50dip"
+            android:layout_height="wrap_content"
+            android:src="@drawable/food_normal_icon" />
+
+        <TextView
+            android:id="@+id/food_price"
+            style="@style/PocketCampusListItemSubTitle"
+            android:ellipsize="none"
+            android:gravity="center"
+            android:text="25.00" />
+    </LinearLayout>
+
+    <!-- Title Of Song -->
+
+    <TextView
+        android:id="@+id/food_title"
+        style="@style/PocketCampusListItemTitle"
+        android:layout_alignTop="@id/food_thumbnail_container"
+        android:layout_toRightOf="@id/food_thumbnail_container"
+        android:maxLines="1000"
+        android:text="Rihanna Love the way lie Rihanna Love the way lie" />
+
+    <!-- Artist Name -->
+
+    <TextView
+        android:id="@+id/food_description"
+        style="@style/PocketCampusListItemSubTitle"
+        android:layout_below="@id/food_title"
+        android:layout_toRightOf="@id/food_thumbnail_container"
+        android:maxLines="1000"
+        android:text="Just gona stand there and ..." />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/food_title"
+        android:layout_below="@id/food_description"
+        android:orientation="horizontal" >
+
+        <!-- android:src="@android:drawable/star_off" -->
+
+        <TextView
+            android:id="@+id/food_meal_satisfaction"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="satisfaction" />
+
+        <TextView
+            android:id="@+id/food_meal_vote"
+            style="@style/PocketCampusListItemSubTitle"
+            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:paddingLeft="10dip"
+            android:text="vote"
+            android:textColor="@color/epfl_corrected_red" />
+    </LinearLayout>
+
+</RelativeLayout>

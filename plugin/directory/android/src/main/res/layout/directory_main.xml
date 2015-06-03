@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <org.droidparts.widget.ClearableEditText
+        android:id="@+id/directory_searchinput"
+        android:layout_height="50dp"
+        android:layout_width="fill_parent"
+        android:ems="10"
+        android:hint="@string/directory_searchView_hint"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </org.droidparts.widget.ClearableEditText>
+
+    <RelativeLayout
+        android:id="@+id/directory_main"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>
