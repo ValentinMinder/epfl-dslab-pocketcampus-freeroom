@@ -44,7 +44,7 @@ if(!move_uploaded_file($_FILES["file"]["tmp_name"], "tmp/$new_file.pdf")) {
 	die("Move failed");
 }
 
-system("convert tmp/{$new_file}.pdf -gravity NorthEast -crop 6.2% tmp/{$new_file}_cropped.png", $status);
+system("convert -density 200 -quality 100  tmp/{$new_file}.pdf -gravity NorthEast -crop 6.2% tmp/{$new_file}_cropped.png", $status);
 if($status) {
 	die("Error while running convert");
 }
