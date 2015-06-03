@@ -61,7 +61,7 @@ $json = json_decode($result, true);
 if(empty($json) || empty($json[0]) || empty($json[0]["symbol"]) || empty($json[0]["symbol"][0]) || empty($json[0]["symbol"][0]["data"])) {
 	echo "<b>Failed to decode QR code, did you put your QR code in the proper placeholder? (top-right, 5cm X 5cm)</b>";
 	echo "<p>If you think there is an error, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
-	return;
+	exit;
 }
 
 $parsed_url = parse_url($json[0]["symbol"][0]["data"]);
@@ -89,7 +89,7 @@ foreach($all_posters as $p) {
 if(!isset($posters_map[$parsed_query_string["markFavorite"]])) {
 	echo "<b>Failed to find your poster, did you register it?</b>";
 	echo "<p>If you think there is an error, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
-	return;
+	exit;
 }
 
 echo "<p>Upload succeeded, detected poster:</p>\n";
