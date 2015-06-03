@@ -267,7 +267,7 @@ if($has_signed_up) {
             <p class="fr">Tu n'auras pas besoin d'installer de nouvelle application.</p>
             <p class="en">If you opt-in, you won't need to install any additional app.</p>
             
-            <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du boutton ci-dessous, et la fonctionalité sera activée automatiquement.</p>
+            <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du bouton ci-dessous, et la fonctionnalité sera activée automatiquement.</p>
             <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
             
             <p class="fr">Merci d'avance !</p>
