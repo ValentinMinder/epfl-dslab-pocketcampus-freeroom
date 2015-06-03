@@ -29,6 +29,41 @@
     
     <string name="map_cancel_search">Annuler la recherche</string>
     <string name="map_show_results_as_list">Liste des résultats de la recherche</string>
-    
-    
+
+
+
+    <string name="epfl_floor_all">Tous étages</string>
+    <string name="epfl_floor_8">Étage 8</string>
+    <string name="epfl_floor_7">Étage 7</string>
+    <string name="epfl_floor_6">Étage 6</string>
+    <string name="epfl_floor_5">Étage 5</string>
+    <string name="epfl_floor_4">Étage 4</string>
+    <string name="epfl_floor_3">Étage 3</string>
+    <string name="epfl_floor_2">Étage 2</string>
+    <string name="epfl_floor_1">Étage 1</string>
+    <string name="epfl_floor_0">Étage 0</string>
+    <string name="epfl_floor_m1">Étage -1</string>
+    <string name="epfl_floor_m2">Étage -2</string>
+    <string name="epfl_floor_m3">Étage -3</string>
+    <string name="epfl_floor_m4">Étage -4</string>
+    <string name="epfl_floor_">Rien</string>
+
+
+
+    <!--   DEBUG STUFF BELOW - NOT TRANSLATED    -->
+
+    <string name="map_osm">OSM</string>
+    <string name="map_epfl_labels">EPFL labels</string>
+    <string name="map_traffic">Traffic</string>
+    <string name="map_my_location">My location</string>
+    <string name="map_buildings">Buildings</string>
+    <string name="map_indoor">Indoor</string>
+
+    <string name="map_normal">Normal</string>
+    <string name="map_hybrid">Hybrid</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_terrain">Terrain</string>
+    <string name="map_none">None</string>
+
+
 </resources>

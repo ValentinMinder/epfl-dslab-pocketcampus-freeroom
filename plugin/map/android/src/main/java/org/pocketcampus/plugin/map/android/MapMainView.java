@@ -609,17 +609,17 @@ public class MapMainView extends PluginView implements IMapView {
 		// i1.setActionView(R.layout.test_layout);
 		//i1.setActionView(spinner1);
 		//String sel = spinner1.getSelectedItem().toString();
-		i1.setTitle(mModel.getEpflFloors().get(floor));
+		i1.setTitle(mController.getEpflFloors().get(floor));
 		i1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		i1.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				trackEvent("ChangeFloorAction", null);
-				DialogUtils.showSingleChoiceDialog(MapMainView.this, mModel.getEpflFloors(), null, floor, new SingleChoiceHandler<String>() {
+				DialogUtils.showSingleChoiceDialog(MapMainView.this, mController.getEpflFloors(), null, floor, new SingleChoiceHandler<String>() {
 					public void saveSelection(String t) {
 						trackEvent("ChangeFloor", t);
 						changeEpflFloor(t);
 					}
-				}, mModel.getFloorKeyComparator());
+				}, mController.getFloorKeyComparator());
 				return true;
 			}
 		});

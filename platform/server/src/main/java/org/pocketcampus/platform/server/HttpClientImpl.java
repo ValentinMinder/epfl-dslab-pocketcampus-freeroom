@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * Implementation of HttpClient.
@@ -14,9 +15,13 @@ import java.nio.charset.Charset;
  */
 public final class HttpClientImpl implements HttpClient {
 	@Override
-	public String get(String url, Charset charset)
+	public String get(String url, Map<String,String> headers, Charset charset)
 			throws IOException {
-		return StringUtils.fromStream(new URL(url).openStream(), charset.name());
+		URLConnection conn = new URL(url).openConnection();
+		for(final Map.Entry<String,String> header:headers.entrySet()){
+			conn.addRequestProperty(header.getKey(), header.getValue());
+		}
+		return StringUtils.fromStream(conn.getInputStream(), charset.name());
 	}
 
 	@Override

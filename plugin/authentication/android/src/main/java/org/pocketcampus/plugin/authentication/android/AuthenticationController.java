@@ -10,6 +10,8 @@ import org.apache.http.protocol.HttpContext;
 import org.pocketcampus.platform.android.core.AuthenticationListener;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
+import org.pocketcampus.platform.android.io.FetchDynamicConfigRequest;
+import org.pocketcampus.platform.android.utils.Callback;
 import org.pocketcampus.plugin.authentication.R;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.LocalCredentials;
 import org.pocketcampus.plugin.authentication.android.AuthenticationModel.TokenCredentialsComplex;
@@ -358,8 +360,14 @@ public class AuthenticationController extends PluginController implements IAuthe
 	}
 	
 	public void sessionIsValid() {
-		pingBack(null, "selfauthok");
-		stopSelf();
+		// before pinging back try to fetch config
+		new FetchDynamicConfigRequest<AuthenticationController>(this, new Callback<Boolean>() {
+			public void callback(Boolean aBoolean) {
+				// ping back irrespective if the thing succeeds or fails
+				pingBack(null, "selfauthok");
+				stopSelf();
+			}
+		}).start(this, null, mModel.getPcSessionId());
 	}
 	
 	//// NACKS

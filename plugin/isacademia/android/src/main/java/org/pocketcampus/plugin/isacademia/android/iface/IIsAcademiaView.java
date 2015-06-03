@@ -23,7 +23,8 @@ public interface IIsAcademiaView extends IView {
 	 * Called on ALL listeners
 	 */
 	void scheduleUpdated();
-	
+	void gradesUpdated();
+
 	/**
 	 * Display errors and notices.
 	 * Called from Request

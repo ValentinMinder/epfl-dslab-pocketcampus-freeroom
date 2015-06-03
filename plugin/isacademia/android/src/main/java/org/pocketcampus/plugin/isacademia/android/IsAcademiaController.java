@@ -8,6 +8,7 @@ import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaController;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
+import org.pocketcampus.plugin.isacademia.android.req.GetGradesRequest;
 import org.pocketcampus.plugin.isacademia.android.req.GetScheduleRequest;
 import org.pocketcampus.plugin.isacademia.shared.IsAcademiaService.Client;
 import org.pocketcampus.plugin.isacademia.shared.IsAcademiaService.Iface;
@@ -74,23 +75,30 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 	 * HTTP Clients used to communicate with the PocketCampus server.
 	 * Use thrift to transport the data.
 	 */
-	private Iface mClient;
-	
+	private Iface mClientS;
+	private Iface mClientG;
+
 	private GetScheduleRequest getScheduleRequest = null;
-	
+	private GetGradesRequest getGradesRequest = null;
+
 	@Override
 	public void onCreate() {
 		mModel = new IsAcademiaModel(getApplicationContext());
-		mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+		createThriftClients();
 	}
-	
+
+	public void createThriftClients() {
+		mClientS = (Iface) getClient(new Client.Factory(), mPluginName);
+		mClientG = (Iface) getClient(new Client.Factory(), mPluginName);
+	}
+
 	@Override
 	public int onStartCommand(Intent aIntent, int flags, int startId) {
 		if("org.pocketcampus.plugin.authentication.AUTHENTICATION_FINISHED".equals(aIntent.getAction())) {
 			Bundle extras = aIntent.getExtras();
 			if(extras != null && extras.getInt("selfauthok") != 0) {
 				Log.v("DEBUG", "IsAcademiaController::onStartCommand auth succ");
-				mClient = (Iface) getClient(new Client.Factory(), mPluginName); // need to recreate thrift client coz old one will not have the sessId http header attached
+				createThriftClients(); // need to recreate thrift client coz old one will not have sessId
 				mModel.getListenersToNotify().authenticationFinished();
 			} else if(extras != null && extras.getInt("usercancelled") != 0) {
 				Log.v("DEBUG", "IsAcademiaController::onStartCommand user cancelled");
@@ -102,7 +110,7 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 		}
 		if("org.pocketcampus.plugin.authentication.LOGOUT".equals(aIntent.getAction())) {
 			Log.v("DEBUG", "IsAcademiaController::onStartCommand logout");
-			mClient = (Iface) getClient(new Client.Factory(), mPluginName);
+			createThriftClients(); // need to recreate thrift client for same reason as above
 			RequestCache.invalidateCache(this, GetScheduleRequest.class.getCanonicalName());
 		}
 		stopSelf();
@@ -120,9 +128,17 @@ public class IsAcademiaController extends PluginController implements IIsAcademi
 //		System.out.println("FIRED");
 		getScheduleRequest = new GetScheduleRequest(caller);
 		getScheduleRequest.setBypassCache(!useCache);
-		getScheduleRequest.start(this, mClient, dayKey);
+		getScheduleRequest.start(this, mClientS, dayKey);
 	}
-	
+
+	public void refreshGrades(IIsAcademiaView caller, boolean useCache) {
+		if(getGradesRequest != null && getGradesRequest.getStatus() != Status.FINISHED)
+			return;
+		getGradesRequest = new GetGradesRequest(caller);
+		getGradesRequest.setBypassCache(!useCache);
+		getGradesRequest.start(this, mClientG, null);
+	}
+
 
 	/*****
 	 * HELPER CLASSES AND FUNCTIONS

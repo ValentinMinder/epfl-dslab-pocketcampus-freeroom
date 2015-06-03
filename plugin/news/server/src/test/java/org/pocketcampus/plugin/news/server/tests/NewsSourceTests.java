@@ -11,6 +11,7 @@ import org.pocketcampus.plugin.news.server.NewsSourceImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
@@ -97,7 +98,7 @@ public class NewsSourceTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleRssFeed.xml");
 
 		@Override
-		public String get(String url, Charset charset) throws IOException {
+		public String get(String url, Map<String,String> headers, Charset charset) throws IOException {
 			return RETURN_VALUE;
 		}
 		

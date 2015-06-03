@@ -64,7 +64,7 @@ public class GetScheduleRequest extends Request<IsAcademiaController, Iface, Str
 		} else {
 //			System.out.println(result.getStatusCode().name());
 			caller.isacademiaServersDown();
-			
+
 		}
 	}
 

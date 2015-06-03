@@ -6,17 +6,17 @@ import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.platform.android.core.PushNotificationListener;
-import org.pocketcampus.plugin.dashboard.android.req.FetchDynamicConfigRequest;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import org.pocketcampus.platform.android.io.FetchDynamicConfigRequest;
+import org.pocketcampus.platform.android.utils.Callback;
 
 /**
  * DashboardController
@@ -82,8 +82,14 @@ public class DashboardController extends PluginController {
 		return START_NOT_STICKY;
 	}
 	
-	public void fetchDynamicConfig(DashboardView view) {
-		new FetchDynamicConfigRequest(view).start(this, threadSafeClient, getApplicationContext());
+	public void fetchDynamicConfig(final DashboardView view) {
+		new FetchDynamicConfigRequest<DashboardController>(this, new Callback<Boolean>() {
+			public void callback(Boolean aBoolean) {
+				if(aBoolean) {
+					view.displayPlugins();
+				}
+			}
+		}).start(this, null, null);
 	}
 	
 	public void registerPushNotif() {
@@ -92,14 +98,5 @@ public class DashboardController extends PluginController {
         authIntent.setClassName(getApplicationContext(), "org.pocketcampus.plugin.pushnotif.android.PushNotifController");
         startService(authIntent);
 	}
-	
-	public static String getAppVersion(Context context) {
-		try {
-			return context.getPackageManager().getPackageInfo(context.getPackageName(), 0 ).versionName;
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-		
+
 }
