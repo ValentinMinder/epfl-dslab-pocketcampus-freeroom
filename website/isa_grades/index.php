@@ -270,6 +270,9 @@ if($has_signed_up) {
             <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du bouton ci-dessous, et la fonctionnalité sera activée automatiquement.</p>
             <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
             
+            <p class="fr">Il faut noter que, pendant cette période de bêta, nous ne garantissons aucune information fournie par la partie Notes IS-Academia de l'application.</p>
+            <p class="en">Note that, during this beta period, there are no guarantees on the correctness of the information displayed in the IS-Academia Grades section of the app.</p>
+            
             <p class="fr">Merci d'avance !</p>
             <p class="en">Thanks a lot!</p>
             
