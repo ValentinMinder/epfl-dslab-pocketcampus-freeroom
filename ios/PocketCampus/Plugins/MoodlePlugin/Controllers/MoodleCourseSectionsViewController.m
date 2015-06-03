@@ -144,12 +144,12 @@ static const NSInteger kSegmentIndexFavorites = 2;
         return floorf([PCTableViewCellAdditions preferredHeightForDefaultTextStylesForCellStyle:UITableViewCellStyleSubtitle]*1.2);
     };
     tableViewAdditions.rowHeightBlock = rowHeightBlock;
-    __weak __typeof(self) weakSelf = self;
+    __weak __typeof(self) welf = self;
     tableViewAdditions.contentSizeCategoryDidChangeBlock = ^(PCTableViewAdditions* tableView) {
         //need to do it manually because UISearchDisplayController does not support using a custom table view (PCTableViewAdditions in this case)
-        weakSelf.searchDisplayController.searchResultsTableView.rowHeight = tableView.rowHeightBlock(tableView);
-        [weakSelf fillCellForMoodleResource];
-        [weakSelf.searchDisplayController.searchResultsTableView reloadData];
+        welf.searchDisplayController.searchResultsTableView.rowHeight = tableView.rowHeightBlock(tableView);
+        [welf fillCellForMoodleResource];
+        [welf.searchDisplayController.searchResultsTableView reloadData];
     };
 
     self.tableView.allowsMultipleSelection = NO;
@@ -280,7 +280,7 @@ static int i = 0;
 - (void)refresh {
     CLSLog(@"-> Refresh course sections");
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingGrades", @"IsAcademiaPlugi", nil)];
     [self startGetSectionsRequest];
 }
 

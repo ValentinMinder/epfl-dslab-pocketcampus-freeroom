@@ -176,3 +176,11 @@
 }
 
 @end
+
+@implementation SemesterGrades (Additions)
+
+- (NSArray*)sortedGradesKeys {
+    return [self.grades.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+}
+
+@end

@@ -201,8 +201,79 @@ typedef int64_t timestamp;
 
 @end
 
+@interface SemesterGrades : NSObject <TBase, NSCoding> {
+  NSString * __semesterName;
+  NSMutableDictionary * __grades;
+
+  BOOL __semesterName_isset;
+  BOOL __grades_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=semesterName, setter=setSemesterName:) NSString * semesterName;
+@property (nonatomic, retain, getter=grades, setter=setGrades:) NSMutableDictionary * grades;
+#endif
+
+- (id) init;
+- (id) initWithSemesterName: (NSString *) semesterName grades: (NSMutableDictionary *) grades;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (NSString *) semesterName;
+- (void) setSemesterName: (NSString *) semesterName;
+#endif
+- (BOOL) semesterNameIsSet;
+
+#if !__has_feature(objc_arc)
+- (NSMutableDictionary *) grades;
+- (void) setGrades: (NSMutableDictionary *) grades;
+#endif
+- (BOOL) gradesIsSet;
+
+@end
+
+@interface IsaGradesResponse : NSObject <TBase, NSCoding> {
+  int __statusCode;
+  NSMutableArray * __semesters;
+
+  BOOL __statusCode_isset;
+  BOOL __semesters_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=statusCode, setter=setStatusCode:) int statusCode;
+@property (nonatomic, retain, getter=semesters, setter=setSemesters:) NSMutableArray * semesters;
+#endif
+
+- (id) init;
+- (id) initWithStatusCode: (int) statusCode semesters: (NSMutableArray *) semesters;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (int) statusCode;
+- (void) setStatusCode: (int) statusCode;
+#endif
+- (BOOL) statusCodeIsSet;
+
+#if !__has_feature(objc_arc)
+- (NSMutableArray *) semesters;
+- (void) setSemesters: (NSMutableArray *) semesters;
+#endif
+- (BOOL) semestersIsSet;
+
+@end
+
 @protocol IsAcademiaService <NSObject>
 - (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
+- (IsaGradesResponse *) getGrades;  // throws TException
 @end
 
 @interface IsAcademiaServiceClient : NSObject <IsAcademiaService> {

@@ -79,6 +79,31 @@ static IsAcademiaService* instance __weak = nil;
     [self.operationQueue addOperation:operation];
 }
 
+- (void)getGradesWithDelegate:(id<IsAcademiaServiceDelegate>)delegate {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initWithThriftServiceClient:[self thriftServiceClientInstance] service:self delegate:delegate];
+    operation.skipCache = YES;
+    operation.returnEvenStaleCacheIfNoInternetConnection = YES;
+    operation.keepInCache = YES;
+    operation.keepInCacheBlock = ^BOOL(void* returnedValue) {
+        IsaGradesResponse* response = (__bridge id)returnedValue;
+        return (response.statusCode == IsaStatusCode_OK);
+    };
+    operation.serviceClientSelector = @selector(getGrades);
+    operation.delegateDidReturnSelector = @selector(getGradesDidReturn:);
+    operation.delegateDidFailSelector = @selector(getGradesFailed);
+    operation.returnType = ReturnTypeObject;
+    [self.operationQueue addOperation:operation];
+}
+
+- (IsaGradesResponse*)getGradesFromCache {
+    PCServiceRequest* operation = [[PCServiceRequest alloc] initForCachedResponseOnlyWithService:self];
+    operation.serviceClientSelector = @selector(getGrades);
+    operation.delegateDidReturnSelector = @selector(getGradesDidReturn:);
+    operation.delegateDidFailSelector = @selector(getGradesFailed);
+    operation.returnType = ReturnTypeObject;
+    return [operation cachedResponseObjectEvenIfStale:YES];
+}
+
 #pragma mark - Dealloc
 
 - (void)dealloc

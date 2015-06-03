@@ -61,3 +61,13 @@
 @property (nonatomic, readonly) NSString* periodTypeString;
 
 @end
+
+@interface SemesterGrades (Additions)
+
+/**
+ * @return a sorted array of the keys of the grades property
+ * Info: the sort is computed everytime you acces this property, you should consider caching it.
+ */
+@property (nonatomic, readonly) NSArray* sortedGradesKeys;
+
+@end
