@@ -299,7 +299,7 @@ if($has_signed_up) {
             <p class="en">Please kill the app and restart it.</p>
             <p>&nbsp;</p>
 
-            <h5 class="fr">Quelle version de l'app dois-je avoir pour que la fonctinoalité "Notes" marche?</h5>
+            <h5 class="fr">Quelle version de l'app dois-je avoir pour que la fonctionnalité "Notes" marche?</h5>
             <h5 class="en">What app version should I have for the "Grades" functionality to work?</h5>
 
             <p class="fr">Il faut avoir PocketCampus v3.1.1 ou une version plus récente.</p>
