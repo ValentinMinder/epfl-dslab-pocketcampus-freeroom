@@ -60,7 +60,7 @@ if(empty($_SESSION["user"])) {
 
 //} elseif(!empty($_GET["app_url"]) && !empty($_GET["app_name"])) {
 
-	$oClient->SetApplicationName("Pocket Campus1");
+	$oClient->SetApplicationName("Pocket Campus");
 	$oClient->SetApplicationURL("https://{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}");
 	$oClient->SetWantedAttributes(array('uniqueid','name','firstname','unit', 'unitid', 'where', 'group', 'email', 'title'));
 	$oClient->SetAllowsFilter("categorie=Shibboleth|categorie=epfl-guests");
