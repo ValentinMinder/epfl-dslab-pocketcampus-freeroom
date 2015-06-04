@@ -71,6 +71,11 @@ static IsAcademiaController* instance __weak = nil;
             tabBarController.viewControllers = @[scheduleNavController, gradesNavController];
             tabBarController.pluginIdentifier = [[self class] identifierName];
             self.mainTabBarController = tabBarController;
+            
+            // Restore last selected tab
+            self.scheduleViewControllerSegmentedControl.selectedSegmentIndex = [self lastSelectedSegmentedIndex];
+            [self titleViewSegmentedControlValueChanged:self.scheduleViewControllerSegmentedControl]; // Segement programatically changed so need to call this
+            
             instance = self;
         }
         return self;
@@ -109,7 +114,6 @@ static IsAcademiaController* instance __weak = nil;
 #pragma mark - Private
 
 static NSInteger const kScheduleSegmentIndex = 0;
-static NSInteger const kGradesSegmentedIndex = 1;
 
 - (UISegmentedControl*)titleViewSegmentedControlInstance {
     UISegmentedControl* segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedStringFromTable(@"Schedule", @"IsAcademiaPlugin", nil), NSLocalizedStringFromTable(@"Grades", @"IsAcademiaPlugin", nil)]];
@@ -125,6 +129,17 @@ static NSInteger const kGradesSegmentedIndex = 1;
     self.mainTabBarController.selectedIndex = segmentedControl.selectedSegmentIndex;
     self.scheduleViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
     self.gradesViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
+    [self saveSelectedSegmentedIndex:segmentedControl.selectedSegmentIndex];
+}
+
+static NSString* const kLastSelectedSegmentedIndexIntegerKey = @"IsAcademiaControllerLastSelectedSegmentedIndexInteger";
+
+- (NSInteger)lastSelectedSegmentedIndex {
+    return [[PCPersistenceManager userDefaultsForPluginName:@"isacademia"] integerForKey:kLastSelectedSegmentedIndexIntegerKey];
+}
+
+- (void)saveSelectedSegmentedIndex:(NSInteger)index {
+    [[PCPersistenceManager userDefaultsForPluginName:@"isacademia"] setInteger:index forKey:kLastSelectedSegmentedIndexIntegerKey];
 }
 
 #pragma mark - Dealloc
