@@ -2,6 +2,20 @@
 
 $size_limit = 20;
 
+function submit_google_form($form_id, $post_fields) {
+	$fields = array();
+	foreach($post_fields as $k => $v) {
+		$fields[] = "$k=" . urlencode($v);
+	}
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_URL, "https://docs.google.com/forms/d/$form_id/formResponse");
+	curl_setopt($ch,CURLOPT_POST, count($fields));
+	curl_setopt($ch,CURLOPT_POSTFIELDS, implode("&", $fields));
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+	$result = curl_exec($ch);
+	curl_close($ch);
+	return (strpos($result, "class=\"ss-confirmation\"") !== false);
+}
 
 if($_SERVER["REQUEST_METHOD"] != "POST") {
 
@@ -18,7 +32,6 @@ if($_SERVER["REQUEST_METHOD"] != "POST") {
 	exit;
 }
 
-system("echo somebody tried to upload something | mail -s upload_poster.php events@pocketcampus.org");
 
 if(empty($_FILES["file"])) {
 	die("No file");
@@ -27,6 +40,9 @@ if(empty($_FILES["file"])) {
 if(!isset($_FILES["file"]["error"]) || !isset($_FILES["file"]["name"]) || !isset($_FILES["file"]["type"]) || !isset($_FILES["file"]["size"]) || !isset($_FILES["file"]["tmp_name"])) {
 	die("WTF");
 }
+
+$new_file = basename($_FILES["file"]["tmp_name"]);
+submit_google_form("1P6Bu00aKSXXVlZ-EWLf4DpXfX2hO6dlI6nuiNp1j9oc", array("entry.1804778755" => "$new_file"));
 
 if($_FILES["file"]["error"]) {
 	die("Error {$_FILES["file"]["error"]}");
@@ -40,7 +56,6 @@ if($_FILES["file"]["size"] > $size_limit * 1024 * 1024) {
 	die("Sorry, the file size exceeds {$size_limit}MB");
 }
 
-$new_file = basename($_FILES["file"]["tmp_name"]);
 if(!move_uploaded_file($_FILES["file"]["tmp_name"], "tmp/$new_file.pdf")) {
 	die("Move failed");
 }
@@ -92,6 +107,8 @@ if(!isset($posters_map[$parsed_query_string["markFavorite"]])) {
 	echo "<p>If you think there is an error, please email <a href='mailto:events@pocketcampus.org'>PocketCampus</a>.</p>\n";
 	exit;
 }
+
+submit_google_form("1P6Bu00aKSXXVlZ-EWLf4DpXfX2hO6dlI6nuiNp1j9oc", array("entry.1804778755" => "{$new_file}_{$parsed_query_string["markFavorite"]}"));
 
 echo "<p>Upload succeeded, detected poster:</p>\n";
 echo "<p><b>{$posters_map[$parsed_query_string["markFavorite"]]}</b></p>\n";
