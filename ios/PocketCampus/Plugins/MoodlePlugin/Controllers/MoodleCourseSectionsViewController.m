@@ -280,7 +280,7 @@ static int i = 0;
 - (void)refresh {
     CLSLog(@"-> Refresh course sections");
     [self.moodleService cancelOperationsForDelegate:self]; //cancel before retrying
-    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingGrades", @"IsAcademiaPlugi", nil)];
+    [self.lgRefreshControl startRefreshingWithMessage:NSLocalizedStringFromTable(@"LoadingCourse", @"MoodlePlugin", nil)];
     [self startGetSectionsRequest];
 }
 
