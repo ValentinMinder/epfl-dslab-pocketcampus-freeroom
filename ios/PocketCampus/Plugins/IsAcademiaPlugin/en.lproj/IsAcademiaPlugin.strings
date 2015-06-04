@@ -4,6 +4,9 @@
 "Schedule" = "Schedule";
 "MyGrades" = "My grades";
 "Grades" = "Grades";
+"NoCourse" = "No course";
+"GradesNoContent" = "No grades available";
+"GrayMeansNoGradeAvailableExplanation" = "A grayed out course means that no grade is available at the moment.";
 "LoadingGrades" = "Loading your grades...";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Rooms:\n(tap to see on map)"; //<periodType> \n\n <name>\n<timeString>

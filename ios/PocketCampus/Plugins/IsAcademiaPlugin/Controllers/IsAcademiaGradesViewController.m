@@ -33,6 +33,8 @@
 
 #import "PCCenterMessageCell.h"
 
+#import "IsAcademiaCourseGradeCell.h"
+
 static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 
 @interface IsAcademiaGradesViewController ()<IsAcademiaServiceDelegate>
@@ -65,9 +67,9 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     self.tabBarController.tabBar.frame = CGRectZero;
     PCTableViewAdditions* tableViewAdditions = [[PCTableViewAdditions alloc] initWithFrame:self.tableView.frame style:UITableViewStyleGrouped];
     self.tableView = tableViewAdditions;
-    tableViewAdditions.rowHeightBlock = ^CGFloat(PCTableViewAdditions* tableView) {
-        return floorf([PCTableViewCellAdditions preferredHeightForStyle:UITableViewCellStyleValue1 textLabelTextStyle:UIFontTextStyleSubheadline detailTextLabelTextStyle:UIFontTextStyleHeadline]);
-    };
+    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];//[UIColor colorWithRed:0.972549 green:0.972549 blue:0.972549 alpha:1.0];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 25.0, 0, 0);
     self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"isacademia" dataName:@"grades"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
 }
@@ -118,7 +120,6 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
                 [welf getGradesFailed];
             }];
             break;
-            break;
         }
         case IsaStatusCode_NETWORK_ERROR:
         {
@@ -150,48 +151,92 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if (!self.semesters) {
+        return;
+    }
+    SemesterGrades* semester = self.semesters[section];
+    UITableViewHeaderFooterView* header = (UITableViewHeaderFooterView*)view;
+    header.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:19.0];
+    header.textLabel.text = semester.semesterName;
+    header.textLabel.textColor = [UIColor blackColor];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
+    if (!self.semesters) {
+        return;
+    }
+    UITableViewHeaderFooterView* footer = (UITableViewHeaderFooterView*)view;
+    if (section == 0 && self.semesters && self.semesters.count == 0) {
+        footer.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        footer.textLabel.textColor = [UIColor darkGrayColor];
+        footer.textLabel.textAlignment = NSTextAlignmentCenter;
+    } else {
+        footer.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+        footer.textLabel.textColor = [UIColor lightGrayColor];
+        footer.textLabel.textAlignment = NSTextAlignmentLeft;
+    }
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.semesters && self.semesters.count == 0) {
+    if (self.semesters.count == 0) {
         return nil;
     }
     SemesterGrades* semester = self.semesters[section];
     return semester.semesterName;
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.semesters && self.semesters.count == 0) {
-        return [[PCCenterMessageCell alloc] initWithMessage:NSLocalizedStringFromTable(@"GradesNoContent", @"IsAcademiaPlugin", nil)];
+- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if (!self.semesters) {
+        return nil;
     }
-    
+    if (section == 0 && self.semesters && self.semesters.count == 0) {
+        return NSLocalizedStringFromTable(@"GradesNoContent", @"IsAcademiaPlugin", nil);
+    }
+    SemesterGrades* semester = self.semesters[section];
+    if (semester.grades.count == 0) {
+        return NSLocalizedStringFromTable(@"NoCourse", @"IsAcademiaPlugin", nil);
+    }
+    if (semester.existsCourseWithNoGrade) {
+        return NSLocalizedStringFromTable(@"GrayMeansNoGradeAvailableExplanation", @"IsAcademiaPlugin", nil);
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    NSString* text = [self tableView:tableView titleForFooterInSection:section];
+    return text.length > 0 ? UITableViewAutomaticDimension : 15.0;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"SemesterGradeCell"];
     SemesterGrades* semester = self.semesters[indexPath.section];
     NSString* courseName = semester.sortedGradesKeys[indexPath.row];
-    
-    PCTableViewCellAdditions *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    IsAcademiaCourseGradeCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[PCTableViewCellAdditions alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell = [[IsAcademiaCourseGradeCell alloc] initWithReuseIdentifier:identifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        cell.detailTextLabel.textColor = [UIColor colorWithRed:0.478431 green:0.564706 blue:1.000000 alpha:1.0];
     }
-    cell.textLabel.text = courseName;
-    cell.detailTextLabel.text = semester.grades[courseName];
+    [cell setCourseName:courseName andGrade:semester.grades[courseName]];
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.semesters && self.semesters.count == 0) {
-        return 1; //cell says no content
+        return 0;
     }
-    
     SemesterGrades* semester = self.semesters[section];
     return semester.grades.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.semesters && self.semesters.count == 0) {
+        return 1;
+    }
     return self.semesters.count;
 }
 

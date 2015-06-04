@@ -25,54 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//  Created by Loïc Gardiol on 18.03.14.
+//  Created by Loïc Gardiol on 04.06.15.
 
-#import "isacademia.h"
+@import UIKit;
 
-@interface IsAcademiaModelAdditions : NSObject
+@interface IsAcademiaCourseGradeCell : UITableViewCell
 
-/**
- * @return the Monday at 00:00 (Morning) that directly precedes date
- * or date if it is it already.
- * Eg.  2015-01-04 6:38 p.m. returns 2014-12-29 00:00 CET
- *      2015-01-05 11:00 a.m returns 2015-01-05 00:00 CET
- * @discussion returned values are cached for each date
- */
-+ (NSDate*)mondayReferenceDateForDate:(NSDate*)date;
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
-@end
-
-@interface ScheduleResponse (Additions)
-
-- (StudyDay*)studyDayForDate:(NSDate*)date;
-
-@end
-
-@interface StudyPeriod (Additions)
-
-@property (nonatomic, readonly) NSString* startTimeString;
-
-@property (nonatomic, readonly) NSString* endTimeString;
-
-@property (nonatomic, readonly) NSString* startAndEndTimeString;
-
-@property (nonatomic, readonly) NSString* roomsString;
-
-@property (nonatomic, readonly) NSString* periodTypeString;
-
-@end
-
-@interface SemesterGrades (Additions)
-
-/**
- * @return a sorted array of the keys of the grades property
- * Sort order is first, in order: where a grade exists, alphabetically
- */
-@property (nonatomic, readonly) NSArray* sortedGradesKeys;
-
-/**
- * @return YES if there exists a key that has 0-length value in the grades property
- */
-@property (nonatomic, readonly) BOOL existsCourseWithNoGrade;
+- (void)setCourseName:(NSString*)courseName andGrade:(NSString*)grade;
 
 @end

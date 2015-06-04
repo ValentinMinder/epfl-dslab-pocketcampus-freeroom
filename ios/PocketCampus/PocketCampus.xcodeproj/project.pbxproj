@@ -242,6 +242,8 @@
 		327412E2167E7E56001E8C62 /* DownloadedCornerSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 327412E0167E7E56001E8C62 /* DownloadedCornerSelected@2x.png */; };
 		327412E5167E824F001E8C62 /* PCTableViewCellAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */; };
 		327442961B1F3F5600199369 /* IsAcademiaGradesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 327442951B1F3F5600199369 /* IsAcademiaGradesViewController.m */; };
+		3274429A1B20816000199369 /* IsAcademiaCourseGradeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 327442981B20816000199369 /* IsAcademiaCourseGradeCell.m */; };
+		3274429B1B20816000199369 /* IsAcademiaCourseGradeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 327442991B20816000199369 /* IsAcademiaCourseGradeCell.xib */; };
 		327513311825465D0037FE00 /* FavoriteCorner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132D1825465D0037FE00 /* FavoriteCorner.png */; };
 		327513321825465D0037FE00 /* FavoriteCorner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */; };
 		327513331825465D0037FE00 /* FavoriteCornerSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */; };
@@ -1029,6 +1031,9 @@
 		327412E4167E824F001E8C62 /* PCTableViewCellAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PCTableViewCellAdditions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		327442941B1F3F5600199369 /* IsAcademiaGradesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaGradesViewController.h; sourceTree = "<group>"; };
 		327442951B1F3F5600199369 /* IsAcademiaGradesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaGradesViewController.m; sourceTree = "<group>"; };
+		327442971B20816000199369 /* IsAcademiaCourseGradeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsAcademiaCourseGradeCell.h; sourceTree = "<group>"; };
+		327442981B20816000199369 /* IsAcademiaCourseGradeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsAcademiaCourseGradeCell.m; sourceTree = "<group>"; };
+		327442991B20816000199369 /* IsAcademiaCourseGradeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IsAcademiaCourseGradeCell.xib; sourceTree = "<group>"; };
 		3275132D1825465D0037FE00 /* FavoriteCorner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCorner.png; sourceTree = "<group>"; };
 		3275132E1825465D0037FE00 /* FavoriteCorner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FavoriteCorner@2x.png"; sourceTree = "<group>"; };
 		3275132F1825465D0037FE00 /* FavoriteCornerSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FavoriteCornerSelected.png; sourceTree = "<group>"; };
@@ -3237,6 +3242,9 @@
 				EC2E448E9388F61889098AD7 /* Images */,
 				32308C0B18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.h */,
 				32308C0C18DA3678008BE037 /* IsAcademiaStudyPeriodCalendarDayEventView.m */,
+				327442971B20816000199369 /* IsAcademiaCourseGradeCell.h */,
+				327442981B20816000199369 /* IsAcademiaCourseGradeCell.m */,
+				327442991B20816000199369 /* IsAcademiaCourseGradeCell.xib */,
 			);
 			name = Views;
 			path = Plugins/IsAcademiaPlugin/Views;
@@ -3532,6 +3540,7 @@
 				32217F041B0F533800E3B5D7 /* FacebookBarButtonSelected@3x.png in Resources */,
 				32CCB511155567CB00220282 /* News@2x.png in Resources */,
 				3297E017155571F80054F790 /* NewsLarge.png in Resources */,
+				3274429B1B20816000199369 /* IsAcademiaCourseGradeCell.xib in Resources */,
 				3267F1751B02350900B8A130 /* iOSVPN_60.png in Resources */,
 				32A37A0E1A680F090079D208 /* IsAcademia@3x.png in Resources */,
 				32A37A001A680A800079D208 /* EventsLarge@3x.png in Resources */,
@@ -3981,6 +3990,7 @@
 				3217CE0A1508E31200BF94F7 /* FoodController.m in Sources */,
 				3217CE0F1508F92700BF94F7 /* FoodMainViewController.m in Sources */,
 				3247CAF815135FD800105A71 /* PCTableViewSectionHeader.m in Sources */,
+				3274429A1B20816000199369 /* IsAcademiaCourseGradeCell.m in Sources */,
 				32FB2E0A15179014007AE82B /* transport.m in Sources */,
 				32FB2E0B15179014007AE82B /* TransportService.m in Sources */,
 				32CFECE5151C789A00D8CBA6 /* TransportController.m in Sources */,

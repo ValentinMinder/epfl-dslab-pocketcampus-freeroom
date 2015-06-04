@@ -4,6 +4,9 @@
 "Schedule" = "Horaire";
 "MyGrades" = "Mes résultats";
 "Grades" = "Résultats";
+"NoCourse" = "Aucun cours";
+"GradesNoContent" = "Aucune note disponible";
+"GrayMeansNoGradeAvailableExplanation" = "Un cours grisé signifique qu'aucune note n'est disponible pour le moment.";
 "LoadingGrades" = "Chargement de vos résultats...";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Salles:\n(touchez pour voir sur le plan)"; //<periodType> \n\n <name>\n<timeString>
