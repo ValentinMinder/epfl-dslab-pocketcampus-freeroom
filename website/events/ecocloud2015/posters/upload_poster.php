@@ -18,6 +18,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST") {
 	exit;
 }
 
+system("echo somebody tried to upload something | mail -s upload_poster.php events@pocketcampus.org");
 
 if(empty($_FILES["file"])) {
 	die("No file");
