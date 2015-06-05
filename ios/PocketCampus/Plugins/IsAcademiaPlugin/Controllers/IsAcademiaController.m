@@ -33,9 +33,10 @@
 
 #import "IsAcademiaGradesViewController.h"
 
+
 static IsAcademiaController* instance __weak = nil;
 
-@interface IsAcademiaController ()
+@interface IsAcademiaController ()<UITabBarControllerDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* moodleService;
 @property (nonatomic, weak) UISegmentedControl* scheduleViewControllerSegmentedControl;
@@ -111,6 +112,8 @@ static IsAcademiaController* instance __weak = nil;
     return @"IsAcademia";
 }
 
+#pragma mark - UITabBarControllerDelegate
+
 #pragma mark - Private
 
 static NSInteger const kScheduleSegmentIndex = 0;
@@ -119,8 +122,9 @@ static NSInteger const kScheduleSegmentIndex = 0;
     UISegmentedControl* segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedStringFromTable(@"Schedule", @"IsAcademiaPlugin", nil), NSLocalizedStringFromTable(@"Grades", @"IsAcademiaPlugin", nil)]];
     segmentedControl.selectedSegmentIndex = kScheduleSegmentIndex;
     segmentedControl.tintColor = [UIColor clearColor];
-    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0], NSForegroundColorAttributeName:[PCValues pocketCampusRed]} forState:UIControlStateNormal];
-    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0], NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateSelected];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName:[PCValues pocketCampusRed]} forState:UIControlStateNormal];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName:[[PCValues pocketCampusRed] colorWithAlphaComponent:0.2]} forState:UIControlStateHighlighted];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0], NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateSelected];
     [segmentedControl addTarget:self action:@selector(titleViewSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
     return segmentedControl;
 }

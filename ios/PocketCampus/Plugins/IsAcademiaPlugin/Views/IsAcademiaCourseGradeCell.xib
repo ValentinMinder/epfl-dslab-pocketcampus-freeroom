@@ -19,14 +19,18 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="6" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pg5-mS-VIH" userLabel="Grade Label">
-                        <rect key="frame" x="277" y="13" width="13" height="20"/>
-                        <fontDescription key="fontDescription" name="Courier-Bold" family="Courier" pointSize="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="6" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000000000000009" translatesAutoresizingMaskIntoConstraints="NO" id="Pg5-mS-VIH" userLabel="Grade Label">
+                        <rect key="frame" x="280" y="10" width="10" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="50" id="eiF-cI-nDx"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="32" id="u7S-vP-uZQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cdc-Bd-Eop" userLabel="Line View">
-                        <rect key="frame" x="129" y="22" width="140" height="1"/>
+                        <rect key="frame" x="129" y="22" width="143" height="1"/>
                         <color key="backgroundColor" white="0.84871394159202285" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="w5X-gd-U2r"/>
@@ -41,7 +45,7 @@
                     <constraint firstItem="Pg5-mS-VIH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="feg-qE-JbC" secondAttribute="trailing" constant="20" id="NLg-NF-mlL"/>
                     <constraint firstItem="feg-qE-JbC" firstAttribute="centerY" secondItem="Cdc-Bd-Eop" secondAttribute="centerY" constant="-1" id="OjU-fY-5wn"/>
                     <constraint firstItem="Cdc-Bd-Eop" firstAttribute="leading" secondItem="feg-qE-JbC" secondAttribute="trailing" constant="8" id="VO9-X2-G6O"/>
-                    <constraint firstAttribute="centerY" secondItem="Pg5-mS-VIH" secondAttribute="centerY" constant="-1" id="X1Y-UX-TYn"/>
+                    <constraint firstAttribute="centerY" secondItem="Pg5-mS-VIH" secondAttribute="centerY" id="X1Y-UX-TYn"/>
                     <constraint firstAttribute="centerY" secondItem="feg-qE-JbC" secondAttribute="centerY" id="wzK-NQ-3d3"/>
                 </constraints>
             </tableViewCellContentView>

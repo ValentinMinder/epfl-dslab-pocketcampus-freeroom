@@ -116,6 +116,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [self.isaService cancelOperationsForDelegate:self];
     self.navigationController.navigationBar.hairlineDividerView.hidden = NO;
     self.navigationController.toolbarHidden = YES;
 }
@@ -363,6 +365,7 @@
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.isaService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

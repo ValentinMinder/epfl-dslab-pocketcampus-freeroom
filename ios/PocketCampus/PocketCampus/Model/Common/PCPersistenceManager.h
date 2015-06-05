@@ -127,7 +127,7 @@ extern NSString* PCPersistenceManagerPocketCampusPlatformPluginName;
 
 #pragma mark - Cache deletion
 
-/*
+/**
  * Deletes all cache defaults and objects for pluginName.
  */
 + (BOOL)deleteCacheForPluginName:(NSString*)pluginName;

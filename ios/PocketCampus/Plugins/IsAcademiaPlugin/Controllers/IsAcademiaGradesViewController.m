@@ -37,11 +37,15 @@
 
 static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 
-@interface IsAcademiaGradesViewController ()<IsAcademiaServiceDelegate>
+@interface IsAcademiaGradesViewController ()<IsAcademiaServiceDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) IsAcademiaService* isaService;
 @property (nonatomic, strong) NSArray* semesters; //array of SemesterGrades
+@property (nonatomic, strong) NSArray* filteredSemesters; //array of SemestersGrades, filters for search
+@property (nonatomic, readonly) NSArray* sections;
+
+@property (nonatomic, strong) UISearchBar* searchBar;
 
 @end
 
@@ -72,6 +76,14 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25.0, 0, 0);
     self.lgRefreshControl = [[LGARefreshControl alloc] initWithTableViewController:self refreshedDataIdentifier:[LGARefreshControl dataIdentifierForPluginName:@"isacademia" dataName:@"grades"]];
     [self.lgRefreshControl setTarget:self selector:@selector(refresh)];
+    
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44.0)];
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"SearchByCourseOrGrade", @"IsAcademiaPlugin", nil);
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.delegate = self;
+
+    self.tableView.tableHeaderView = self.searchBar;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,6 +91,13 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     if (!self.semesters || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
         [self refresh];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.searchBar resignFirstResponder];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [self.isaService cancelOperationsForDelegate:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -98,13 +117,85 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     [self.isaService getGradesWithDelegate:self];
 }
 
+- (void)fillSearchFilteredSemestersForSearchString:(NSString*)searchString {
+    if (searchString.length == 0) {
+        self.filteredSemesters = nil;
+        return;
+    }
+    
+    static NSCharacterSet* decimalsSet = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableCharacterSet* mDecimalsSet = [NSMutableCharacterSet decimalDigitCharacterSet];
+        [mDecimalsSet addCharactersInString:@"."];
+        decimalsSet = mDecimalsSet;
+    });
+    NSCharacterSet* searchStringSet = [NSCharacterSet characterSetWithCharactersInString:searchString];
+    BOOL gradeSearchMode = [decimalsSet isSupersetOfSet:searchStringSet];
+    float searchGradeFloat = [searchString floatValue];
+    
+    
+    NSMutableArray* filteredSemesters = [NSMutableArray arrayWithCapacity:self.semesters.count];
+    float searchGrade = [searchString floatValue];
+    if (searchGrade == 0.0 && [searchString rangeOfString:@"0"].location == NSNotFound) {
+        // means floatValue returned 0.0 because did not find a valid numerical value
+        searchGrade = -1.0;
+    }
+    for (SemesterGrades* semester in self.semesters) {
+        SemesterGrades* semesterCopy = [semester copy];
+        NSMutableDictionary* filteredGrades = [NSMutableDictionary dictionary];
+        for (NSString* courseName in semester.grades) {
+            NSString* grade = semesterCopy.grades[courseName];
+            BOOL includeCourse = NO;
+            if (gradeSearchMode && [decimalsSet isSupersetOfSet:[NSCharacterSet characterSetWithCharactersInString:grade]]) {
+                // user is typing a grade and the grade variable is a numerical grade => apply numbers comparison
+                includeCourse = (searchGradeFloat == [grade floatValue]);
+            } else {
+                includeCourse = ([courseName rangeOfString:searchString options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSWidthInsensitiveSearch].location != NSNotFound
+                                 || [grade rangeOfString:searchString options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSWidthInsensitiveSearch].location != NSNotFound);
+            }
+            if (includeCourse) {
+                if (!grade) {
+                    grade = @"";
+                }
+                filteredGrades[courseName] = grade;
+            }
+        }
+        
+        semesterCopy.grades = filteredGrades;
+        if (semesterCopy.grades.count > 0) {
+            [filteredSemesters addObject:semesterCopy];
+        }
+    }
+    self.filteredSemesters = filteredSemesters;
+}
+
+- (NSArray*)sections {
+    return self.searchBar.text.length > 0 ? self.filteredSemesters : self.semesters;
+}
+
 #pragma mark - IsaServiceDelegate
 
 - (void)getGradesDidReturn:(IsaGradesResponse *)gradesResponse {
+/*#warning REMOVE
+    for (SemesterGrades* semester in gradesResponse.semesters) {
+        for (NSString* course in [semester.grades copy]) {
+            NSInteger index = [semester.grades.allKeys indexOfObject:course];
+            if (index % 4 == 0) {
+                semester.grades[course] = @"Réussi";
+            } else if (index % 2 == 0) {
+                semester.grades[course] = [NSString stringWithFormat:@"%d", index];
+            } else {
+                semester.grades[course] = [NSString stringWithFormat:@"%d.5", index];
+            }
+            
+        }
+    }*/
     switch (gradesResponse.statusCode) {
         case IsaStatusCode_OK:
         {
             self.semesters = gradesResponse.semesters;
+            [self fillSearchFilteredSemestersForSearchString:self.searchBar.text];
             [self.tableView reloadData];
             [self.lgRefreshControl endRefreshingAndMarkSuccessful];
             break;
@@ -151,25 +242,42 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     [self.lgRefreshControl endRefreshingWithDelay:2.0 indicateErrorWithMessage:NSLocalizedStringFromTable(@"ConnectionToServerTimedOutShort", @"PocketCampus", nil)];
 }
 
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self fillSearchFilteredSemestersForSearchString:searchText];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self.searchBar resignFirstResponder];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.searchBar resignFirstResponder];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    if (!self.semesters) {
+    if (!self.sections) {
         return;
     }
-    SemesterGrades* semester = self.semesters[section];
+    SemesterGrades* semester = self.sections[section];
     UITableViewHeaderFooterView* header = (UITableViewHeaderFooterView*)view;
     header.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:19.0];
     header.textLabel.text = semester.semesterName;
-    header.textLabel.textColor = [UIColor blackColor];
+    header.textLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
-    if (!self.semesters) {
+    if (!self.sections) {
         return;
     }
     UITableViewHeaderFooterView* footer = (UITableViewHeaderFooterView*)view;
-    if (section == 0 && self.semesters && self.semesters.count == 0) {
+    if (section == 0 && self.sections && self.sections.count == 0) {
         footer.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         footer.textLabel.textColor = [UIColor darkGrayColor];
         footer.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -183,21 +291,25 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 #pragma mark - UITableViewDataSource
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.semesters.count == 0) {
+    if (self.sections.count == 0) {
         return nil;
     }
-    SemesterGrades* semester = self.semesters[section];
+    SemesterGrades* semester = self.sections[section];
     return semester.semesterName;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (!self.semesters) {
+    if (!self.sections) {
         return nil;
     }
-    if (section == 0 && self.semesters && self.semesters.count == 0) {
-        return NSLocalizedStringFromTable(@"GradesNoContent", @"IsAcademiaPlugin", nil);
+    if (section == 0 && self.sections && self.sections.count == 0) {
+        if (self.searchBar.text.length > 0) {
+            return NSLocalizedStringFromTable(@"NoResult", @"IsAcademiaPlugin", nil);
+        } else {
+            return NSLocalizedStringFromTable(@"GradesNoContent", @"IsAcademiaPlugin", nil);
+        }
     }
-    SemesterGrades* semester = self.semesters[section];
+    SemesterGrades* semester = self.sections[section];
     if (semester.grades.count == 0) {
         return NSLocalizedStringFromTable(@"NoCourse", @"IsAcademiaPlugin", nil);
     }
@@ -214,7 +326,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString* const identifier = [(PCTableViewAdditions*)tableView autoInvalidatingReuseIdentifierForIdentifier:@"SemesterGradeCell"];
-    SemesterGrades* semester = self.semesters[indexPath.section];
+    SemesterGrades* semester = self.sections[indexPath.section];
     NSString* courseName = semester.sortedGradesKeys[indexPath.row];
     IsAcademiaCourseGradeCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
@@ -226,18 +338,24 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.semesters && self.semesters.count == 0) {
+    if (self.sections && self.sections.count == 0) {
         return 0;
     }
-    SemesterGrades* semester = self.semesters[section];
+    SemesterGrades* semester = self.sections[section];
     return semester.grades.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.semesters && self.semesters.count == 0) {
+    if (self.sections && self.sections.count == 0) {
         return 1;
     }
-    return self.semesters.count;
+    return self.sections.count;
+}
+
+- (void)dealloc
+{
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [self.isaService cancelOperationsForDelegate:self];
 }
 
 @end

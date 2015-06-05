@@ -181,6 +181,8 @@
 
 @implementation SemesterGrades (Additions)
 
+#pragma mark - Public
+
 - (NSArray*)sortedGradesKeys {
     static NSString* key;
     static dispatch_once_t onceToken;
@@ -224,6 +226,15 @@
         objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return [value boolValue];
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    SemesterGrades* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.semesterName = [self.semesterName copy];
+    newInstance.grades = self.grades;
+    return newInstance;
 }
 
 @end

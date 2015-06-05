@@ -66,18 +66,18 @@
     static UIFont* inactiveFont = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        activeFont = [UIFont fontWithName:@"HelveticaNeue" size:16.0];
-        inactiveFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:16.0];
+        activeFont = [UIFont fontWithName:@"HelveticaNeue" size:17.0];
+        inactiveFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0];
     });
     self.courseNameLabel.text = courseName;
     self.gradeLabel.text = grade;
     if (grade.length > 0) {
         self.courseNameLabel.font = activeFont;
-        self.courseNameLabel.textColor = [UIColor blackColor];
+        self.courseNameLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
         self.lineView.hidden = NO;
     } else {
         self.courseNameLabel.font = inactiveFont;
-        self.courseNameLabel.textColor = [UIColor darkGrayColor];
+        self.courseNameLabel.textColor = [UIColor grayColor];
         self.lineView.hidden = YES;
     }
 }

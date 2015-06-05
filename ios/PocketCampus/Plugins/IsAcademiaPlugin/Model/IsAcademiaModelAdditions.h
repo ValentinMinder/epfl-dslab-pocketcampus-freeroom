@@ -62,7 +62,7 @@
 
 @end
 
-@interface SemesterGrades (Additions)
+@interface SemesterGrades (Additions)<NSCopying> //shallow copy, grades property keeps same pointer
 
 /**
  * @return a sorted array of the keys of the grades property

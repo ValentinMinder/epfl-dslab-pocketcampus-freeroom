@@ -5,6 +5,8 @@
 "MyGrades" = "Mes résultats";
 "Grades" = "Résultats";
 "NoCourse" = "Aucun cours";
+"SearchByCourseOrGrade" = "Rechercher par cours ou par note";
+"NoResult" = "Aucun résultat";
 "GradesNoContent" = "Aucune note disponible";
 "GrayMeansNoGradeAvailableExplanation" = "Un cours grisé signifique qu'aucune note n'est disponible pour le moment.";
 "LoadingGrades" = "Chargement de vos résultats...";
