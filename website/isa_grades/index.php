@@ -280,7 +280,7 @@ if($has_signed_up) {
             <p class="en">The PocketCampus team</p>
             
             <p class="fr" style="color:#900;font-size:large;font-weight:bold;display:none;">Nous avons un problème technique actuellement. Les notes sont désactivées pour tout le monde. Merci d'essayer un peu plus tard.</p>
-            <p class="en" style="color:#900;font-size:large;font-weight:bold;display:none:">We're currently experiencing technical difficulties. Grades are disabled for everybody. Please check back soon.</p>
+            <p class="en" style="color:#900;font-size:large;font-weight:bold;display:none;">We're currently experiencing technical difficulties. Grades are disabled for everybody. Please check back soon.</p>
             
             <div class="on">
             	<p class="fr" style="color:#090; font-size: large; font-weight: bold;">Tu es inscris, merci !</p>
