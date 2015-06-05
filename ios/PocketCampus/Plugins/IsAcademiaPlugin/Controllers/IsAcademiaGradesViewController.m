@@ -149,7 +149,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
             BOOL includeCourse = NO;
             if (gradeSearchMode && [decimalsSet isSupersetOfSet:[NSCharacterSet characterSetWithCharactersInString:grade]]) {
                 // user is typing a grade and the grade variable is a numerical grade => apply numbers comparison
-                includeCourse = (searchGradeFloat == [grade floatValue]);
+                includeCourse = (grade.length > 0 && searchGradeFloat == [grade floatValue]);
             } else {
                 includeCourse = ([courseName rangeOfString:searchString options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSWidthInsensitiveSearch].location != NSNotFound
                                  || [grade rangeOfString:searchString options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSWidthInsensitiveSearch].location != NSNotFound);
