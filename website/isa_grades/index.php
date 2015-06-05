@@ -270,7 +270,7 @@ if($has_signed_up) {
             <p class="fr">Si tu es intéressé<span class="f">e</span>, tu n'as qu'à t'inscrire à l'aide du bouton ci-dessous, et la fonctionnalité sera activée automatiquement.</p>
             <p class="en">If you're interested, simply use the below button to opt-in. The feature will be enabled automatically.</p>
             
-            <p class="fr">Il faut noter que, pendant cette période de bêta, nous ne garantissons aucune information fournie par la partie Notes IS-Academia de l'application.</p>
+            <p class="fr">À noter que, pendant cette période de bêta, nous ne garantissons aucune des informations affichées dans la partie Notes IS-Academia de l'application.</p>
             <p class="en">Note that, during this beta period, there are no guarantees on the correctness of the information displayed in the IS-Academia Grades section of the app.</p>
             
             <p class="fr">Merci d'avance !</p>
@@ -305,17 +305,17 @@ if($has_signed_up) {
             <p class="en">Please kill the app and restart it.</p>
             <p>&nbsp;</p>
 
-            <h5 class="fr">Quelle version de l'app dois-je avoir pour que la fonctionnalité "Notes" marche?</h5>
+            <h5 class="fr">Quelle version de l'app dois-je avoir pour que la fonctionnalité "Notes" soit disponible ?</h5>
             <h5 class="en">What app version should I have for the "Grades" functionality to work?</h5>
 
             <p class="fr">Il faut avoir PocketCampus v3.1.1 ou une version plus récente.</p>
             <p class="en">You should have PocketCampus v3.1.1 or a more recent version.</p>
             <p>&nbsp;</p>
 
-            <h5 class="fr">Je ne peux pas voire les notes de tous mes cours</h5>
+            <h5 class="fr">Je ne peux pas voir les notes de tous mes cours</h5>
             <h5 class="en">I cannot see grades for all my courses</h5>
 
-            <p class="fr">Actuellement, seulement des cours bien définis font partie de la bêta. Nous allons ajouter plus de cours prochainement.</p>
+            <p class="fr">Actuellement, seulement certains cours bien définis font partie de la bêta. Nous allons ajouter plus de cours prochainement.</p>
             <p class="en">For now, only selected courses are in the beta. We will add more courses soon.</p>
             <p>&nbsp;</p>
 
