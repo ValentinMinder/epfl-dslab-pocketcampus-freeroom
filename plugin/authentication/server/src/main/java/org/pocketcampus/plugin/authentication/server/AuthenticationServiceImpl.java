@@ -129,7 +129,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 				Map<String, String> xml = IosProvisionningProfiles.XML_MAP.get(cr.type);
 
 				if(xml == null) {
-					returnPage(resp, HttpURLConnection.HTTP_UNAVAILABLE, "<h1>Service Unavailable</h1>");
+					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
 					return;
 
 				}
@@ -162,6 +162,12 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 
 				} else {
 					map.remove(cr.getfile);
+
+					if("vpn".equals(cr.type)) {
+						returnPage(resp, HttpURLConnection.HTTP_UNAVAILABLE, "<h1>Service Unavailable</h1>" +
+								"<p>Sorry, VPN configuration is currently unavailable.</p>");
+						return;
+					}
 
 					resp.setContentType("application/x-apple-aspen-config");
 					resp.setCharacterEncoding("UTF-8");

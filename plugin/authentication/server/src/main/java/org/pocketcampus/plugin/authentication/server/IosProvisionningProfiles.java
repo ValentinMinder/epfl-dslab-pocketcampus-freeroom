@@ -270,9 +270,9 @@ public class IosProvisionningProfiles {
         XML_MAP.get("email").put("en", EMAIL_XML_EN);
         XML_MAP.get("email").put("fr", EMAIL_XML_FR);
 
-//        XML_MAP.put("vpn", new HashMap<String, String>());
-//        XML_MAP.get("vpn").put("en", VPN_XML_EN);
-//        XML_MAP.get("vpn").put("fr", VPN_XML_FR);
+        XML_MAP.put("vpn", new HashMap<String, String>());
+        XML_MAP.get("vpn").put("en", VPN_XML_EN);
+        XML_MAP.get("vpn").put("fr", VPN_XML_FR);
     }
 
 }
