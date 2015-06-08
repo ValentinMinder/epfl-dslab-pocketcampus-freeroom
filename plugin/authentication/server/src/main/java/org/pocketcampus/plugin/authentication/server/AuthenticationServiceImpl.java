@@ -85,6 +85,15 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 				}
 			}
 
+			private void returnPage(HttpServletResponse resp, int status, String body) throws IOException {
+				resp.setStatus(status);
+				resp.setContentType("text/html");
+				resp.setCharacterEncoding("UTF-8");
+				OutputStream o = resp.getOutputStream();
+				o.write(body.getBytes("UTF-8"));
+				o.close();
+			}
+
 			@Override
 			protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 				cleanup();
@@ -120,7 +129,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 				Map<String, String> xml = IosProvisionningProfiles.XML_MAP.get(cr.type);
 
 				if(xml == null) {
-					resp.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
+					returnPage(resp, HttpURLConnection.HTTP_UNAVAILABLE, "<h1>Service Unavailable</h1>");
 					return;
 
 				}
