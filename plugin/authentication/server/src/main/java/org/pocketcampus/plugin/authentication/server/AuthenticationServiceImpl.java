@@ -165,7 +165,7 @@ public class AuthenticationServiceImpl implements AuthenticationService.Iface, R
 
 					if("vpn".equals(cr.type)) {
 						returnPage(resp, HttpURLConnection.HTTP_UNAVAILABLE, "<h1>Service unavailable</h1>" +
-								"<p>Sorry, VPN automated configuration is currently unavailable.<br>More here: <a href='http://epnet.epfl.ch/files/content/sites/network/files/Download/VPN/anyconnect-iOS.pdf'>Instruction</a></p>");
+								"<p>Sorry, VPN automated configuration is currently unavailable.<br>More here: <a href='http://epnet.epfl.ch/cms/site/network/lang/fr/clients-VPN-AnyConnect'>Instructions</a></p>");
 						return;
 					}
 
