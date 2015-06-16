@@ -8,7 +8,7 @@
 "SearchByCourseOrGrade" = "Rechercher par cours ou par note";
 "NoResult" = "Aucun résultat";
 "GradesNoContent" = "Aucune note disponible";
-"GrayMeansNoGradeAvailableExplanation" = "Un cours grisé signifique qu'aucune note n'est disponible pour le moment.";
+"GrayMeansNoGradeAvailableExplanation" = "Un cours est grisé et placé en-bas de la liste quand sa note n'est pas encore disponible.";
 "LoadingGrades" = "Chargement de vos résultats...";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Salles:\n(touchez pour voir sur le plan)"; //<periodType> \n\n <name>\n<timeString>

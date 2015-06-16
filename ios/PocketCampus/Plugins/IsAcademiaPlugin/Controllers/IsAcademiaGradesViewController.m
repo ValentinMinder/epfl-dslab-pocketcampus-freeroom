@@ -35,14 +35,14 @@
 
 #import "IsAcademiaCourseGradeCell.h"
 
-static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
+static const NSTimeInterval kRefreshValiditySeconds = 10.0 * 60.0; //10 min
 
 @interface IsAcademiaGradesViewController ()<IsAcademiaServiceDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) LGARefreshControl* lgRefreshControl;
 @property (nonatomic, strong) IsAcademiaService* isaService;
 @property (nonatomic, strong) NSArray* semesters; //array of SemesterGrades
-@property (nonatomic, strong) NSArray* filteredSemesters; //array of SemestersGrades, filters for search
+@property (nonatomic, strong) NSArray* filteredSemesters; //array of SemestersGrades, filtered for search
 @property (nonatomic, readonly) NSArray* sections;
 
 @property (nonatomic, strong) UISearchBar* searchBar;
@@ -83,14 +83,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     self.searchBar.delegate = self;
 
     self.tableView.tableHeaderView = self.searchBar;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshIfNeeded) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.semesters || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
-        [self refresh];
-    }
+    [self refreshIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -106,6 +104,12 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 }
 
 #pragma mark - Private
+
+- (void)refreshIfNeeded {
+    if (!self.semesters || [self.lgRefreshControl shouldRefreshDataForValidity:kRefreshValiditySeconds]) {
+        [self refresh];
+    }
+}
 
 - (void)refresh {
     [self.isaService cancelOperationsForDelegate:self]; //cancel before retrying
@@ -181,12 +185,8 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
     for (SemesterGrades* semester in gradesResponse.semesters) {
         for (NSString* course in [semester.grades copy]) {
             NSInteger index = [semester.grades.allKeys indexOfObject:course];
-            if (index % 4 == 0) {
-                semester.grades[course] = @"Réussi";
-            } else if (index % 2 == 0) {
-                semester.grades[course] = [NSString stringWithFormat:@"%d", index];
-            } else {
-                semester.grades[course] = [NSString stringWithFormat:@"%d.5", index];
+            if (index == 3) {
+                semester.grades[course] = @"";
             }
             
         }
@@ -356,6 +356,7 @@ static const NSTimeInterval kRefreshValiditySeconds = 2.0 * 60.0; //2 min
 {
     [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.isaService cancelOperationsForDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
