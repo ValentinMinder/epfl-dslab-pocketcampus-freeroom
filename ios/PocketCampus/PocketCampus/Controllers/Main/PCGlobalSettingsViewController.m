@@ -458,7 +458,7 @@ static const int kUsageRow = 0;
         case kAccountsSection:
             return 1;
         case kAutoConfigsSection:
-            return 2;
+            return 1;
         case kMainMenuSection:
             return 2;
         case kAboutSection:
