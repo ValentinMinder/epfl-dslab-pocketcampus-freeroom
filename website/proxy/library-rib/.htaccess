@@ -4,5 +4,5 @@ AuthName "Password Protected"
 Require valid-user
 
 RewriteEngine On
-RewriteRule ^/?(.*)$ http://www.library.ethz.ch/$1 [L,P]
+RewriteRule ^/?(.*)$ http://dev.library.ethz.ch/$1 [L,P]
 
