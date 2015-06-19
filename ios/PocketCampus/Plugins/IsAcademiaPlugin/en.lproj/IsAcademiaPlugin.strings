@@ -1,6 +1,15 @@
 
 "PluginName" = "IS-Academia";
 "MySchedule" = "My schedule";
+"Schedule" = "Schedule";
+"MyGrades" = "My grades";
+"Grades" = "Grades";
+"NoCourse" = "No course";
+"SearchByCourseOrGrade" = "Search by course or grade";
+"NoResult" = "No result";
+"GradesNoContent" = "No grades available";
+"GrayMeansNoGradeAvailableExplanation" = "A course is grayed out and placed at the bottom when its grade is not available yet.";
+"LoadingGrades" = "Loading your grades...";
 "CourseDetailsActionSheetWithFormat" = "%@\n\n%@\n%@"; //<periodType> \n\n <name>\n<timeString>
 "CourseDetailsAndRoomsActionSheetWithFormat" = "%@\n\n%@\n%@\n\n Rooms:\n(tap to see on map)"; //<periodType> \n\n <name>\n<timeString>
 "Lecture" = "Lecture";

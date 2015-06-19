@@ -199,6 +199,7 @@ static const NSUInteger kRestoreDefaultSection = 1;
             cell.textLabel.text = NSLocalizedStringFromTable(@"ResetToDefaultStations", @"TransportPlugin", nil);
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+            cell.textLabel.textColor = self.view.tintColor;
             break;
         }
         default:

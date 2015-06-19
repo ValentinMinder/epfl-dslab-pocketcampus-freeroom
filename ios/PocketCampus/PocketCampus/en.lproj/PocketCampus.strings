@@ -15,6 +15,7 @@
 "Done" = "Done";
 "Accounts" = "Accounts";
 "About" = "About";
+"AboutPocketCampusSubtitle" = "Info & contact";
 "Delete" = "Delete";
 "Settings" = "Settings";
 "LastUpdate" = "Last update";
@@ -30,9 +31,9 @@
 "Usage" = "Usage";
 "Close" = "Close";
 "RatePCAppStore" = "Rate on App Store";
-"RatePCAppStoreSubtitle" = "Many thanks in advance :)";
+"RatePCAppStoreSubtitle" = "Your rock!";
 "LikePConFB" = "Facebook page";
-"LikePConFBSubtitle" = "Join the community !";
+"LikePConFBSubtitle" = "Join the PocketCampus community!";
 "Sorry" = "Sorry";
 "ActionNotSupportedYet" = "This action is not supported yet";
 "Send" = "Send";
@@ -62,14 +63,14 @@
 "EPFLMail" = "EPFL email";
 "ConfigureEPFLEmailInMailApp" = "Setup my EPFL email in the Mail app";
 "EPFLVPN" = "EPFL VPN";
-"ConfigureEPFLVPN" = "Setup EPFL VPN";
+"ConfigureEPFLVPN" = "Setup EPFL's VPN";
 "Preparing" = "Preparing";
 "TapToCancel" = "Tap to cancel";
 "WhatsNew" = "What's new";
 "WhatsNewInUpdate" = "What's new in this update?";
 "TapForMoreInfo" = "Tap for more info";
 
-"WhatsNewInVersionContentShort" = "EPFL email, EPFL VPN.";
+"WhatsNewInVersionContentShort" = "Grades in IS-Academia !";
 
 //Accessbility
 

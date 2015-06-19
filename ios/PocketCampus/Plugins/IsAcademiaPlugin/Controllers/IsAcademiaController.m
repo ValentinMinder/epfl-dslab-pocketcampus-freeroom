@@ -31,11 +31,16 @@
 
 #import "IsAcademiaDayScheduleViewController.h"
 
+#import "IsAcademiaGradesViewController.h"
+
+
 static IsAcademiaController* instance __weak = nil;
 
-@interface IsAcademiaController ()
+@interface IsAcademiaController ()<UITabBarControllerDelegate>
 
 @property (nonatomic, strong) IsAcademiaService* moodleService;
+@property (nonatomic, weak) UISegmentedControl* scheduleViewControllerSegmentedControl;
+@property (nonatomic, weak) UISegmentedControl* gradesViewControllerSegmentedControl;
 
 @end
 
@@ -51,10 +56,27 @@ static IsAcademiaController* instance __weak = nil;
         }
         self = [super init];
         if (self) {
-            IsAcademiaDayScheduleViewController* dayScheduleViewController = [IsAcademiaDayScheduleViewController new];
-            PluginNavigationController* navController = [[PluginNavigationController alloc] initWithRootViewController:dayScheduleViewController];
-            navController.pluginIdentifier = [[self class] identifierName];
-            self.mainNavigationController = navController;
+            IsAcademiaDayScheduleViewController* scheduleViewController = [IsAcademiaDayScheduleViewController new];
+            UISegmentedControl* scheduleViewControllerSegmentedControl = [self titleViewSegmentedControlInstance];
+            self.scheduleViewControllerSegmentedControl = scheduleViewControllerSegmentedControl;
+            scheduleViewController.navigationItem.titleView = scheduleViewControllerSegmentedControl;
+            
+            IsAcademiaGradesViewController* gradesViewController = [IsAcademiaGradesViewController new];
+            UISegmentedControl* gradesViewControllerSegmentedControl = [self titleViewSegmentedControlInstance];
+            self.gradesViewControllerSegmentedControl = gradesViewControllerSegmentedControl;
+            gradesViewController.navigationItem.titleView = gradesViewControllerSegmentedControl;
+            
+            PluginTabBarController* tabBarController = [PluginTabBarController new];
+            PCNavigationController* scheduleNavController = [[PCNavigationController alloc] initWithRootViewController:scheduleViewController];
+            PCNavigationController* gradesNavController = [[PCNavigationController alloc] initWithRootViewController:gradesViewController];
+            tabBarController.viewControllers = @[scheduleNavController, gradesNavController];
+            tabBarController.pluginIdentifier = [[self class] identifierName];
+            self.mainTabBarController = tabBarController;
+            
+            // Restore last selected tab
+            self.scheduleViewControllerSegmentedControl.selectedSegmentIndex = [self lastSelectedSegmentedIndex];
+            [self titleViewSegmentedControlValueChanged:self.scheduleViewControllerSegmentedControl]; // Segement programatically changed so need to call this
+            
             instance = self;
         }
         return self;
@@ -88,6 +110,40 @@ static IsAcademiaController* instance __weak = nil;
 
 + (NSString*)identifierName {
     return @"IsAcademia";
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+#pragma mark - Private
+
+static NSInteger const kScheduleSegmentIndex = 0;
+
+- (UISegmentedControl*)titleViewSegmentedControlInstance {
+    UISegmentedControl* segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedStringFromTable(@"Schedule", @"IsAcademiaPlugin", nil), NSLocalizedStringFromTable(@"Grades", @"IsAcademiaPlugin", nil)]];
+    segmentedControl.selectedSegmentIndex = kScheduleSegmentIndex;
+    segmentedControl.tintColor = [UIColor clearColor];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName:[PCValues pocketCampusRed]} forState:UIControlStateNormal];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName:[[PCValues pocketCampusRed] colorWithAlphaComponent:0.2]} forState:UIControlStateHighlighted];
+    [segmentedControl setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0], NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateSelected];
+    [segmentedControl addTarget:self action:@selector(titleViewSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    return segmentedControl;
+}
+
+- (void)titleViewSegmentedControlValueChanged:(UISegmentedControl*)segmentedControl {
+    self.mainTabBarController.selectedIndex = segmentedControl.selectedSegmentIndex;
+    self.scheduleViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
+    self.gradesViewControllerSegmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
+    [self saveSelectedSegmentedIndex:segmentedControl.selectedSegmentIndex];
+}
+
+static NSString* const kLastSelectedSegmentedIndexIntegerKey = @"IsAcademiaControllerLastSelectedSegmentedIndexInteger";
+
+- (NSInteger)lastSelectedSegmentedIndex {
+    return [[PCPersistenceManager userDefaultsForPluginName:@"isacademia"] integerForKey:kLastSelectedSegmentedIndexIntegerKey];
+}
+
+- (void)saveSelectedSegmentedIndex:(NSInteger)index {
+    [[PCPersistenceManager userDefaultsForPluginName:@"isacademia"] setInteger:index forKey:kLastSelectedSegmentedIndexIntegerKey];
 }
 
 #pragma mark - Dealloc

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2F588F688C5A830993D54AFEB3A718DD51064B81",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "EE5017F42780957232AFF14DD75D9A51833942BE" : 0,
+    "2F588F688C5A830993D54AFEB3A718DD51064B81" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8E3510A2-888C-46F4-A310-CFC4F528E5AC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "EE5017F42780957232AFF14DD75D9A51833942BE" : "PocketCampus-private\/ios\/PocketCampus\/Pods\/TapkuLibrary",
+    "2F588F688C5A830993D54AFEB3A718DD51064B81" : "PocketCampus-private"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PocketCampus",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/PocketCampus\/PocketCampus.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/github.com\/dslab-epfl\/pocketcampus.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2F588F688C5A830993D54AFEB3A718DD51064B81"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "\/Users\/loicgardiol\/Library\/Caches\/CocoaPods\/GitHub\/5f226bddb315c8386072078acf631f7bbb665b2a",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EE5017F42780957232AFF14DD75D9A51833942BE"
+    }
+  ]
+}

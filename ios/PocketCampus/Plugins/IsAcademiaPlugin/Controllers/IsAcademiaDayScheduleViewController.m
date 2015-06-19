@@ -66,7 +66,6 @@
     self = [super init];
     if (self) {
         self.gaiScreenName = @"/isacademia";
-        self.title = NSLocalizedStringFromTable(@"MySchedule", @"IsAcademiaPlugin", nil);
         self.responseForReferenceDate = [NSMutableDictionary dictionary];
         self.isaService = [IsAcademiaService sharedInstanceToRetain];
     }
@@ -78,9 +77,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tabBarController.tabBar.frame = CGRectZero;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.dayView.is24hClock = [PCUtils userLocaleIs24Hour];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
+    
     UIBarButtonItem* todayItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today", @"PocketCampus", nil) style:UIBarButtonItemStylePlain target:self action:@selector(todayPressed)];
     UIBarButtonItem* flexibleSpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem* goToDateItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"GoToDate", @"IsAcademiaPlugin", nil) style:UIBarButtonItemStylePlain target:self action:@selector(goToDatePressed)];
@@ -110,15 +111,16 @@
     [super viewWillAppear:animated];
     [self trackScreen];
     self.navigationController.navigationBar.hairlineDividerView.hidden = YES;
-    [self.navigationController setToolbarHidden:NO];
+    self.navigationController.toolbarHidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
+    [self.isaService cancelOperationsForDelegate:self];
     self.navigationController.navigationBar.hairlineDividerView.hidden = NO;
-    [self.navigationController setToolbarHidden:YES];
+    self.navigationController.toolbarHidden = YES;
 }
-
 
 - (NSUInteger)supportedInterfaceOrientations
 {
@@ -363,6 +365,7 @@
 
 - (void)dealloc
 {
+    [[AuthenticationController sharedInstance] removeLoginObserver:self];
     [self.isaService cancelOperationsForDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

@@ -912,6 +912,400 @@
 
 @end
 
+@implementation SemesterGrades
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithSemesterName: (NSString *) semesterName grades: (NSMutableDictionary *) grades
+{
+  self = [super init];
+  __semesterName = [semesterName retain_stub];
+  __semesterName_isset = YES;
+  __grades = [grades retain_stub];
+  __grades_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"semesterName"])
+  {
+    __semesterName = [[decoder decodeObjectForKey: @"semesterName"] retain_stub];
+    __semesterName_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"grades"])
+  {
+    __grades = [[decoder decodeObjectForKey: @"grades"] retain_stub];
+    __grades_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__semesterName_isset)
+  {
+    [encoder encodeObject: __semesterName forKey: @"semesterName"];
+  }
+  if (__grades_isset)
+  {
+    [encoder encodeObject: __grades forKey: @"grades"];
+  }
+}
+
+- (void) dealloc
+{
+  [__semesterName release_stub];
+  [__grades release_stub];
+  [super dealloc_stub];
+}
+
+- (NSString *) semesterName {
+  return [[__semesterName retain_stub] autorelease_stub];
+}
+
+- (void) setSemesterName: (NSString *) semesterName {
+  [semesterName retain_stub];
+  [__semesterName release_stub];
+  __semesterName = semesterName;
+  __semesterName_isset = YES;
+}
+
+- (BOOL) semesterNameIsSet {
+  return __semesterName_isset;
+}
+
+- (void) unsetSemesterName {
+  [__semesterName release_stub];
+  __semesterName = nil;
+  __semesterName_isset = NO;
+}
+
+- (NSMutableDictionary *) grades {
+  return [[__grades retain_stub] autorelease_stub];
+}
+
+- (void) setGrades: (NSMutableDictionary *) grades {
+  [grades retain_stub];
+  [__grades release_stub];
+  __grades = grades;
+  __grades_isset = YES;
+}
+
+- (BOOL) gradesIsSet {
+  return __grades_isset;
+}
+
+- (void) unsetGrades {
+  [__grades release_stub];
+  __grades = nil;
+  __grades_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setSemesterName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_MAP) {
+          int _size15;
+          [inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &_size15];
+          NSMutableDictionary * fieldValue = [[NSMutableDictionary alloc] initWithCapacity: _size15];
+          int _i16;
+          for (_i16 = 0; _i16 < _size15; ++_i16)
+          {
+            NSString * _key17 = [inProtocol readString];
+            NSString * _val18 = [inProtocol readString];
+            [fieldValue setObject: _val18 forKey: _key17];
+          }
+          [inProtocol readMapEnd];
+          [self setGrades: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"SemesterGrades"];
+  if (__semesterName_isset) {
+    if (__semesterName != nil) {
+      [outProtocol writeFieldBeginWithName: @"semesterName" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __semesterName];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__grades_isset) {
+    if (__grades != nil) {
+      [outProtocol writeFieldBeginWithName: @"grades" type: TType_MAP fieldID: 2];
+      {
+        [outProtocol writeMapBeginWithKeyType: TType_STRING valueType: TType_STRING size: [__grades count]];
+        NSEnumerator * _iter19 = [__grades keyEnumerator];
+        id key20;
+        while ((key20 = [_iter19 nextObject]))
+        {
+          [outProtocol writeString: key20];
+          [outProtocol writeString: [__grades objectForKey: key20]];
+        }
+        [outProtocol writeMapEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+  if (!__semesterName_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'semesterName' is not set."];
+  }
+  if (!__grades_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'grades' is not set."];
+  }
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"SemesterGrades("];
+  [ms appendString: @"semesterName:"];
+  [ms appendFormat: @"\"%@\"", __semesterName];
+  [ms appendString: @",grades:"];
+  [ms appendFormat: @"%@", __grades];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation IsaGradesResponse
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithStatusCode: (int) statusCode semesters: (NSMutableArray *) semesters
+{
+  self = [super init];
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+  __semesters = [semesters retain_stub];
+  __semesters_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"statusCode"])
+  {
+    __statusCode = [decoder decodeIntForKey: @"statusCode"];
+    __statusCode_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"semesters"])
+  {
+    __semesters = [[decoder decodeObjectForKey: @"semesters"] retain_stub];
+    __semesters_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__statusCode_isset)
+  {
+    [encoder encodeInt: __statusCode forKey: @"statusCode"];
+  }
+  if (__semesters_isset)
+  {
+    [encoder encodeObject: __semesters forKey: @"semesters"];
+  }
+}
+
+- (void) dealloc
+{
+  [__semesters release_stub];
+  [super dealloc_stub];
+}
+
+- (int) statusCode {
+  return __statusCode;
+}
+
+- (void) setStatusCode: (int) statusCode {
+  __statusCode = statusCode;
+  __statusCode_isset = YES;
+}
+
+- (BOOL) statusCodeIsSet {
+  return __statusCode_isset;
+}
+
+- (void) unsetStatusCode {
+  __statusCode_isset = NO;
+}
+
+- (NSMutableArray *) semesters {
+  return [[__semesters retain_stub] autorelease_stub];
+}
+
+- (void) setSemesters: (NSMutableArray *) semesters {
+  [semesters retain_stub];
+  [__semesters release_stub];
+  __semesters = semesters;
+  __semesters_isset = YES;
+}
+
+- (BOOL) semestersIsSet {
+  return __semesters_isset;
+}
+
+- (void) unsetSemesters {
+  [__semesters release_stub];
+  __semesters = nil;
+  __semesters_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I32) {
+          int fieldValue = [inProtocol readI32];
+          [self setStatusCode: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size21;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size21];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size21];
+          int _i22;
+          for (_i22 = 0; _i22 < _size21; ++_i22)
+          {
+            SemesterGrades *_elem23 = [[SemesterGrades alloc] init];
+            [_elem23 read: inProtocol];
+            [fieldValue addObject: _elem23];
+            [_elem23 release_stub];
+          }
+          [inProtocol readListEnd];
+          [self setSemesters: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"IsaGradesResponse"];
+  if (__statusCode_isset) {
+    [outProtocol writeFieldBeginWithName: @"statusCode" type: TType_I32 fieldID: 1];
+    [outProtocol writeI32: __statusCode];
+    [outProtocol writeFieldEnd];
+  }
+  if (__semesters_isset) {
+    if (__semesters != nil) {
+      [outProtocol writeFieldBeginWithName: @"semesters" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__semesters count]];
+        int idx25;
+        for (idx25 = 0; idx25 < [__semesters count]; idx25++)
+        {
+          [[__semesters objectAtIndex: idx25] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+  if (!__statusCode_isset) {
+    @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                               reason: @"Required field 'statusCode' is not set."];
+  }
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"IsaGradesResponse("];
+  [ms appendString: @"statusCode:"];
+  [ms appendFormat: @"%i", __statusCode];
+  [ms appendString: @",semesters:"];
+  [ms appendFormat: @"%@", __semesters];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 
 @implementation isacademiaConstants
 + (void) initialize {
@@ -1223,6 +1617,232 @@
 
 @end
 
+@interface getGrades_args : NSObject <TBase, NSCoding> {
+}
+
+- (id) init;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+@end
+
+@implementation getGrades_args
+
+- (id) init
+{
+  self = [super init];
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getGrades_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getGrades_args("];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetGrades_result : NSObject <TBase, NSCoding> {
+  IsaGradesResponse * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) IsaGradesResponse * success;
+#endif
+
+- (id) init;
+- (id) initWithSuccess: (IsaGradesResponse *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (void) validate;
+
+#if !__has_feature(objc_arc)
+- (IsaGradesResponse *) success;
+- (void) setSuccess: (IsaGradesResponse *) success;
+#endif
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetGrades_result
+
+- (id) init
+{
+  self = [super init];
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+#endif
+  return self;
+}
+
+- (id) initWithSuccess: (IsaGradesResponse *) success
+{
+  self = [super init];
+  __success = [success retain_stub];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain_stub];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release_stub];
+  [super dealloc_stub];
+}
+
+- (IsaGradesResponse *) success {
+  return [[__success retain_stub] autorelease_stub];
+}
+
+- (void) setSuccess: (IsaGradesResponse *) success {
+  [success retain_stub];
+  [__success release_stub];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release_stub];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          IsaGradesResponse *fieldValue = [[IsaGradesResponse alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+  [self validate];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetGrades_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetGrades_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation IsAcademiaServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -1284,6 +1904,41 @@
   return [self recv_getSchedule];
 }
 
+- (void) send_getGrades
+{
+  [outProtocol writeMessageBeginWithName: @"getGrades" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getGrades_args"];
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (IsaGradesResponse *) recv_getGrades
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetGrades_result * result = [[[GetGrades_result alloc] init] autorelease_stub];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getGrades failed: unknown result"];
+}
+
+- (IsaGradesResponse *) getGrades
+{
+  [self send_getGrades];
+  return [self recv_getGrades];
+}
+
 @end
 
 @implementation IsAcademiaServiceProcessor
@@ -1303,6 +1958,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"getSchedule"];
+  }
+  {
+    SEL s = @selector(process_getGrades_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getGrades"];
   }
   return self;
 }
@@ -1353,6 +2016,23 @@
   GetSchedule_result * result = [[GetSchedule_result alloc] init];
   [result setSuccess: [mService getSchedule: [args req]]];
   [outProtocol writeMessageBeginWithName: @"getSchedule"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release_stub];
+  [args release_stub];
+}
+
+- (void) process_getGrades_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getGrades_args * args = [[getGrades_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetGrades_result * result = [[GetGrades_result alloc] init];
+  [result setSuccess: [mService getGrades]];
+  [outProtocol writeMessageBeginWithName: @"getGrades"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

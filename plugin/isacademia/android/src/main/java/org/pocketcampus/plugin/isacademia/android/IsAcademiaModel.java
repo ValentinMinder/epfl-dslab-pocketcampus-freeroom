@@ -8,6 +8,7 @@ import org.pocketcampus.platform.android.core.IView;
 import org.pocketcampus.platform.android.core.PluginModel;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaModel;
 import org.pocketcampus.plugin.isacademia.android.iface.IIsAcademiaView;
+import org.pocketcampus.plugin.isacademia.shared.SemesterGrades;
 import org.pocketcampus.plugin.isacademia.shared.StudyDay;
 import org.pocketcampus.plugin.isacademia.shared.StudyPeriod;
 
@@ -33,6 +34,7 @@ public class IsAcademiaModel extends PluginModel implements IIsAcademiaModel {
 	 * Member variables containing required data for the plugin.
 	 */
 	private Map<String, StudyDay> iSchedule;
+	private List<SemesterGrades> iGrades;
 	
 	/**
 	 * Constructor with reference to the context.
@@ -57,7 +59,16 @@ public class IsAcademiaModel extends PluginModel implements IIsAcademiaModel {
 		StudyDay d = iSchedule.get(key);
 		return (d == null ? null : d.getPeriods());
 	}
-		
+	/**
+	 * Setter and getter for iGrades
+	 */
+	public void setGrades(List<SemesterGrades> g) {
+		iGrades = g;
+	}
+	public List<SemesterGrades> getGrades() {
+		return iGrades;
+	}
+
 	/**
 	 * Returns the Type of the Views associated with this plugin.
 	 */

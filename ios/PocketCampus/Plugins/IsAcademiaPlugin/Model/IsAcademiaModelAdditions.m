@@ -29,6 +29,8 @@
 
 #import "NSDate+Addtions.h"
 
+#import <objc/runtime.h>
+
 @implementation IsAcademiaModelAdditions
 
 + (NSDate*)mondayReferenceDateForDate:(NSDate*)date {
@@ -173,6 +175,66 @@
     });
     formatter.timeZone = epflZimeZone ? [NSTimeZone timeZoneWithName:@"Europe/Zurich"] : [NSTimeZone systemTimeZone];
     return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];
+}
+
+@end
+
+@implementation SemesterGrades (Additions)
+
+#pragma mark - Public
+
+- (NSArray*)sortedGradesKeys {
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        value = [self.grades.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* courseName1, NSString* courseName2) {
+            NSString* grade1 = self.grades[courseName1];
+            NSString* grade2 = self.grades[courseName2];
+            if ((grade1.length > 0 && grade2.length > 0) || (grade1.length == 0 && grade2.length == 0)) {
+                return [courseName1 localizedCaseInsensitiveCompare:courseName2];
+            } else if (grade1.length > 0) {
+                return NSOrderedAscending;
+            } else {
+                return NSOrderedDescending;
+            }
+        }];
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return value;
+}
+
+- (BOOL)existsCourseWithNoGrade {
+    static NSString* key;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        key = NSStringFromSelector(_cmd);
+    });
+    id value = objc_getAssociatedObject(self, (__bridge const void *)(key));
+    if (!value) {
+        value = @NO;
+        for (NSString* course in self.grades) {
+            NSString* grade = self.grades[course];
+            if (grade.length == 0) {
+                value = @YES;
+                break;
+            }
+        }
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return [value boolValue];
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    SemesterGrades* newInstance = [[[self class] allocWithZone:zone] init];
+    newInstance.semesterName = [self.semesterName copy];
+    newInstance.grades = self.grades;
+    return newInstance;
 }
 
 @end

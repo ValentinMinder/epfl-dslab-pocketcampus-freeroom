@@ -61,3 +61,18 @@
 @property (nonatomic, readonly) NSString* periodTypeString;
 
 @end
+
+@interface SemesterGrades (Additions)<NSCopying> //shallow copy, grades property keeps same pointer
+
+/**
+ * @return a sorted array of the keys of the grades property
+ * Sort order is first, in order: where a grade exists, alphabetically
+ */
+@property (nonatomic, readonly) NSArray* sortedGradesKeys;
+
+/**
+ * @return YES if there exists a key that has 0-length value in the grades property
+ */
+@property (nonatomic, readonly) BOOL existsCourseWithNoGrade;
+
+@end

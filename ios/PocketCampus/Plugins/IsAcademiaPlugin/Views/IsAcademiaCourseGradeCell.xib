@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="IsAcademiaCourseGradeCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Course name" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feg-qE-JbC" userLabel="Course Name Label">
+                        <rect key="frame" x="25" y="12" width="96" height="19"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="6" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000000000000009" translatesAutoresizingMaskIntoConstraints="NO" id="Pg5-mS-VIH" userLabel="Grade Label">
+                        <rect key="frame" x="280" y="10" width="10" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="50" id="eiF-cI-nDx"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="32" id="u7S-vP-uZQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
+                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cdc-Bd-Eop" userLabel="Line View">
+                        <rect key="frame" x="129" y="22" width="143" height="1"/>
+                        <color key="backgroundColor" white="0.84871394159202285" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="w5X-gd-U2r"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="Pg5-mS-VIH" firstAttribute="leading" secondItem="Cdc-Bd-Eop" secondAttribute="trailing" constant="8" id="5ID-BM-XVC"/>
+                    <constraint firstItem="feg-qE-JbC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="FMg-Nj-Jui"/>
+                    <constraint firstAttribute="trailing" secondItem="Pg5-mS-VIH" secondAttribute="trailing" constant="30" id="G7Q-Zy-Rwy"/>
+                    <constraint firstItem="Pg5-mS-VIH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="feg-qE-JbC" secondAttribute="trailing" constant="20" id="NLg-NF-mlL"/>
+                    <constraint firstItem="feg-qE-JbC" firstAttribute="centerY" secondItem="Cdc-Bd-Eop" secondAttribute="centerY" constant="-1" id="OjU-fY-5wn"/>
+                    <constraint firstItem="Cdc-Bd-Eop" firstAttribute="leading" secondItem="feg-qE-JbC" secondAttribute="trailing" constant="8" id="VO9-X2-G6O"/>
+                    <constraint firstAttribute="centerY" secondItem="Pg5-mS-VIH" secondAttribute="centerY" id="X1Y-UX-TYn"/>
+                    <constraint firstAttribute="centerY" secondItem="feg-qE-JbC" secondAttribute="centerY" id="wzK-NQ-3d3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="courseNameLabel" destination="feg-qE-JbC" id="goJ-K7-5bh"/>
+                <outlet property="gradeLabel" destination="Pg5-mS-VIH" id="CrO-bi-LFd"/>
+                <outlet property="lineView" destination="Cdc-Bd-Eop" id="mfs-Qv-fC5"/>
+            </connections>
+            <point key="canvasLocation" x="254" y="213"/>
+        </tableViewCell>
+    </objects>
+</document>

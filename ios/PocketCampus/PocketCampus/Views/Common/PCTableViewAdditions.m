@@ -393,23 +393,28 @@ static NSString* const kCancelledOperationUserInfoBoolKey = @"CancelledOperation
 static NSString* const kScrollViewStateContentOffset = @"ContentOffset";
 static NSString* const kScrollViewStateContentSize = @"ContentSize";
 
-- (void)saveContentOffsetForIdentifier:(NSString*)identifier {
+- (NSDictionary*)saveContentOffsetForIdentifier:(NSString*)identifier {
     [PCUtils throwExceptionIfObject:identifier notKindOfClass:[NSString class]];
     if (!self.scrollViewStateForIdentifier) {
         self.scrollViewStateForIdentifier = [NSMutableDictionary dictionary];
     }
     self.scrollViewStateForIdentifier[identifier] = @{kScrollViewStateContentOffset:NSStringFromCGPoint(self.contentOffset),
                                                       kScrollViewStateContentSize:NSStringFromCGSize(self.contentSize)};
+    return [self.scrollViewStateForIdentifier[identifier] copy];
 }
 
 - (void)restoreContentOffsetForIdentifier:(NSString*)identifier {
     [PCUtils throwExceptionIfObject:identifier notKindOfClass:[NSString class]];
-    NSString* originalContentOffsetString = self.scrollViewStateForIdentifier[identifier][kScrollViewStateContentOffset];
+    [self restoreContentOffsetWithStateDictionary:self.scrollViewStateForIdentifier[identifier]];
+}
+
+- (void)restoreContentOffsetWithStateDictionary:(NSDictionary*)state {
+    NSString* originalContentOffsetString = state[kScrollViewStateContentOffset];
     if (!originalContentOffsetString) {
         return;
     }
     CGPoint originalContentOffset = CGPointFromString(originalContentOffsetString);
-    NSString* originalContentSizeString = self.scrollViewStateForIdentifier[identifier][kScrollViewStateContentSize];
+    NSString* originalContentSizeString = state[kScrollViewStateContentSize];
     if (!originalContentSizeString) {
         return;
     }

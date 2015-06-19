@@ -14,17 +14,12 @@
     <string name="map_layer_pick_text">Choose layers</string>
     <string name="map_loading_layers">Loading layers...</string>
     <string name="map_layer_ok_button">Ok</string>
-    
-    <string name="map_directions_not_accurate">We cannot locate you precisely enough to show directions</string>
-    <string name="map_directions_not_on_campus">It seems you are not on campus... We cannot show directions from outside campus.</string>
-    <string name="map_directions_not_found">We were unable to find a valid route for you.</string>
-    
+
     <string name="map_search">Search the map</string>
     <string name="map_search_failed">Couldn\'t load results.</string>
     <string name="map_search_no_results">No results.</string>
     <string name="map_searching">Searching...</string>
     <string name="map_level">Level</string>
-    <string name="map_take_me_there_button">Take me there</string>
     <string name="map_zoom_button">Zoom in</string>
     <string name="map_open_plugin_button">More</string>
     
@@ -34,67 +29,53 @@
 
     <string name="map_cancel_search">Cancel search</string>
     <string name="map_show_results_as_list">Show results as list</string>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <string name="map_normal">Normal</string>
-    <string name="map_hybrid">Hybrid</string>
-    <string name="map_satellite">Satellite</string>
-    <string name="map_terrain">Terrain</string>
-    <string name="map_none">None</string>
-    
+
+
+
+
+
+
+    <string name="epfl_floor_all">All floors</string>
+    <string name="epfl_floor_8">Floor 8</string>
+    <string name="epfl_floor_7">Floor 7</string>
+    <string name="epfl_floor_6">Floor 6</string>
+    <string name="epfl_floor_5">Floor 5</string>
+    <string name="epfl_floor_4">Floor 4</string>
+    <string name="epfl_floor_3">Floor 3</string>
+    <string name="epfl_floor_2">Floor 2</string>
+    <string name="epfl_floor_1">Floor 1</string>
+    <string name="epfl_floor_0">Floor 0</string>
+    <string name="epfl_floor_m1">Floor -1</string>
+    <string name="epfl_floor_m2">Floor -2</string>
+    <string name="epfl_floor_m3">Floor -3</string>
+    <string name="epfl_floor_m4">Floor -4</string>
+    <string name="epfl_floor_">None</string>
+
+
+
+
+    <!--   DEBUG STUFF BELOW - NOT TRANSLATED    -->
+
+
     <string name="map_osm">OSM</string>
     <string name="map_epfl_labels">EPFL labels</string>
     <string name="map_traffic">Traffic</string>
     <string name="map_my_location">My location</string>
     <string name="map_buildings">Buildings</string>
     <string name="map_indoor">Indoor</string>
-    
-  <string name="epfl_floor_all">Floor 9+</string>
-  <string name="epfl_floor_8">Floor 8</string>
-  <string name="epfl_floor_7">Floor 7</string>
-  <string name="epfl_floor_6">Floor 6</string>
-  <string name="epfl_floor_5">Floor 5</string>
-  <string name="epfl_floor_4">Floor 4</string>
-  <string name="epfl_floor_3">Floor 3</string>
-  <string name="epfl_floor_2">Floor 2</string>
-  <string name="epfl_floor_1">Floor 1</string>
-  <string name="epfl_floor_0">Floor 0</string>
-  <string name="epfl_floor_b1">Floor -1</string>
-  <string name="epfl_floor_b2">Floor -2</string>
-  <string name="epfl_floor_b3">Floor -3</string>
-  <string name="epfl_floor_b4">Floor -4</string>
-  
-  <string-array name="map_layers_array">
-    <item>@string/map_normal</item>
-    <item>@string/map_hybrid</item>
-    <item>@string/map_satellite</item>
-    <item>@string/map_terrain</item>
-    <item>@string/map_none</item>
-  </string-array>
-  <string-array name="map_epfl_layers_array">
-    <item>@string/epfl_floor_all</item>
-    <item>@string/epfl_floor_8</item>
-    <item>@string/epfl_floor_7</item>
-    <item>@string/epfl_floor_6</item>
-    <item>@string/epfl_floor_5</item>
-    <item>@string/epfl_floor_4</item>
-    <item>@string/epfl_floor_3</item>
-    <item>@string/epfl_floor_2</item>
-    <item>@string/epfl_floor_1</item>
-    <item>@string/epfl_floor_0</item>
-    <item>@string/epfl_floor_b1</item>
-    <item>@string/epfl_floor_b2</item>
-    <item>@string/epfl_floor_b3</item>
-    <item>@string/epfl_floor_b4</item>
-    <item>@string/map_none</item>
-  </string-array>
-  
+
+    <string name="map_normal">Normal</string>
+    <string name="map_hybrid">Hybrid</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_terrain">Terrain</string>
+    <string name="map_none">None</string>
+
+    <string-array name="map_layers_array">
+        <item>@string/map_normal</item>
+        <item>@string/map_hybrid</item>
+        <item>@string/map_satellite</item>
+        <item>@string/map_terrain</item>
+        <item>@string/map_none</item>
+    </string-array>
+
 </resources>

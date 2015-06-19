@@ -147,7 +147,7 @@ public final class MenuTests {
 		private static final String RETURN_VALUE = getFileContents("ExampleMenuList.json");
 
 		@Override
-		public String get(String url, Charset charset) throws IOException {
+		public String get(String url, Map<String,String> headers, Charset charset) throws IOException {
 			return RETURN_VALUE;
 		}
 		

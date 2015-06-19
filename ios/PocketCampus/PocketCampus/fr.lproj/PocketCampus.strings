@@ -15,6 +15,7 @@
 "Done" = "OK";
 "Accounts" = "Comptes";
 "About" = "À propos";
+"AboutPocketCampusSubtitle" = "Infos & contact";
 "Delete" = "Supprimer";
 "Settings" = "Réglages";
 "LastUpdate" = "Denière mise à jour";
@@ -29,10 +30,10 @@
 "Misc" = "Divers";
 "Usage" = "Utilisation";
 "Close" = "Fermer";
-"RatePCAppStore" = "Évaluer sur l'App Store";
-"RatePCAppStoreSubtitle" = "Merci beaucoup d'avance :)";
+"RatePCAppStore" = "Noter sur l'App Store";
+"RatePCAppStoreSubtitle" = "Vous êtes génial !";
 "LikePConFB" = "Page Facebook";
-"LikePConFBSubtitle" = "Rejoignez la communauté !";
+"LikePConFBSubtitle" = "Restez au courant !";
 "Sorry" = "Désolé";
 "ActionNotSupportedYet" = "Cette action n'est pas encore supportée";
 "Send" = "Envoyer";
@@ -62,14 +63,14 @@
 "EPFLMail" = "Email EPFL";
 "ConfigureEPFLEmailInMailApp" = "Installer mon email EPFL dans Mail";
 "EPFLVPN" = "VPN EPFL";
-"ConfigureEPFLVPN" = "Installer le VPN EPFL";
+"ConfigureEPFLVPN" = "Installer le VPN de l'EPFL";
 "Preparing" = "Préparation";
 "TapToCancel" = "Touchez pour annuler";
 "WhatsNew" = "Nouveautés";
 "WhatsNewInUpdate" = "Nouveautés de cette mise à jour";
 "TapForMoreInfo" = "Touchez pour plus d'infos";
 
-"WhatsNewInVersionContentShort" = "Emails EPFL, VPN EPFL.";
+"WhatsNewInVersionContentShort" = "Notes IS-Academia !";
 
 //Accessbility
 

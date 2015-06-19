@@ -13,7 +13,7 @@
     <string name="news_header_last_month">Last 30 days</string>
     <string name="news_header_last_year">Last 12 months</string>
     <string name="news_no_feed_selected">No feed selected.</string>
-    <string name="news_readmore"><u>Read more...</u></string>
+
 
     <!-- Preferences -->
     <string name="news_preferences">Preferences</string>

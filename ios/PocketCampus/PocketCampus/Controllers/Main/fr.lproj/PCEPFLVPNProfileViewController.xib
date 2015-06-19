@@ -18,7 +18,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuE-S6-oyC" userLabel="Explanations label">
                         <rect key="frame" x="20" y="120" width="284" height="96"/>
-                        <string key="text">PocketCampus peut automatiquement installer le VPN EPFL. Le VPN vous permet d'accéder au réseau interne de l'EPFL même quand vous n'êtes pas sur le campus.</string>
+                        <string key="text">PocketCampus peut automatiquement installer le VPN de l'EPFL. Le VPN vous permet d'accéder au réseau interne de l'EPFL même quand vous n'êtes pas sur le campus.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>

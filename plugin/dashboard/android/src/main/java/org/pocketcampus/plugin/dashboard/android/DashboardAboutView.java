@@ -1,5 +1,6 @@
 package org.pocketcampus.plugin.dashboard.android;
 
+import org.pocketcampus.platform.android.core.GlobalContext;
 import org.pocketcampus.platform.android.core.PluginController;
 import org.pocketcampus.platform.android.core.PluginView;
 import org.pocketcampus.plugin.dashboard.R;
@@ -43,7 +44,7 @@ public class DashboardAboutView extends PluginView {
 		;
 		
 		statusText.setText(Html.fromHtml("<h1>PocketCampus EPFL</h1>" +
-				"<p>" + DashboardController.getAppVersion(getApplicationContext()) + "</p>" +
+				"<p>" + ((GlobalContext) getApplicationContext()).getAppVersion() + "</p>" +
 				"<p>" + getString(R.string.dashboard_about_developed) + "</p>" +
 				"<p><b>PocketCampus.Org</b></p>" +
 				"<p>Amer Chamseddine<br>Silviu Andrica<br>Loïc Gardiol<br>Solal Pirelli</p>" +

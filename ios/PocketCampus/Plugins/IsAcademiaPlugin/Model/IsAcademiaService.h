@@ -39,11 +39,9 @@
 
 @interface IsAcademiaService : PCService <PCServiceProtocol>
 
-/*
-- (ScheduleResponse *) getSchedule: (ScheduleRequest *) req;  // throws TException
- */
-
 - (void)getScheduleWithRequest:(ScheduleRequest*)request skipCache:(BOOL)skipCache delegate:(id<IsAcademiaServiceDelegate>)delegate;
+- (void)getGradesWithDelegate:(id<IsAcademiaServiceDelegate>)delegate;
+- (IsaGradesResponse*)getGradesFromCache;
 
 @end
 
@@ -52,5 +50,7 @@
 @optional
 - (void)getScheduleForRequest:(ScheduleRequest*)request didReturn:(ScheduleResponse*)scheduleResponse;
 - (void)getScheduleFailedForRequest:(ScheduleRequest*)request;
+- (void)getGradesDidReturn:(IsaGradesResponse*)gradesResponse;
+- (void)getGradesFailed;
 
 @end
