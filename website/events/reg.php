@@ -17,7 +17,9 @@ $ticket = rawurlencode($_GET["t"]);
 if(empty($_GET["m"])) {
 
 	// This is the src of the QR code picture. We send this by email, and we want it to display properly on both Desktops and Mobiles.
-	header("Location: http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1%26userTicket=$ticket");
+	$qr = file_get_contents("http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl=pocketcampus://events.plugin.pocketcampus.org/showEventPool?eventPoolId=-1%26userTicket=$ticket");
+	header("Content-Type: image/png");
+	die($qr);
 
 }else {
 
