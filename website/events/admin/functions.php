@@ -629,7 +629,7 @@ function update_eventitem_participants($record, $newid, $conn) {
 	if($record["EPFL_SCIPER"]) {
 		$contactCardLink = "/search?q=" . rawurlencode($record["EPFL_SCIPER"]);
 	}
-	if($contactCardLink) $eventDetails .= "<h2>Contact details</h2><p><a href=\"pocketcampus://directory.plugin.pocketcampus.org$contactCardLink\">View contact card</a></p>";
+	//if($contactCardLink) $eventDetails .= "<h2>Contact details</h2><p><a href=\"pocketcampus://directory.plugin.pocketcampus.org$contactCardLink\">View contact card</a></p>";
 	if($eventDetails) $succ = $succ && sql_query("UPDATE eventitems SET eventDetails = '" . sql_real_escape_string($eventDetails) . "'  WHERE eventId = '$newid'", $conn);
 	
 	
